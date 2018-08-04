@@ -1,5 +1,5 @@
 {
-    "name": "mvqn/ucrm-plugin-api",
+    "name": "mvqn/ucrm-plugin-rest",
     "description": "Some core code for use when developing UCRM Plugins.",
     "minimum-stability": "stable",
     "type": "library",
