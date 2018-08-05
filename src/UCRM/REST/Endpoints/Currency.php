@@ -5,20 +5,17 @@ namespace UCRM\REST\Endpoints;
 
 
 
-use UCRM\REST\Exceptions\RestClientException;
-use UCRM\REST\RestClient;
-
 /**
- * Class Country
+ * Class Currency
  *
  * @package UCRM\REST\Endpoints
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
  */
-final class Country extends Endpoint
+final class Currency extends Endpoint
 {
     /** @const string  */
-    protected const ENDPOINT = "/countries";
+    protected const ENDPOINT = "/currencies";
 
 
 
@@ -59,27 +56,15 @@ final class Country extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var State[] $states */
-    protected $states = null;
+    /** @var string  */
+    protected $symbol;
 
     /**
-     * @return State[]
-     * @throws RestClientException
+     * @return string
      */
-    public function getStates(): array
+    public function getSymbol(): string
     {
-        // Cache the value here for future lookups...
-        if($this->states === null)
-        {
-            $states = RestClient::get(self::ENDPOINT . "/" . $this->id . "/states");
-
-            $this->states = [];
-            // Loop through each result and cast the value to a State object before adding them to the array...
-            foreach ($states as $state)
-                $this->states[] = new State($state);
-        }
-
-        return $this->states;
+        return $this->symbol;
     }
 
 }

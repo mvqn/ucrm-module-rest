@@ -7,7 +7,7 @@ use UCRM\REST\RestClient;
 
 
 
-class CountryTest extends \PHPUnit\Framework\TestCase
+class CurrencyTest extends \PHPUnit\Framework\TestCase
 {
     /** @var string Location of the .env file for development. */
     protected const DOTENV_PATH = __DIR__."/../../../../";
@@ -36,34 +36,22 @@ class CountryTest extends \PHPUnit\Framework\TestCase
 
     public function testGet()
     {
-        $countries = Country::get();
-        $this->assertNotEmpty($countries);
+        $currencies = Currency::get();
+        $this->assertNotEmpty($currencies);
 
-        foreach($countries as $country)
-            echo $country."\n";
+        foreach($currencies as $currency)
+            echo $currency."\n";
     }
 
 
     public function testGetById()
     {
-        $country = Country::getById(249);
-        $this->assertNotNull($country);
+        $currency = Currency::getById(33);
+        $this->assertNotNull($currency);
 
-        echo $country."\n";
+        echo $currency."\n";
     }
 
-    public function testGetStates()
-    {
-        /** @var Country $country */
-        $country = Country::getById(249);
-        $this->assertNotNull($country);
-
-        $states = $country->getStates();
-
-        foreach($states as $state)
-            //print_r($state);
-            echo $state."\n";
-    }
 
 
 

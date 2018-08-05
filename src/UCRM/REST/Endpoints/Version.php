@@ -17,6 +17,9 @@ final class Version extends Endpoint
     /** @const string  */
     protected const ENDPOINT = "/version";
 
+
+
+    // -----------------------------------------------------------------------------------------------------------------
     /** @var string  */
     protected $version;
 

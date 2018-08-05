@@ -3,22 +3,24 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
-
-
-use UCRM\REST\Exceptions\RestClientException;
 use UCRM\REST\RestClient;
+use UCRM\REST\Exceptions\RestClientException;
+
 
 /**
- * Class Country
+ * Class State
  *
  * @package UCRM\REST\Endpoints
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
  */
-final class Country extends Endpoint
+final class State extends Endpoint
 {
     /** @const string  */
-    protected const ENDPOINT = "/countries";
+    protected const ENDPOINT = "/states";
+
+    /** @const string  */
+    protected const ENDPOINT_PARENT = "/countries";
 
 
 
@@ -32,6 +34,33 @@ final class Country extends Endpoint
     public function getId(): int
     {
         return $this->id;
+    }
+
+    // -----------------------------------------------------------------------------------------------------------------
+    /** @var int  */
+    protected $countryId;
+
+    /**
+     * @return int
+     */
+    public function getCountryId(): int
+    {
+        return $this->countryId;
+    }
+
+    /** @var Country $country */
+    protected $country = null;
+
+    /**
+     * @return Country
+     */
+    public function getCountry(): Country
+    {
+        // Cache the value here for future lookups...
+        if($this->country === null)
+            $this->country = Country::getById($this->countryId);
+
+        return $this->country;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -58,29 +87,7 @@ final class Country extends Endpoint
         return $this->code;
     }
 
-    // -----------------------------------------------------------------------------------------------------------------
-    /** @var State[] $states */
-    protected $states = null;
 
-    /**
-     * @return State[]
-     * @throws RestClientException
-     */
-    public function getStates(): array
-    {
-        // Cache the value here for future lookups...
-        if($this->states === null)
-        {
-            $states = RestClient::get(self::ENDPOINT . "/" . $this->id . "/states");
-
-            $this->states = [];
-            // Loop through each result and cast the value to a State object before adding them to the array...
-            foreach ($states as $state)
-                $this->states[] = new State($state);
-        }
-
-        return $this->states;
-    }
 
 }
 

@@ -18,6 +18,12 @@ abstract class Endpoint
 {
     /** @const string  */
     protected const ENDPOINT = "";
+    /** @const string  */
+    protected const ENDPOINT_PARENT = "";
+
+
+
+
 
     /**
      * Endpoint constructor.
@@ -67,7 +73,12 @@ abstract class Endpoint
         /** @var Endpoint $child */
         $child = get_called_class();
         $endpoint = $child::ENDPOINT;
+        $endpoint_parent = defined("$child::ENDPOINT_PARENT") ? $child::ENDPOINT_PARENT : "";
 
+        if($endpoint_parent !== "")
+            throw new RestClientException(
+                "'$endpoint' is a child endpoint and must be called using it's parent endpoint of '".
+                $endpoint_parent."/{id}$endpoint'");
 
         $response = RestClient::get($endpoint);
 
@@ -79,9 +90,7 @@ abstract class Endpoint
 
         $endpoints = [];
         foreach($response as $object)
-        {
             $endpoints[] = new $child($object);
-        }
 
         return $endpoints;
     }
@@ -92,6 +101,10 @@ abstract class Endpoint
         /** @var Endpoint $child */
         $child = get_called_class();
         $endpoint = $child::ENDPOINT;
+        $endpoint_parent = defined("$child::ENDPOINT_PARENT") ? $child::ENDPOINT_PARENT : "";
+
+        if($endpoint_parent !== "")
+            $endpoint = $endpoint_parent.$endpoint;
 
         $response = RestClient::get($endpoint."/$id");
 
