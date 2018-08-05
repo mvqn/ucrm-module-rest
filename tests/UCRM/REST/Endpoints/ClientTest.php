@@ -36,7 +36,7 @@ class ClientTest extends \PHPUnit\Framework\TestCase
 
     public function testGet()
     {
-        /** @var Client[] $clients */
+
         $clients = Client::get();
         $this->assertNotEmpty($clients);
 
@@ -47,7 +47,6 @@ class ClientTest extends \PHPUnit\Framework\TestCase
 
     public function testGetById()
     {
-        /** @var Client $client */
         $client = Client::getById(1);
         $this->assertInstanceOf(Client::class, $client);
 

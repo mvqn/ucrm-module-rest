@@ -65,12 +65,12 @@ abstract class Endpoint
 
 
     /**
-     * @return Endpoint[]
+     * @return static[]
      * @throws RestClientException
      */
     public static function get(): array
     {
-        /** @var Endpoint $child */
+        /** @var static $child */
         $child = get_called_class();
         $endpoint = $child::ENDPOINT;
         $endpoint_parent = defined("$child::ENDPOINT_PARENT") ? $child::ENDPOINT_PARENT : "";
@@ -95,10 +95,14 @@ abstract class Endpoint
         return $endpoints;
     }
 
-
-    public static function getById(int $id): ?EndPoint
+    /**
+     * @param int $id
+     * @return static|null
+     * @throws RestClientException
+     */
+    public static function getById(int $id): ?Endpoint
     {
-        /** @var Endpoint $child */
+        /** @var static */
         $child = get_called_class();
         $endpoint = $child::ENDPOINT;
         $endpoint_parent = defined("$child::ENDPOINT_PARENT") ? $child::ENDPOINT_PARENT : "";
