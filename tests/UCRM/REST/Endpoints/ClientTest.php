@@ -1,14 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace UCRM\REST;
+namespace UCRM\REST\Endpoints;
+
+use UCRM\REST\RestClient;
 
 
 
-class EndpointTest extends \PHPUnit\Framework\TestCase
+class ClientTest extends \PHPUnit\Framework\TestCase
 {
     /** @var string Location of the .env file for development. */
-    protected const DOTENV_PATH = __DIR__ . "/../../ucrm-plugin-rest/";
+    protected const DOTENV_PATH = __DIR__."/../../../../";
 
 
 
@@ -32,11 +34,28 @@ class EndpointTest extends \PHPUnit\Framework\TestCase
 
 
 
-
     public function testGet()
     {
-        $this->markTestSkipped("Implement later!");
+        /** @var Client[] $clients */
+        $clients = Client::get();
+        $this->assertNotEmpty($clients);
+
+        foreach($clients as $client)
+            echo $client."\n";
     }
+
+
+    public function testGetById()
+    {
+        /** @var Client $client */
+        $client = Client::getById(1);
+        $this->assertInstanceOf(Client::class, $client);
+
+        echo $client."\n";
+    }
+
+
+
 
 
 }

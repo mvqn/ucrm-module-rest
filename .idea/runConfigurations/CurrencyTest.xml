@@ -1,6 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="CurrencyTest" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" singleton="true">
-    <TestRunner class="UCRM\REST\Endpoints\CurrencyTest" file="$PROJECT_DIR$/tests/UCRM/REST/Endpoints/CurrencyTest.php" scope="Class" />
-    <method v="2" />
-  </configuration>
-</component>
