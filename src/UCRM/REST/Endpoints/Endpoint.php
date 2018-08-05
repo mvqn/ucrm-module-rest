@@ -51,6 +51,11 @@ abstract class Endpoint
 
 
 
+    private static function isAssoc(array $array): bool
+    {
+        return array_keys($array) !== range(0, count($array) - 1);
+    }
+
 
 
     /**
@@ -68,8 +73,11 @@ abstract class Endpoint
 
         //$objects = json_decode($response, true);
 
-        $endpoints = [];
+        if(self::isAssoc($response))
+            //return new $child($response);
+            return [new $child($response)];
 
+        $endpoints = [];
         foreach($response as $object)
         {
             $endpoints[] = new $child($object);

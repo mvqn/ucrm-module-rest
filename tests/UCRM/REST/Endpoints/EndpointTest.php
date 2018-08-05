@@ -8,7 +8,7 @@ namespace UCRM\REST;
 class EndpointTest extends \PHPUnit\Framework\TestCase
 {
     /** @var string Location of the .env file for development. */
-    protected const DOTENV_PATH = __DIR__."/../../../";
+    protected const DOTENV_PATH = __DIR__ . "/../../ucrm-plugin-rest/";
 
 
 
