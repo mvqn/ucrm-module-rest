@@ -14,7 +14,7 @@ use UCRM\REST\Exceptions\RestClientException;
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
  */
-final class ContactType extends Endpoint
+final class ContactType extends Lookup
 {
     // -----------------------------------------------------------------------------------------------------------------
     /** @var int  */
