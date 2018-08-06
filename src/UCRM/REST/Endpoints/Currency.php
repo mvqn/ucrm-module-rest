@@ -67,6 +67,7 @@ final class Currency extends Endpoint
         return $this->symbol;
     }
 
+
 }
 
 
