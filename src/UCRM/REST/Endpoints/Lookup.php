@@ -14,7 +14,7 @@ use UCRM\REST\Exceptions\RestClientException;
  * @package UCRM\REST\Endpoints
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  */
-abstract class Lookup
+abstract class Lookup implements \JsonSerializable
 {
     /**
      * Lookup constructor.

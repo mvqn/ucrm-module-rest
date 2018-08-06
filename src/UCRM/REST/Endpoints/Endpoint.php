@@ -97,6 +97,14 @@ abstract class Endpoint implements \JsonSerializable
 
         $response = RestClient::get($endpoint);
 
+        //echo "*** ".json_encode($response, JSON_UNESCAPED_SLASHES);
+
+        if(array_key_exists("code", $response) && $response["code"] === 404)
+            return [];
+
+        if($response === [])
+            return [];
+
         //$objects = json_decode($response, true);
 
         if(self::isAssoc($response))
@@ -126,6 +134,12 @@ abstract class Endpoint implements \JsonSerializable
             $endpoint = $endpoint_parent.$endpoint;
 
         $response = RestClient::get($endpoint."/$id");
+
+        //echo "*** ".json_encode($response, JSON_UNESCAPED_SLASHES);
+
+        if(array_key_exists("code", $response) && $response["code"] === 404)
+            return null;
+
 
         $endpoint = new $child($response);
 

@@ -3,18 +3,16 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
-use UCRM\REST\RestClient;
-use UCRM\REST\Exceptions\RestClientException;
 
 
 /**
- * Class Contact
+ * Class InvoiceItem
  *
  * @package UCRM\REST\Endpoints
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
  */
-final class Contact extends Lookup
+final class InvoiceItem extends Lookup
 {
     // -----------------------------------------------------------------------------------------------------------------
     /** @var int  */
@@ -29,103 +27,87 @@ final class Contact extends Lookup
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+    /** @var string  */
+    protected $label;
+
+    /**
+     * @return string
+     */
+    public function getLabel(): string
+    {
+        return $this->label;
+    }
+
+    // -----------------------------------------------------------------------------------------------------------------
+    /** @var float  */
+    protected $price;
+
+    /**
+     * @return float
+     */
+    public function getPrice(): float
+    {
+        return $this->price;
+    }
+
+    // -----------------------------------------------------------------------------------------------------------------
     /** @var int  */
-    protected $clientId;
+    protected $quantity;
 
     /**
      * @return int
      */
-    public function getClientId(): int
+    public function getQuantity(): int
     {
-        return $this->clientId;
-    }
-
-    /** @var Client $client */
-    protected $client = null;
-
-    /**
-     * @return Client
-     * @throws RestClientException
-     */
-    public function getClient(): Client
-    {
-        // Cache the value here for future lookups...
-        if($this->client === null)
-            $this->client = Client::getById($this->clientId);
-
-        return $this->client;
+        return $this->quantity;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
     /** @var string  */
-    protected $email;
+    protected $unit;
 
     /**
      * @return string
      */
-    public function getEmail(): string
+    public function getUnit(): string
     {
-        return $this->email;
+        return $this->unit;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
-    protected $phone;
+    /** @var int  */
+    protected $tax1Id;
 
     /**
-     * @return string
+     * @return int
      */
-    public function getPhone(): string
+    public function getTax1Id(): int
     {
-        return $this->phone;
+        return $this->tax1Id;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
-    protected $name;
+    /** @var int  */
+    protected $tax2Id;
 
     /**
-     * @return string
+     * @return int
      */
-    public function getName(): string
+    public function getTax2Id(): int
     {
-        return $this->name;
+        return $this->tax2Id;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var bool  */
-    protected $isBilling;
+    /** @var int  */
+    protected $tax3Id;
 
     /**
-     * @return bool
+     * @return int
      */
-    public function getIsBilling(): bool
+    public function getTax3Id(): int
     {
-        return $this->isBilling;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-    /** @var bool  */
-    protected $isContact;
-
-    /**
-     * @return bool
-     */
-    public function getIsContact(): bool
-    {
-        return $this->isContact;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-    /** @var ContactType[]  */
-    protected $types;
-
-    /**
-     * @return ContactType[]
-     */
-    public function getContactTypes(): array
-    {
-        return $this->types;
+        return $this->tax3Id;
     }
 
 }

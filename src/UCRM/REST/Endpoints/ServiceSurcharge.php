@@ -3,19 +3,24 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
-use UCRM\REST\RestClient;
 use UCRM\REST\Exceptions\RestClientException;
 
 
 /**
- * Class Contact
+ * Class ServiceSurcharge
  *
  * @package UCRM\REST\Endpoints
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
  */
-final class Contact extends Lookup
+final class ServiceSurcharge extends Endpoint
 {
+    /** @const string  */
+    protected const ENDPOINT = "/service-surcharges";
+
+    /** @const string  */
+    protected const ENDPOINT_PARENT = "/clients/services";
+
     // -----------------------------------------------------------------------------------------------------------------
     /** @var int  */
     protected $id;
@@ -30,102 +35,78 @@ final class Contact extends Lookup
 
     // -----------------------------------------------------------------------------------------------------------------
     /** @var int  */
-    protected $clientId;
+    protected $serviceId;
 
     /**
      * @return int
      */
-    public function getClientId(): int
+    public function getServiceId(): int
     {
-        return $this->clientId;
+        return $this->serviceId;
     }
 
-    /** @var Client $client */
-    protected $client = null;
+    /** @var Service $service */
+    protected $service = null;
 
     /**
-     * @return Client
+     * @return Service
      * @throws RestClientException
      */
-    public function getClient(): Client
+    public function getClient(): Service
     {
         // Cache the value here for future lookups...
-        if($this->client === null)
-            $this->client = Client::getById($this->clientId);
+        if($this->service === null)
+            $this->service = Service::getById($this->serviceId);
 
-        return $this->client;
+        return $this->service;
+    }
+
+    // -----------------------------------------------------------------------------------------------------------------
+    /** @var int  */
+    protected $surchargeId;
+
+    /**
+     * @return int
+     */
+    public function getSurchargeId(): int
+    {
+        return $this->surchargeId;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
     /** @var string  */
-    protected $email;
+    protected $invoiceLabel;
 
     /**
      * @return string
      */
-    public function getEmail(): string
+    public function getInvoiceLabel(): string
     {
-        return $this->email;
+        return $this->invoiceLabel;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
-    protected $phone;
+    /** @var float  */
+    protected $price;
 
     /**
-     * @return string
+     * @return float
      */
-    public function getPhone(): string
+    public function getPrice(): float
     {
-        return $this->phone;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
-    protected $name;
-
-    /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return $this->name;
+        return $this->price;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
     /** @var bool  */
-    protected $isBilling;
+    protected $taxable;
 
     /**
      * @return bool
      */
-    public function getIsBilling(): bool
+    public function getTaxable(): bool
     {
-        return $this->isBilling;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-    /** @var bool  */
-    protected $isContact;
-
-    /**
-     * @return bool
-     */
-    public function getIsContact(): bool
-    {
-        return $this->isContact;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-    /** @var ContactType[]  */
-    protected $types;
-
-    /**
-     * @return ContactType[]
-     */
-    public function getContactTypes(): array
-    {
-        return $this->types;
+        return $this->taxable;
     }
 
 }
