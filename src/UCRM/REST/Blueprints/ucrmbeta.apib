@@ -1,0 +1,4043 @@
+FORMAT: 1A
+HOST: https://ucrm-demo.ubnt.com/api/v1.0
+
+# UCRM API
+
+## Authentication
+
+In order to use this API, you will need an app key.
+
+### Generating an App Key
+Go to **App keys** (Settings => Security => App keys) section of your UCRM instance
+and generate a new app key of required type (**Read** or **Write**).
+
+| Request Method | Type        |
+|----------------|-------------|
+| GET            | Read, Write |
+| POST           | Write       |
+| PUT            | Write       |
+| PATCH          | Write       |
+| DELETE         | Write       |
+
+### Using an App Key
+Once you have generated an app key, pass it in `X-Auth-App-Key` header in each request.
+
+If an app key is not passed or invalid, you will get a `401 Unauthorized` response.
+If an app key is of wrong type, you will get a `403 Forbidden` response.
+
+
+# Group General
+
+Resources related to general questions in the API.
+
+## GET /version
+
+Retrieve currently installed UCRM version.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (Version)
+
+## GET /countries
+
+Retrieve collection of **Countries**.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (array[CountryReadOnly])
+
+## GET /countries/{id}
+
+Retrieve **Country**.
+
++ Parameters
+    + id: `1` (number, required) - ID of a **Country** to fetch.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (CountryReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+## GET /currencies
+
+Retrieve collection of **Currencies**.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (array[CurrencyReadOnly])
+
+## GET /currencies/{id}
+
+Retrieve **Currency**.
+
++ Parameters
+    + id: `1` (number, required) - ID of a **Currency** to fetch.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (CurrencyReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+## GET /countries/{id}/states
+
+Retrieve collection of **States**.
+
+Available for **United States** and **Canada** only.
+
++ Parameters
+    + id: `249` (number, required) - ID of a related **Country**.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (array[StateReadOnly])
+
+## GET /countries/states/{id}
+
+Retrieve **State**.
+
++ Parameters
+    + id: `1` (number, required) - ID of a **State** to fetch.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (StateReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+
+# Group Clients
+
+# /clients{?userIdent,customAttributeKey,customAttributeValue,order,direction}
+
+## GET
+Retrieve collection of **Clients**.
+
++ Parameters
+    + userIdent: `123456` (string, optional) - Search by userIdent (client's custom ID).
+    + customAttributeKey: `myCustomAttribute` (string, optional) - Search by custom attribute. Have to be used alongside with customAttributeValue.
+    + customAttributeValue: `value` (string, optional) - Search by custom attribute. Have to be used alongside with customAttributeKey.
+    + order: `user.lastName` (enum[string], optional) - By what property is result ordered by.
+        + Default: `client.id`
+        + Members
+            + `user.firstName`
+            + `user.lastName`
+            + `client.registrationDate`
+            + `client.id`
+    + direction: `DESC` (enum[string], optional) -  Ordering direction.
+        + Default: `ASC`
+        + Members
+            + `ASC`
+            + `DESC`
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (array[ClientReadOnly])
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+## POST /clients
+Create **Client**.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
+    + Attributes (ClientWritable)
+
++ Response 201 (application/json)
+    + Headers
+
+            Location: /clients/1001
+    + Attributes (ClientReadOnly)
+
++ Response 422 (application/json)
+    + Attributes (Error422)
+
+# /clients/{id}
+
+## GET
+Retrieve **Client**.
+
++ Parameters
+    + id: `1000` (number, required) - ID of a **Client** to fetch / update.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (ClientReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+## PATCH
+
+Update **Client**.
+
++ Parameters
+    + id: `1000` (number, required) - ID of a **Client** to fetch / update.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
+    + Attributes (ClientWritable)
+
++ Response 200 (application/json)
+    + Attributes (ClientReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
++ Response 422 (application/json)
+    + Attributes (Error422)
+
+## PATCH /clients/{id}/send-invitation
+
+Send an invitation email to **Client**
+
++ Parameters
+    + id: `1000` (number, required) - ID of a **Client** to send the invitation email to.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (ClientReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+
+# Group Payment Plans
+
+# /payment-plans
+
+## GET
+
+Retrieve collection of **Payment Plans**.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (array[PaymentPlanReadOnly])
+
+## POST
+
+Create **Payment Plan**.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
+    + Attributes (PaymentPlan)
+
++ Response 201 (application/json)
+    + Headers
+
+            Location: /payment-plans/2
+    + Attributes (PaymentPlanReadOnly)
+
++ Response 422 (application/json)
+    + Attributes (Error422)
+
+# /payment-plans/{id}
+
+## GET
+
+Retrieve **Payment Plan**.
+
++ Parameters
+    + id: `1` (number, required) - ID of a **Payment Plan** to fetch.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (PaymentPlanReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+
+# Group Client Logs
+
+# /client-logs{?clientId,createdDateFrom,createdDateTo}
+## GET
+
+Retrieve collection of **ClientLogs**.
+
++ Parameters
+    + clientId: `1` (number, optional) - ID of a **Client** to filter by.
+
+    + createdDateFrom: `2017-01-01` (string, optional) -  Limit collection from date (including).
+    Use `YYYY-MM-DD` format.
+
+    + createdDateTo: `2017-12-31` (string, optional) -  Limit collection to date (including).
+    Use `YYYY-MM-DD` format.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (array[ClientLogsReadOnly])
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+## POST /client-logs
+
+Create **ClientLogs**.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
+    + Attributes (ClientLogsWritable)
+
++ Response 201 (application/json)
+    + Headers
+
+            Location: /client-logs/1001
+    + Attributes (ClientLogsReadOnly)
+
++ Response 422 (application/json)
+    + Attributes (Error422)
+
+#/client-logs/{id}
+
+## GET
+
+Retrieve **ClientLog**.
+
++ Parameters
+    + id: `1000` (number, required) - ID of a **ClientLog** to fetch / update.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (ClientLogsReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+## PATCH
+
+Update **ClientLog**.
+
++ Parameters
+    + id: `1000` (number, required) - ID of a **ClientLog** to fetch / update.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
+    + Attributes (ClientLogsWritable)
+
++ Response 200 (application/json)
+    + Attributes (ClientLogsReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
++ Response 422 (application/json)
+    + Attributes (Error422)
+
+
+# Group Services
+
+# GET /clients/services
+
+Retrieve collection of **Services**.
+
++ Parameters
+    + statuses: `[1]` (array[ServiceStatus], optional) - Filter by service status.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (array[ServiceReadOnly])
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+
+#  /clients/services/{id}
+## GET
+
+Retrieve **Service**.
+
++ Parameters
+    + id: `1` (number, required) - ID of a **Service** to fetch.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (ServiceReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+
+## PATCH
+
+Update **Service**. 
+
++ Parameters
+    + id: `1000` (number, required) - ID of a **Service** to fetch / update.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+    + Attributes (ServiceUpdate)
+
++ Response 200 (application/json)
+    + Attributes (ServiceReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
++ Response 422 (application/json)
+    + Attributes (Error422)
+
+## /clients/{id}/services
+## GET
+
+Retrieve collection of **Services** filtered by **Client**.
+
++ Parameters
+    + id: `1000` (number, required) - ID of a related **Client**.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (array[ServiceReadOnly])
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+## POST
+
+Create **Service** for **Client**.
+
++ Parameters
+    + id: `1000` (number, required) - ID of a related **Client**.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
+    + Attributes (Service)
+
++ Response 201 (application/json)
+    + Headers
+
+            Location: /clients/services/2
+    + Attributes (ServiceReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
++ Response 422 (application/json)
+    + Attributes (Error422)
+
+
+# Group Service Surcharges
+
+# /clients/services/{id}/service-surcharges
+
+## GET
+
+Retrieve collection of **Service Surcharges** filtered by **Service**.
+
++ Parameters
+    + id: `1` (number, required) - ID of a related **Service**.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (array[ServiceSurchargeReadOnly])
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+## POST
+Create **Service Surcharge** for **Service**. 
+
++ Parameters
+    + id: `1` (number, required) - ID of a related **Service**.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
+    + Attributes (ServiceSurcharge)
+
++ Response 201 (application/json)
+    + Headers
+
+            Location: /clients/services/service-surcharges/2
+    + Attributes (ServiceSurchargeReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
++ Response 422 (application/json)
+    + Attributes (Error422)
+
+# /clients/services/service-surcharges/{id}
+## PATCH
+
+Update **Service Surcharge**.
+
++ Parameters
+    + id: `1000` (number, required) - ID of a **Service Surcharge** to fetch / update.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
+    + Attributes (ServiceSurcharge)
+
++ Response 200 (application/json)
+    + Attributes (ServiceSurchargeReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
++ Response 422 (application/json)
+    + Attributes (Error422)
+
+## GET
+
+Retrieve **Service Surcharge**.
+
++ Parameters
+    + id: `1` (number, required) - ID of a **Service Surcharge** to fetch.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (ServiceSurchargeReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+
+# Group Service Devices
+
+# /clients/services/service-devices/{id}
+## GET
+
+Retrieve **Service Device**.
+
++ Parameters
+    + id: `1` (number, required) - ID of a **Service Device** to fetch.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (ServiceDeviceReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+## PATCH
+
+Update **Service Device**.
+
++ Parameters
+    + id: `1000` (number, required) - ID of a **Service Device** to update.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+    + Attributes (ServiceDevice)
+
++ Response 200 (application/json)
+    + Attributes (ServiceDeviceReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
++ Response 422 (application/json)
+    + Attributes (Error422)
+
+# /clients/services/{id}/service-devices
+## GET
+
+Retrieve collection of **Service Devices** filtered by **Service**.
+
++ Parameters
+    + id: `1` (number, required) - ID of a related **Service**.
+    
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (array[ServiceDeviceReadOnly])
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+## POST
+
+Create **Service Device** for **Service**.
+
++ Parameters
+    + id: `1` (number, required) - ID of a related **Service**.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
+    + Attributes (ServiceDevice)
+
++ Response 201 (application/json)
+    + Headers
+
+            Location: /clients/services/service-devices/2
+    + Attributes (ServiceDeviceReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
++ Response 422 (application/json)
+    + Attributes (Error422)
+
+
+# Group Service IPs
+
+# /clients/services/service-devices/service-ips/{id}
+## GET
+
+Retrieve **Service IP**.
+
++ Parameters
+    + id: `1` (number, required) - ID of a **Service IP** to fetch.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (ServiceIpReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+## DELETE
+
+Delete **Service IP**.
+
++ Parameters
+    + id: `1000` (number, required) - ID of a **Service ID** to delete
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+# /clients/services/service-devices/{id}/service-ips
+## GET
+
+Retrieve collection of **Service IPs** filtered by **Service Device**.
+
++ Parameters
+    + id: `1` (number, required) - ID of a related **Service Device**.
+    
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (array[ServiceIpReadOnly])
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+## POST
+
+Create **Service IP** for **Service Device**.
+
++ Parameters
+    + id: `1` (number, required) - ID of a related **Service Device**.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
+    + Attributes (ServiceIp)
+
++ Response 201 (application/json)
+    + Headers
+
+            Location: /clients/services/service-devices/service-ips/2
+    + Attributes (ServiceIpReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
++ Response 422 (application/json)
+    + Attributes (Error422)
+
+
+# Group Sites
+
+## GET /sites
+
+Retrieve collection of **Sites**.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (array[SiteReadOnly])
+
+## GET /sites/{id}
+
+Retrieve **Site**.
+
++ Parameters
+    + id: `1000` (number, required) - ID of a **Site** to fetch.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (SiteReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+
+# Group Devices
+
+## GET /devices
+
+Retrieve collection of **Devices**.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (array[DeviceReadOnly])
+
+## GET /devices/{id}
+
+Retrieve **Device**.
+
++ Parameters
+    + id: `1` (number, required) - ID of a **Device** to fetch.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (DeviceReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+
+# Group Device Interfaces
+
+## GET /devices/{id}/device-interfaces
+
+Retrieve collection of **Device Interfaces** for **Device**.
+
++ Parameters
+    + id: `1` (number, required) - ID of a related **Device**.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (array[DeviceInterfaceReadOnly])
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+## GET /devices/device-interfaces/{id}
+
+Retrieve **Device Interface**.
+
++ Parameters
+    + id: `1` (number, required) - ID of a **Device Interface** to fetch.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (DeviceInterfaceReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+
+# Group Invoices
+
+## GET /invoices{?clientId,createdDateFrom,createdDateTo}
+Retrieve collection of **Invoices**.
+
++ Parameters
+    + clientId: `1` (number, optional) - ID of a **Client** to filter by.
+    + createdDateFrom: `2016-01-01` (string, optional) -  Limit collection from date (including).
+    Use `YYYY-MM-DD` format.
+    + createdDateTo: `2016-12-31` (string, optional) -  Limit collection to date (including).
+    Use `YYYY-MM-DD` format.
+    + statuses: `[1]` (array[InvoiceStatus], optional) - Filter by invoice status.
+    + number: `IN20171030` (string, optional) - Search by invoice number.
+    + overdue: `1` (number, optional) - Filter overdue invoices.
+    + limit: `10` (number, optional) - Result limit.
+    + offset: `10` (number, optional) - Index of first result.
+    + order: `clientLastName` (enum[string], optional) - By what property is result ordered by.
+        + Default: `createdDate`
+        + Members
+            + `clientFirstName`
+            + `clientLastName`
+            + `createdDate`
+    + direction: `DESC` (enum[string], optional) -  Ordering direction.
+        + Default: `ASC`
+        + Members
+            + `ASC`
+            + `DESC`
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (array[InvoiceReadOnly])
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+# /invoices/{id}
+## GET
+Retrieve **Invoice**.
+
++ Parameters
+    + id: `1` (number, required) - ID of an **Invoice** to fetch.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (InvoiceReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+    
+## PATCH
+Update **Invoice**. 
+
++ Parameters
+    + id: `1000` (number, required) - ID of a **Invoice** to fetch / update.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+    + Attributes (InvoiceUpdate)
+
++ Response 200 (application/json)
+    + Attributes (InvoiceReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
++ Response 422 (application/json)
+    + Attributes (Error422)
+
+
+## GET /clients/invoices/{id}
+Retrieve **Invoice**.
+
+**DEPRECATED** - use [GET /invoices/id](#reference/invoices/invoicesid/get) instead.
+
++ Parameters
+    + id: `1` (number, required) - ID of an **Invoice** to fetch.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (InvoiceReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+## POST /clients/{id}/invoices
+Create **Invoice** for **Client**.
+
++ Parameters
+    + id: `1` (number, required) - ID of a **Client** to create **Invoice** for.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+    + Attributes (InvoiceNew)
+
++ Response 201 (application/json)
+    + Headers
+
+            Location: /clients/invoices/2
+    + Attributes (InvoiceReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
++ Response 422 (application/json)
+    + Attributes (Error422)
+
+## GET /clients/{id}/invoices{?start,end}
+Retrieve collection of **Invoices** filtered by **Client**.
+
+**DEPRECATED** - use `clientId` attribute in [GET /invoices](#reference/invoices/invoices/get) instead.
+
++ Parameters
+    + id: `1` (number, required) - ID of a **Client** to filter by.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (array[InvoiceReadOnly])
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+## PATCH /invoices/{id}/send
+Send invoice to client.
+
++ Parameters
+    + id: `1` (number, required) - ID of an **Invoice**.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (InvoiceReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
++ Response 422 (application/json)
+    + Attributes (Error422)
+
+# Group Quotes
+
+## GET /quotes{?clientId,createdDateFrom,createdDateTo}
+Retrieve collection of **Quotes**.
+
++ Parameters
+    + clientId: `1` (number, optional) - ID of a **Client** to filter by.
+    + createdDateFrom: `2016-01-01` (string, optional) -  Limit collection from date (including).
+    Use `YYYY-MM-DD` format.
+    + createdDateTo: `2016-12-31` (string, optional) -  Limit collection to date (including).
+    Use `YYYY-MM-DD` format.
+    + statuses: `[0]` (array[QuoteStatus], optional) - Filter by quote status.
+    + number: `QN20171030` (string, optional) - Search by quote number.
+    + limit: `10` (number, optional) - Result limit.
+    + offset: `10` (number, optional) - Index of first result.
+    + order: `clientLastName` (enum[string], optional) - By what property is result ordered by.
+        + Default: `createdDate`
+        + Members
+            + `clientFirstName`
+            + `clientLastName`
+            + `createdDate`
+    + direction: `DESC` (enum[string], optional) -  Ordering direction.
+        + Default: `ASC`
+        + Members
+            + `ASC`
+            + `DESC`
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (array[QuoteReadOnly])
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+# /quotes/{id}
+## GET
+Retrieve **Quote**.
+
++ Parameters
+    + id: `1` (number, required) - ID of an **Quote** to fetch.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (QuoteReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+    
+## PATCH
+Update **Quote**. 
+
++ Parameters
+    + id: `1000` (number, required) - ID of a **Quote** to fetch / update.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+    + Attributes (QuoteUpdate)
+
++ Response 200 (application/json)
+    + Attributes (QuoteReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
++ Response 422 (application/json)
+    + Attributes (Error422)
+
+## POST /clients/{id}/quotes
+Create **Quote** for **Client**.
+
++ Parameters
+    + id: `1` (number, required) - ID of a **Client** to create **Quote** for.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+    + Attributes (QuoteNew)
+
++ Response 201 (application/json)
+    + Headers
+
+            Location: /clients/quotes/2
+    + Attributes (QuoteReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
++ Response 422 (application/json)
+    + Attributes (Error422)
+
+
+# Group Invoice Templates
+
+## GET /invoice-templates
+Retrieve collection of **Invoice Templates**.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (array[InvoiceTemplateReadOnly])
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+## GET /invoice-templates/{id}
+Retrieve **Invoice Template**.
+
++ Parameters
+    + id: `1` (number, required) - ID of an **Invoice Template** to fetch.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (InvoiceTemplateReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+# Group Quote Templates
+
+## GET /quote-templates
+Retrieve collection of **Quote Templates**.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (array[QuoteTemplateReadOnly])
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+## GET /quote-templates/{id}
+Retrieve **Quote Template**.
+
++ Parameters
+    + id: `1` (number, required) - ID of an **Quote Template** to fetch.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (QuoteTemplateReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+
+# Group Payments
+
+## GET /payments{?createdDateFrom,createdDateTo}
+Retrieve collection of **Payments**.
+
++ Parameters
+    + createdDateFrom: `2016-01-01` (string, optional) -  Limit collection from date (including).
+    Use `YYYY-MM-DD` format.
+
+    + createdDateTo: `2016-12-31` (string, optional) -  Limit collection to date (including).
+    Use `YYYY-MM-DD` format.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (array[PaymentReadOnly])
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+## POST /payments
+Create **Payment**.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
+    + Attributes (Payment)
+
++ Response 201 (application/json)
+    + Headers
+
+            Location: /payments/2
+    + Attributes (PaymentReadOnly)
+
++ Response 422 (application/json)
+    + Attributes (Error422)
+
+## GET /payments/{id}
+Retrieve **Payment**.
+
++ Parameters
+    + id: `1` (number, required) - ID of a **Payment** to fetch.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (PaymentReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+## PATCH /payments/{id}/send-receipt
+Send payment receipt to client.
+
++ Parameters
+    + id: `1` (number, required) - ID of a **Payment**.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (PaymentReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
++ Response 422 (application/json)
+    + Attributes (Error422)
+
+# Group Refund
+
+## GET /refunds{?createdDateFrom,createdDateTo}
+Retrieve collection of **Refunds**.
+
++ Parameters
+    + createdDateFrom: `2016-01-01` (string, optional) -  Limit collection from date (including).
+    Use `YYYY-MM-DD` format.
+
+    + createdDateTo: `2016-12-31` (string, optional) -  Limit collection to date (including).
+    Use `YYYY-MM-DD` format.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (array[RefundReadOnly])
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+## POST /refunds
+Create **Refund**.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
+    + Attributes (Refund)
+
++ Response 201 (application/json)
+    + Headers
+
+            Location: /refunds/2
+    + Attributes (RefundReadOnly)
+
++ Response 422 (application/json)
+    + Attributes (Error422)
+
+## GET /refunds/{id}
+Retrieve **Refund**.
+
++ Parameters
+    + id: `1` (number, required) - ID of a **Refund** to fetch.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (RefundReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+
+# Group Users
+
+## GET /users/admins
+
+Retrieve collection of **Users** with admin role.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (array[UserReadOnly])
+
+## GET /users/admins/{id}
+
+Retrieve **User**.
+
++ Parameters
+    + id: `1` (number, required) - ID of a **User** to fetch.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (UserReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+
+# Group Organizations
+
+## GET /organizations
+
+Retrieve collection of **Organizations**.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (array[OrganizationReadOnly])
+
+## GET /organizations/{id}
+
+Retrieve **Organization**.
+
++ Parameters
+    + id: `1` (number, required) - ID of an **Organization** to fetch.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (OrganizationReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+
+# Group Service Plans
+
+# /service-plans
+
+## GET
+
+Retrieve collection of **Service Plans**.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (array[Tariff])
+
+## POST
+
+Create **Service Plan**.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
+    + Attributes (Tariff)
+
++ Response 201 (application/json)
+    + Headers
+
+            Location: /tariffs/2
+    + Attributes (TariffReadOnly)
+
++ Response 422 (application/json)
+    + Attributes (Error422)
+
+#/service-plans/{id}
+
+## PATCH
+
+Update **Service Plan**.
+
++ Parameters
+    + id: `1000` (number, required) - ID of a **Service Plan** to fetch / update.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
+    + Attributes (Tariff)
+
++ Response 200 (application/json)
+    + Attributes (TariffReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
++ Response 422 (application/json)
+    + Attributes (Error422)
+
+## GET
+
+Retrieve **Service Plan**.
+
++ Parameters
+    + id: `1` (number, required) - ID of a **Service Plan** to fetch.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (TariffReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+
+# Group Surcharges
+
+# /surcharges
+## GET
+
+Retrieve collection of **Surcharges**.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (array[SurchargeReadOnly])
+
+## POST
+
+Create **Surcharge**.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
+    + Attributes (Surcharge)
+
++ Response 201 (application/json)
+    + Headers
+
+            Location: /surcharges/2
+    + Attributes (SurchargeReadOnly)
+
++ Response 422 (application/json)
+    + Attributes (Error422)
+
+# /surcharges/{id}
+## PATCH
+
+Update **Surcharge**. 
+
++ Parameters
+    + id: `1000` (number, required) - ID of a **Surcharge** to fetch / update.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
+    + Attributes (Surcharge)
+
++ Response 200 (application/json)
+    + Attributes (SurchargeReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
++ Response 422 (application/json)
+    + Attributes (Error422)
+
+## GET
+
+Retrieve **Surcharge**.
+
++ Parameters
+    + id: `1` (number, required) - ID of a **Surcharge** to fetch.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (SurchargeReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+
+# Group Taxes
+
+# /taxes
+## GET
+
+Retrieve collection of **Taxes**.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (array[TaxReadOnly])
+
+## POST
+
+Create **Tax**.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
+    + Attributes (Tax)
+
++ Response 201 (application/json)
+    + Headers
+
+            Location: /taxes/2
+    + Attributes (TaxReadOnly)
+
++ Response 422 (application/json)
+    + Attributes (Error422)
+
+## GET /taxes/{id}
+
+Retrieve **Tax**.
+
++ Parameters
+    + id: `1` (number, required) - ID of a **Tax** to fetch.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (TaxReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+
+# Group Products
+
+# /products
+## GET
+
+Retrieve collection of **Products**.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (array[ProductReadOnly])
+
+## POST
+
+Create **Product**.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
+    + Attributes (Product)
+
++ Response 201 (application/json)
+    + Headers
+
+            Location: /products/2
+    + Attributes (ProductReadOnly)
+
++ Response 422 (application/json)
+    + Attributes (Error422)
+
+# /products/{id}
+## PATCH
+
+Update **Product**.
+
++ Parameters
+    + id: `1000` (number, required) - ID of a **Product** to fetch / update.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
+    + Attributes (Product)
+
++ Response 200 (application/json)
+    + Attributes (ProductReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
++ Response 422 (application/json)
+    + Attributes (Error422)
+
+## GET
+
+Retrieve **Product**.
+
++ Parameters
+    + id: `1` (number, required) - ID of a **Product** to fetch.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (ProductReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+
+# Group Vendors
+
+## GET /vendors
+
+Retrieve collection of **Vendors**.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (array[VendorReadOnly])
+
+## GET /vendors/{id}
+
+Retrieve **Vendor**.
+
++ Parameters
+    + id: `1` (number, required) - ID of a **Vendor** to fetch.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (VendorReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+
+# Group Jobs
+
+## GET /scheduling/jobs{?clientId,assignedUserId,dateFrom,dateTo}
+
+Retrieve collection of **Jobs**.
+
++ Parameters
+    + clientId: `1` (number | string, optional) - ID of a **Client** to filter by. Use string "null" to filter jobs with unassigned **Client**.
+
+    + assignedUserId: `1` (number | string, optional) - ID of a **User** to filter by. Use string "null" to filter jobs with unassigned **User**.
+
+    + dateFrom: `2016-01-01` (string, optional) -  Limit collection from date (including).
+    Use `YYYY-MM-DD` format.
+
+    + dateTo: `2016-12-31` (string, optional) -  Limit collection to date (including).
+    Use `YYYY-MM-DD` format.
+
+    + statuses: `[1]` (array[JobStatus], optional) - Filter by job status.
+
+    + limit: `15` (number, optional) - Result limit.
+
+    + offset: `30` (number, optional) - Index of first result.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (array[JobReadOnly])
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+## POST /scheduling/jobs
+
+Create **Job**.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
+    + Attributes (JobWritable)
+
++ Response 201 (application/json)
+    + Headers
+
+            Location: /scheduling/jobs/1001
+    + Attributes (JobReadOnly)
+
++ Response 422 (application/json)
+    + Attributes (Error422)
+
+## /scheduling/jobs/{id}
+## GET
+
+Retrieve **Job**.
+
++ Parameters
+    + id: `1000` (number, required) - ID of a **Job** to fetch / update.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (JobReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+## PATCH
+
+Update **Job**. 
+
++ Parameters
+    + id: `1000` (number, required) - ID of a **Job** to fetch / update.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
+    + Attributes (JobWritable)
+
++ Response 200 (application/json)
+    + Attributes (JobReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
++ Response 422 (application/json)
+    + Attributes (Error422)
+
+## DELETE
+
+Delete **Job**. 
+
++ Parameters
+    + id: `1000` (number, required) - ID of a **Job** to delete
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+
+# Group Job Attachments
+
+## GET /scheduling/jobs/attachments{?jobId}
+
+Retrieve collection of **Job Attachments**.
+
++ Parameters
+    + jobId: `1` (number, optional) - ID of a **Job** to filter by.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (array[JobAttachmentReadOnly])
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+## POST /scheduling/jobs/attachments
+
+Create **Job Attachment**.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
+    + Attributes (JobAttachmentWritable)
+
++ Response 201 (application/json)
+    + Headers
+
+            Location: /scheduling/jobs/attachments/1001
+    + Attributes (JobAttachmentReadOnly)
+
++ Response 422 (application/json)
+    + Attributes (Error422)
+
+# /scheduling/jobs/attachments/{id}
+
+## GET
+
+Retrieve **Job Attachment**.
+
++ Parameters
+    + id: `1000` (number, required) - ID of a **Job Attachment** to fetch.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (JobAttachmentReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+## PATCH
+
+Update **Job Attachment**.
+
++ Parameters
+    + id: `1000` (number, required) - ID of a **Job Attachment** to update.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
+    + Attributes (JobAttachmentWritable)
+
++ Response 200 (application/json)
+    + Attributes (JobAttachmentReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
++ Response 422 (application/json)
+    + Attributes (Error422)
+
+## DELETE
+
+Delete **Job Attachment**.
+
++ Parameters
+    + id: `1000` (number, required) - ID of a **Job Attachment** to delete.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+## GET /scheduling/jobs/attachments/{id}/file
+
+Retrieve **Job Attachment** file.
+
++ Parameters
+    + id: `1000` (number, required) - ID of a **Job Attachment** to fetch.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (*/*)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+
+# Group Job Comments
+
+## GET /scheduling/jobs/comments{?jobId,userId,createdDateFrom,createdDateTo}
+
+Retrieve collection of **Job Comments**.
+
++ Parameters
+    + jobId: `1` (number, optional) - ID of a **Job** to filter by.
+
+    + userId: `1` (number, optional) - ID of a **User** to filter by.
+
+    + createdDateFrom: `2016-01-01` (string, optional) -  Limit collection from date (including).
+    Use `YYYY-MM-DD` format.
+
+    + createdDateTo: `2016-12-31` (string, optional) -  Limit collection to date (including).
+    Use `YYYY-MM-DD` format.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (array[JobCommentReadOnly])
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+## POST /scheduling/jobs/comments
+
+Create **Job Comment**.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
+    + Attributes (JobCommentWritable)
+
++ Response 201 (application/json)
+    + Headers
+
+            Location: /scheduling/jobs/comments/1001
+    + Attributes (JobCommentReadOnly)
+
++ Response 422 (application/json)
+    + Attributes (Error422)
+
+# /scheduling/jobs/comments/{id}
+## GET
+
+Retrieve **Job Comment**.
+
++ Parameters
+    + id: `1000` (number, required) - ID of a **Job Comment** to fetch.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (JobCommentReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+## PATCH
+
+Update **Job Comment**. 
+
++ Parameters
+    + id: `1000` (number, required) - ID of a **Job Comment** to update.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
+    + Attributes (JobCommentWritable)
+
++ Response 200 (application/json)
+    + Attributes (JobCommentReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
++ Response 422 (application/json)
+    + Attributes (Error422)
+
+## DELETE
+
+Delete **Job Comment**. 
+
++ Parameters
+    + id: `1000` (number, required) - ID of a **Job Comment** to delete.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+
+# Group Job Tasks
+
+# /scheduling/jobs/tasks
+## GET
+
+Retrieve collection of **Job Tasks**.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+    + Attributes
+        + jobId: `1` (number, required) - ID of a **Job** to filter by
+
++ Response 200 (application/json)
+    + Attributes (array[JobTaskReadOnly])
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+## POST
+
+Create **Job Task**.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
+    + Attributes (JobTaskWritable)
+
++ Response 201 (application/json)
+    + Headers
+
+            Location: /scheduling/jobs/tasks/1001
+    + Attributes (JobTaskReadOnly)
+
++ Response 422 (application/json)
+    + Attributes (Error422)
+
+# /scheduling/jobs/tasks/{id}
+## GET
+
+Retrieve **Job Task**.
+
++ Parameters
+    + id: `1000` (number, required) - ID of a **Job Task** to fetch
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (JobTaskReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+## PATCH
+
+Update **Job Task**. 
+
++ Parameters
+    + id: `1000` (number, required) - ID of a **Job Task** to update
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
+    + Attributes (JobTaskWritable)
+
++ Response 200 (application/json)
+    + Attributes (JobTaskReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
++ Response 422 (application/json)
+    + Attributes (Error422)
+
+## DELETE
+
+Delete **Job Task**. 
+
++ Parameters
+    + id: `1000` (number, required) - ID of a **Job Task** to delete
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+
+# Group Custom Attributes
+
+# /custom-attributes
+## GET
+
+Retrieve collection of **Custom Attributes**.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (array[CustomAttributeReadOnly])
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+## POST
+
+Create **Custom Attribute**.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
+    + Attributes (CustomAttribute)
+
++ Response 201 (application/json)
+    + Headers
+
+            Location: /custom-attributes/1001
+    + Attributes (CustomAttributeReadOnly)
+
++ Response 422 (application/json)
+    + Attributes (Error422)
+
+#/custom-attributes/{id}
+## GET
+
+Retrieve **Custom Attribute**.
+
++ Parameters
+    + id: `1000` (number, required) - ID of a **Custom Attribute** to fetch / update
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (CustomAttributeReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+## PATCH
+
+Update **Custom Attribute**. 
+
++ Parameters
+    + id: `1000` (number, required) - ID of a **Custom Attribute** to fetch / update
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
+    + Attributes (CustomAttribute)
+
++ Response 200 (application/json)
+    + Attributes (CustomAttributeReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
++ Response 422 (application/json)
+    + Attributes (Error422)
+
+
+# Group Tickets
+
+## GET /ticketing/tickets{?clientId,assignedUserId,dateFrom,dateTo,statuses%5B%5D,limit,offset,order,direction}
+
+Retrieve collection of **Tickets**.
+
++ Parameters
+    + clientId: `1` (number | string, optional) - ID of a **Client** to filter by. Use string "null" to filter tickets with unassigned **Client**.
+
+    + assignedUserId: `1` (number | string, optional) - ID of a **User** to filter by. Use string "null" to filter tickets with unassigned **User**.
+
+    + assignedGroupId: `1` (number | string, optional) - ID of a **TicketGroup** to filter by. Use string "null" to filter tickets with unassigned **TicketGroup**.
+
+    + dateFrom: `2016-01-01` (string, optional) -  Limit collection from date (including).
+    Use `YYYY-MM-DD` format.
+
+    + dateTo: `2016-12-31` (string, optional) -  Limit collection to date (including).
+    Use `YYYY-MM-DD` format.
+
+    + statuses%5B%5D: `1` (enum[TicketStatus], optional) - Filter by ticket status.
+
+    + limit: `15` (number, optional) - Result limit.
+
+    + offset: `30` (number, optional) - Index of first result.
+
+    + order: `lastActivity` (enum[string], optional) - By what property is result ordered by.
+        + Default: `createdAt`
+        + Members
+            + `createdAt`
+            + `id`
+            + `lastActivity`
+    + direction: `DESC` (enum[string], optional) -  Ordering direction.
+        + Default: `ASC`
+        + Members
+            + `ASC`
+            + `DESC`
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (array[TicketReadOnly])
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+## POST /ticketing/tickets
+
+Create **Ticket**.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
+    + Attributes (TicketWritable)
+
++ Response 201 (application/json)
+    + Headers
+
+            Location: /ticketing/tickets/1001
+    + Attributes (TicketReadOnly)
+
++ Response 422 (application/json)
+    + Attributes (Error422)
+
+
+# /ticketing/tickets/{id}
+## GET
+
+Retrieve **Ticket**.
+
++ Parameters
+    + id: `1000` (number, required) - ID of a **Ticket** to fetch / update.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (TicketReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+## PATCH
+
+Update **Ticket**.
+
++ Parameters
+    + id: `1000` (number, required) - ID of a **Ticket** to fetch / update.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
+    + Attributes (TicketPatch)
+
++ Response 200 (application/json)
+    + Attributes (TicketReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
++ Response 422 (application/json)
+    + Attributes (Error422)
+
+## DELETE
+
+Delete **Ticket**.
+
++ Parameters
+    + id: `1000` (number, required) - ID of a **Ticket** to delete
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+
+# Group Ticket Activity
+
+## GET /ticketing/tickets/activities{?ticketId,userId,createdDateFrom,createdDateTo}
+
+Retrieve collection of **Ticket Activities**.
+
++ Parameters
+    + ticketId: `1` (number, optional) - ID of a **Ticket** to filter by.
+
+    + userId: `1` (number, optional) - ID of a **User** to filter by.
+
+    + createdDateFrom: `2016-01-01` (string, optional) -  Limit collection from date (including).
+    Use `YYYY-MM-DD` format.
+
+    + createdDateTo: `2016-12-31` (string, optional) -  Limit collection to date (including).
+    Use `YYYY-MM-DD` format.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (array[TicketActivityReadOnly])
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+## GET /ticketing/tickets/activities/{id}
+
+Retrieve **Ticket Activity**.
+
++ Parameters
+    + id: `1000` (number, required) - ID of a **Ticket Activity** to fetch.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (TicketActivityReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+
+# Group Ticket Comments
+
+## GET /ticketing/tickets/comments{?ticketId,userId,createdDateFrom,createdDateTo}
+
+Retrieve collection of **Ticket Comments**.
+
++ Parameters
+    + ticketId: `1` (number, optional) - ID of a **Ticket** to filter by.
+
+    + userId: `1` (number, optional) - ID of a **User** to filter by.
+
+    + createdDateFrom: `2016-01-01` (string, optional) -  Limit collection from date (including).
+    Use `YYYY-MM-DD` format.
+
+    + createdDateTo: `2016-12-31` (string, optional) -  Limit collection to date (including).
+    Use `YYYY-MM-DD` format.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (array[TicketCommentReadOnly])
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+## POST /ticketing/tickets/comments
+
+Create **Ticket Comment**.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
+    + Attributes (TicketCommentWritable)
+
++ Response 201 (application/json)
+    + Headers
+
+            Location: /ticketing/tickets/comments/1001
+    + Attributes (TicketCommentReadOnly)
+
++ Response 422 (application/json)
+    + Attributes (Error422)
+
+## GET /ticketing/tickets/comments/{id}
+
+Retrieve **Ticket Comment**.
+
++ Parameters
+    + id: `1000` (number, required) - ID of a **Ticket Comment** to fetch.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (TicketCommentReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+
+# Group Ticket Comment Attachments
+
+## GET /ticketing/tickets/comments/attachments/{id}/file
+
+Retrieve **Ticket Comment Attachment** file resource.
+
++ Parameters
+    + id: `1000` (number, required) - ID of a **Ticket Comment** to fetch.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (*/*)
+
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+# Group Ticket Groups
+
+# /ticketing/ticket-groups
+
+## GET
+
+Retrieve collection of **Ticket Groups**.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (array[TicketGroupReadOnly])
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+## POST
+
+Create **Ticket Group**.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
+    + Attributes (TicketGroup)
+
++ Response 201 (application/json)
+    + Headers
+
+            Location: /ticketing/ticket-groups/1001
+    + Attributes (TicketGroupReadOnly)
+
++ Response 422 (application/json)
+    + Attributes (Error422)
+
+# /ticketing/ticket-groups/{id}
+
+## GET
+
+Retrieve **Ticket Group**.
+
++ Parameters
+    + id: `5` (number, required) - ID of a **Ticket Group** to fetch / update
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (TicketGroupReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+## PATCH
+
+Update **Ticket Group**.
+
++ Parameters
+    + id: `5` (number, required) - ID of a **Ticket Group** to fetch / update
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
+    + Attributes (TicketGroup)
+
++ Response 200 (application/json)
+    + Attributes (TicketGroupReadOnly)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
++ Response 422 (application/json)
+    + Attributes (Error422)
+
+## DELETE
+
+Delete **Ticket Group**.
+
++ Parameters
+    + id: `5` (number, required) - ID of a **Ticket Group** to delete
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+# Group Mobile
+
+## POST /mobile/login
+
+Get authentication token for user.
+
++ Request (application/json)
+    + Attributes
+        + user: `admin` (string)
+        + password: `pa$$word` (string)
+        + expiration: `604800` (number) - Expiration time in seconds, max 604800 (7 days).
+        + sliding: `1` (number) - 1 to prolong expiration each time the key is used, 0 otherwise.
+        + deviceName: `My Phone Model` (string, optional)
+
++ Response 200 (application/json)
+    + Attributes
+        + authenticationKey: `user-key-pwB4nm8KAaFuxOuZQmG59gHl2Xj36zN/yx1HDkBz8Q2zLsDgjbNe2imcgZ8U5pYk` (string)
+        + user (UserReadOnly)
+    
+## DELETE /mobile/logout
+
+Deactivate user authentication key.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes
+        + code: `200` (number)
+        + message: `Authentication key was removed.` (string)
+
+
+## GET /mobile/dashboard/overview
+
+Retrieve overview data for the default organization.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (object)
+        + organization (object)
+            + id: `1` (number)
+            + name: `UBNT` (string)
+            + currencyCode: `USD` (string)
+        + overview (object)
+            + clientCount: `10` (number)
+            + clientSuspendedCount: `10` (number, nullable) Null if suspension feature is disabled, int otherwise.
+            + clientOverdueCount: `10` (number)
+        + invoicingOverview (object)
+            + totalDue: `850.1` (number)
+            + totalOverdue: `243.0` (number)
+            + invoicedThisMonth: `547.8` (number)
+            + invoicedThisMonthUnpaid: `257.4` (number)
+
+
+## GET /mobile/dashboard/last-week-traffic
+
+Retrieve traffic data for last 7 days.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (object)
+        + downloadTotal: `46746846` (number)
+        + uploadTotal: `1586453` (number)
+        + chart (array[TrafficItem])
+
+
+## GET /mobile/invoices{?overdue,limit,offset}
+
+Retrieve summary data about invoices.
+
++ Parameters
+    + statuses: `?statuses[]=1&statuses[]=2` (array[InvoiceStatus], optional) - Filter by invoice status
+    + overdue: `1` (number, optional) - If set to 1, only overdue invoices are returned
+    + limit: `10` (number, optional) - Result limit.
+    + offset: `10` (number, optional) - Index of first result.
+    + order: `clientLastName` (enum[string], optional) - By what property is result ordered by.
+        + Default: `createdDate`
+        + Members
+            + `clientFirstName`
+            + `clientLastName`
+            + `createdDate`
+    + direction: `DESC` (enum[string], optional) -  Ordering direction.
+        + Default: `ASC`
+        + Members
+            + `ASC`
+            + `DESC`
+
++ Response 200 (application/json)
+    + Attributes (array[InvoiceSummary])
+
+## GET /mobile/invoices/counts-by-status
+
+Retrieves counts of all invoices divided by status.
+
++ Response 200 (application/json)
+    + Attributes (array[InvoicesStatusCounts])
+
+## GET /mobile/clients{?overdue,suspended,outage,limit,offset}
+
+Retrieve summary data about clients.
+
++ Parameters
+    + overdue: `1` (number, optional) - Filter clients with overdue invoice.
+    + suspended: `1` (number, optional) - Filter clients with suspended service.
+    + outage: `1` (number, optional) - Filter clients with ongoing outage.
+    + limit: `10` (number, optional) - Result limit.
+    + offset: `10` (number, optional) - Index of first result.
+    + order: `user.lastName` (enum[string], optional) - By what property is result ordered by.
+        + Default: `client.id`
+        + Members
+            + `user.firstName`
+            + `user.lastName`
+            + `client.registrationDate`
+            + `client.id`
+    + direction: `DESC` (enum[string], optional) -  Ordering direction.
+        + Default: `ASC`
+        + Members
+            + `ASC`
+            + `DESC`
+
+
++ Response 200 (application/json)
+    + Attributes (array[ClientSummary])
+
+## GET /mobile/clients/counts-by-status
+
+Retrieves counts of clients grouped by their attributes.
+
++ Response 200 (application/json)
+    + Attributes (array[ClientsStatusCounts])
+
+## GET /mobile/clients/search{?query}
+
+Search clients using Elasticsearch.
+
++ Parameters
+    + query: `John Doe` (string) - Search query.
+
++ Response 200 (application/json)
+    + Attributes (array[ClientSearchResult])
+
++ Response 503 (application/json)
+
+
+## GET /mobile/clients/{id}/activity
+
+Get activity log for client.
+
++ Parameters
+    + id: `1` (number) - Client ID.
+
++ Response 200 (application/json)
+    + Attributes (array[ClientActivity])
+
+
+## Data Structures
+
+### TrafficItem (object)
++ date: `2017-07-11` (string) 
+Format `YYYY-MM-DD`.
++ upload: `3674686` (number) Number of bytes uploaded
++ download: `158653` (number) Number of bytes download
+
+### InvoiceSummary (object)
++ id: `1` (number)
++ number: `2016050025`
++ status: `3` (InvoiceStatus)
++ clientFirstName: `John` (string)
++ clientLastName: `Doe` (string)
++ clientCompanyName: `John Doe Company inc.` (string)
++ total: `10.0` (number)
++ amountPaid: `10.0` (number)
++ currencyCode: `USD` (string)
++ createdDate: `2016-09-12T00:00:00+0000` (string) - Date string in ISO 8601 format
++ dueDate: `2016-09-12T00:00:00+0000` (string, nullable) - Date string in ISO 8601 format
+
+### ClientSummary (object)
++ id: `1` (number)
++ firstName: `John` (string)
++ lastName: `Doe` (string)
++ companyName: `John Doe Company inc.` (string, nullable)
++ balance: `10.0` (number)
++ currencyCode: `USD` (string)
++ activeServices: (array[ClientServiceSummary])
++ overdueInvoices: (array[ClientInvoiceSummary])
++ hasOverdueInvoice: `false` (boolean)
++ hasSuspendedService: `false` (boolean)
++ hasOutage: `false` (boolean)
+
+### ClientServiceSummary (object)
++ id: `1` (number)
++ name: `Max` (string)
+
+### ClientInvoiceSummary (object)
++ id: `1` (number)
++ status: `3` (InvoiceStatus)
++ total: `10.0` (number)
++ amountPaid: `10.0` (number)
++ currencyCode: `USD` (string)
++ dueDate: `2016-09-26T00:00:00+0000` - Date string in ISO 8601 format
+
+### ClientSearchResult (object)
++ id: `1` (number)
++ firstName: `John` (string)
++ lastName: `Doe` (string)
++ companyName: `John Doe Company inc.` (string, nullable)
+
+### ClientActivity (object)
++ type: `1` (enum[number])
+    + Members
+        + `1` - Invoice
+        + `2` - Payment
+        + `3` - Refund
++ id: `1` (number)
++ createdDate: `2016-09-12T00:00:00+0000` (string) - Date string in ISO 8601 format
++ dueDate: `2016-09-12T00:00:00+0000` (string, nullable) - Date string in ISO 8601 format
++ amount: `10.0` (number)
++ currencyCode: `USD` (string)
++ invoiceStatus: `1` (InvoiceStatus, nullable)
++ paymentMethod: `1` (PaymentMethod, nullable)
++ refundMethod: `1` (enum[number], nullable)
+    + Members
+        + `1` - Check
+        + `2` - Cash
+        + `3` - Bank transfer
+        + `4` - PayPal
+        + `5` - PayPal credit card
+        + `6` - Stripe credit card
+        + `7` - Stripe subscription (credit card)
+        + `8` - PayPal subscription
+        + `9` - Authorize.Net credit card
+        + `12` - IPPay
+        + `99` - Custom
++ invoiceNumber: `2016050025` (string, nullable) - Returns string type if activity is related to invoice otherwise null
+
+### ClientsStatusCounts (object)
++ withOverdueInvoice: `1` (number) - Count of clients with overdue invoice.
++ withOutage: `1` (number) - Count of clients with outage of service.
++ withSuspendedService: `1` (number) - Count of clients with suspended service.
++ totalCount: `1` (number) - Count of all clients.
+
+### InvoicesStatusCounts (object)
++ status: `3` (InvoiceStatus) - Invoice status
++ invoicesCount: `1` (number) - Count of invoices with this status.
+
+# Group Webhook Events
+
+## GET /webhook-events/{uuid}
+
+Retrieve **Webhook Event**.
+
++ Parameters
+    + uuid: `2c6984d7-03ae-4e48-a212-7b99378837a2` (string, required) - UUID of a **Webhook Event** to fetch.
+
++ Request (application/json)
+    + Headers
+
+            X-Auth-App-Key: appKeyString
+
++ Response 200 (application/json)
+    + Attributes (WebhookEvent)
+
++ Response 404 (application/json)
+    + Attributes (Error404)
+
+
+# Data Structures
+
+## Error404 (object)
++ code: `404` (number) - Error code
++ message: `Object is not found.` - Error description message
+
+## Error422 (object)
++ code: `422` (number) - Error code
++ message: `Validation failed.` - Error description message
++ errors
+    + someField: `Some validation error description message.` (array[string]) - Array of validation errors 
+
+## Version (object)
++ version: `1.0.0`
+
+## Country (object)
++ name: `United States`
++ code: `US` - ISO code
+
+## CountryReadOnly (object)
++ id: `249` (number)
++ Include Country
+
+## Currency (object)
++ name: `Dollars`
++ code: `USD`
++ symbol: `$`
+
+## CurrencyReadOnly (object)
++ id: `33` (number)
++ Include Currency
+
+## State (object)
++ name: `California`
++ code: `CA`
+
+## StateReadOnly (object)
++ id: `5` (number)
++ countryId: `249` (number)
++ Include State
+
+## Client (object)
++ userIdent: `ABC1000` (string) - "Custom ID" in UCRM, not to be confused with entity "ID" used in URL
++ organizationId: `1` (number) - If not specified, default organization will be used
+    See [Retrieve Organizations](#reference/organizations/organizations/get)
++ isLead (boolean) - if true, this is a lead, otherwise active client
+    + Default: false
++ clientType (enum[number])
+    + Default: `1`
+    + Members
+        + `1` - Residential
+        + `2` - Company
++ companyName - Required in case of type **Company**
++ companyRegistrationNumber
++ companyTaxId
++ companyWebsite
++ companyContactFirstName
++ companyContactLastName
++ firstName: `John` - Required in case of type **Residential**
++ lastName: `Doe` - Required in case of type **Residential**
++ street1: `2580 Orchard Pkwy`
++ street2
++ city: `San Jose`
++ countryId: `249` (number) - If not specified, taken from default organization
+    See [Retrieve Countries](#reference/general/countries/get)
++ stateId: `1` (number) - Applicable in case of **United States** and **Canada** only. If not specified, taken from default organization
+    See [Retrieve States](#reference/general/countriesidstates/get)
++ zipCode: `95131`
++ invoiceAddressSameAsContact (boolean)
+    + Default: `false`
++ invoiceStreet1: `2580 Orchard Pkwy`
++ invoiceStreet2
++ invoiceCity: `San Jose`
++ invoiceCountryId: `249` (number)
+    See [Retrieve Countries](#reference/general/countries/get)
++ invoiceStateId: `1` (number) - Applicable in case of **United States** and **Canada** only
+    See [Retrieve States](#reference/general/countriesidstates/get)
++ invoiceZipCode: `95131`
++ sendInvoiceByPost (boolean) - If `null`, system default is used
+    Mark client's invoices as to be sent by post
+    + Default: `false`
++ invoiceMaturityDays (number) - If `null`, system default is used
+    + Default: `14`
++ stopServiceDue (boolean) - If `null`, system default is used
+    Suspend client's service in case of overdue invoice
+    + Default: `true`
++ stopServiceDueDays (number) - If `null`, system default is used
+    Number of days for which suspend is deferred
+    For example, if 3 days are set and invoice due date is 17th March suspend will start from 20th March
+    + Default: `0`
++ tax1Id: `1` (number) - Will be added by default to each client's taxable services and products
+    See [Retrieve Taxes](#reference/taxes/taxes/get)
++ tax2Id: `2` (number) - Will be added by default to each client's taxable services and products
+    See [Retrieve Taxes](#reference/taxes/taxes/get)
++ tax3Id: `3` (number) - Will be added by default to each client's taxable services and products
+    See [Retrieve Taxes](#reference/taxes/taxes/get)
++ registrationDate: `2016-09-12T00:00:00+0000` - Date string in ISO 8601 format. If not specified, current date will be used
++ previousIsp
++ note
++ username: `john.doe` - If null, client zone is disabled
++ avatarColor: `#FFC107` - Color in hexadecimal format. If not specified, will be assigned randomly.
+
+## ClientWritable (object)
++ Include Client
++ contacts (array[ClientContactWritable])
++ attributes (array[ClientAttribute])
+
+## ClientReadOnly (object)
++ id: `1000` (number)
++ Include Client
++ contacts (array[ClientContactReadOnly])
++ attributes (array[ClientAttributeReadOnly])
++ accountBalance: `-347.94` (number)
++ accountCredit: `0` (number)
++ accountOutstanding: `347.94` (number)
++ currencyCode: `USD` (string)
++ organizationName: `Your ISP inc.` (string)
++ bankAccounts: (array[ClientBankAccountReadOnly])
++ invitationEmailSentDate: `2016-09-12T00:00:00+0000` - Date string in ISO 8601 format. Null if the user was not invited yet.
++ tags (array[ClientTag])
+
+## ClientLog (object)
++ message: `Client approved installation` (required, string)
++ clientId: `156` (required, number)
+    See [Retrieve Clients](#reference/clients/clients/get)
++ userId: `1` (number)
+    See [Retrieve Users](#reference/users/usersadmins/get)
++ createdDate: `2016-09-12T00:00:00+0000` (string) - Date string in ISO 8601 format. If not specified, current date will be used
+
+## ClientLogsWritable (object)
++ Include ClientLog
+
+## ClientLogsReadOnly (object)
++ id: `1000` (number)
++ Include ClientLog
+
+## ClientContact (object)
++ email: `john.doe@example.com`
++ phone
++ name (string)
++ isBilling (boolean) - Contact is used for Billing notifications
++ isContact (boolean) - Contact is used for other notifications
+
+## ClientContactReadOnly (object)
++ id: `2000` (number)
++ clientId: `1000` (number)
++ Include ClientContact
++ types (array[ContactTypeReadOnly])
+
+## ClientContactWritable (object)
++ Include ClientContact
++ types (array[ContactType])
+
+## ClientBankAccountReadOnly (object)
++ accountNumber: `01234567801234567890123` (string) - Bank account number
+
+## ClientAttribute (object)
++ value: `lorem ipsum` (string)
++ customAttributeId: `1` (number)
+    See [Retrieve Custom Attributes](#reference/custom-attributes/custom-attributes/get)
+
+## ClientAttributeReadOnly (object)
++ id: `2000` (number)
++ clientId: `1000` (number)
++ name: `Personal Code` (string)
++ key: `personalCode` (string)
++ Include ClientAttribute
+
+## ClientTag (object)
++ id: `2000` (number)
++ name: `VIP` (string)
++ colorBackground: `#000000` (string)
++ colorText: `#ffffff` (string)
+
+## Service (object)
++ servicePlanId: `3` (number, required)
+    See [Retrieve Service Plans](#reference/service-plans/service-plans/get)
++ servicePlanPeriodId: `11` (number, required)
+    See [Retrieve Service Plan](#reference/service-plans/service-plansid/get)
++ activeFrom: `2016-09-12T00:00:00+0000` - Date string in ISO 8601 format. If not specified, current date will be used
++ activeTo: `2017-09-12T00:00:00+0000` - Date string in ISO 8601 format
++ name: `Internet` - If not specified, service plan name will be used
++ price: `58.5` (number) - Price from the chosen service plan period or the individual price if specified. Changing this property only sets the individual price.
++ note
++ invoicingStart: `2016-09-12T00:00:00+0000` - Date string in ISO 8601 format. If not specified, current date will be used
+    Service will be invoiced from this date including
++ invoicingPeriodType: `1` (enum)
+    + Members
+        + `1` - Backwards - Recurring invoices are created at the end of the billing period
+        + `2` - Forwards - Recurring invoices are created at the beginning of billing period (clients pay for the service in advance)
++ invoicingPeriodStartDay: `1` (number) - Day in month when the recurring period starts. If not specified, current day will be used
++ nextInvoicingDayAdjustment: `5` (number) - Number of days to shift for before the default day, when the recurring invoices are automatically created
++ invoicingProratedSeparately: `true` (boolean) - Whether to invoice the first prorated period alone or together with the next whole period
+    + Default: `true`
++ invoicingSeparately (boolean) - Do not merge this service with other client's services into a single invoice
+    + Default: `false`
++ sendEmailsAutomatically: `false` (boolean) - Create and send the recurring invoice to client automatically. If not specified, taken from general settings
++ useCreditAutomatically (boolean)
+    + Default: `true`
++ invoiceLabel: `Internet` - Individual invoice label to override default set in chosen service plan
++ street1: `2580 Orchard Pkwy` - If not specified, taken from client
++ street2 - If not specified, taken from client
++ city: `San Jose` - If not specified, taken from client
++ countryId: `249` (number) - If not specified, taken from client
+    See [Retrieve Countries](#reference/general/countries/get)
++ stateId: `1` (number) - Applicable in case of **United States** and **Canada** only. If not specified, taken from client
+    See [Retrieve States](#reference/general/countriesidstates/get)
++ zipCode: `95131` - If not specified, taken from client
++ addressGpsLat: `37.3832548351597` (number) - Latitude of service location
++ addressGpsLon: `-121.931131237113` (number) - Longitude of service location
++ contractId: `000001`
++ contractLengthType (enum[number])
+    + Default: `1`
+    + Members
+        + `1` - Open end contract
+        + `2` - Close end contract
++ minimumContractLengthMonths:`12` (number) - Minimum contract length in months
++ contractEndDate: `2017-09-12T00:00:00+0000` - Date string in ISO 8601 format. Required in case of **Close end contract**
++ discountType (enum[number])
+    + Default: `0`
+    + Members
+        + `0` - No discount
+        + `1` - Percentage discount
+        + `2` - Fixed discount
++ discountValue: `5.5` (number)
++ discountInvoiceLabel: `Discount`
++ discountFrom: `2016-09-12T00:00:00+0000` - Date string in ISO 8601 format. Must match one of the selected service plan period's start dates
++ discountTo: `2016-12-12T00:00:00+0000` - Date string in ISO 8601 format. Must match one of the selected service plan period's end dates
++ taxable (boolean)
+    + Default: `false`
++ tax1Id: `1` (number) - Applicable if the service is taxable. If not specified, taken from client
+    See [Retrieve Taxes](#reference/taxes/taxes/get)
++ tax2Id: `2` (number) - Applicable if the service is taxable. If not specified, taken from client
+    See [Retrieve Taxes](#reference/taxes/taxes/get)
++ tax3Id: `3` (number) - Applicable if the service is taxable. If not specified, taken from client
+    See [Retrieve Taxes](#reference/taxes/taxes/get)
+
+## ServiceReadOnly (object)
++ id: `1` (number)
++ clientId: `1` (number)
++ status: `3` (enum[number])
+    + Members
+        + `0` - Prepared
+        + `1` - Active
+        + `2` - Ended
+        + `3` - Suspended
+        + `4` - Prepared blocked
+        + `5` - Obsolete
+        + `6` - Deferred
+        + `7` - Quoted
++ Include Service
++ hasIndividualPrice: `false` (boolean) - True if the service price is set individually, false if it's inherited from service plan.
++ totalPrice: `66.72` (number) - Total price of service, including surcharges, discounts and taxes. Price is calculated for current invoicing period and thus accounts for time-limited discounts.
++ servicePlanName: `Maxi`
++ servicePlanPrice: `50.0` (number)
++ servicePlanPeriod: `1` (number) - Pricing period in months
++ downloadSpeed: `50` (number) - Download speed in Mbps
++ uploadSpeed: `50` (number) - Upload speed in Mbps
++ ipRanges: `192.168.2.98/32` (array)
++ currencyCode: `USD` (string)
++ hasOutage: `false` (boolean)
+
+## ServiceUpdate (object)
++ servicePlanId: `3` (number)
+    See [Retrieve Service Plans](#reference/service-plans/service-plans/get)
++ servicePlanPeriodId: `11` (number)
+    See [Retrieve Service Plan](#reference/service-plans/service-plansid/get)
++ name: `Internet`
++ price: `58.5` (number) - Changing this property only sets the individual price.
++ invoicingPeriodType: `1` (enum)
+    + Members
+        + `1` - Backwards - Recurring invoices are created at the end of the billing period
+        + `2` - Forwards - Recurring invoices are created at the beginning of billing period (clients pay for the service in advance)
++ invoiceLabel: `Internet` - Individual invoice label to override default set in chosen service plan
++ activeTo: `2017-09-12T00:00:00+0000` - Date string in ISO 8601 format
++ nextInvoicingDayAdjustment: `5` (number) - Number of days to shift for before the default day, when the recurring invoices are automatically created
++ invoicingSeparately: `false` (boolean) - Do not merge this service with other client's services into a single invoice
++ sendEmailsAutomatically: `false` (boolean) - Create and send the recurring invoice to client automatically. If not specified, taken from general settings
++ useCreditAutomatically: `false` (boolean)
++ contractId: `000001`
++ contractLengthType (enum[number])
+    + Members
+        + `1` - Open end contract
+        + `2` - Close end contract
++ minimumContractLengthMonths:`12` (number) - Minimum contract length in months
++ contractEndDate: `2017-09-12T00:00:00+0000` - Date string in ISO 8601 format. Required in case of **Close end contract**
++ street1: `2580 Orchard Pkwy`
++ street2
++ city: `San Jose`
++ countryId: `249` (number)
+    See [Retrieve Countries](#reference/general/countries/get)
++ stateId: `1` (number) - Applicable in case of **United States** and **Canada** only.
+    See [Retrieve States](#reference/general/countriesidstates/get)
++ zipCode: `95131`
++ addressGpsLat: `37.3832548351597` (number) - Latitude of service location
++ addressGpsLon: `-121.931131237113` (number) - Longitude of service location
++ note (string)
+
+## ServiceStatus (enum[number])
++ `0` - Prepared
++ `1` - Active
++ `2` - Ended
++ `3` - Suspended
++ `4` - Prepared blocked
++ `5` - Obsolete
++ `6` - Deferred
++ `7` - Quoted
+
+## ServiceDevice (object)
++ interfaceId: `1` (number, required) - Device/router's interface to which the client's device is connected. This is important for suspend feature
+    See [Retrieve Device Interfaces](#reference/device-interfaces/devicesiddevice-interfaces/get)
++ vendorId: `1` (number, required)
+    See [Retrieve Vendors](#reference/vendors/vendors/get)
++ ipRange: `192.168.1.20` (array[string], required) - Supported formats: Single IP: 192.168.1.20, IP range: 192.168.1.20‑192.168.1.30 or 192.168.1.20‑30, IP range with netmask: 192.168.1.20/26
++ macAddress: `00:AA:BB:00:11:22` - Supported MAC formats are 00:AA:BB:00:11:22, 00‑AA‑BB‑00‑11‑22, 00AABB001122
++ loginUsername: `admin`
++ loginPassword: `qwerty`
++ sshPort: `22` (number)
+    + Default: `22`
++ sendPingNotifications: `false` (boolean)
+    + Default: `false`
++ pingNotificationUserId: `1` (number) - If not specified, default notification user will be used
+    See [Retrieve Admins](#reference/users/usersadmins/get)
++ createPingStatistics: `true` (boolean)
+    + Default: `true`
++ createSignalStatistics: `true` (boolean)
+    + Default: `true`
++ qosEnabled: `0` (enum[number])
+    + Default: `0`
+    + Members
+        + `0` - No
+        + `1` - On this device
+        + `2` - On other device(s)
++ qosDeviceIds: `[2] ` (array[number]) - Applicable in case of **On other device(s)** only
+    See [Retrieve Devices](#reference/devices/devices/get)
+
+## ServiceDeviceReadOnly (object)
++ Include ServiceDevice
++ id: `1` (number)
++ serviceId: `1` (number)
++ loginPassword: null
+
+## ServiceIp (object)
++ ipRange: `192.168.1.20` (required) - Supported formats: Single IP: 192.168.1.20, IP range: 192.168.1.20‑192.168.1.30 or 192.168.1.20‑30, IP range with netmask: 192.168.1.20/26
+
+## ServiceIpReadOnly (object)
++ id: `1` (number)
++ serviceDeviceId: `1` (number)
++ Include ServiceIp
+
+## ServiceSurcharge (object)
++ surchargeId: `1` (number, required)
+    See [Retrieve Surcharges](#reference/surcharges/surcharges/get)
++ invoiceLabel: `Public IP` - If not specified, surcharge name will be used
++ price: `10.0` (number) - Price per period
++ taxable (boolean)
+    + Default: `false`
+
+## ServiceSurchargeReadOnly (object)
++ id: `1` (number)
++ serviceId: `1` (number) 
++ Include ServiceSurcharge
+
+## Site (object)
++ name: `HQ` (required)
++ address: `2580 Orchard Pkwy, San Jose, CA 95131, USA` (required)
++ gpsLat: `37.3832548351597` (required) - Latitude of site location
++ gpsLon: `-121.931131237113` (required) - Longitude of site location
++ contactInfo
++ notes
+
+## SiteReadOnly (object)
++ id: `249` (number)
++ Include Site
+
+## Device (object)
++ name: `AP1` (required)
++ siteId: `1` (number, required)
+    See [Retrieve Sites](#reference/sites/sites/get)
++ vendorId: `1` (number, required)
+    See [Retrieve Vendors](#reference/vendors/vendors/get)
++ modelName: `UBNT M5`
++ parentIds: `2` (array[number]) - Parent devices within your network topology which is used for monitoring of outages
++ notes
++ loginUsername: `admin`
++ loginPassword: `qwerty`
++ sshPort (number)
+    + Default: `22`
++ snmpCommunity
++ osVersion
++ isGateway (boolean) - Mark device as the gateway router of your network. This may ease the setup of QoS feature
+    + Default: `false`
++ isSuspendEnabled (boolean) - Synchronize list of blocked users
+    + Default: `false`
++ sendPingNotifications (boolean)
+    + Default: `false`
++ pingNotificationUserId: `1` (number) - If not specified, default notification user will be used
+    See [Retrieve Admins](#reference/users/usersadmins/get)
++ createSignalStatistics (boolean)
+    + Default: `true`
+
+## DeviceReadOnly (object)
++ id: `1` (number)
++ name: `AP1` (required)
++ siteId: `1` (number, required)
+    See [Retrieve Sites](#reference/sites/sites/get)
++ vendorId: `1` (number, required)
+    See [Retrieve Vendors](#reference/vendors/vendors/get)
++ modelName: `UBNT M5`
++ parentIds: `2` (array[number]) - Parent devices within your network topology which is used for monitoring of outages
++ notes
++ loginUsername: `admin`
++ sshPort (number)
+    + Default: `22`
++ snmpCommunity
++ osVersion
++ isGateway (boolean) - Mark device as the gateway router of your network. This may ease the setup of QoS feature
+    + Default: `false`
++ isSuspendEnabled (boolean) - Synchronize list of blocked users
+    + Default: `false`
++ sendPingNotifications (boolean)
+    + Default: `false`
++ pingNotificationUserId: `1` (number) - If not specified, default notification user will be used
+    See [Retrieve Admins](#reference/users/usersadmins/get)
++ createSignalStatistics (boolean)
+    + Default: `true`
+
+## DeviceInterface (object)
++ name: `AP1` (required)
++ type: `1` (enum[number], required)
+    + Members
+        + `0` - Unknown
+        + `1` - Wireless
+        + `2` - Ethernet
+        + `3` - Vlan
+        + `4` - Mesh
+        + `5` - Bonding
+        + `6` - Bridge
+        + `7` - CAP
+        + `8` - GRE
+        + `9` - GRE6
+        + `10` - L2TP
+        + `11` - OVPN
+        + `12` - PPPoE
+        + `13` - PPTP
+        + `14` - SSTP
+        + `15` - VPLS
+        + `16` - Traffic eng
+        + `17` - VRRP
+        + `18` - WDS
++ macAddress: `00:AA:BB:00:11:22` - Supported MAC formats are 00:AA:BB:00:11:22, 00‑AA‑BB‑00‑11‑22, 00AABB001122
++ allowClientConnection (boolean)
+    + Default: `true`
++ enabled (boolean)
+    + Default: `true`
++ notes
++ ssid: `UBNT AP1` - Applicable in case of type **Wireless** only
++ frequency (number) - Applicable in case of type **Wireless** only
++ polarization: `1` (enum[number]) - Required in case of type **Wireless**
+    + Members
+        + `1` - Vertical
+        + `2` - Horizontal
+        + `3` - Both
++ encryptionType: `1` (enum[number]) - Required in case of type **Wireless**
+    + Members
+        + `0` - None
+        + `1` - WEP
+        + `2` - WPA
+        + `3` - WPA2EAP
+        + `4` - WPAEAP
+        + `5` - WPAEAP / WPA2EAP
+        + `6` - WPA2PSK
+        + `7` - WPA2PSK / WPA2EAP
+        + `8` - WPA2PSK / WPAEAP
+        + `9` - WPA2PSK / WPAEAP / WPA2EAP
+        + `10` - WPAPSK
+        + `11` - WPAPSK / WPA2EAP
+        + `12` - WPAPSK / WPAEAP
+        + `13` - WPAPSK / WPAEAP / WPA2EAP
+        + `14` - WPAPSK / WPA2PSK
+        + `15` - WPAPSK / WPA2PSK / WPA2EAP
+        + `16` - WPAPSK / WPA2PSK / WPAEAP
+        + `17` - WPAPSK / WPA2PSK / WPAEAP / WPA2EAP
++ encryptionKeyWpa - Applicable in case of type **Wireless** only
++ encryptionKeyWpa2 - Applicable in case of type **Wireless** only
+
+## DeviceInterfaceReadOnly (object)
++ id: `1` (number)
++ deviceId: `1` (number)
++ ipRanges: `192.168.2.98/32` (array)
++ Include DeviceInterface
+
+## Invoice (object)
++ number: `2016050025`
++ items (array[InvoiceItem], required)
++ createdDate: `2016-09-12T00:00:00+0000` - Date string in ISO 8601 format. If not specified, current date will be used
++ emailSentDate: `2016-09-12T00:00:00+0000` - Date string in ISO 8601 format or null. Does not actually send the invoice by email when changed.
++ maturityDays: `14` (number) - If not specified, will be taken from global settings
++ notes - This text will be displayed on the invoice
++ adminNotes - This text will not be displayed on the invoice and is never shown to client
++ invoiceTemplateId: `1` (number) - If not specified, invoice template set on Organization is used
+    See [Retrieve Invoice Templates](#reference/invoice-templates/invoice-templates/get)
++ organizationName: `Your ISP inc.` (string)
++ organizationRegistrationNumber: `RN123456` (string)
++ organizationTaxId: `TI123456` (string)
++ organizationStreet1: `2580 Orchard Parkway` (string)
++ organizationStreet2: `Suite G` (string)
++ organizationCity: `San Jose` (string)
++ organizationCountryId: `249` (number)
+    See [Retrieve Countries](#reference/general/countries/get)
++ organizationStateId: `1` (number)
+    See [Retrieve States](#reference/general/countriesidstates/get)
++ organizationZipCode: `95131` (string)
++ organizationBankAccountName: `Primary` (string)
++ organizationBankAccountField1: `12345` (string)
++ organizationBankAccountField2: `6789` (string)
++ clientFirstName: `John` (string)
++ clientLastName: `Doe` (string)
++ clientCompanyName: `John Doe Company inc.` (string)
++ clientCompanyRegistrationNumber: `CRN123` (string)
++ clientCompanyTaxId: `CTI123` (string)
++ clientStreet1: `2580 Orchard Parkway` (string)
++ clientStreet2: `Suite E` (string)
++ clientCity: `San Jose` (string)
++ clientCountryId: `249` (number)
+    See [Retrieve Countries](#reference/general/countries/get)
++ clientStateId: `1` (number)
+    See [Retrieve States](#reference/general/countriesidstates/get)
++ clientZipCode: `95131` (string)
+
+## InvoiceNew (object)
++ number: `2016050025` - If not specified, the next invoice number will be generated automatically
++ items (array[InvoiceItem], required)
++ Include Invoice
+
+## InvoiceUpdate (object)
++ number: `2016050025`
++ items (array[InvoiceItem])
++ Include Invoice
+
+## InvoiceReadOnly (object)
++ id: `1` (number)
++ clientId: `1` (number)
++ number: `2016050025`
++ Include Invoice
++ dueDate: `2016-09-26T00:00:00+0000` - Date string in ISO 8601 format
++ items (array[InvoiceItemReadOnly])
++ subtotal: `15.0` (number)
++ discount: `5.0` (number)
++ discountLabel: `Quantity discount` (string) - Label of discount
++ taxes: (array[TotalTax])
++ total: `10.0` (number)
++ amountPaid: `10.0` (number)
++ currencyCode: `USD` (string)
++ status: `3` (InvoiceStatus)
++ paymentCovers: (array[PaymentCoverReadOnly])
++ uncollectible: true (boolean) - Invoice is marked as uncollectible
+
+## InvoiceItem (object)
++ label: `Internet` (required)
++ price: `10.0` (number, required)
++ quantity (number)
+    + Default: `1`
++ unit
++ tax1Id: `1` (number)
+    See [Retrieve Taxes](#reference/taxes/taxes/get)
++ tax2Id: `2` (number) - If your pricing mode is set to "Tax inclusive pricing", only single tax can be set.
+    See [Retrieve Taxes](#reference/taxes/taxes/get)
++ tax3Id: `3` (number) - If your pricing mode is set to "Tax inclusive pricing", only single tax can be set.
+    See [Retrieve Taxes](#reference/taxes/taxes/get)
+
+## InvoiceItemReadOnly (object)
++ id: `1` (number)
++ Include InvoiceItem
+
+## InvoiceStatus (enum[number])
++ `0` - Draft
++ `1` - Unpaid
++ `2` - Partially paid
++ `3` - Paid
++ `4` - Void
+
+## TotalTax (object)
++ name: `VAT 19% - 19%` (string) - Name and rate of tax
++ totalValue: `2.58` (number) - Sum of all taxes of this kind.
+
+## Quote (object)
++ number: `2016050025`
++ items (array[QuoteItem], required)
++ createdDate: `2016-09-12T00:00:00+0000` - Date string in ISO 8601 format. If not specified, current date will be used
++ notes - This text will be displayed on the quote
++ adminNotes - This text will not be displayed on the quote and is never shown to client
++ quoteTemplateId: `1` (number) - If not specified, quote template set on Organization is used
+    See [Retrieve Quote Templates](#reference/quote-templates/quote-templates/get)
++ organizationName: `Your ISP inc.` (string)
++ organizationRegistrationNumber: `RN123456` (string)
++ organizationTaxId: `TI123456` (string)
++ organizationStreet1: `2580 Orchard Parkway` (string)
++ organizationStreet2: `Suite G` (string)
++ organizationCity: `San Jose` (string)
++ organizationCountryId: `249` (number)
+    See [Retrieve Countries](#reference/general/countries/get)
++ organizationStateId: `1` (number)
+    See [Retrieve States](#reference/general/countriesidstates/get)
++ organizationZipCode: `95131` (string)
++ organizationBankAccountName: `Primary` (string)
++ organizationBankAccountField1: `12345` (string)
++ organizationBankAccountField2: `6789` (string)
++ clientFirstName: `John` (string)
++ clientLastName: `Doe` (string)
++ clientCompanyName: `John Doe Company inc.` (string)
++ clientCompanyRegistrationNumber: `CRN123` (string)
++ clientCompanyTaxId: `CTI123` (string)
++ clientStreet1: `2580 Orchard Parkway` (string)
++ clientStreet2: `Suite E` (string)
++ clientCity: `San Jose` (string)
++ clientCountryId: `249` (string)
+    See [Retrieve Countries](#reference/general/countries/get)
++ clientStateId: `1` (string)
+    See [Retrieve States](#reference/general/countriesidstates/get)
++ clientZipCode: `95131` (string)
+
+## QuoteNew (object)
++ number: `2016050025` - If not specified, the next quote number will be generated automatically
++ items (array[QuoteItem], required)
++ Include Quote
+
+## QuoteUpdate (object)
++ number: `2016050025`
++ items (array[QuoteItem])
++ Include Quote
+
+## QuoteReadOnly (object)
++ id: `1` (number)
++ clientId: `1` (number)
++ number: `2016050025`
++ Include Quote
++ items (array[QuoteItemReadOnly])
++ subtotal: `15.0` (number)
++ discount: `5.0` (number)
++ discountLabel: `Quantity discount` (string) - Label of discount
++ taxes: (array[TotalTax])
++ total: `10.0` (number)
++ currencyCode: `USD` (string)
++ status: `1` (QuoteStatus)
+
+## QuoteItem (object)
++ label: `Internet` (required)
++ price: `10.0` (number, required)
++ quantity (number)
+    + Default: `1`
++ unit
++ tax1Id: `1` (number)
+    See [Retrieve Taxes](#reference/taxes/taxes/get)
++ tax2Id: `2` (number) - If your pricing mode is set to "Tax inclusive pricing", only single tax can be set.
+    See [Retrieve Taxes](#reference/taxes/taxes/get)
++ tax3Id: `3` (number) - If your pricing mode is set to "Tax inclusive pricing", only single tax can be set.
+    See [Retrieve Taxes](#reference/taxes/taxes/get)
+
+## QuoteItemReadOnly (object)
++ id: `1` (number)
++ Include QuoteItem
+
+## QuoteStatus (enum[number])
++ `0` - Open
++ `1` - Accepted
++ `2` - Rejected
+
+## InvoiceTemplateReadOnly (object)
++ id: `1` (number)
++ name: `Default` (string)
++ createdDate: `2017-09-12T00:00:00+0000` - Date string in ISO 8601 format
++ isOfficial: `true` (boolean)
++ isValid: `true` (boolean)
+
+## QuoteTemplateReadOnly (object)
++ id: `1` (number)
++ name: `Default` (string)
++ createdDate: `2017-09-12T00:00:00+0000` - Date string in ISO 8601 format
++ isOfficial: `true` (boolean)
++ isValid: `true` (boolean)
+
+## Payment (object)
++ clientId: `1` (number)
++ method: `1` (PaymentMethod, required)
++ checkNumber - Applicable in case of **Check** method only.
++ createdDate: `2016-09-12T00:00:00+0000` - Date string in ISO 8601 format. If not specified, current date will be used.
++ amount: `10.0` (number, required)
++ currencyCode: `USD` (string, nullable)
++ note: `Paid in coins.` (string)
++ invoiceId: `1` (number) - **DEPRECATED**, use invoiceIds instead.
+    See [Retrieve Invoices](#reference/invoices/invoices/get)
++ invoiceIds: `[1, 2]` (array[number]) - Assign the payment to invoices. If the amount is greater than the invoices total, the overpayment will be added to the credit automatically.
+    See [Retrieve Invoices](#reference/invoices/invoices/get)
++ providerName: `Worldpay` - Required in case of **Custom** method.
++ providerPaymentId: `WP451837` - Required in case of **Custom** method.
++ providerPaymentTime: `2016-09-12T00:00:00+0000` - Date string in ISO 8601 format. If not specified, current date will be used. Required in case of **Custom** method.
++ applyToInvoicesAutomatically: `false` (boolean) - Automatically applies payment to client's unpaid invoices. If true, invoiceId and invoiceIds fields must be empty or not set.
+    + Default: `false`
+
+## PaymentReadOnly (object)
++ id: `1` (number)
++ clientId: `1` (number)
++ method: `1` (PaymentMethod, required)
++ checkNumber - Applicable in case of **Check** method only
++ createdDate: `2016-09-12T00:00:00+0000` - Date string in ISO 8601 format. If not specified, current date will be used.
++ amount: `10.0` (number, required)
++ currencyCode: `USD` (string)
++ note: `Paid in coins.` (string)
++ receiptSentDate: `2016-09-12T00:00:00+0000` - Date string in ISO 8601 format or null if receipt was not sent.
++ providerName: `Worldpay` - Required in case of **Custom** method.
++ providerPaymentId: `WP451837` - Required in case of **Custom** method.
++ providerPaymentTime: `2016-09-12T00:00:00+0000` - Date string in ISO 8601 format. If not specified, current date will be used. Required in case of **Custom** method.
++ paymentCovers: (array[PaymentCoverReadOnly])
++ creditAmount: `10.0` (number)
+
+## PaymentMethod (enum[number])
++ `1` - Check
++ `2` - Cash
++ `3` - Bank transfer
++ `4` - PayPal
++ `5` - PayPal credit card
++ `6` - Stripe credit card
++ `7` - Stripe subscription (credit card)
++ `8` - PayPal subscription
++ `9` - Authorize.Net credit card
++ `10` - Authorize.Net subscription
++ `11` - Courtesy credit
++ `12` - IPPay
++ `13` - IPPay subscription
++ `14` - MercadoPago
++ `15` - MercadoPago subscription
++ `16` - Stripe ACH
++ `17` - Stripe subscription (ACH)
++ `99` - Custom
+
+## Refund (object)
++ method: `1` (RefundMethod, required)
++ createdDate: `2016-09-12T00:00:00+0000` - Date string in ISO 8601 format.
++ amount: `10.0` (number, required)
++ note: `Very kind person.` (string)
++ clientId: `1` (number)
++ currencyCode: `USD` (string, nullable)
++ paymentCovers: (array[PaymentCoverReadOnly])
+
+## RefundReadOnly (object)
++ id: `1` (number)
++ Include Refund
+
+## RefundMethod (enum[number])
++ `1` - Check
++ `2` - Cash
++ `3` - Bank transfer
++ `4` - PayPal
++ `5` - PayPal credit card
++ `6` - Stripe credit card
++ `7` - Stripe subscription (credit card)
++ `8` - PayPal subscription
++ `9` - Authorize.Net credit card
++ `10` - Authorize.Net subscription
++ `12` - IPPay
++ `13` - IPPay subscription
++ `14` - MercadoPago
++ `15` - MercadoPago subscription
++ `16` - Stripe ACH
++ `17` - Stripe subscription (ACH)
++ `99` - Custom
+
+## PaymentPlan (object)
++ provider: `ippay` (enum[string], required) - For now only subscriptions for IPPay can be added with API.
+    + Members
+        + `ippay`
++ providerPlanId (string) - PaymentPlan ID, specific for every provider.
++ providerSubscriptionId (string) - Subscription ID, specific for every provider. For IPPay it's the token used to authorize the payments.
++ clientId: `1` (number, required)
++ currencyId: `33` (number, required)
++ amount: `10.0` (number, required)
++ period: `1` (enum[number], required) - Period in months.
+    + Members
+        + `1`
+        + `3`
+        + `6`
+        + `12`
+        + `24`
++ startDate: `2017-09-12T00:00:00+0000` - Date string in ISO 8601 format.
+
+## PaymentPlanReadOnly (object)
++ id: `1` (number)
++ name: `$249.05 / 3 months - John Doe`
++ status: `active` (enum[string])
+    + Members
+        + `created`
+        + `pending`
+        + `active`
+        + `cancelled`
+        + `paused`
+        + `error`
++ createdDate: `2017-09-12T00:00:00+0000` - Date string in ISO 8601 format.
++ canceledDate: `2017-09-12T00:00:00+0000` - Date string in ISO 8601 format.
++ nextPaymentDate: `2017-09-12T00:00:00+0000` - Date string in ISO 8601 format. Only used for IPPay subscriptions.
++ active (boolean)
++ Include PaymentPlan
+
+## User (object)
++ email: `john.doe@example.com` (string, required)
++ username: `john.doe` (string, required)
++ firstName: `John` (string )
++ lastName: `Doe` (string)
++ avatarColor: `#FFC107` - Color in hexadecimal format. If not specified, will be assigned randomly.
+
+## UserReadOnly (object)
++ id: `1` (number)
++ Include User
+
+## Organization (object)
++ name: `UBNT ISP` (required)
++ registrationNumber
++ taxId
++ phone
++ email - Used as the "From attribute" for all the messages sent to clients under this organization
++ website
++ street1: `2580 Orchard Pkwy` (required)
++ street2
++ city: `San Jose` (required)
++ countryId: `249` (number, required)
+    See [Retrieve Countries](#reference/general/countries/get)
++ stateId: `1` (number) - Applicable in case of **United States** and **Canada** only. If not specified, taken from default organization
+    See [Retrieve States](#reference/general/countriesidstates/get)
++ zipCode: `95131` (required)
++ selected (boolean) - Is preselected while adding new client
+    + Default: `false`
+
+## OrganizationReadOnly (object)
++ id: `1` (number)
++ Include Organization
+
+## Tariff (object)
++ name: `Maxi` (required)
++ organizationId: `1` (number) - If not specified, default organization will be used
++ invoiceLabel: `Maxi` - If not specified, name will be used
++ downloadBurst: `200` (number) - Download burst in kB
++ uploadBurst: `100` (number) - Upload burst in kB
++ downloadSpeed: `50` (number) - Download speed in Mbps
++ uploadSpeed: `50` (number) - Upload speed in Mbps
++ dataUsageLimit: `100` (number) - Data usage limit in GB
++ taxable (boolean)
+    + Default: `false`
++ periods (array[TariffPeriod]) - By default 1 month period is enabled
+
+## TariffReadOnly (object)
++ id: `1` (number)
++ Include Tariff
++ periods (array[TariffPeriodReadOnly])
+
+## TariffPeriod (object)
++ period: `1` (enum[number]) - Service plan period in months
+    + Members
+        + `1`
+        + `3`
+        + `6`
+        + `12`
+        + `24`
++ price: `50.0` (number)
++ enabled (boolean)
+    + Default: `false`
+
+## TariffPeriodReadOnly (object)
++ id: `1` (number)
++ Include TariffPeriod
+
+## Surcharge (object)
++ name: `Public IP` (required)
++ invoiceLabel: `Public IP` - If not specified, name will be used
++ price: `10.0` (number, required)
++ taxable (boolean)
+    + Default: `false`
+
+## SurchargeReadOnly (object)
++ id: `1` (number)
++ Include Surcharge
+
+## Tax (object)
++ name: `VAT 10%` (string, required)
++ agencyName (string)
++ rate: `10.0` (number, required) - Tax rate in percentage
+
+## TaxReadOnly (object)
++ id: `1` (number)
++ Include Tax
++ selected (boolean) - Is selected to be assigned to every new client as default
+    + Default: `false`
+
+## Product (object)
++ name: `UTP cable` (required)
++ invoiceLabel: `UTP cable` - If not specified, name will be used
++ price: `10.0` (number, required)
++ unit: `m`
++ taxable (boolean)
+    + Default: `false`
+
+## ProductReadOnly (object)
++ id: `1` (number)
++ Include Product
+
+## Vendor (object)
++ name: `Ubiquiti Networks airOS` (required)
+
+## VendorReadOnly (object)
++ id: `1` (number)
++ Include Vendor
+
+## PaymentCoverReadOnly (object)
++ id: `1` (number)
++ paymentId: `1` (number, required) - Source payment of the cover.
++ invoiceId: `1` (number, optional) - Invoice assigned to this cover (can be `null`, but `refundId` will be filled in that case).
++ refundId: `75` (number, optional) - Refund assigned to this cover (can be `null`, but `invoiceId` will be filled in that case).
++ amount: `123.23` (number, required) - Amount this cover takes from source payment.
+
+## Job (object)
++ title: `CPE installation` (required, string)
++ description: `CPE is to be installed on location.` (string)
++ assignedUserId: `1` (number)
+    See [Retrieve Users](#reference/users/usersadmins/get)
++ clientId: `1` (number)
+    See [Retrieve Clients](#reference/clients/clients/get)
++ date: `2016-09-12T00:00:00+0000` (string) - Date string in ISO 8601 format
++ duration: `60` (number) - Duration of job in minutes
++ status `0` (JobStatus)
++ address: `2580 Orchard Pkwy, San Jose, CA 95131, USA` (string)
++ gpsLat: `37.3832548351597` (string) - Latitude of location
++ gpsLon: `-121.931131237113` (string) - Longitude of location
+
+## JobWritable (object)
++ Include Job
+
+## JobReadOnly (object)
++ id: `1000` (number)
++ Include Job
+
+## JobStatus (enum[number])
++ `0` - Open
++ `1` - In progress
++ `2` - Closed
+
+## JobAttachment (object)
++ jobId: `1000` (required, number)
+    See [Retrieve Jobs](#reference/jobs/schedulingjobs/get)
++ filename: `foto.jpg` (required, string) - File name
+
+## JobAttachmentWritable (object)
++ file: `` (required, string) - File encoded in base64.
++ Include JobAttachment
+
+## JobAttachmentReadOnly (object)
++ id: `1` (number)
++ size: `6983` (number) - Size of file in bytes
++ mimeType: `image/png` - MIME Type of file
++ Include JobAttachment
+
+## JobComment (object)
++ jobId: `1000` (required, number)
+    See [Retrieve Jobs](#reference/jobs/schedulingjobs/get)
++ userId: `1` (number)
+    See [Retrieve Users](#reference/users/usersadmins/get)
++ createdDate: `2016-09-12T00:00:00+0000` (string) - Date string in ISO 8601 format. If not specified, current date will be used
++ message: `This is a comment for this job.` (required, string)
+
+## JobCommentWritable (object)
++ Include JobComment
+
+## JobCommentReadOnly (object)
++ id: `2000` (number)
++ Include JobComment
+
+## JobTask (object)
++ jobId: `1000` (required, number)
+    See [Retrieve Jobs](#reference/jobs/schedulingjobs/get)
++ label: `This is a task label.` (required, string)
++ closed (boolean)
+    + Default: `false`
+
+## JobTaskWritable (object)
++ Include JobTask
+
+## JobTaskReadOnly (object)
++ id: `2000` (number)
++ Include JobTask
+
+## CustomAttribute (object)
++ name: `Personal Code`
++ attributeType: `client` (enum[string])
+    + Members
+        + `client`
+        + `invoice`
+
+## CustomAttributeReadOnly (object)
++ id: `2000` (number)
++ key: `personalCode` (string)
++ Include CustomAttribute
+
+## Ticket (object)
++ subject: `The Internet is not working` (required, string)
++ clientId: `1` (number) - If not set, `emailFromAddress` is required.
+    See [Retrieve Clients](#reference/clients/clients/get)
++ emailFromAddress: `john.doe@example.com` (string) - When set, the ticket behaves as if imported by IMAP integration.
++ emailFromName: `John Doe` (string)
++ assignedGroupId: `1` (number)
+    See [Retrieve TicketGroups](#reference/ticket-groups/ticketingticket-groups/get)
++ assignedUserId: `1` (number)
+    See [Retrieve Users](#reference/users/usersadmins/get)
++ createdAt: `2016-09-12T00:00:00+0000` (string) - Date string in ISO 8601 format. If not specified, current date will be used
++ status: `0` (TicketStatus)
++ public (boolean) - Is visible to client?
++ assignedJobIds: `[2]` (array[number])
+    See [Retrieve Devices](#reference/jobs/schedulingjobsclientidassigneduseriddatefromdateto/get)
+
+## TicketWritable (object)
++ Include Ticket
++ activity (required, array[TicketActivityWritable]) - At least one comment required.
+
+## TicketReadOnly (object)
++ id: `1000` (number)
++ lastActivity: `2016-09-12T00:00:00+0000` (string) - Date string in ISO 8601 format.
++ lastCommentAt: `2016-09-12T00:00:00+0000` (string) - Date string in ISO 8601 format.
++ isLastActivityByClient: `2016-09-12T00:00:00+0000` (string) - Date string in ISO 8601 format.
++ Include Ticket
++ activity (array[TicketActivityReadOnly])
+
+## TicketPatch (object)
++ Include Ticket
++ activity (array[TicketActivityWritable])
+
+## TicketStatus (enum[number])
++ `0` - New
++ `1` - Open
++ `2` - Pending
++ `3` - Solved
+
+## TicketActivity (object)
++ userId: `35` (number, optional) - ID of User or null if activity is created by client.
+    See [Retrieve Users](#reference/users/users/get)
++ createdAt: `2016-09-12T00:00:00+0000` (string) - Date string in ISO 8601 format. If not specified, current date will be used
+
+## TicketActivityReadOnly (object)
++ Include TicketActivity
++ public (boolean) - Is visible to client?
++ id: `1` (number)
++ ticketId: `12` (number)
+    See [Retrieve Ticket](#reference/tickets/ticket/get)
++ comment (TicketActivityCommentReadOnly)
++ assignment (TicketActivityUserAssignment)
++ clientAssignment (TicketActivityClientAssignment)
++ statusChange (TicketActivityStatusChange)
++ type: `comment` (enum[string]) - Type of activity
+    + Members
+        + `comment`
+        + `assignment`
+        + `assignment_client`
+        + `status_change`
+
+## TicketActivityWritable (object)
++ Include TicketActivity
++ public (boolean) - Is visible to client?
+    + Default: true
++ comment (TicketActivityCommentWritable)
+
+## TicketActivityClientAssignment (object)
++ assignedClientId: `35` (number)
+    See [Retrieve Clients](#reference/clients/clients/get)
+
+## TicketActivityCommentReadOnly (object)
++ body: `When I tried to turn on my PC, I see blue screen only.` (string)
++ attachments (array[TicketCommentAttachmentReadOnly])
+
+## TicketActivityCommentWritable (object)
++ body: `When I tried to turn on my PC, I see blue screen only.` (string) - Required when **attachments** is not specified.
++ attachments (array[TicketCommentAttachmentWritable]) - Required when **body** is not specified.
++ emailFromAddress: `john.doe@example.com` (string)
++ emailFromName: `John Doe` (string)
+
+## TicketActivityStatusChange (object)
++ status: `1` (TicketStatus)
+
+## TicketActivityUserAssignment (object)
++ assignedUserId: `35` (number)
+    See [Retrieve Users](#reference/users/users/get)
+
+## TicketComment
++ userId: `35` (number) - ID of User or null if activity is created by client.
+    See [Retrieve Users](#reference/users/users/get)
++ public (boolean) - Is visible to client?
+    + Default: `true`
++ createdAt: `2016-09-12T00:00:00+0000` (string) - Date string in ISO 8601 format. If not specified, current date will be used
++ emailFromAddress: `john.doe@example.com` (string) - Can be only set, if `userId` is null (comment is created by client).
++ emailFromName: `John Doe` (string) - Can be only set, if `userId` is null (comment is created by client).
+
+## TicketCommentWritable (object)
++ body: `When I tried to turn on my PC, I see blue screen only.` (string) - Required when **attachments** is not specified.
++ attachments (array[TicketCommentAttachmentWritable]) - Required when **body** is not specified.
++ Include TicketComment
++ ticketId: `35` (required, number)
+    See [Retrieve Ticket](#reference/tickets/ticket/get)
+
+## TicketCommentReadOnly (object)
++ id: `1` (number)
++ ticketId: `35` (number)
+    See [Retrieve Ticket](#reference/tickets/ticket/get)
++ body: `When I tried to turn on my PC, I see blue screen only.` (string)
++ attachments (array[TicketCommentAttachmentReadOnly])
++ Include TicketComment
+
+## TicketCommentAttachment
++ filename: `foto.jpg` (required, string) - File name
+
+## TicketCommentAttachmentWritable (object)
++ file: `` (required, string) - File encoded in base64.
++ Include TicketCommentAttachment
+
+## TicketCommentAttachmentReadOnly (object)
++ id: `1` (number)
++ size: `6983` (number) - Size of file in bytes
++ mimeType: `image/png` - MIME Type of file
++ Include TicketCommentAttachment
+
+## TicketGroup (object)
++ name: `lorem ipsum` (string)
+
+## TicketGroupReadOnly (object)
++ id: `5` (number)
++ Include TicketGroup
+
+## TicketGroupWriteOnly (object)
++ Include TicketGroup
+
+## ContactType (object)
++ name: `Home contact` (string)
+
+## ContactTypeReadOnly (object)
++ id: `3000` (number)
++ Include ContactType
+
+## WebhookEvent (object)
++ uuid: `2c6984d7-03ae-4e48-a212-7b99378837a2` (string)
++ changeType: `insert` (string)
++ entity: `payment` (string)
++ entityId: `1` (number)
