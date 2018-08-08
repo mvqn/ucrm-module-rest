@@ -3,18 +3,10 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
-use Doctrine\Common\Cache\FilesystemCache;
-use GuzzleHttp\HandlerStack;
-use Kevinrob\GuzzleCache\CacheMiddleware;
-use Kevinrob\GuzzleCache\Storage\DoctrineCacheStorage;
-use Kevinrob\GuzzleCache\Storage\LaravelCacheStorage;
-use Kevinrob\GuzzleCache\Strategy\GreedyCacheStrategy;
-use Kevinrob\GuzzleCache\Strategy\PrivateCacheStrategy;
-use UCRM\REST\EndpointTest;
-use UCRM\REST\RestClient;
-use UCRM\REST\Exceptions\RestClientException;
 
-use duzun\hQuery as Scraper;
+
+use UCRM\REST\{RestClient, Scraper};
+use UCRM\REST\Exceptions\RestClientException;
 
 
 
@@ -166,14 +158,14 @@ abstract class Endpoint implements \JsonSerializable
     public static function scrape(string $url, EndpointOptions $options): ?Endpoint
     {
 
-        Scraper::$cache_path = __DIR__."/.cache/";
-        Scraper::$cache_expires = 60;
+        //Scraper::$cache_path = __DIR__."/.cache/";
+        //Scraper::$cache_expires = 60;
 
 
 
-        $doc = Scraper::fromFile(Scraper::$cache_path."page.html");
+        //$doc = Scraper::fromFile(Scraper::$cache_path."page.html");
 
-        $headers = $doc->find("span.uriTemplate");
+        //$headers = $doc->find("span.uriTemplate");
 
         //foreach($headers as $header)
         //    echo $header->text()."\n";
@@ -185,10 +177,13 @@ abstract class Endpoint implements \JsonSerializable
         );
         */
 
-        $box = $doc->find("")
+        //phantomjs.exe save_page.js "https://ucrmbeta.docs.apiary.io/#reference/services/clientsservices/get" > "../../src/UCRM/REST/Endpoints/.cache/test.html"
 
-        foreach($attributes as $pos => $attribute)
-            echo($attribute);
+        Scraper::download(
+            "https://ucrmbeta.docs.apiary.io/#reference/clients/clientsuseridentcustomattributekeycustomattributevalueorderdirection/get",
+            __DIR__."/.cache/test.html");
+
+
 
 
 

@@ -1,7 +1,7 @@
 {
     "name": "mvqn/ucrm-plugin-rest",
     "description": "Some core code for use when developing UCRM Plugins.",
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -15,7 +15,8 @@
         "ext-json": "*",
         "ext-curl": "*",
         "nette/php-generator": "~3.1",
-        "duzun/hquery": "*"
+        "symfony/dom-crawler": "*",
+        "symfony/css-selector": "*"
     },
     "require-dev": {
         "phpunit/phpunit": "7.2.7",
