@@ -15,6 +15,8 @@ class APIBTest extends \PHPUnit\Framework\TestCase
     protected const USE_BETA = true;
 
 
+
+
     /**
      * Sets up the RestClient for testing.
      *
@@ -40,24 +42,68 @@ class APIBTest extends \PHPUnit\Framework\TestCase
         $path = __DIR__."/../../../src/UCRM/REST/Blueprints/ucrm".($beta ? "beta" : "").".apib";
 
         if(!file_exists($path))
-            APIB::download();
+            APIB::download($beta);
+
+        $this->assertFileExists($path);
+    }
+
+    /** @var string */
+    protected $apib = "";
+
+    public function testLoad()
+    {
+        $beta = self::USE_BETA;
+        $path = __DIR__."/../../../src/UCRM/REST/Blueprints/ucrm".($beta ? "beta" : "").".apib";
+
+        $this->apib = APIB::load($beta);
+        $this->assertNotNull($this->apib);
+    }
+
+    public function testSave()
+    {
+        $beta = self::USE_BETA;
+        $path = __DIR__."/../../../src/UCRM/REST/Blueprints/ucrm".($beta ? "beta" : "").".apib";
+
+        if($this->apib)
+            APIB::save($this->apib, $beta);
+
+        $this->assertFileExists($path);
+    }
+
+    public function testParse()
+    {
+        $beta = self::USE_BETA;
+        $path = __DIR__."/../../../src/UCRM/REST/Blueprints/ucrm".($beta ? "beta" : "").".apib";
+
+        $json = "";
+
+        if($this->apib)
+            APIB::save($this->apib, $beta);
 
         $this->assertFileExists($path);
     }
 
 
+
+
     public function testFindObjects()
     {
         $beta = self::USE_BETA;
-
-        //APIB::findObjects($beta);
-
-        //$json = APIB::toJSON();
+        //$apib = APIB::download($beta);
+        //$json = APIB::parse($apib);
 
 
-        $data = APIB::parse();
+        $json = file_get_contents(__DIR__."/../../../src/UCRM/REST/Blueprints/ucrmbeta.json");
+        $objects = APIB::findObjects($json);
 
-        //echo json_encode($data["classes"]["Service"], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT)."\n";
+        foreach($objects as $object)
+        {
+
+        }
+
+        //echo json_encode($objects["classes"]["Service"], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT)."\n";
+
+
 
 
     }

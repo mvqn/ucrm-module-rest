@@ -3,8 +3,19 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
+use Doctrine\Common\Cache\FilesystemCache;
+use GuzzleHttp\HandlerStack;
+use Kevinrob\GuzzleCache\CacheMiddleware;
+use Kevinrob\GuzzleCache\Storage\DoctrineCacheStorage;
+use Kevinrob\GuzzleCache\Storage\LaravelCacheStorage;
+use Kevinrob\GuzzleCache\Strategy\GreedyCacheStrategy;
+use Kevinrob\GuzzleCache\Strategy\PrivateCacheStrategy;
+use UCRM\REST\EndpointTest;
 use UCRM\REST\RestClient;
 use UCRM\REST\Exceptions\RestClientException;
+
+use duzun\hQuery as Scraper;
+
 
 
 
@@ -147,6 +158,45 @@ abstract class Endpoint implements \JsonSerializable
 
 
 
+    }
+
+
+
+
+    public static function scrape(string $url, EndpointOptions $options): ?Endpoint
+    {
+
+        Scraper::$cache_path = __DIR__."/.cache/";
+        Scraper::$cache_expires = 60;
+
+
+
+        $doc = Scraper::fromFile(Scraper::$cache_path."page.html");
+
+        $headers = $doc->find("span.uriTemplate");
+
+        //foreach($headers as $header)
+        //    echo $header->text()."\n";
+
+        /*
+        $attributes = $doc->find(
+            "div.row.machineColumnResponseAttributes > div.row.attributesKit > div.attributesKit > div:first > div:first > div:nth-child(2) > div:first > ".
+            "div:first > "
+        );
+        */
+
+        $box = $doc->find("")
+
+        foreach($attributes as $pos => $attribute)
+            echo($attribute);
+
+
+
+
+
+
+
+        return null;
     }
 
 

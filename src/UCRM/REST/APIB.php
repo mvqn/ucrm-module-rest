@@ -24,12 +24,12 @@ final class APIB
     private const APIB_URL_BETA =
         "https://ucrmbeta.docs.apiary.io/api-description-document";
 
-    private const APIB_PATH =
+    public const APIB_PATH =
         __DIR__."/Blueprints/";
 
 
 
-    public static function download(bool $beta = false)
+    public static function download(bool $beta = false): string
     {
         $http = $beta ? self::APIB_URL_BETA : self::APIB_URL;
         $file = self::APIB_PATH.($beta ? "ucrmbeta.apib" : "ucrm.apib");
@@ -37,7 +37,33 @@ final class APIB
         $contents = file_get_contents($http);
 
         file_put_contents($file, $contents, LOCK_EX);
+
+        return $contents;
     }
+
+    public static function load(bool $beta = false): string
+    {
+        //$http = $beta ? self::APIB_URL_BETA : self::APIB_URL;
+        $file = self::APIB_PATH."ucrm".($beta ? "beta" : "").".apib";
+
+        $contents = file_get_contents($file);
+
+        return $contents;
+    }
+
+    public static function save(string $contents, bool $beta = false): string
+    {
+        //$http = $beta ? self::APIB_URL_BETA : self::APIB_URL;
+        $file = self::APIB_PATH."ucrm".($beta ? "beta" : "").".apib";
+
+        file_put_contents($file, $contents, LOCK_EX);
+
+        return $contents;
+    }
+
+
+
+
 
 
 
@@ -50,6 +76,7 @@ final class APIB
         return $result;
     }
 
+    /*
 
     private static function handleBlock(string $block): array
     {
@@ -261,18 +288,26 @@ final class APIB
 
     }
 
+    */
     // ^## (\w+) \(object\)\s([\s|\w|.|\+|:|`|\(|\)|\-|,|%]+)
 
     // ^## (\w+) \(object\)\s\+ (\w+): `([\w\s]+)` *\((.+)\)\s
 
 
 
-    public static function toJSON(bool $beta = true): string
+
+
+
+
+    public static function parse(string $apib, bool $beta = false, bool $cache = true): string
     {
-        $file = self::APIB_PATH.($beta ? "ucrmbeta.apib" : "ucrm.apib");
+        $file = self::APIB_PATH.($beta ? "ucrmbeta.json" : "ucrm.json");
+
+        //$contents = file_get_contents($file);
 
 
-        $contents = file_get_contents($file);
+
+
 
         // Create a cURL session.
         $curl = curl_init();
@@ -282,7 +317,7 @@ final class APIB
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_HEADER, false);
         curl_setopt($curl, CURLOPT_POST, true);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $contents);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $apib);
 
 
         // TODO: Determine if we EVER need to use HTTPS and how to handle it correctly here!
@@ -300,7 +335,9 @@ final class APIB
         $result = json_decode($result);
         $result = json_encode($result, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
 
-        file_put_contents(self::APIB_PATH.($beta ? "ucrmbeta.json" : "ucrm.json"), $result);
+        // Check to determine if the result should be cached...
+        if($cache && (!file_exists($file) || file_get_contents($file) !== $result))
+            file_put_contents(self::APIB_PATH.($beta ? "ucrmbeta.json" : "ucrm.json"), $result);
 
         //echo $result;
 
@@ -347,13 +384,9 @@ final class APIB
 
 
 
-    public static function parse(bool $beta = true): array
+    public static function findObjects(string $apib): array
     {
-        $file = self::APIB_PATH.($beta ? "ucrmbeta.json" : "ucrm.json");
-
-        $contents = file_get_contents($file);
-
-        $assoc = json_decode($contents, true);
+        $assoc = json_decode($apib, true);
 
         // Data Structures
         $entries = $assoc["content"][0]["content"][38]["content"];
