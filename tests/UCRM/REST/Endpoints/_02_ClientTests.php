@@ -7,7 +7,7 @@ use UCRM\REST\RestClient;
 
 
 
-class ClientTest extends \PHPUnit\Framework\TestCase
+class _02_ClientTests extends \PHPUnit\Framework\TestCase
 {
     /** @var string Location of the .env file for development. */
     protected const DOTENV_PATH = __DIR__."/../../../../";
@@ -40,20 +40,54 @@ class ClientTest extends \PHPUnit\Framework\TestCase
         $clients = Client::get();
         $this->assertNotEmpty($clients);
 
+        echo ">>> Client::get()\n";
+
         foreach($clients as $client)
             echo $client."\n";
-    }
 
+        echo "\n";
+    }
 
     public function testGetById()
     {
         $client = Client::getById(1);
         $this->assertInstanceOf(Client::class, $client);
 
+        echo ">>> Client::getById(1)\n";
         echo $client."\n";
+        echo "\n";
     }
 
 
+
+
+
+    public function testSendInvitation()
+    {
+        $client = Client::getById(1)->sendInvitationEmail();
+        $this->assertNotNull($client);
+
+        echo ">>> Client::getById(1)->sendInvitationEmail()\n";
+        echo $client."\n";
+        echo "\n";
+    }
+
+
+
+    public function testUpdate()
+    {
+        $client = Client::getById(1);
+        $client->setLastName("WorthenMan!");
+
+        $updated = $client->update();
+        //$updated = Client::patch(1, new Client());
+
+        echo ">>> \$client = Client::getById(1)\n";
+        echo ">>> \$client->setLastName('WorthenMan!')\n";
+        echo ">>> \$client->update()\n";
+        echo ($updated === null) ? "NULL\n" : $updated."\n";
+        echo "\n";
+    }
 
 
 

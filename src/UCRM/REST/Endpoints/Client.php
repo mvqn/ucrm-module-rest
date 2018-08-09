@@ -14,16 +14,20 @@ use UCRM\REST\Exceptions\RestClientException;
  * @package UCRM\REST\Endpoints
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
+ *
+ * @endpoints { "get": "/clients", "getById": "/clients/:id" }
  */
 final class Client extends Endpoint
 {
     /** @const string  */
-    protected const ENDPOINT = "/clients";
+    //protected const ENDPOINT = "/clients";
 
 
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
+    /**
+     * @var int|null $id
+     */
     protected $id;
 
     /**
@@ -35,7 +39,11 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     * @post
+     * @patch
+     */
     protected $userIdent;
 
     /**
@@ -46,8 +54,20 @@ final class Client extends Endpoint
         return $this->userIdent;
     }
 
+    /**
+     * @param string $value
+     */
+    public function setUserIdent(string $value)
+    {
+        $this->userIdent = $value;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
+    /**
+     * @var int
+     * @post
+     * @patch
+     */
     protected $organizationId;
 
     /**
@@ -58,7 +78,17 @@ final class Client extends Endpoint
         return $this->organizationId;
     }
 
-    /** @var Organization $organization */
+    /**
+     * @param int $value
+     */
+    public function setOrganizationId(int $value)
+    {
+        $this->organizationId = $value;
+    }
+
+    /**
+     * @var Organization $organization
+     */
     protected $organization = null;
 
     /**
@@ -68,14 +98,27 @@ final class Client extends Endpoint
     public function getOrganization(): Organization
     {
         // Cache the value here for future lookups...
-        if($this->organization === null)
+        if($this->organization === null && $this->organizationId !== null)
             $this->organization = Organization::getById($this->organizationId);
 
         return $this->organization;
     }
 
+    /**
+     * @param Organization $value
+     */
+    public function setOrganization(Organization $value)
+    {
+        $this->organizationId = $value->getId();
+        $this->organization = $value;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var bool  */
+    /**
+     * @var bool
+     * @post
+     * @patch
+     */
     protected $isLead;
 
     /**
@@ -86,8 +129,20 @@ final class Client extends Endpoint
         return $this->isLead;
     }
 
+    /**
+     * @param bool $value
+     */
+    public function setIsLead(bool $value)
+    {
+        $this->isLead = $value;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
+    /**
+     * @var int
+     * @post
+     * @patch
+     */
     protected $clientType;
 
     /**
@@ -98,10 +153,22 @@ final class Client extends Endpoint
         return $this->clientType;
     }
 
+    /**
+     * @param int $value
+     */
+    public function setClientType(int $value)
+    {
+        $this->clientType = $value;
+    }
+
     // TODO: Create lookup functionality for ClientType.
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     * @post
+     * @patch
+     */
     protected $companyName;
 
     /**
@@ -112,8 +179,20 @@ final class Client extends Endpoint
         return $this->companyName;
     }
 
+    /**
+     * @param string $value
+     */
+    public function setCompanyName(string $value)
+    {
+        $this->companyName = $value;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     * @post
+     * @patch
+     */
     protected $companyRegistrationNumber;
 
     /**
@@ -124,8 +203,20 @@ final class Client extends Endpoint
         return $this->companyRegistrationNumber;
     }
 
+    /**
+     * @param string $value
+     */
+    public function setCompanyRegistrationNumber(string $value)
+    {
+        $this->companyRegistrationNumber = $value;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     * @post
+     * @patch
+     */
     protected $companyTaxId;
 
     /**
@@ -136,8 +227,20 @@ final class Client extends Endpoint
         return $this->companyTaxId;
     }
 
+    /**
+     * @param string $value
+     */
+    public function setCompanyTaxId(string $value)
+    {
+        $this->companyTaxId = $value;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     * @post
+     * @patch
+     */
     protected $companyWebsite;
 
     /**
@@ -148,8 +251,20 @@ final class Client extends Endpoint
         return $this->companyWebsite;
     }
 
+    /**
+     * @param string $value
+     */
+    public function setCompanyWebsite(string $value)
+    {
+        $this->companyWebsite = $value;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     * @post
+     * @patch
+     */
     protected $companyContactFirstName;
 
     /**
@@ -160,8 +275,20 @@ final class Client extends Endpoint
         return $this->companyContactFirstName;
     }
 
+    /**
+     * @param string $value
+     */
+    public function setCompanyContactFirstName(string $value)
+    {
+        $this->companyContactFirstName = $value;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     * @post
+     * @patch
+     */
     protected $companyContactLastName;
 
     /**
@@ -172,8 +299,20 @@ final class Client extends Endpoint
         return $this->companyContactLastName;
     }
 
+    /**
+     * @param string $value
+     */
+    public function setCompanyContactLastName(string $value)
+    {
+        $this->companyContactLastName = $value;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     * @post
+     * @patch
+     */
     protected $firstName;
 
     /**
@@ -184,8 +323,20 @@ final class Client extends Endpoint
         return $this->firstName;
     }
 
+    /**
+     * @param string $value
+     */
+    public function setFirstName(string $value)
+    {
+        $this->firstName = $value;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     * @post
+     * @patch
+     */
     protected $lastName;
 
     /**
@@ -196,8 +347,22 @@ final class Client extends Endpoint
         return $this->lastName;
     }
 
+    /**
+     * @param string $value
+     * @return Endpoint
+     */
+    public function setLastName(string $value): Endpoint
+    {
+        $this->lastName = $value;
+        return $this;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     * @post
+     * @patch
+     */
     protected $street1;
 
     /**
@@ -208,8 +373,20 @@ final class Client extends Endpoint
         return $this->street1;
     }
 
+    /**
+     * @param string $value
+     */
+    public function setStreet1(string $value)
+    {
+        $this->street1 = $value;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     * @post
+     * @patch
+     */
     protected $street2;
 
     /**
@@ -220,8 +397,20 @@ final class Client extends Endpoint
         return $this->street2;
     }
 
+    /**
+     * @param string $value
+     */
+    public function setStreet2(string $value)
+    {
+        $this->street2 = $value;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     * @post
+     * @patch
+     */
     protected $city;
 
     /**
@@ -232,8 +421,20 @@ final class Client extends Endpoint
         return $this->city;
     }
 
+    /**
+     * @param string $value
+     */
+    public function setCity(string $value)
+    {
+        $this->city = $value;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
+    /**
+     * @var int
+     * @post
+     * @patch
+     */
     protected $countryId;
 
     /**
@@ -244,8 +445,18 @@ final class Client extends Endpoint
         return $this->countryId;
     }
 
-    /** @var Country $country */
-    protected $country = null;
+    /**
+     * @param int $value
+     */
+    public function setCountryId(int $value)
+    {
+        $this->countryId = $value;
+    }
+
+    /**
+     * @var Country $country
+     */
+    private $country = null;
 
     /**
      * @return Country
@@ -260,8 +471,21 @@ final class Client extends Endpoint
         return $this->country;
     }
 
+    /**
+     * @param Country $value
+     */
+    public function setCountry(Country $value)
+    {
+        $this->countryId = $value->getId();
+        $this->country = $value;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
+    /**
+     * @var int
+     * @post
+     * @patch
+     */
     protected $stateId;
 
     /**
@@ -272,23 +496,47 @@ final class Client extends Endpoint
         return $this->stateId;
     }
 
-    /** @var State $state */
-    protected $state = null;
+    /**
+     * @param int $value
+     */
+    public function setStateId(int $value)
+    {
+        $this->stateId = $value;
+    }
+
+    /**
+     * @var State $state
+     */
+    private $state = null;
 
     /**
      * @return State
+     * @throws RestClientException
      */
     public function getState(): State
     {
         // Cache the value here for future lookups...
-        if($this->state === null)
+        if($this->state === null && $this->stateId !== null)
             $this->state = State::getById($this->stateId);
 
         return $this->state;
     }
 
+    /**
+     * @param State $value
+     */
+    public function setState(State $value)
+    {
+        $this->stateId = $value->getId();
+        $this->state = $value;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     * @post
+     * @patch
+     */
     protected $zipCode;
 
     /**
@@ -299,8 +547,20 @@ final class Client extends Endpoint
         return $this->zipCode;
     }
 
+    /**
+     * @param string $value
+     */
+    public function setZipCode(string $value)
+    {
+        $this->zipCode = $value;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var bool  */
+    /**
+     * @var bool
+     * @post
+     * @patch
+     */
     protected $invoiceAddressSameAsContact;
 
     /**
@@ -311,8 +571,20 @@ final class Client extends Endpoint
         return $this->invoiceAddressSameAsContact;
     }
 
+    /**
+     * @param bool $value
+     */
+    public function setInvoiceAddressSameAsContact(bool $value)
+    {
+        $this->invoiceAddressSameAsContact = $value;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     * @post
+     * @patch
+     */
     protected $invoiceStreet1;
 
     /**
@@ -323,8 +595,20 @@ final class Client extends Endpoint
         return $this->invoiceStreet1;
     }
 
+    /**
+     * @param string $value
+     */
+    public function setInvoiceStreet1(string $value)
+    {
+        $this->invoiceStreet1 = $value;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     * @post
+     * @patch
+     */
     protected $invoiceStreet2;
 
     /**
@@ -335,8 +619,20 @@ final class Client extends Endpoint
         return $this->invoiceStreet2;
     }
 
+    /**
+     * @param string $value
+     */
+    public function setInvoiceStreet2(string $value)
+    {
+        $this->invoiceStreet2 = $value;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     * @post
+     * @patch
+     */
     protected $invoiceCity;
 
     /**
@@ -347,62 +643,122 @@ final class Client extends Endpoint
         return $this->invoiceCity;
     }
 
+    /**
+     * @param string $value
+     */
+    public function setInvoiceCity(string $value)
+    {
+        $this->invoiceCity = $value;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
+    /**
+     * @var int
+     * @post
+     * @patch
+     */
     protected $invoiceCountryId;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getInvoiceCountryId(): int
+    public function getInvoiceCountryId(): ?int
     {
         return $this->invoiceCountryId;
     }
 
-    /** @var Country $invoiceCountry */
-    protected $invoiceCountry = null;
+    /**
+     * @param int $value
+     */
+    public function setInvoiceCountryId(int $value)
+    {
+        $this->invoiceCountryId = $value;
+    }
+
+    /**
+     * @var Country $invoiceCountry
+     */
+    private $invoiceCountry = null;
 
     /**
      * @return Country
+     * @throws RestClientException
      */
-    public function getInvoiceCountry(): Country
+    public function getInvoiceCountry(): ?Country
     {
         // Cache the value here for future lookups...
-        if($this->invoiceCountry === null)
+        if($this->invoiceCountry === null && $this->invoiceCountryId !== null)
             $this->invoiceCountry = Country::getById($this->invoiceCountryId);
 
         return $this->invoiceCountry;
     }
 
+    /**
+     * @param Country $value
+     */
+    public function setInvoiceCountry(Country $value)
+    {
+        $this->invoiceCountryId = $value->getId();
+        $this->invoiceCountry = $value;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
+    /**
+     * @var int
+     * @post
+     * @patch
+     */
     protected $invoiceStateId;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getInvoiceStateId(): int
+    public function getInvoiceStateId(): ?int
     {
         return $this->invoiceStateId;
     }
 
-    /** @var State $invoiceState */
-    protected $invoiceState = null;
+    /**
+     * @param int $value
+     */
+    public function setInvoiceStateId(int $value)
+    {
+        $this->invoiceStateId = $value;
+    }
 
     /**
-     * @return State
+     * @var State $invoiceState
      */
-    public function getInvoiceState(): State
+    private $invoiceState = null;
+
+    /**
+     * @return State|null
+     * @throws RestClientException
+     */
+    public function getInvoiceState(): ?State
     {
         // Cache the value here for future lookups...
-        if($this->invoiceState === null)
+        if($this->invoiceState === null && $this->invoiceState !== null)
             $this->invoiceState = State::getById($this->invoiceStateId);
 
         return $this->invoiceState;
     }
 
+    /**
+     * @param State $value
+     */
+    public function setInvoiceState(State $value)
+    {
+        $this->invoiceStateId = $value->getId();
+        $this->invoiceState = $value;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     * @post
+     * @patch
+     */
     protected $invoiceZipCode;
 
     /**
@@ -413,8 +769,20 @@ final class Client extends Endpoint
         return $this->invoiceZipCode;
     }
 
+    /**
+     * @param string $value
+     */
+    public function setInvoiceZipCode(string $value)
+    {
+        $this->invoiceZipCode = $value;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var bool  */
+    /**
+     * @var bool
+     * @post
+     * @patch
+     */
     protected $sendInvoiceByPost;
 
     /**
@@ -425,8 +793,20 @@ final class Client extends Endpoint
         return $this->sendInvoiceByPost;
     }
 
+    /**
+     * @param bool $value
+     */
+    public function setSendInvoiceByPost(bool $value)
+    {
+        $this->sendInvoiceByPost = $value;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
+    /**
+     * @var int
+     * @post
+     * @patch
+     */
     protected $invoiceMaturityDays;
 
     /**
@@ -437,9 +817,20 @@ final class Client extends Endpoint
         return $this->invoiceMaturityDays;
     }
 
+    /**
+     * @param int $value
+     */
+    public function setInvoiceMaturityDays(int $value)
+    {
+        $this->invoiceMaturityDays = $value;
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var bool  */
+    /**
+     * @var bool
+     * @post
+     * @patch
+     */
     protected $stopServiceDue;
 
     /**
@@ -450,8 +841,20 @@ final class Client extends Endpoint
         return $this->stopServiceDue;
     }
 
+    /**
+     * @param bool $value
+     */
+    public function setStopServiceDue(bool $value)
+    {
+        $this->stopServiceDue = $value;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
+    /**
+     * @var int
+     * @post
+     * @patch
+     */
     protected $stopServiceDueDays;
 
     /**
@@ -462,46 +865,94 @@ final class Client extends Endpoint
         return $this->stopServiceDueDays;
     }
 
+    /**
+     * @param int $value
+     */
+    public function setStopServiceDueDays(int $value)
+    {
+        $this->stopServiceDueDays = $value;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
-    protected $taxId1;
+    /**
+     * @var int
+     * @post
+     * @patch
+     */
+    protected $tax1Id;
 
     /**
      * @return int
      */
-    public function getTaxId1(): int
+    public function getTax1Id(): int
     {
-        return $this->taxId1;
+        return $this->tax1Id;
+    }
+
+    /**
+     * @param int $value
+     */
+    public function setTax1Id(int $value)
+    {
+        $this->tax1Id = $value;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
-    protected $taxId2;
+    /**
+     * @var int
+     * @post
+     * @patch
+     */
+    protected $tax2Id;
 
     /**
      * @return int
      */
-    public function getTaxId2(): int
+    public function getTax2Id(): int
     {
-        return $this->taxId2;
+        return $this->tax2Id;
+    }
+
+    /**
+     * @param int $value
+     */
+    public function setTax2Id(int $value)
+    {
+        $this->tax2Id = $value;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
-    protected $taxId3;
+    /**
+     * @var int
+     * @post
+     * @patch
+     */
+    protected $tax3Id;
 
     /**
      * @return int
      */
-    public function getTaxId3(): int
+    public function getTax3Id(): int
     {
-        return $this->taxId3;
+        return $this->tax3Id;
     }
 
-    // TODO: Add lookup functionality for TaxIDs.
+    /**
+     * @param int $value
+     */
+    public function setTax3Id(int $value)
+    {
+        $this->tax3Id = $value;
+    }
+
+    // TODO: Add lookup functionality for TaxIDs ???
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     * @post
+     * @patch
+     */
     protected $registrationDate;
 
     /**
@@ -512,8 +963,20 @@ final class Client extends Endpoint
         return $this->registrationDate;
     }
 
+    /**
+     * @param string $value
+     */
+    public function setRegistrationDate(string $value)
+    {
+        $this->registrationDate = $value;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     * @post
+     * @patch
+     */
     protected $previousIsp;
 
     /**
@@ -524,8 +987,20 @@ final class Client extends Endpoint
         return $this->previousIsp;
     }
 
+    /**
+     * @param string $value
+     */
+    public function setPreviousIsp(string $value)
+    {
+        $this->previousIsp = $value;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     * @post
+     * @patch
+     */
     protected $note;
 
     /**
@@ -536,8 +1011,20 @@ final class Client extends Endpoint
         return $this->note;
     }
 
+    /**
+     * @param string $value
+     */
+    public function setNote(string $value)
+    {
+        $this->note = $value;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     * @post
+     * @patch
+     */
     protected $username;
 
     /**
@@ -548,8 +1035,20 @@ final class Client extends Endpoint
         return $this->username;
     }
 
+    /**
+     * @param string $value
+     */
+    public function setUsername(string $value)
+    {
+        $this->username = $value;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     * @post
+     * @patch
+     */
     protected $avatarColor;
 
     /**
@@ -560,32 +1059,88 @@ final class Client extends Endpoint
         return $this->avatarColor;
     }
 
+    /**
+     * @param string $value
+     */
+    public function setAvatarColor(string $value)
+    {
+        $this->avatarColor = $value;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var Contact[]  */
+    /**
+     * @var ClientContact[]
+     * @post
+     * @patch
+     */
     protected $contacts;
 
     /**
-     * @return Contact[]
+     * @return ClientContact[]
      */
-    public function getName(): array
+    public function getContacts(): array
     {
-        return $this->contacts;
+        $contacts = [];
+        foreach($this->contacts as $contact)
+        {
+            $contacts[] = new ClientContact($contact);
+        }
+
+        //return $this->contacts;
+        return $contacts;
+    }
+
+    /**
+     * @param ClientContact[] $values
+     */
+    public function setContacts(array $values)
+    {
+        $contacts = [];
+        foreach($values as $value)
+        {
+            $contacts[] = $value->toFields();
+        }
+
+        $this->contacts = $value;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var ContactAttribute[]  */
+    /**
+     * @var ClientContactAttribute[]
+     * @post
+     * @patch
+     */
     protected $attributes;
 
     /**
-     * @return ContactAttribute[]
+     * @return ClientContactAttribute[]
      */
     public function getAttributes(): array
     {
-        return $this->attributes;
+        $attributes = [];
+
+        foreach($this->attributes as $attribute)
+            $attributes[] = new ClientContactAttribute($attribute);
+
+        return $attributes;
+
+        //return $this->attributes;
+    }
+
+    /**
+     * @param ClientContactAttribute[] $value
+     */
+    public function setAttributes(array $value)
+    {
+
+
+        $this->attributes = $value;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var float  */
+    /**
+     * @var float
+     */
     protected $accountBalance;
 
     /**
@@ -597,7 +1152,9 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var float  */
+    /**
+     * @var float
+     */
     protected $accountCredit;
 
     /**
@@ -609,7 +1166,9 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var float  */
+    /**
+     * @var float
+     */
     protected $accountOutstanding;
 
     /**
@@ -621,7 +1180,9 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     */
     protected $currencyCode;
 
     /**
@@ -633,7 +1194,9 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     */
     protected $organizationName;
 
     /**
@@ -645,7 +1208,9 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var ContactBankAccount[]  */
+    /**
+     * @var ContactBankAccount[]
+     */
     protected $bankAccounts;
 
     /**
@@ -657,7 +1222,9 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     */
     protected $invitationEmailSentDate;
 
     /**
@@ -669,16 +1236,55 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var ContactTag[]  */
+    /**
+     * @var ClientContactTag[]
+     */
     protected $tags;
 
     /**
-     * @return ContactAttribute[]
+     * @return ClientContactTag[]
      */
     public function getTags(): array
     {
         return $this->tags;
     }
+
+
+
+    // -----------------------------------------------------------------------------------------------------------------
+    /**
+     * @return Endpoint|null
+     */
+    public function sendInvitationEmail(): ?Endpoint
+    {
+        return Client::patch($this->id, null, "/send-invitation");
+    }
+
+
+
+
+
+
+
+    /**
+     * @return Endpoint|null
+     * @throws RestClientException
+     */
+    public function insert(): ?Endpoint
+    {
+        return Client::post($this);
+    }
+
+
+    /**
+     * @return Endpoint|null
+     */
+    public function update(): ?Endpoint
+    {
+        return Client::patch($this->id, $this);
+    }
+
+
 
 }
 

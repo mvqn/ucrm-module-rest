@@ -3,9 +3,11 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
+use MVQN\Helpers\ArrayHelpers;
+use Nette\PhpGenerator\Helpers;
 use UCRM\REST\RestClient;
 use UCRM\REST\Exceptions\RestClientException;
-
+use MVQN\Annotations\AnnotationReader;
 
 
 /**
@@ -16,46 +18,17 @@ use UCRM\REST\Exceptions\RestClientException;
  */
 abstract class RestObject implements \JsonSerializable
 {
-    /** @var string */
-    protected $test;
 
 
-    public function __get($name)
+    /**
+     * Endpoint constructor.
+     * @param array $values
+     */
+    public function __construct(array $values = [])
     {
-        $class = get_called_class();
-
-        if(method_exists($class, $name))
-        {
-            return $class->$name();
-        }
-        else
-        {
-            return property_exists($class, $name) ? $class->$name : null;
-        }
+        foreach($values as $key => $value)
+            $this->$key = $value;
     }
-
-    public function __set($name, $value)
-    {
-        /** @var static $class */
-        $class = $this;
-
-        echo $class."\n";
-        echo $name."\n";
-        echo $value."\n";
-
-        if(method_exists($class, $name))
-        {
-            echo "METHOD!\n";
-            $class->$name($value);
-        }
-        else
-        {
-            echo "PROPERTY!\n";
-            $class->$name = 1;
-        }
-    }
-
-
 
 
 
@@ -74,6 +47,7 @@ abstract class RestObject implements \JsonSerializable
         return $assoc;
     }
 
+
     /**
      * Overrides the default string representation of the class.
      *
@@ -85,11 +59,106 @@ abstract class RestObject implements \JsonSerializable
         $assoc = get_object_vars($this);
 
         // Remove any that contain NULL values.
-        $assoc = array_filter($assoc);
+        //$assoc = array_filter($assoc);
 
         // Return the array as a JSON string.
         return json_encode($assoc, JSON_UNESCAPED_SLASHES);
     }
+
+
+
+
+
+    /**
+     * @param string $method
+     * @param int $options
+     * @param bool $filter
+     * @return string
+     * @throws \ReflectionException
+     */
+    public function toFields(string $method = "", int $options = 0, bool $filter = false): string
+    {
+        // Create a list of the builtin
+        $types = ["int", "string", "float", "bool", "null", "array", "resource"];
+
+        // Get an array of all Model properties.
+        $assoc = get_object_vars($this);
+
+        $class = get_called_class();
+        $reflection = new \ReflectionClass($class);
+
+        // Get an array of all Model properties, via Reflection.
+        $properties = $reflection->getProperties(\ReflectionProperty::IS_PROTECTED);
+
+        $fields = [];
+
+        foreach($properties as $property)
+        {
+            $name = $property->getName();
+
+            $annotations = new AnnotationReader($class, $name, "property");
+            $params = $annotations->getParameters();
+
+            $type = $params;
+            $type = ($type !== null) && array_key_exists("var", $params) ? $params["var"] : null;
+            $type = ($type !== null) ? explode(" ", $type) : null;
+            $type = ($type !== null) ? explode("|", $type[0]) + array_slice($type, 1, count($type) - 1) : null;
+            $type = ($type !== null) ? array_map(function($val) { return str_replace("[]", "", $val); }, $type) : null;
+            $type = ($type !== null) ? array_map("trim", $type) : null;
+            $type = ($type !== null) ? $type[0] : null;
+
+            if(array_key_exists($method, $params) || $method === "")
+            {
+                if($type !== null && !in_array($type, $types))
+                {
+                    $type = __NAMESPACE__."\\$type";
+                    $base = __NAMESPACE__."\\Lookup";
+
+                    if(is_subclass_of($type, $base, true))
+                    {
+                        $func = "get".ucfirst($name);
+
+                        // LOOKUP!
+                        $subs = $this->$func();
+
+                        //echo count($subs)."\n";
+
+                        foreach($subs as $sub)
+                        {
+                            /** @var Lookup $sub */
+                            if(!is_array($sub))
+                            {
+                                $fields[$name][] = json_decode($sub->toFields($method), true);
+                            }
+                            else
+                            {
+                                foreach($sub as $s)
+                                    echo $s."\n";
+                                    //$fields[$name][] = $s->toFields($method);
+
+                                //$fields[$name][] = $sub;
+                            }
+
+                        }
+
+
+                    }
+
+
+                }
+                else
+                    $fields[$name] = $assoc[$name];
+            }
+        }
+
+        $fields = $filter ? ArrayHelpers::array_filter_recursive($fields) : $fields;
+
+        return json_encode($fields, $options);
+    }
+
+
+
+
 
 
 

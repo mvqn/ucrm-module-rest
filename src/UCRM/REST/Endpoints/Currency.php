@@ -11,6 +11,8 @@ namespace UCRM\REST\Endpoints;
  * @package UCRM\REST\Endpoints
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
+ *
+ * @endpoints { "get": "/currencies", "getById": "/currencies/:id" }
  */
 final class Currency extends Endpoint
 {

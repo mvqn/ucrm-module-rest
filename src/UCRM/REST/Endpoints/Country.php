@@ -14,16 +14,20 @@ use UCRM\REST\RestClient;
  * @package UCRM\REST\Endpoints
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
+ *
+ * @endpoints { "get": "/countries", "getById": "/countries/:id" }
  */
 final class Country extends Endpoint
 {
     /** @const string  */
-    protected const ENDPOINT = "/countries";
+    //protected const ENDPOINT = "/countries";
 
 
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
+    /**
+     * @var int
+     */
     protected $id;
 
     /**
@@ -35,7 +39,9 @@ final class Country extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     */
     protected $name;
 
     /**
@@ -47,7 +53,9 @@ final class Country extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     */
     protected $code;
 
     /**
@@ -59,7 +67,9 @@ final class Country extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var State[] $states */
+    /**
+     * @var State[] $states
+     */
     protected $states = null;
 
     /**
@@ -71,7 +81,7 @@ final class Country extends Endpoint
         // Cache the value here for future lookups...
         if($this->states === null)
         {
-            $states = RestClient::get(self::ENDPOINT . "/" . $this->id . "/states");
+            $states = RestClient::get("/countries/".$this->id."/states");
 
             $this->states = [];
             // Loop through each result and cast the value to a State object before adding them to the array...

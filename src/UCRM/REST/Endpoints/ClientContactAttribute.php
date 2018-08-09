@@ -8,16 +8,18 @@ use UCRM\REST\Exceptions\RestClientException;
 
 
 /**
- * Class ContactAttribute
+ * Class ClientContactAttribute
  *
  * @package UCRM\REST\Endpoints
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
  */
-final class ContactAttribute extends Lookup
+final class ClientContactAttribute extends Lookup
 {
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
+    /**
+     * @var int
+     */
     protected $id;
 
     /**
@@ -29,7 +31,9 @@ final class ContactAttribute extends Lookup
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
+    /**
+     * @var int
+     */
     protected $clientId;
 
     /**
@@ -40,11 +44,14 @@ final class ContactAttribute extends Lookup
         return $this->clientId;
     }
 
-    /** @var Client $client */
+    /**
+     * @var Client $client
+     */
     protected $client = null;
 
     /**
      * @return Client
+     * @throws RestClientException
      */
     public function getClient(): Client
     {
@@ -56,7 +63,9 @@ final class ContactAttribute extends Lookup
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     */
     protected $name;
 
     /**
@@ -68,7 +77,9 @@ final class ContactAttribute extends Lookup
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     */
     protected $key;
 
     /**
@@ -80,7 +91,11 @@ final class ContactAttribute extends Lookup
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     * @post
+     * @patch
+     */
     protected $value;
 
     /**
@@ -92,7 +107,11 @@ final class ContactAttribute extends Lookup
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
+    /**
+     * @var int
+     * @post
+     * @patch
+     */
     protected $customAttributeId;
 
     /**

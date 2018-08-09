@@ -8,16 +8,18 @@ use UCRM\REST\Exceptions\RestClientException;
 
 
 /**
- * Class ContactType
+ * Class ClientContactType
  *
  * @package UCRM\REST\Endpoints
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
  */
-final class ContactType extends Lookup
+final class ClientContactType extends Lookup
 {
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
+    /**
+     * @var int
+     */
     protected $id;
 
     /**
@@ -29,7 +31,11 @@ final class ContactType extends Lookup
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     * @post
+     * @patch
+     */
     protected $name;
 
     /**

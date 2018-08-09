@@ -13,19 +13,23 @@ use UCRM\REST\Exceptions\RestClientException;
  * @package UCRM\REST\Endpoints
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
+ *
+ * @endpoints { "get": "", "getById": "/countries/states/:id" }
  */
 final class State extends Endpoint
 {
     /** @const string  */
-    protected const ENDPOINT = "/states";
+    //protected const ENDPOINT = "/states";
 
     /** @const string  */
-    protected const ENDPOINT_PARENT = "/countries";
+    //protected const ENDPOINT_PARENT = "/countries";
 
 
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
+    /**
+     * @var int
+     */
     protected $id;
 
     /**
@@ -37,7 +41,9 @@ final class State extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
+    /**
+     * @var int
+     */
     protected $countryId;
 
     /**
@@ -48,11 +54,14 @@ final class State extends Endpoint
         return $this->countryId;
     }
 
-    /** @var Country $country */
+    /**
+     * @var Country $country
+     */
     protected $country = null;
 
     /**
      * @return Country
+     * @throws RestClientException
      */
     public function getCountry(): Country
     {
@@ -64,7 +73,9 @@ final class State extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     */
     protected $name;
 
     /**
@@ -76,7 +87,9 @@ final class State extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     */
     protected $code;
 
     /**

@@ -36,7 +36,6 @@ class ServiceTest extends \PHPUnit\Framework\TestCase
 
     public function testGet()
     {
-
         $services = Service::get();
         $this->assertNotEmpty($services);
 

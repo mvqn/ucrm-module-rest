@@ -36,22 +36,30 @@ class TaxTest extends \PHPUnit\Framework\TestCase
 
     public function testGet()
     {
-        $tax = new Tax();
+        $this->markTestSkipped("No taxes are entered in UCRM!");
 
-        //$tax->{"id"} = 3;
-        $tax->id = 3;
-        //$tax->name = "Testing";
+        $taxes = Tax::get();
+        $this->assertNotEmpty($taxes);
 
-        //echo $tax->id."\n";
+        echo ">>> Tax::get()\n";
 
+        foreach($taxes as $tax)
+            echo $tax."\n";
 
-        /*
-        $clients = Client::get();
-        $this->assertNotEmpty($clients);
+        echo "\n";
+    }
 
-        foreach($clients as $client)
-            echo $client."\n";
-        */
+    public function testGetCountryById()
+    {
+        $this->markTestSkipped("No taxes are entered in UCRM!");
+
+        $tax = Tax::getById(1);
+        $this->assertNotNull($tax);
+
+        echo ">>> Tax::getById(1)\n";
+        echo $tax."\n";
+        echo "\n";
+
     }
 
     /*

@@ -7,7 +7,7 @@ use UCRM\REST\RestClient;
 
 
 
-class CountryTest extends \PHPUnit\Framework\TestCase
+class _01_GeneralTests extends \PHPUnit\Framework\TestCase
 {
     /** @var string Location of the .env file for development. */
     protected const DOTENV_PATH = __DIR__."/../../../../";
@@ -33,23 +33,40 @@ class CountryTest extends \PHPUnit\Framework\TestCase
     }
 
 
+    public function testGetVersion()
+    {
+        $versions = Version::get();
+        $this->assertNotEmpty($versions);
 
-    public function testGet()
+        echo ">>> Version::get()\n";
+
+        foreach($versions as $version)
+            echo $version."\n";
+
+        echo "\n";
+    }
+
+    public function testGetCountries()
     {
         $countries = Country::get();
         $this->assertNotEmpty($countries);
 
+        echo ">>> Country::get()\n";
+
         foreach($countries as $country)
             echo $country."\n";
+
+        echo "\n";
     }
 
-
-    public function testGetById()
+    public function testGetCountryById()
     {
         $country = Country::getById(249);
         $this->assertNotNull($country);
 
+        echo ">>> Country::getById(249)\n";
         echo $country."\n";
+        echo "\n";
     }
 
     public function testGetStates()
@@ -60,12 +77,24 @@ class CountryTest extends \PHPUnit\Framework\TestCase
 
         $states = $country->getStates();
 
+        echo ">>> Country::getById(249)->getStates()\n";
+
         foreach($states as $state)
-            //print_r($state);
             echo $state."\n";
+
+        echo "\n";
     }
 
+    public function testGetStateById()
+    {
+        /** @var State $state */
+        $state = State::getById(28);
+        $this->assertNotNull($state);
 
+        echo ">>> State::getById(28)\n";
+        echo $state."\n";
+        echo "\n";
+    }
 
 
 

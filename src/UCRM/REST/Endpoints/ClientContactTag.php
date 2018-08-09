@@ -8,16 +8,18 @@ use UCRM\REST\Exceptions\RestClientException;
 
 
 /**
- * Class ContactTag
+ * Class ClientContactTag
  *
  * @package UCRM\REST\Endpoints
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
  */
-final class ContactTag extends Lookup
+final class ClientContactTag extends Lookup
 {
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
+    /**
+     * @var int
+     */
     protected $id;
 
     /**
@@ -29,7 +31,9 @@ final class ContactTag extends Lookup
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     */
     protected $name;
 
     /**
@@ -41,7 +45,9 @@ final class ContactTag extends Lookup
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     */
     protected $colorBackground;
 
     /**
@@ -53,7 +59,9 @@ final class ContactTag extends Lookup
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     */
     protected $colorText;
 
     /**

@@ -302,4 +302,41 @@ final class RestClient
     }
 
 
+
+
+    /**
+     * Sends a HTTP PATCH Request to the specified endpoint of the base URL.
+     *
+     * @param string $endpoint The endpoint at which to make the request.
+     * @param array $data An associative array of data to provide to the endpoint and converted to JSON.
+     * @return array Returns an associative array of the JSON result.
+     * @throws RestClientException Throws an exception if there were errors during the REST request/response phase.
+     */
+    public static function patch(string $endpoint, string $data): array
+    {
+        // Create the cURL session.
+        $curl = self::curl($endpoint);
+
+        // Set any additional options.
+        //curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PATCH");
+
+        // Set the data to be provided to the endpoint.
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+
+        // Execute the request and capture the response.
+        $response = curl_exec($curl);
+
+        // Check to see if there were any errors...
+        if(!$response)
+            throw new RestClientException("The REST request failed with the following error(s): ".curl_error($curl));
+
+        // Close the cURL session.
+        curl_close($curl);
+
+        // Finally, return the resulting associative array!
+        return json_decode($response, true);
+    }
+
+
 }

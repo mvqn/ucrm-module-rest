@@ -12,11 +12,13 @@ use UCRM\REST\Exceptions\RestClientException;
  * @package UCRM\REST\Endpoints
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
+ *
+ * @endpoints { "get": "/client-logs", "getById": "/client-logs/:id" }
  */
 final class ClientLog extends Endpoint
 {
     /** @const string  */
-    protected const ENDPOINT = "/client-logs";
+    //protected const ENDPOINT = "/client-logs";
 
     // -----------------------------------------------------------------------------------------------------------------
     /** @var int  */

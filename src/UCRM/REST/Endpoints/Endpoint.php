@@ -5,6 +5,9 @@ namespace UCRM\REST\Endpoints;
 
 
 
+use MVQN\Annotations\AnnotationReader;
+use MVQN\Helpers\ArrayHelpers;
+use MVQN\Helpers\PatternMatcher;
 use UCRM\REST\{RestClient, Scraper};
 use UCRM\REST\Exceptions\RestClientException;
 
@@ -17,7 +20,7 @@ use UCRM\REST\Exceptions\RestClientException;
  * @package UCRM\REST\Endpoints
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  */
-abstract class Endpoint implements \JsonSerializable
+abstract class Endpoint extends RestObject
 {
     /** @const string  */
     protected const ENDPOINT = "";
@@ -28,57 +31,18 @@ abstract class Endpoint implements \JsonSerializable
 
 
 
-    /**
-     * Endpoint constructor.
-     * @param array $values
-     */
-    public function __construct(array $values = [])
-    {
-        foreach($values as $key => $value)
-            $this->$key = $value;
-
-    }
-
-
-    /**
-     * Specify data which should be serialized to JSON
-     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
-     * @return mixed data which can be serialized by <b>json_encode</b>,
-     * which is a value of any type other than a resource.
-     * @since 5.4.0
-     */
-    public function jsonSerialize()
-    {
-        // Get an array of all Model properties.
-        $assoc = get_object_vars($this);
-
-        return $assoc;
-    }
-
-
-    /**
-     * Overrides the default string representation of the class.
-     *
-     * @return string Returns a JSON representation of this Model.
-     */
-    public function __toString()
-    {
-        // Get an array of all Model properties.
-        $assoc = get_object_vars($this);
-
-        // Remove any that contain NULL values.
-        //$assoc = array_filter($assoc);
-
-        // Return the array as a JSON string.
-        return json_encode($assoc, JSON_UNESCAPED_SLASHES);
-    }
 
 
 
-    private static function isAssoc(array $array): bool
-    {
-        return array_keys($array) !== range(0, count($array) - 1);
-    }
+
+
+
+
+
+
+
+
+
 
 
 
@@ -88,38 +52,75 @@ abstract class Endpoint implements \JsonSerializable
      */
     public static function get(): array
     {
-        /** @var static $child */
-        $child = get_called_class();
-        $endpoint = $child::ENDPOINT;
-        $endpoint_parent = defined("$child::ENDPOINT_PARENT") ? $child::ENDPOINT_PARENT : "";
+        /** @var static $class */
+        $class = get_called_class();
 
-        if($endpoint_parent !== "")
-            throw new RestClientException(
-                "'$endpoint' is a child endpoint and must be called using it's parent endpoint of '".
-                $endpoint_parent."/{id}$endpoint'");
+        $annotations = new AnnotationReader($class);
+        $endpoints = $annotations->getParameter("endpoints");
+
+        if(!array_key_exists("get", $endpoints) || $endpoints["get"] === "")
+            throw new RestClientException("An '@endpoint { \"get\": \"/example/:id\" }' annotation on the class must ".
+                "be declared in order to resolve this endpoint'");
+
+        $endpoint = PatternMatcher::interpolateUrl($endpoints["get"], []);
 
         $response = RestClient::get($endpoint);
 
         //echo "*** ".json_encode($response, JSON_UNESCAPED_SLASHES);
 
         if(array_key_exists("code", $response) && $response["code"] === 404)
-            return [];
+            throw new RestClientException("Endpoint '$endpoint' was not found for class '$class'!");
 
         if($response === [])
-            return [];
+            return []; // Really empty?
 
         //$objects = json_decode($response, true);
 
-        if(self::isAssoc($response))
-            //return new $child($response);
-            return [new $child($response)];
+        if(ArrayHelpers::isAssoc($response))
+            //return new $class($response);
+            return [new $class($response)];
 
         $endpoints = [];
         foreach($response as $object)
-            $endpoints[] = new $child($object);
+            $endpoints[] = new $class($object);
 
         return $endpoints;
     }
+
+
+    public static function post(Endpoint $fields): array
+    {
+        /** @var static $class */
+        $class = get_called_class();
+
+        $annotations = new AnnotationReader($class);
+        $endpoints = $annotations->getParameter("endpoints");
+
+        if(!array_key_exists("getById", $endpoints))
+            throw new RestClientException("An '@endpoint { \"getById\": \"/example/:id/other\" }' annotation on the ".
+                "'$class' class must be declared in order to resolve this endpoint'");
+
+        $endpoint = PatternMatcher::interpolateUrl($endpoints["getById"], [ "id" => $id ]);
+
+        $response = RestClient::post($endpoint, $fields);
+
+        //echo "*** ".json_encode($response, JSON_UNESCAPED_SLASHES);
+
+        if(array_key_exists("code", $response) && $response["code"] === 404)
+            throw new RestClientException("Endpoint '$endpoint' was not found for class '$class'!");
+
+        if($response === [])
+            return []; // Really empty?
+
+        //$objects = json_decode($response, true);
+
+
+
+        return new $class($response);
+    }
+
+
+
 
     /**
      * @param int $id
@@ -129,67 +130,92 @@ abstract class Endpoint implements \JsonSerializable
     public static function getById(int $id): ?Endpoint
     {
         /** @var static */
-        $child = get_called_class();
-        $endpoint = $child::ENDPOINT;
-        $endpoint_parent = defined("$child::ENDPOINT_PARENT") ? $child::ENDPOINT_PARENT : "";
+        $class = get_called_class();
 
-        if($endpoint_parent !== "")
-            $endpoint = $endpoint_parent.$endpoint;
+        $annotations = new AnnotationReader($class);
+        $endpoints = $annotations->getParameter("endpoints");
 
-        $response = RestClient::get($endpoint."/$id");
+        if(!array_key_exists("getById", $endpoints))
+            throw new RestClientException("An '@endpoint { \"getById\": \"/example/:id/other\" }' annotation on the ".
+                "'$class' class must be declared in order to resolve this endpoint'");
+
+        $endpoint = PatternMatcher::interpolateUrl($endpoints["getById"], [ "id" => $id ]);
+
+        $response = RestClient::get($endpoint);
 
         //echo "*** ".json_encode($response, JSON_UNESCAPED_SLASHES);
 
         if(array_key_exists("code", $response) && $response["code"] === 404)
-            return null;
+            throw new RestClientException("Endpoint '$endpoint' was not found for class '$class'!");
 
-
-        $endpoint = new $child($response);
+        $endpoint = new $class($response);
 
         return $endpoint;
-
-
-
     }
+
+
+
+
+
+
+    public static function patch(int $id, ?Endpoint $data, string $suffix = ""): ?Endpoint
+    {
+        /** @var static */
+        $class = get_called_class();
+
+        $annotations = new AnnotationReader($class);
+        $endpoints = $annotations->getParameter("endpoints");
+
+        if(!array_key_exists("getById", $endpoints))
+            throw new RestClientException("An '@endpoint { \"getById\": \"/example/:id/other\" }' annotation on the ".
+                "'$class' class must be declared in order to resolve this endpoint'");
+
+        $endpoint = PatternMatcher::interpolateUrl($endpoints["getById"], [ "id" => $id ]);
+
+        if($suffix !== "")
+            $endpoint = $endpoint.$suffix;
+
+        echo "PATCH $endpoint\n";
+
+        // Get an array of all Model properties.
+        $data = ($data !== null) ? $data->toFields("patch") : [];
+
+        // TODO: Remove all uneccessary fields!
+
+        $response = RestClient::patch($endpoint, $data);
+
+        // Endpoint Not Found!
+        if(array_key_exists("code", $response) && $response["code"] === 404)
+            throw new RestClientException("Endpoint '$endpoint' was not found for class '$class'!");
+
+        // Validation Failed!
+        if(array_key_exists("code", $response) && $response["code"] === 422)
+            throw new RestClientException(
+                "Data for endpoint '$endpoint' was improperly formatted!\n".
+                $response["message"]."\n".
+                json_encode($response["errors"], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT)
+            );
+
+        return new $class($response);
+    }
+
+
+
+
+
 
 
 
 
     public static function scrape(string $url, EndpointOptions $options): ?Endpoint
     {
-
-        //Scraper::$cache_path = __DIR__."/.cache/";
-        //Scraper::$cache_expires = 60;
-
-
-
-        //$doc = Scraper::fromFile(Scraper::$cache_path."page.html");
-
-        //$headers = $doc->find("span.uriTemplate");
-
-        //foreach($headers as $header)
-        //    echo $header->text()."\n";
-
         /*
-        $attributes = $doc->find(
-            "div.row.machineColumnResponseAttributes > div.row.attributesKit > div.attributesKit > div:first > div:first > div:nth-child(2) > div:first > ".
-            "div:first > "
-        );
-        */
-
-        //phantomjs.exe save_page.js "https://ucrmbeta.docs.apiary.io/#reference/services/clientsservices/get" > "../../src/UCRM/REST/Endpoints/.cache/test.html"
-
         Scraper::download(
             "https://ucrmbeta.docs.apiary.io/#reference/clients/clientsuseridentcustomattributekeycustomattributevalueorderdirection/get",
             __DIR__."/.cache/test.html");
+        */
 
-
-
-
-
-
-
-
+        // TODO: Determine best approach to complete Scraper or APIB.
 
         return null;
     }

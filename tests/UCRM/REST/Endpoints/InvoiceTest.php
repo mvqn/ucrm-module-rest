@@ -36,7 +36,6 @@ class InvoiceTest extends \PHPUnit\Framework\TestCase
 
     public function testGet()
     {
-
         $invoices = Invoice::get();
         $this->assertNotEmpty($invoices);
 

@@ -36,9 +36,10 @@ class PaymentTest extends \PHPUnit\Framework\TestCase
 
     public function testGet()
     {
+        $this->markTestSkipped("No payments are entered in UCRM!");
 
         $payments = Payment::get();
-        $this->assertEmpty($payments); // No Payments!
+        $this->assertEmpty($payments);
 
         foreach($payments as $payment)
             echo $payment."\n";
@@ -47,8 +48,10 @@ class PaymentTest extends \PHPUnit\Framework\TestCase
 
     public function testGetById()
     {
+        $this->markTestSkipped("No payments are entered in UCRM!");
+
         $payment = Payment::getById(1);
-        //$this->assertInstanceOf(Payment::class, $payment);
+        $this->assertInstanceOf(Payment::class, $payment);
         $this->assertNull($payment);
 
         echo $payment."\n";

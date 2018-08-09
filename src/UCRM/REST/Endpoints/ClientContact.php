@@ -8,16 +8,18 @@ use UCRM\REST\Exceptions\RestClientException;
 
 
 /**
- * Class Contact
+ * Class ClientContact
  *
  * @package UCRM\REST\Endpoints
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
  */
-final class Contact extends Lookup
+final class ClientContact extends Lookup
 {
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
+    /**
+     * @var int
+     */
     protected $id;
 
     /**
@@ -29,7 +31,9 @@ final class Contact extends Lookup
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
+    /**
+     * @var int
+     */
     protected $clientId;
 
     /**
@@ -40,7 +44,9 @@ final class Contact extends Lookup
         return $this->clientId;
     }
 
-    /** @var Client $client */
+    /**
+     * @var Client $client
+     */
     protected $client = null;
 
     /**
@@ -57,7 +63,11 @@ final class Contact extends Lookup
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     * @post
+     * @patch
+     */
     protected $email;
 
     /**
@@ -69,7 +79,11 @@ final class Contact extends Lookup
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     * @post
+     * @patch
+     */
     protected $phone;
 
     /**
@@ -81,7 +95,11 @@ final class Contact extends Lookup
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     * @post
+     * @patch
+     */
     protected $name;
 
     /**
@@ -93,7 +111,11 @@ final class Contact extends Lookup
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var bool  */
+    /**
+     * @var bool
+     * @post
+     * @patch
+     */
     protected $isBilling;
 
     /**
@@ -105,7 +127,11 @@ final class Contact extends Lookup
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var bool  */
+    /**
+     * @var bool
+     * @post
+     * @patch
+     */
     protected $isContact;
 
     /**
@@ -117,15 +143,32 @@ final class Contact extends Lookup
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var ContactType[]  */
+    /**
+     * @var ClientContactType[]
+     * @post
+     * @patch
+     */
     protected $types;
 
     /**
-     * @return ContactType[]
+     * @return ClientContactType[]
      */
-    public function getContactTypes(): array
+    public function getTypes(): array
     {
-        return $this->types;
+        $types = [];
+
+        foreach($this->types as $type)
+            $types[] = new ClientContactType($type);
+
+        return $types;
+    }
+
+    /**
+     * @param ClientContactType[] $values
+     */
+    public function setTypes(array $values)
+    {
+
     }
 
 }

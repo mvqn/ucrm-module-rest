@@ -13,8 +13,11 @@ use UCRM\REST\Exceptions\RestClientException;
  *
  * @package UCRM\REST\Endpoints
  * @author Ryan Spaeth <rspaeth@mvqn.net>
+ * @final
+ *
+ * @endpoints { "get": "/taxes", "getById": "/taxes/:id" }
  */
-final class Tax extends RestObject
+final class Tax extends Endpoint
 {
     /**
      * @var int
