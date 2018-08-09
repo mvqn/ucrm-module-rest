@@ -7,10 +7,10 @@ use UCRM\REST\RestClient;
 
 
 
-class VersionTest extends \PHPUnit\Framework\TestCase
+class AnnotationReaderTests extends \PHPUnit\Framework\TestCase
 {
     /** @var string Location of the .env file for development. */
-    protected const DOTENV_PATH = __DIR__."/../../../../";
+    protected const DOTENV_PATH = __DIR__."/../../../";
 
 
 
@@ -36,15 +36,9 @@ class VersionTest extends \PHPUnit\Framework\TestCase
 
     public function testGet()
     {
-        $versions = Version::get();
-        $this->assertNotEmpty($versions);
 
-        foreach($versions as $version)
-            echo $version."\n";
+
     }
-
-
-
 
 
 
