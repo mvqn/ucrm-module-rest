@@ -76,7 +76,7 @@ abstract class Endpoint extends RestObject
 
         //$objects = json_decode($response, true);
 
-        if(ArrayHelpers::isAssoc($response))
+        if(ArrayHelpers::is_assoc($response))
             //return new $class($response);
             return [new $class($response)];
 
@@ -178,9 +178,13 @@ abstract class Endpoint extends RestObject
         echo "PATCH $endpoint\n";
 
         // Get an array of all Model properties.
-        $data = ($data !== null) ? $data->toFields("patch") : [];
+        $data = ($data !== null) ? $data->toFields("patch") : "{}";
 
         // TODO: Remove all uneccessary fields!
+
+        //print_r($data);
+
+        //die();
 
         $response = RestClient::patch($endpoint, $data);
 

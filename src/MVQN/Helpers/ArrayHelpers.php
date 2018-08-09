@@ -3,15 +3,40 @@ declare(strict_types=1);
 
 namespace MVQN\Helpers;
 
+class ArrayHelperPathException extends \Exception
+{
+}
+
+
 
 final class ArrayHelpers
 {
 
 
-    public static function isAssoc(array $array): bool
+    public static function is_assoc(array $array): bool
     {
         return array_keys($array) !== range(0, count($array) - 1);
     }
+
+
+    public static function array_path(array $array, string $path)
+    {
+        $steps = explode("/",$path);
+        $current = $array;
+
+        foreach ($steps as $step)
+        {
+            if (!is_array($current) || !array_key_exists($step, $current))
+                throw new ArrayHelperPathException("Could not traverse the path '$path' in ".print_r($array, true));
+
+            $current = $current[$step];
+        }
+
+        return $current;
+
+
+    }
+
 
 
 

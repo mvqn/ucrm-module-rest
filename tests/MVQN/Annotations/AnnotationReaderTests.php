@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
+use MVQN\Annotations\AnnotationReader;
 use UCRM\REST\RestClient;
 
 
@@ -34,10 +35,17 @@ class AnnotationReaderTests extends \PHPUnit\Framework\TestCase
 
 
 
-    public function testGet()
+    public function testParseClass()
     {
+        $annotations = new AnnotationReader(Client::class);
+        //$parameters = $annotations->getParameters();
+        //print_r($parameters);
 
+        $endpoints = $annotations->getParameter("endpoints");
+        print_r($endpoints);
 
+        $test = $annotations->getParameter("endpoints/getById");
+        print_r($test);
     }
 
 

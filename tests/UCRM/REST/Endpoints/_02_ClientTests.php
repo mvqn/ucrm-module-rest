@@ -77,7 +77,7 @@ class _02_ClientTests extends \PHPUnit\Framework\TestCase
     public function testUpdate()
     {
         $client = Client::getById(1);
-        $client->setLastName("WorthenMan!");
+        $client->setLastName("Worthen");
 
         $updated = $client->update();
         //$updated = Client::patch(1, new Client());

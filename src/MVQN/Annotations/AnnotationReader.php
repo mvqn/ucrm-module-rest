@@ -3,195 +3,135 @@ declare(strict_types=1);
 
 namespace MVQN\Annotations;
 
+use MVQN\Helpers\ArrayHelpers;
+
 class AnnotationReaderException extends \Exception
 {
 }
 
+
+
+
 class AnnotationReader
 {
-    private $rawDocBlock;
-    private $parameters;
-    private $keyPattern = "[A-z0-9\_\-]+";
-    private $endPattern = "[ ]*(?:@|\r\n|\n)";
-    private $parsedAll = FALSE;
+    protected $docblock = "";
+    protected $parameters = [];
+    //private $keyPattern = "[A-z0-9\_\-]+";
+    //private $endPattern = "[ ]*(?:@|\r\n|\n)";
+    //private $parsedAll = FALSE;
+    protected $pattern = "/(?:\*)(?:[\t ]*)?@([\w\_\-]+)(?:[\t ]*)?(.*)/m";
+    protected $json_pattern = "/(\{.*\})/";
+    protected $array_pattern = "/ (\[.*\])/";
+    protected $array_pattern_named = "/([\w\_\-]*)(?:\[\])/";
 
-    public function __construct()
+    /**
+     * AnnotationReader constructor.
+     * @param string $class
+     * @param string $name
+     * @param string $type
+     * @throws \ReflectionException
+     * @throws AnnotationReaderException
+     */
+    public function __construct(string $class, string $name = "", string $type = "")
     {
-        $arguments = func_get_args();
-        $count = count($arguments);
+        $reflection = null;
 
-        // get reflection from class or class/method
-        // (depends on constructor arguments)
-        if($count === 0) {
-            throw new \Exception("No zero argument constructor allowed");
-        } else if($count === 1) {
-            $reflection = new \ReflectionClass($arguments[0]);
-        } else {
-            $type = $count === 3 ? $arguments[2] : "method";
+        // CLASS
+        if($class !== "" && $name === "" && $type === "")
+            $reflection = new \ReflectionClass($class);
 
-            if($type === "method") {
-                $reflection = new \ReflectionMethod($arguments[0], $arguments[1]);
-            } else if($type === "property") {
-                $reflection = new \ReflectionProperty($arguments[0], $arguments[1]);
-            }
-        }
+        // METHOD
+        if($class !== "" && $name !== "" && $type === "method")
+            $reflection = new \ReflectionMethod($class, $name);
 
-        $this->rawDocBlock = $reflection->getDocComment();
-        $this->parameters = array();
-    }
+        // PROPERTY
+        if($class !== "" && $name !== "" && $type === "property")
+            $reflection = new \ReflectionProperty($class, $name);
 
-    private function parseSingle($key)
-    {
-        if(isset($this->parameters[$key]))
+        if($reflection === null)
+            throw new AnnotationReaderException("Invalid arguments passed to __construct(): ".print_r([
+                "class" => $class,
+                "name" => $name,
+                "type" => $type
+            ], true));
+
+        $this->docblock = $reflection->getDocComment();
+
+        if(!preg_match_all($this->pattern, $this->docblock, $matches))
+            return;
+
+        $params = [];
+
+        for($i = 0; $i < count($matches[0]); $i++)
         {
-            return $this->parameters[$key];
-        }
-        else
-        {
-            if(preg_match("/@".preg_quote($key).$this->endPattern."/", $this->rawDocBlock, $match))
+            $key = $matches[1][$i];
+            $value = $matches[2][$i];
+
+            $count = 0;
+            for($j = 0; $j < count($matches[0]); $j++)
             {
-                return TRUE;
+                if ($matches[1][$j] === $key)
+                    $count++;
+            }
+
+            // Handle JSON objects!
+            if(preg_match($this->json_pattern, $value, $match))
+            {
+                $value = json_decode($value, true);
             }
             else
+            // Handle Array objects!
+            if(preg_match($this->array_pattern, $value, $match))
             {
-                preg_match_all("/@".preg_quote($key)." (.*)".$this->endPattern."/U", $this->rawDocBlock, $matches);
-                $size = sizeof($matches[1]);
+                // TODO: Determine best way to handle the cases where a property has a type of Type[]!
 
-                // not found
-                if($size === 0)
-                {
-                    return NULL;
-                }
-                // found one, save as scalar
-                elseif($size === 1)
-                {
-                    return $this->parseValue($matches[1][0]);
-                }
-                // found many, save as array
-                else
-                {
-                    $this->parameters[$key] = array();
-                    foreach($matches[1] as $elem)
-                    {
-                        $this->parameters[$key][] = $this->parseValue($elem);
-                    }
+                // For now, we just remove the [] at the end of the type name...
+                if(preg_match($this->array_pattern_named, $value, $named_match))
+                    $value = str_replace("[]", "", $value);
 
-                    return $this->parameters[$key];
-                }
+                $value = eval("return ".$value.";");
             }
-        }
-    }
 
-    private function parse()
-    {
-        $pattern = "/@(?=(.*)".$this->endPattern.")/U";
-
-        preg_match_all($pattern, $this->rawDocBlock, $matches);
-
-        foreach($matches[1] as $rawParameter)
-        {
-            if(preg_match("/^(".$this->keyPattern.") (.*)$/", $rawParameter, $match))
+            if($count > 1)
             {
-                $parsedValue = $this->parseValue($match[2]);
-                if(isset($this->parameters[$match[1]]))
+                if(!array_key_exists($key, $params))
                 {
-                    $this->parameters[$match[1]] = array_merge((array)$this->parameters[$match[1]], (array)$parsedValue);
+                    $params[$key] = $value;
                 }
                 else
                 {
-                    $this->parameters[$match[1]] = $parsedValue;
+                    $params[$key] = array_merge($params[$key], $value);
                 }
             }
-            else if(preg_match("/^".$this->keyPattern."$/", $rawParameter, $match))
-            {
-                $this->parameters[$rawParameter] = TRUE;
-            }
             else
             {
-                $this->parameters[$rawParameter] = NULL;
+                $params[$key] = $value;
             }
+
         }
+
+        $this->parameters = $params;
     }
 
-    public function getVariableDeclarations($name)
+
+    /**
+     * @return array
+     */
+    public function getParameters(): array
     {
-        $declarations = (array)$this->getParameter($name);
-
-        foreach($declarations as &$declaration)
-        {
-            $declaration = $this->parseVariableDeclaration($declaration, $name);
-        }
-
-        return $declarations;
-    }
-
-    private function parseVariableDeclaration($declaration, $name)
-    {
-        $type = gettype($declaration);
-
-        if($type !== 'string')
-        {
-            throw new \InvalidArgumentException(
-                "Raw declaration must be string, $type given. Key='$name'.");
-        }
-
-        if(strlen($declaration) === 0)
-        {
-            throw new \InvalidArgumentException(
-                "Raw declaration cannot have zero length. Key='$name'.");
-        }
-
-        $declaration = explode(" ", $declaration);
-        if(sizeof($declaration) == 1)
-        {
-            // string is default type
-            array_unshift($declaration, "string");
-        }
-
-        // take first two as type and name
-        $declaration = array(
-            'type' => $declaration[0],
-            'name' => $declaration[1]
-        );
-
-        return $declaration;
-    }
-
-    private function parseValue($originalValue)
-    {
-        if($originalValue && $originalValue !== 'null')
-        {
-            // try to json decode, if cannot then store as string
-            if( ($json = json_decode($originalValue,TRUE)) === NULL)
-            {
-                $value = $originalValue;
-            }
-            else
-            {
-                $value = $json;
-            }
-        }
-        else
-        {
-            $value = NULL;
-        }
-
-        return $value;
-    }
-
-    public function getParameters()
-    {
-        if(! $this->parsedAll)
-        {
-            $this->parse();
-            $this->parsedAll = TRUE;
-        }
-
         return $this->parameters;
     }
 
-    public function getParameter($key)
+    /**
+     * @param string $key
+     * @return mixed|null
+     * @throws \MVQN\Helpers\ArrayHelperPathException
+     */
+    public function getParameter(string $key)
     {
-        return $this->parseSingle($key);
+        if(strpos($key, "/") !== false)
+            return ArrayHelpers::array_path($this->parameters, $key);
+        else
+            return array_key_exists($key, $this->parameters) ? $this->parameters[$key] : null;
     }
 }

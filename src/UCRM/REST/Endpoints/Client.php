@@ -16,6 +16,9 @@ use UCRM\REST\Exceptions\RestClientException;
  * @final
  *
  * @endpoints { "get": "/clients", "getById": "/clients/:id" }
+ * @endpoints { "post": "/clients" }
+ * @endpoints { "patch": "/clients" }
+ *
  */
 final class Client extends Endpoint
 {
@@ -26,7 +29,7 @@ final class Client extends Endpoint
 
     // -----------------------------------------------------------------------------------------------------------------
     /**
-     * @var int|null $id
+     * @var int|null
      */
     protected $id;
 
