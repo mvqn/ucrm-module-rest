@@ -23,9 +23,9 @@ final class ClientContact extends Lookup
     protected $id;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -37,9 +37,9 @@ final class ClientContact extends Lookup
     protected $clientId;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getClientId(): int
+    public function getClientId(): ?int
     {
         return $this->clientId;
     }
@@ -50,13 +50,17 @@ final class ClientContact extends Lookup
     protected $client = null;
 
     /**
-     * @return Client
+     * @return Client|null
      * @throws RestClientException
+     * @throws \MVQN\Annotations\AnnotationReaderException
+     * @throws \MVQN\Helpers\ArrayHelperPathException
+     * @throws \MVQN\Helpers\PatternMatchException
+     * @throws \ReflectionException
      */
-    public function getClient(): Client
+    public function getClient(): ?Client
     {
         // Cache the value here for future lookups...
-        if($this->client === null)
+        if($this->client === null && $this->clientId !== null)
             $this->client = Client::getById($this->clientId);
 
         return $this->client;
@@ -71,19 +75,21 @@ final class ClientContact extends Lookup
     protected $email;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getEmail(): string
+    public function getEmail(): ?string
     {
         return $this->email;
     }
 
     /**
      * @param string $value
+     * @return ClientContact Returns the ClientContact instance, for method chaining purposes.
      */
-    public function setEmail(string $value)
+    public function setEmail(string $value): ClientContact
     {
         $this->email = $value;
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -95,19 +101,21 @@ final class ClientContact extends Lookup
     protected $phone;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPhone(): string
+    public function getPhone(): ?string
     {
         return $this->phone;
     }
 
     /**
      * @param string $value
+     * @return ClientContact Returns the ClientContact instance, for method chaining purposes.
      */
-    public function setPhone(string $value)
+    public function setPhone(string $value): ClientContact
     {
         $this->phone = $value;
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -119,19 +127,21 @@ final class ClientContact extends Lookup
     protected $name;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
 
     /**
      * @param string $value
+     * @return ClientContact Returns the ClientContact instance, for method chaining purposes.
      */
-    public function setName(string $value)
+    public function setName(string $value): ClientContact
     {
         $this->name = $value;
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -143,11 +153,20 @@ final class ClientContact extends Lookup
     protected $isBilling;
 
     /**
-     * @return bool
+     * @return bool|null
      */
-    public function getIsBilling(): bool
+    public function getIsBilling(): ?bool
     {
         return $this->isBilling;
+    }
+
+    /**
+     * @return ClientContact Returns the ClientContact instance, for method chaining purposes.
+     */
+    public function setAsBilling(): ClientContact
+    {
+        $this->isBilling = true;
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -159,12 +178,23 @@ final class ClientContact extends Lookup
     protected $isContact;
 
     /**
-     * @return bool
+     * @return bool|null
      */
-    public function getIsContact(): bool
+    public function getIsContact(): ?bool
     {
         return $this->isContact;
     }
+
+    /**
+     * @return ClientContact Returns the ClientContact instance, for method chaining purposes.
+     */
+    public function setAsGeneral(): ClientContact
+    {
+        $this->isContact = true;
+        return $this;
+    }
+
+
 
     // -----------------------------------------------------------------------------------------------------------------
     /**
@@ -175,15 +205,15 @@ final class ClientContact extends Lookup
     protected $types;
 
     /**
-     * @return ClientContactType[]
+     * @return ClientContactType[]|null
      */
-    public function getTypes(): array
+    public function getTypes(): ?array
     {
-        $types = [];
+        if($this->types === null)
+            return null;
 
-        foreach($this->types as $type)
-            $types[] = new ClientContactType($type);
-
+        /** @var ClientContactType[] $types */
+        $types = $this->getCollection(ClientContactType::class, $this->types);
         return $types;
     }
 

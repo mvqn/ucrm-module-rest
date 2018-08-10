@@ -96,29 +96,69 @@ abstract class Endpoint extends RestObject
     }
 
 
+    /**
+     * @param string $column
+     * @param string $value
+     * @return null|Endpoint
+     * @throws AnnotationReaderException
+     * @throws ArrayHelperPathException
+     * @throws PatternMatchException
+     * @throws RestClientException
+     * @throws \ReflectionException
+     */
+    public static function find(string $column, string $value): ?Endpoint
+    {
+        /** @var Endpoint $class */
+        $class = get_called_class();
 
+        $results = $class::get();
 
+        //print_r($results);
 
+        foreach($results as $result)
+        {
+            if($result->$column === $value)
+                return $result;
+        }
 
+        return null;
+    }
+
+    public static function findIn(array $collection, string $column, string $value): ?Endpoint
+    {
+        /** @var Endpoint $class */
+        $class = get_called_class();
+
+        foreach($collection as $item)
+        {
+            if($item->$column === $value)
+                return $item;
+        }
+
+        return null;
+    }
 
 
 
 
 
     /**
-     * @return static[]
+     * @return Endpoint[]
+     * @throws AnnotationReaderException
+     * @throws ArrayHelperPathException
+     * @throws PatternMatchException
      * @throws RestClientException
+     * @throws \ReflectionException
      */
     public static function get(): array
     {
-        /** @var static $class */
         $class = get_called_class();
 
         $annotations = new AnnotationReader($class);
         $endpoints = $annotations->getParameter("endpoints");
 
         if(!array_key_exists("get", $endpoints) || $endpoints["get"] === "")
-            throw new RestClientException("An '@endpoint { \"get\": \"/example/:id\" }' annotation on the class must ".
+            throw new RestClientException("An '@endpoint { \"get\": \"/examples\" }' annotation on the class must ".
                 "be declared in order to resolve this endpoint'");
 
         $endpoint = PatternMatcher::interpolateUrl($endpoints["get"], []);
@@ -147,44 +187,17 @@ abstract class Endpoint extends RestObject
     }
 
 
-    public static function post(Endpoint $fields): array
-    {
-        /** @var static $class */
-        $class = get_called_class();
-
-        $annotations = new AnnotationReader($class);
-        $endpoints = $annotations->getParameter("endpoints");
-
-        if(!array_key_exists("getById", $endpoints))
-            throw new RestClientException("An '@endpoint { \"getById\": \"/example/:id/other\" }' annotation on the ".
-                "'$class' class must be declared in order to resolve this endpoint'");
-
-        $endpoint = PatternMatcher::interpolateUrl($endpoints["getById"], [ "id" => $id ]);
-
-        $response = RestClient::post($endpoint, $fields);
-
-        //echo "*** ".json_encode($response, JSON_UNESCAPED_SLASHES);
-
-        if(array_key_exists("code", $response) && $response["code"] === 404)
-            throw new RestClientException("Endpoint '$endpoint' was not found for class '$class'!");
-
-        if($response === [])
-            return []; // Really empty?
-
-        //$objects = json_decode($response, true);
-
-
-
-        return new $class($response);
-    }
-
 
 
 
     /**
      * @param int $id
-     * @return static|null
+     * @return Endpoint|null
+     * @throws AnnotationReaderException
+     * @throws ArrayHelperPathException
+     * @throws PatternMatchException
      * @throws RestClientException
+     * @throws \ReflectionException
      */
     public static function getById(int $id): ?Endpoint
     {
@@ -195,7 +208,7 @@ abstract class Endpoint extends RestObject
         $endpoints = $annotations->getParameter("endpoints");
 
         if(!array_key_exists("getById", $endpoints))
-            throw new RestClientException("An '@endpoint { \"getById\": \"/example/:id/other\" }' annotation on the ".
+            throw new RestClientException("An '@endpoint { \"getById\": \"/examples/:id\" }' annotation on the ".
                 "'$class' class must be declared in order to resolve this endpoint'");
 
         $endpoint = PatternMatcher::interpolateUrl($endpoints["getById"], [ "id" => $id ]);
@@ -213,11 +226,55 @@ abstract class Endpoint extends RestObject
     }
 
 
+
+
+    /**
+     * @param Endpoint $fields
+     * @return Endpoint
+     * @throws AnnotationReaderException
+     * @throws ArrayHelperPathException
+     * @throws PatternMatchException
+     * @throws RestClientException
+     * @throws \ReflectionException
+     */
+    public static function post(Endpoint $data): Endpoint
+    {
+        $class = get_called_class();
+
+        $annotations = new AnnotationReader($class);
+        $endpoints = $annotations->getParameter("endpoints");
+
+        if(!array_key_exists("post", $endpoints))
+            throw new RestClientException("An '@endpoint { \"post\": \"/examples\" }' annotation on the ".
+                "'$class' class must be declared in order to resolve this endpoint'");
+
+        $endpoint = $endpoints["post"];
+
+        // Get an array of all Model properties.
+        $data = ($data !== null) ? $data->toArray("post") : [];
+
+        $response = RestClient::post($endpoint, $data);
+
+        // Endpoint Not Found!
+        if(array_key_exists("code", $response) && $response["code"] === 404)
+            throw new RestClientException("Endpoint '$endpoint' was not found for class '$class'!");
+
+        // Validation Failed!
+        if(array_key_exists("code", $response) && $response["code"] === 422)
+            throw new RestClientException(
+                "Data for endpoint '$endpoint' was improperly formatted!\n".
+                $response["message"]."\n".
+                json_encode($response["errors"], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT)
+            );
+
+        return new $class($response);
+    }
+
     /**
      * @param int $id
-     * @param null|Endpoint $data
+     * @param Endpoint|null $data
      * @param string $suffix
-     * @return null|Endpoint
+     * @return Endpoint|null
      * @throws RestClientException
      * @throws \MVQN\Annotations\AnnotationReaderException
      * @throws \MVQN\Helpers\ArrayHelperPathException
@@ -226,14 +283,13 @@ abstract class Endpoint extends RestObject
      */
     public static function patch(int $id, ?Endpoint $data, string $suffix = ""): ?Endpoint
     {
-        /** @var static */
         $class = get_called_class();
 
         $annotations = new AnnotationReader($class);
         $endpoints = $annotations->getParameter("endpoints");
 
         if(!array_key_exists("getById", $endpoints))
-            throw new RestClientException("An '@endpoint { \"getById\": \"/example/:id/other\" }' annotation on the ".
+            throw new RestClientException("An '@endpoint { \"patch\": \"/examples/:id\" }' annotation on the ".
                 "'$class' class must be declared in order to resolve this endpoint'");
 
         $endpoint = PatternMatcher::interpolateUrl($endpoints["getById"], [ "id" => $id ]);
@@ -241,16 +297,10 @@ abstract class Endpoint extends RestObject
         if($suffix !== "")
             $endpoint = $endpoint.$suffix;
 
-        echo "PATCH $endpoint\n";
+        //echo "PATCH $endpoint\n";
 
         // Get an array of all Model properties.
-        $data = ($data !== null) ? $data->toJSON("patch") : "{}";
-
-        // TODO: Remove all uneccessary fields!
-
-        //print_r($data);
-
-        //die();
+        $data = ($data !== null) ? $data->toArray("patch") : [];
 
         $response = RestClient::patch($endpoint, $data);
 

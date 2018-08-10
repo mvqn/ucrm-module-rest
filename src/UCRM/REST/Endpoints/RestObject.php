@@ -31,6 +31,8 @@ abstract class RestObject implements \JsonSerializable
     {
         foreach($values as $key => $value)
             $this->$key = $value;
+
+        //return $this;
     }
 
 

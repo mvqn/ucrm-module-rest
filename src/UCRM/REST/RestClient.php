@@ -312,7 +312,7 @@ final class RestClient
      * @return array Returns an associative array of the JSON result.
      * @throws RestClientException Throws an exception if there were errors during the REST request/response phase.
      */
-    public static function patch(string $endpoint, string $data): array
+    public static function patch(string $endpoint, array $data): array
     {
         // Create the cURL session.
         $curl = self::curl($endpoint);
@@ -322,7 +322,7 @@ final class RestClient
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PATCH");
 
         // Set the data to be provided to the endpoint.
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data, JSON_UNESCAPED_SLASHES));
 
         // Execute the request and capture the response.
         $response = curl_exec($curl);

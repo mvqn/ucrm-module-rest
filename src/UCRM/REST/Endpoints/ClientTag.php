@@ -8,13 +8,13 @@ use UCRM\REST\Exceptions\RestClientException;
 
 
 /**
- * Class ClientContactTag
+ * Class ClientTag
  *
  * @package UCRM\REST\Endpoints
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
  */
-final class ClientContactTag extends Lookup
+final class ClientTag extends Lookup
 {
     // -----------------------------------------------------------------------------------------------------------------
     /**
@@ -23,7 +23,7 @@ final class ClientContactTag extends Lookup
     protected $id;
 
     /**
-     * @return int
+     * @return int|null
      */
     public function getId(): int
     {
@@ -37,11 +37,21 @@ final class ClientContactTag extends Lookup
     protected $name;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
+    }
+
+    /**
+     * @param string $value
+     * @return ClientTag Returns the ClientTag instance, for method chaining purposes.
+     */
+    public function setName(string $value): ClientTag
+    {
+        $this->name = $value;
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -58,6 +68,16 @@ final class ClientContactTag extends Lookup
         return $this->colorBackground;
     }
 
+    /**
+     * @param string $value
+     * @return ClientTag Returns the ClientTag instance, for method chaining purposes.
+     */
+    public function setColorBackground(string $value): ClientTag
+    {
+        $this->colorBackground = $value;
+        return $this;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
     /**
      * @var string
@@ -70,6 +90,16 @@ final class ClientContactTag extends Lookup
     public function getColorText(): string
     {
         return $this->colorText;
+    }
+
+    /**
+     * @param string $value
+     * @return ClientTag Returns the ClientTag instance, for method chaining purposes.
+     */
+    public function setColorText(string $value): ClientTag
+    {
+        $this->colorText = $value;
+        return $this;
     }
 
 }

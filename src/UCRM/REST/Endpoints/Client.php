@@ -26,6 +26,12 @@ use UCRM\REST\Exceptions\RestClientException;
  */
 final class Client extends Endpoint
 {
+    public const CLIENT_TYPE_RESIDENTIAL = 1;
+    public const CLIENT_TYPE_COMMERCIAL = 2;
+
+
+
+
     // -----------------------------------------------------------------------------------------------------------------
     /**
      * @var string
@@ -55,7 +61,7 @@ final class Client extends Endpoint
     // -----------------------------------------------------------------------------------------------------------------
     /**
      * @var int
-     * @post
+     * @post-required
      * @patch-required
      */
     protected $organizationId;
@@ -110,7 +116,7 @@ final class Client extends Endpoint
     // -----------------------------------------------------------------------------------------------------------------
     /**
      * @var bool
-     * @post
+     * @post-required
      * @patch-required
      */
     protected $isLead;
@@ -136,7 +142,7 @@ final class Client extends Endpoint
     // -----------------------------------------------------------------------------------------------------------------
     /**
      * @var int
-     * @post
+     * @post-required
      * @patch-required
      */
     protected $clientType;
@@ -321,7 +327,7 @@ final class Client extends Endpoint
     /**
      * @var string
      * @post
-     * @patch
+     * @patch-required
      */
     protected $firstName;
 
@@ -502,6 +508,16 @@ final class Client extends Endpoint
         return $this;
     }
 
+    public function setCountryByName(string $name): Client
+    {
+        /** @var Country $country */
+        $country = Country::find("name", $name);
+        $this->setCountry($country);
+        return $this;
+    }
+
+
+
     // -----------------------------------------------------------------------------------------------------------------
     /**
      * @var int
@@ -554,6 +570,57 @@ final class Client extends Endpoint
     {
         $this->stateId = $value->getId();
         $this->state = $value;
+        return $this;
+    }
+
+    public function setStateByName(string $name, string $country = ""): Client
+    {
+        if($country === "" && $this->countryId === null)
+            throw new RestObjectException("Cannot call Client->setStateByName() without either first setting the ".
+                "Country or providing a country name as the second parameter!");
+
+        if($this->country !== null)
+            $country = $this->country;
+        else
+        if($this->countryId !== null)
+            $country = Country::getById($this->countryId);
+        else
+        if($country !== "")
+            $country = Country::find("name", $country);
+
+        if($country === null)
+            throw new RestObjectException("Client->setStateByName()could not reliably determine the Country!");
+
+        //$states = $country->getStates();
+        //$state = State::findIn($states, "name", $name);
+        $state = State::getByName($country, $name);
+
+        $this->stateId = $state->getId();
+        $this->state = $state;
+        return $this;
+    }
+
+    public function setStateByCode(string $code, Country $country = null): Client
+    {
+        if($country === null && $this->countryId === null)
+            throw new RestObjectException("Cannot call Client->setStateByName() without either first setting the ".
+                "Country using Client->setCountry() or providing it as the second parameter to this function!");
+
+        if($this->country !== null && $country === null)
+            $country = $this->country;
+        else
+        if($this->countryId !== null && $country === null)
+            $country = Country::getById($this->countryId);
+
+        if($country === null)
+            throw new RestObjectException("Client->setStateByName()could not reliably determine the Country!");
+
+        //$states = $country->getStates();
+        //$state = State::findIn($states, "code", $code);
+        $state = State::getByCode($country, $code);
+
+        $this->stateId = $state->getId();
+        $this->state = $state;
         return $this;
     }
 
@@ -627,10 +694,12 @@ final class Client extends Endpoint
 
     /**
      * @param string $value
+     * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setInvoiceStreet1(string $value)
+    public function setInvoiceStreet1(string $value): Client
     {
         $this->invoiceStreet1 = $value;
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -740,6 +809,14 @@ final class Client extends Endpoint
         return $this;
     }
 
+    public function setInvoiceCountryByName(string $name): Client
+    {
+        /** @var Country $country */
+        $country = Country::find("name", $name);
+        $this->setInvoiceCountry($country);
+        return $this;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
     /**
      * @var int
@@ -795,6 +872,62 @@ final class Client extends Endpoint
         return $this;
     }
 
+    public function setInvoiceStateByName(string $name, string $country = ""): Client
+    {
+        if($country === "" && $this->countryId === null)
+            throw new RestObjectException("Cannot call Client->setStateByName() without either first setting the ".
+                "Country or providing a country name as the second parameter!");
+
+        if($this->country !== null)
+            $country = $this->country;
+        else
+            if($this->countryId !== null)
+                $country = Country::getById($this->countryId);
+            else
+                if($country !== "")
+                    $country = Country::find("name", $country);
+
+        if($country === null)
+            throw new RestObjectException("Client->setStateByName()could not reliably determine the Country!");
+
+        //$states = $country->getStates();
+        //$state = State::findIn($states, "name", $name);
+        $state = State::getByName($country, $name);
+
+        $this->invoiceStateId = $state->getId();
+        $this->invoiceState = $state;
+        return $this;
+    }
+
+    public function setInvoiceStateByCode(string $code, Country $country = null): Client
+    {
+        if($country === null && $this->countryId === null)
+            throw new RestObjectException("Cannot call Client->setStateByName() without either first setting the ".
+                "Country using Client->setCountry() or providing it as the second parameter to this function!");
+
+        if($this->country !== null && $country === null)
+            $country = $this->country;
+        else
+            if($this->countryId !== null && $country === null)
+                $country = Country::getById($this->countryId);
+
+        if($country === null)
+            throw new RestObjectException("Client->setStateByName()could not reliably determine the Country!");
+
+        //$states = $country->getStates();
+        //$state = State::findIn($states, "code", $code);
+        $state = State::getByCode($country, $code);
+
+        $this->invoiceStateId = $state->getId();
+        $this->invoiceState = $state;
+        return $this;
+    }
+
+
+
+
+
+
     // -----------------------------------------------------------------------------------------------------------------
     /**
      * @var string
@@ -847,6 +980,12 @@ final class Client extends Endpoint
         return $this;
     }
 
+    public function resetSendInvoiceByPost(): Client
+    {
+        $this->sendInvoiceByPost = null;
+        return $this;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
     /**
      * @var int
@@ -870,6 +1009,12 @@ final class Client extends Endpoint
     public function setInvoiceMaturityDays(int $value): Client
     {
         $this->invoiceMaturityDays = $value;
+        return $this;
+    }
+
+    public function resetInvoiceMaturityDays(): Client
+    {
+        $this->invoiceMaturityDays = null;
         return $this;
     }
 
@@ -899,6 +1044,12 @@ final class Client extends Endpoint
         return $this;
     }
 
+    public function resetStopServiceDue(): Client
+    {
+        $this->stopServiceDue = null;
+        return $this;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
     /**
      * @var int
@@ -922,6 +1073,12 @@ final class Client extends Endpoint
     public function setStopServiceDueDays(int $value): Client
     {
         $this->stopServiceDueDays = $value;
+        return $this;
+    }
+
+    public function resetStopServiceDueDays(): Client
+    {
+        $this->stopServiceDueDays = null;
         return $this;
     }
 
@@ -1022,12 +1179,12 @@ final class Client extends Endpoint
     }
 
     /**
-     * @param string $value
+     * @param \DateTime $value
      * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setRegistrationDate(string $value): Client
+    public function setRegistrationDate(\DateTime $value): Client
     {
-        $this->registrationDate = $value;
+        $this->registrationDate = $value->format("c");
         return $this;
     }
 
@@ -1194,6 +1351,14 @@ final class Client extends Endpoint
     }
 
 
+    public function addContact(ClientContact $contact): Client
+    {
+        $this->contacts[] = $contact->toArray();
+        return $this;
+    }
+
+
+
 
     /*
 
@@ -1317,12 +1482,12 @@ final class Client extends Endpoint
 
     // -----------------------------------------------------------------------------------------------------------------
     /**
-     * @var ContactBankAccount[]
+     * @var ClientBankAccount[]
      */
     protected $bankAccounts;
 
     /**
-     * @return ContactBankAccount[]|null
+     * @return ClientBankAccount[]|null
      */
     public function getBankAccounts(): ?array
     {
@@ -1345,20 +1510,20 @@ final class Client extends Endpoint
 
     // -----------------------------------------------------------------------------------------------------------------
     /**
-     * @var ClientContactTag[]
+     * @var ClientTag[]
      */
     protected $tags;
 
     /**
-     * @return ClientContactTag[]|null
+     * @return ClientTag[]|null
      */
     public function getTags(): ?array
     {
         if($this->tags === null)
             return null;
 
-        /** @var ClientContactTag[] $tags */
-        $tags = $this->getCollection(ClientContactTag::class, $this->tags);
+        /** @var ClientTag[] $tags */
+        $tags = $this->getCollection(ClientTag::class, $this->tags);
         return $tags;
     }
 

@@ -23,9 +23,9 @@ final class ClientContactAttribute extends Lookup
     protected $id;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -37,9 +37,9 @@ final class ClientContactAttribute extends Lookup
     protected $clientId;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getClientId(): int
+    public function getClientId(): ?int
     {
         return $this->clientId;
     }
@@ -50,10 +50,10 @@ final class ClientContactAttribute extends Lookup
     protected $client = null;
 
     /**
-     * @return Client
+     * @return Client|null
      * @throws RestClientException
      */
-    public function getClient(): Client
+    public function getClient(): ?Client
     {
         // Cache the value here for future lookups...
         if($this->client === null)
@@ -69,9 +69,9 @@ final class ClientContactAttribute extends Lookup
     protected $name;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -83,9 +83,9 @@ final class ClientContactAttribute extends Lookup
     protected $key;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getKey(): string
+    public function getKey(): ?string
     {
         return $this->key;
     }
@@ -99,11 +99,21 @@ final class ClientContactAttribute extends Lookup
     protected $value;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getValue(): string
+    public function getValue(): ?string
     {
         return $this->value;
+    }
+
+    /**
+     * @param string $value
+     * @return ClientContactAttribute Returns the ClientContactAttribute instance, for method chaining purposes.
+     */
+    public function setValue(string $value): ClientContactAttribute
+    {
+        $this->value = $value;
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -115,13 +125,22 @@ final class ClientContactAttribute extends Lookup
     protected $customAttributeId;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getCustomAttributeId(): int
+    public function getCustomAttributeId(): ?int
     {
         return $this->customAttributeId;
     }
 
+    /**
+     * @param string $value
+     * @return ClientContactAttribute Returns the ClientContactAttribute instance, for method chaining purposes.
+     */
+    public function setCustomAttributeId(string $value): ClientContactAttribute
+    {
+        $this->customAttributeId = $value;
+        return $this;
+    }
 
 }
 

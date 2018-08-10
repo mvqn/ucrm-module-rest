@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
+use UCRM\REST\Exceptions\RestObjectException;
 use UCRM\REST\RestClient;
 use UCRM\REST\Exceptions\RestClientException;
 
@@ -98,6 +99,40 @@ final class State extends Endpoint
     public function getCode(): string
     {
         return $this->code;
+    }
+
+
+    /**
+     * @param Country $country
+     * @param string $name
+     * @return State
+     * @throws RestClientException
+     * @throws RestObjectException
+     */
+    public static function getByName(Country $country, string $name): State
+    {
+        if($country === null)
+            throw new RestObjectException("Cannot call State->getByName() without providing a valid Country!");
+
+        $states = $country->getStates();
+
+        /** @var State $state */
+        $state = State::findIn($states, "name", $name);
+
+        return $state;
+    }
+
+    public static function getByCode(Country $country, string $code): State
+    {
+        if($country === null)
+            throw new RestObjectException("Cannot call State->getByName() without providing a valid Country!");
+
+        $states = $country->getStates();
+
+        /** @var State $state */
+        $state = State::findIn($states, "code", $code);
+
+        return $state;
     }
 
 

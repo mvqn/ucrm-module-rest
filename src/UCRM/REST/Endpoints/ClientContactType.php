@@ -23,9 +23,9 @@ final class ClientContactType extends Lookup
     protected $id;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -39,11 +39,21 @@ final class ClientContactType extends Lookup
     protected $name;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
+    }
+
+    /**
+     * @param string $value
+     * @return ClientContactType Returns the ClientContactType instance, for method chaining purposes.
+     */
+    public function setName(string $value): ClientContactType
+    {
+        $this->name = $value;
+        return $this;
     }
 
 }

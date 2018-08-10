@@ -17,98 +17,144 @@ use UCRM\REST\Exceptions\RestClientException;
  */
 final class ClientLog extends Endpoint
 {
-    /** @const string  */
-    //protected const ENDPOINT = "/client-logs";
-
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
-    protected $id;
-
     /**
-     * @return int
+     * @var int
+     * @post
+     * @patch
+     *
      */
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
     protected $clientId;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getClientId(): int
+    public function getClientId(): ?int
     {
         return $this->clientId;
     }
 
-    /** @var Client $client */
+    /**
+     * @param int $value
+     * @return ClientLog Returns the ClientLog instance, for method chaining purposes.
+     */
+    public function setClientId(int $value): ClientLog
+    {
+        $this->clientId = $value;
+        return $this;
+    }
+
+    /**
+     * @var Client $client
+     */
     protected $client = null;
 
     /**
-     * @return Client
+     * @return Client|null
      * @throws RestClientException
      */
-    public function getClient(): Client
+    public function getClient(): ?Client
     {
         // Cache the value here for future lookups...
-        if($this->client === null)
+        if($this->client === null && $this->clientId !== null)
             $this->client = Client::getById($this->clientId);
 
         return $this->client;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     * @post
+     * @patch
+     */
     protected $message;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getMessage(): string
+    public function getMessage(): ?string
     {
         return $this->message;
     }
 
+    /**
+     * @param string $value
+     * @return ClientLog Returns the ClientLog instance, for method chaining purposes.
+     */
+    public function setMessage(string $value): ClientLog
+    {
+        $this->message = $value;
+        return $this;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
+    /**
+     * @var int
+     * @post
+     * @patch
+     */
     protected $userId;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getUserId(): int
+    public function getUserId(): ?int
     {
         return $this->userId;
     }
 
-    /** @var User $user */
+    /**
+     * @param int $value
+     * @return ClientLog Returns the ClientLog instance, for method chaining purposes.
+     */
+    public function setUserId(int $value): ClientLog
+    {
+        $this->userId = $value;
+        return $this;
+    }
+
+    /**
+     * @var User $user
+     */
     protected $user = null;
 
     /**
-     * @return User
+     * @return User|null
      * @throws RestClientException
      */
-    public function getUser(): User
+    public function getUser(): ?User
     {
         // Cache the value here for future lookups...
-        if($this->user === null)
+        if($this->user === null && $this->userId !== null)
             $this->user = User::getById($this->userId);
 
         return $this->user;
     }
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     * @post
+     * @patch
+     */
     protected $createdDate;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCreatedDate(): string
+    public function getCreatedDate(): ?string
     {
         return $this->createdDate;
+    }
+
+    /**
+     * @param string $value
+     * @return ClientLog Returns the ClientLog instance, for method chaining purposes.
+     */
+    public function setCreatedDate(string $value): ClientLog
+    {
+        $this->createdDate = $value;
+        return $this;
     }
 
 }

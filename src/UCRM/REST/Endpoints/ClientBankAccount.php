@@ -8,16 +8,18 @@ use UCRM\REST\Exceptions\RestClientException;
 
 
 /**
- * Class ContactBankAccount
+ * Class ClientBankAccount
  *
  * @package UCRM\REST\Endpoints
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
  */
-final class ContactBankAccount extends Lookup
+final class ClientBankAccount extends Lookup
 {
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     */
     protected $accountNumber;
 
     /**
@@ -26,6 +28,16 @@ final class ContactBankAccount extends Lookup
     public function getAccountNumber(): string
     {
         return $this->accountNumber;
+    }
+
+    /**
+     * @param string $value
+     * @return ClientBankAccount Returns the ClientBankAccount instance, for method chaining purposes.
+     */
+    public function setAccountNumber(string $value): ClientBankAccount
+    {
+        $this->accountNumber = $value;
+        return $this;
     }
 
 }
