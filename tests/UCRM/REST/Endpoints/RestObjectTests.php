@@ -37,14 +37,14 @@ class RestObjectTests extends \PHPUnit\Framework\TestCase
     public function testToFields()
     {
         $country = Country::getById(249);
-        echo $country->toFields()."\n";
+        echo $country->toJSON()."\n";
 
         $states = $country->getStates();
         foreach($states as $state)
-            echo $state->toFields()."\n";
+            echo $state->toJSON()."\n";
 
         $nevada = State::getById(28);
-        echo $nevada->toFields()."\n";
+        echo $nevada->toJSON()."\n";
 
 
         die();
@@ -52,7 +52,7 @@ class RestObjectTests extends \PHPUnit\Framework\TestCase
         if($this->client === null)
             $this->client = Client::getById(1);
 
-        $fields = $this->client->toFields("post", JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        $fields = $this->client->toJSON("post", JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
 
         $this->assertNotNull($fields);
         $this->assertNotEmpty($fields);
@@ -67,7 +67,7 @@ class RestObjectTests extends \PHPUnit\Framework\TestCase
         if($this->client === null)
             $this->client = Client::getById(1);
 
-        $fields = $this->client->toFields("post", JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES, true);
+        $fields = $this->client->toJSON("post", JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES, true);
 
         $this->assertNotNull($fields);
         $this->assertNotEmpty($fields);

@@ -24,6 +24,11 @@ class AnnotationReader
     protected $array_pattern = "/ (\[.*\])/";
     protected $array_pattern_named = "/([\w\_\-]*)(?:\[\])/";
 
+    protected $var_type_name_pattern = '/^([\w\|\[\]\_]+)\s+(?:\$(\w+))?\s*/';
+
+    protected $type;
+
+
     /**
      * AnnotationReader constructor.
      * @param string $class
@@ -38,15 +43,24 @@ class AnnotationReader
 
         // CLASS
         if($class !== "" && $name === "" && $type === "")
+        {
+            $this->type = "class";
             $reflection = new \ReflectionClass($class);
+        }
 
         // METHOD
         if($class !== "" && $name !== "" && $type === "method")
+        {
+            $this->type = "method";
             $reflection = new \ReflectionMethod($class, $name);
+        }
 
         // PROPERTY
         if($class !== "" && $name !== "" && $type === "property")
+        {
+            $this->type = "property";
             $reflection = new \ReflectionProperty($class, $name);
+        }
 
         if($reflection === null)
             throw new AnnotationReaderException("Invalid arguments passed to __construct(): ".print_r([
@@ -134,4 +148,60 @@ class AnnotationReader
         else
             return array_key_exists($key, $this->parameters) ? $this->parameters[$key] : null;
     }
+
+
+    /**
+     * @return array Returns an array containing any found 'types', 'name' and 'description' of the property.
+     * @throws AnnotationReaderException Throws an exception if there were any issues parsing the annotations.
+     */
+    public function getPropertyInfo(): array
+    {
+        // Ensure we have the correct AnnotationReader setup!
+        if($this->type !== "property")
+            throw new AnnotationReaderException("AnnotationReader->getPropertyInfo() expected a 'property', but found ".
+                "a '{$this->type}' instead!");
+
+        // Get ALL of the parameters.
+        $params = self::getParameters();
+
+        // Get the line containing the '@var <type> ...' declaration.
+        $var = array_key_exists("var", $params) ? $params["var"] : null;
+
+        // Ensure the end-user has included a valid DocBlock for this property!
+        if($var === null)
+            throw new AnnotationReaderException("AnnotationReader->getPropertyInfo() could not find a valid ".
+                "'@var <type> \$<name> <descrition>' entry in the DocBlock");
+
+        // Initialize a collection to store the information about this property.
+        $info = [];
+
+        // IF there is a RegEx match for the 'types' and 'name'...
+        if(preg_match($this->var_type_name_pattern, $var, $matches))
+        {
+            // THEN create an array of all of the types found.
+            $info["types"] = array_map(
+                function($value)
+                {
+                    $value = str_replace("[]", "", $value);
+                    return trim($value);
+                },
+                array_filter(explode("|", $matches[1]))
+            );
+
+            // AND the name, if found.
+            if(count($matches) > 2)
+                $info["name"] = trim($matches[2]);
+
+            // AND the description, if found.
+            if(count($matches) > 3)
+                $info["description"] = trim(str_replace($matches[0], "", $var));
+        }
+
+        // Finally, return the info collection!
+        return $info;
+    }
+
+
+
+
 }

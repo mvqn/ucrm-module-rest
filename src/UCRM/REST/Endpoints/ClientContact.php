@@ -78,6 +78,14 @@ final class ClientContact extends Lookup
         return $this->email;
     }
 
+    /**
+     * @param string $value
+     */
+    public function setEmail(string $value)
+    {
+        $this->email = $value;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
     /**
      * @var string
@@ -94,6 +102,14 @@ final class ClientContact extends Lookup
         return $this->phone;
     }
 
+    /**
+     * @param string $value
+     */
+    public function setPhone(string $value)
+    {
+        $this->phone = $value;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
     /**
      * @var string
@@ -108,6 +124,14 @@ final class ClientContact extends Lookup
     public function getName(): string
     {
         return $this->name;
+    }
+
+    /**
+     * @param string $value
+     */
+    public function setName(string $value)
+    {
+        $this->name = $value;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -163,13 +187,7 @@ final class ClientContact extends Lookup
         return $types;
     }
 
-    /**
-     * @param ClientContactType[] $values
-     */
-    public function setTypes(array $values)
-    {
 
-    }
 
 }
 

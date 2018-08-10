@@ -32,11 +32,49 @@ class _02_ClientTests extends \PHPUnit\Framework\TestCase
         RestClient::ucrmKey(getenv("REST_KEY"));
     }
 
+    public function testGetters()
+    {
+        $client = Client::getById(1);
+        $this->assertNotEmpty($client);
+
+        echo ">>> Client::getX()\n";
+
+        $reflection = new \ReflectionClass(Client::class);
+        $properties = $reflection->getProperties(\ReflectionProperty::IS_PROTECTED);
+
+        foreach($properties as $property)
+        {
+            $name = $property->getName();
+            $func = "get".ucfirst($name);
+
+            $value = $client->$func();
+
+            if(is_array($value))
+                echo ">   Client::get".ucfirst($name)."() => ".json_encode($value, JSON_UNESCAPED_SLASHES)."\n";
+            else
+                echo ">   Client::get".ucfirst($name)."() => $value\n";
+
+
+        }
+
+
+        echo "\n";
+
+
+
+
+
+    }
+
+
+
+
+
+
 
 
     public function testGet()
     {
-
         $clients = Client::get();
         $this->assertNotEmpty($clients);
 
@@ -58,10 +96,6 @@ class _02_ClientTests extends \PHPUnit\Framework\TestCase
         echo "\n";
     }
 
-
-
-
-
     public function testSendInvitation()
     {
         $client = Client::getById(1)->sendInvitationEmail();
@@ -77,16 +111,30 @@ class _02_ClientTests extends \PHPUnit\Framework\TestCase
     public function testUpdate()
     {
         $client = Client::getById(1);
-        $client->setLastName("Worthen");
+        $client->minimal("patch");
 
-        $updated = $client->update();
-        //$updated = Client::patch(1, new Client());
+        $name = "Worthen".rand(0, 9);
 
-        echo ">>> \$client = Client::getById(1)\n";
-        echo ">>> \$client->setLastName('WorthenMan!')\n";
-        echo ">>> \$client->update()\n";
-        echo ($updated === null) ? "NULL\n" : $updated."\n";
-        echo "\n";
+        $client->setLastName($name);
+
+        if($client->validate("patch", $missing))
+        {
+            $json = $client->toJSON("patch");
+            echo $json."\n";
+
+            $updated = $client->update();
+            $this->assertEquals($name ,$updated->getLastName());
+        }
+        else
+        {
+            echo "MISSING: ";
+            print_r($missing);
+            echo "\n";
+        }
+
+
+
+
     }
 
 

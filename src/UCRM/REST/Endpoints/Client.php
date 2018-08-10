@@ -3,7 +3,11 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
-use UCRM\REST\RestClient;
+use MVQN\Annotations\AnnotationReaderException;
+use MVQN\Helpers\PatternMatchException;
+use MVQN\Helpers\ArrayHelperPathException;
+
+use UCRM\REST\Exceptions\RestObjectException;
 use UCRM\REST\Exceptions\RestClientException;
 
 
@@ -22,25 +26,6 @@ use UCRM\REST\Exceptions\RestClientException;
  */
 final class Client extends Endpoint
 {
-    /** @const string  */
-    //protected const ENDPOINT = "/clients";
-
-
-
-    // -----------------------------------------------------------------------------------------------------------------
-    /**
-     * @var int|null
-     */
-    protected $id;
-
-    /**
-     * @return int
-     */
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
     // -----------------------------------------------------------------------------------------------------------------
     /**
      * @var string
@@ -50,55 +35,59 @@ final class Client extends Endpoint
     protected $userIdent;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getUserIdent(): string
+    public function getUserIdent(): ?string
     {
         return $this->userIdent;
     }
 
     /**
      * @param string $value
+     * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setUserIdent(string $value)
+    public function setUserIdent(string $value): Client
     {
         $this->userIdent = $value;
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
     /**
      * @var int
      * @post
-     * @patch
+     * @patch-required
      */
     protected $organizationId;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getOrganizationId(): int
+    public function getOrganizationId(): ?int
     {
         return $this->organizationId;
     }
 
     /**
      * @param int $value
+     * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setOrganizationId(int $value)
+    public function setOrganizationId(int $value): Client
     {
         $this->organizationId = $value;
+        return $this;
     }
 
     /**
      * @var Organization $organization
      */
-    protected $organization = null;
+    private $organization = null;
 
     /**
-     * @return Organization
+     * @return Organization|null
      * @throws RestClientException
      */
-    public function getOrganization(): Organization
+    public function getOrganization(): ?Organization
     {
         // Cache the value here for future lookups...
         if($this->organization === null && $this->organizationId !== null)
@@ -109,59 +98,65 @@ final class Client extends Endpoint
 
     /**
      * @param Organization $value
+     * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setOrganization(Organization $value)
+    public function setOrganization(Organization $value): Client
     {
         $this->organizationId = $value->getId();
         $this->organization = $value;
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
     /**
      * @var bool
      * @post
-     * @patch
+     * @patch-required
      */
     protected $isLead;
 
     /**
-     * @return bool
+     * @return bool|null
      */
-    public function getIsLead(): bool
+    public function getIsLead(): ?bool
     {
         return $this->isLead;
     }
 
     /**
      * @param bool $value
+     * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setIsLead(bool $value)
+    public function setIsLead(bool $value): Client
     {
         $this->isLead = $value;
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
     /**
      * @var int
      * @post
-     * @patch
+     * @patch-required
      */
     protected $clientType;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getClientType(): int
+    public function getClientType(): ?int
     {
         return $this->clientType;
     }
 
     /**
      * @param int $value
+     * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setClientType(int $value)
+    public function setClientType(int $value): Client
     {
         $this->clientType = $value;
+        return $this;
     }
 
     // TODO: Create lookup functionality for ClientType.
@@ -175,19 +170,21 @@ final class Client extends Endpoint
     protected $companyName;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCompanyName(): string
+    public function getCompanyName(): ?string
     {
         return $this->companyName;
     }
 
     /**
      * @param string $value
+     * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setCompanyName(string $value)
+    public function setCompanyName(string $value): Client
     {
         $this->companyName = $value;
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -199,19 +196,21 @@ final class Client extends Endpoint
     protected $companyRegistrationNumber;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCompanyRegistrationNumber(): string
+    public function getCompanyRegistrationNumber(): ?string
     {
         return $this->companyRegistrationNumber;
     }
 
     /**
      * @param string $value
+     * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setCompanyRegistrationNumber(string $value)
+    public function setCompanyRegistrationNumber(string $value): Client
     {
         $this->companyRegistrationNumber = $value;
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -223,19 +222,21 @@ final class Client extends Endpoint
     protected $companyTaxId;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCompanyTaxId(): string
+    public function getCompanyTaxId(): ?string
     {
         return $this->companyTaxId;
     }
 
     /**
      * @param string $value
+     * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setCompanyTaxId(string $value)
+    public function setCompanyTaxId(string $value): Client
     {
         $this->companyTaxId = $value;
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -247,19 +248,21 @@ final class Client extends Endpoint
     protected $companyWebsite;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCompanyWebsite(): string
+    public function getCompanyWebsite(): ?string
     {
         return $this->companyWebsite;
     }
 
     /**
      * @param string $value
+     * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setCompanyWebsite(string $value)
+    public function setCompanyWebsite(string $value): Client
     {
         $this->companyWebsite = $value;
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -271,19 +274,21 @@ final class Client extends Endpoint
     protected $companyContactFirstName;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCompanyContactFirstName(): string
+    public function getCompanyContactFirstName(): ?string
     {
         return $this->companyContactFirstName;
     }
 
     /**
      * @param string $value
+     * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setCompanyContactFirstName(string $value)
+    public function setCompanyContactFirstName(string $value): Client
     {
         $this->companyContactFirstName = $value;
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -295,19 +300,21 @@ final class Client extends Endpoint
     protected $companyContactLastName;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCompanyContactLastName(): string
+    public function getCompanyContactLastName(): ?string
     {
         return $this->companyContactLastName;
     }
 
     /**
      * @param string $value
+     * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setCompanyContactLastName(string $value)
+    public function setCompanyContactLastName(string $value): Client
     {
         $this->companyContactLastName = $value;
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -319,19 +326,21 @@ final class Client extends Endpoint
     protected $firstName;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getFirstName(): string
+    public function getFirstName(): ?string
     {
         return $this->firstName;
     }
 
     /**
      * @param string $value
+     * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setFirstName(string $value)
+    public function setFirstName(string $value): Client
     {
         $this->firstName = $value;
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -343,18 +352,18 @@ final class Client extends Endpoint
     protected $lastName;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getLastName(): string
+    public function getLastName(): ?string
     {
         return $this->lastName;
     }
 
     /**
      * @param string $value
-     * @return Endpoint
+     * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setLastName(string $value): Endpoint
+    public function setLastName(string $value): Client
     {
         $this->lastName = $value;
         return $this;
@@ -369,19 +378,21 @@ final class Client extends Endpoint
     protected $street1;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getStreet1(): string
+    public function getStreet1(): ?string
     {
         return $this->street1;
     }
 
     /**
      * @param string $value
+     * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setStreet1(string $value)
+    public function setStreet1(string $value): Client
     {
         $this->street1 = $value;
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -393,19 +404,21 @@ final class Client extends Endpoint
     protected $street2;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getStreet2(): string
+    public function getStreet2(): ?string
     {
         return $this->street2;
     }
 
     /**
      * @param string $value
+     * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setStreet2(string $value)
+    public function setStreet2(string $value): Client
     {
         $this->street2 = $value;
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -417,19 +430,21 @@ final class Client extends Endpoint
     protected $city;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCity(): string
+    public function getCity(): ?string
     {
         return $this->city;
     }
 
     /**
      * @param string $value
+     * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setCity(string $value)
+    public function setCity(string $value): Client
     {
         $this->city = $value;
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -441,19 +456,21 @@ final class Client extends Endpoint
     protected $countryId;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getCountryId(): int
+    public function getCountryId(): ?int
     {
         return $this->countryId;
     }
 
     /**
      * @param int $value
+     * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setCountryId(int $value)
+    public function setCountryId(int $value): Client
     {
         $this->countryId = $value;
+        return $this;
     }
 
     /**
@@ -462,13 +479,13 @@ final class Client extends Endpoint
     private $country = null;
 
     /**
-     * @return Country
+     * @return Country|null
      * @throws RestClientException
      */
-    public function getCountry(): Country
+    public function getCountry(): ?Country
     {
         // Cache the value here for future lookups...
-        if($this->country === null)
+        if($this->country === null && $this->countryId !== null)
             $this->country = Country::getById($this->countryId);
 
         return $this->country;
@@ -476,11 +493,13 @@ final class Client extends Endpoint
 
     /**
      * @param Country $value
+     * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setCountry(Country $value)
+    public function setCountry(Country $value): Client
     {
         $this->countryId = $value->getId();
         $this->country = $value;
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -492,19 +511,21 @@ final class Client extends Endpoint
     protected $stateId;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getStateId(): int
+    public function getStateId(): ?int
     {
         return $this->stateId;
     }
 
     /**
      * @param int $value
+     * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setStateId(int $value)
+    public function setStateId(int $value): Client
     {
         $this->stateId = $value;
+        return $this;
     }
 
     /**
@@ -513,10 +534,10 @@ final class Client extends Endpoint
     private $state = null;
 
     /**
-     * @return State
+     * @return State|null
      * @throws RestClientException
      */
-    public function getState(): State
+    public function getState(): ?State
     {
         // Cache the value here for future lookups...
         if($this->state === null && $this->stateId !== null)
@@ -527,11 +548,13 @@ final class Client extends Endpoint
 
     /**
      * @param State $value
+     * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setState(State $value)
+    public function setState(State $value): Client
     {
         $this->stateId = $value->getId();
         $this->state = $value;
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -543,43 +566,47 @@ final class Client extends Endpoint
     protected $zipCode;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getZipCode(): string
+    public function getZipCode(): ?string
     {
         return $this->zipCode;
     }
 
     /**
      * @param string $value
+     * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setZipCode(string $value)
+    public function setZipCode(string $value): Client
     {
         $this->zipCode = $value;
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
     /**
      * @var bool
      * @post
-     * @patch
+     * @patch-required
      */
     protected $invoiceAddressSameAsContact;
 
     /**
-     * @return bool
+     * @return bool|null
      */
-    public function getInvoiceAddressSameAsContact(): bool
+    public function getInvoiceAddressSameAsContact(): ?bool
     {
         return $this->invoiceAddressSameAsContact;
     }
 
     /**
      * @param bool $value
+     * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setInvoiceAddressSameAsContact(bool $value)
+    public function setInvoiceAddressSameAsContact(bool $value): Client
     {
         $this->invoiceAddressSameAsContact = $value;
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -591,9 +618,9 @@ final class Client extends Endpoint
     protected $invoiceStreet1;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getInvoiceStreet1(): string
+    public function getInvoiceStreet1(): ?string
     {
         return $this->invoiceStreet1;
     }
@@ -615,19 +642,21 @@ final class Client extends Endpoint
     protected $invoiceStreet2;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getInvoiceStreet2(): string
+    public function getInvoiceStreet2(): ?string
     {
         return $this->invoiceStreet2;
     }
 
     /**
      * @param string $value
+     * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setInvoiceStreet2(string $value)
+    public function setInvoiceStreet2(string $value): Client
     {
         $this->invoiceStreet2 = $value;
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -639,19 +668,21 @@ final class Client extends Endpoint
     protected $invoiceCity;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getInvoiceCity(): string
+    public function getInvoiceCity(): ?string
     {
         return $this->invoiceCity;
     }
 
     /**
      * @param string $value
+     * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setInvoiceCity(string $value)
+    public function setInvoiceCity(string $value): Client
     {
         $this->invoiceCity = $value;
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -672,10 +703,12 @@ final class Client extends Endpoint
 
     /**
      * @param int $value
+     * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setInvoiceCountryId(int $value)
+    public function setInvoiceCountryId(int $value): Client
     {
         $this->invoiceCountryId = $value;
+        return $this;
     }
 
     /**
@@ -684,7 +717,7 @@ final class Client extends Endpoint
     private $invoiceCountry = null;
 
     /**
-     * @return Country
+     * @return Country|null
      * @throws RestClientException
      */
     public function getInvoiceCountry(): ?Country
@@ -698,11 +731,13 @@ final class Client extends Endpoint
 
     /**
      * @param Country $value
+     * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setInvoiceCountry(Country $value)
+    public function setInvoiceCountry(Country $value): Client
     {
         $this->invoiceCountryId = $value->getId();
         $this->invoiceCountry = $value;
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -723,10 +758,12 @@ final class Client extends Endpoint
 
     /**
      * @param int $value
+     * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setInvoiceStateId(int $value)
+    public function setInvoiceStateId(int $value): Client
     {
         $this->invoiceStateId = $value;
+        return $this;
     }
 
     /**
@@ -749,11 +786,13 @@ final class Client extends Endpoint
 
     /**
      * @param State $value
+     * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setInvoiceState(State $value)
+    public function setInvoiceState(State $value): Client
     {
         $this->invoiceStateId = $value->getId();
         $this->invoiceState = $value;
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -765,19 +804,21 @@ final class Client extends Endpoint
     protected $invoiceZipCode;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getInvoiceZipCode(): string
+    public function getInvoiceZipCode(): ?string
     {
         return $this->invoiceZipCode;
     }
 
     /**
      * @param string $value
+     * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setInvoiceZipCode(string $value)
+    public function setInvoiceZipCode(string $value): Client
     {
         $this->invoiceZipCode = $value;
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -789,19 +830,21 @@ final class Client extends Endpoint
     protected $sendInvoiceByPost;
 
     /**
-     * @return bool
+     * @return bool|null
      */
-    public function getSendInvoiceByPost(): bool
+    public function getSendInvoiceByPost(): ?bool
     {
         return $this->sendInvoiceByPost;
     }
 
     /**
      * @param bool $value
+     * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setSendInvoiceByPost(bool $value)
+    public function setSendInvoiceByPost(bool $value): Client
     {
         $this->sendInvoiceByPost = $value;
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -813,19 +856,21 @@ final class Client extends Endpoint
     protected $invoiceMaturityDays;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getInvoiceMaturityDays(): int
+    public function getInvoiceMaturityDays(): ?int
     {
         return $this->invoiceMaturityDays;
     }
 
     /**
      * @param int $value
+     * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setInvoiceMaturityDays(int $value)
+    public function setInvoiceMaturityDays(int $value): Client
     {
         $this->invoiceMaturityDays = $value;
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -837,19 +882,21 @@ final class Client extends Endpoint
     protected $stopServiceDue;
 
     /**
-     * @return bool
+     * @return bool|null
      */
-    public function getStopServiceDue(): bool
+    public function getStopServiceDue(): ?bool
     {
         return $this->stopServiceDue;
     }
 
     /**
      * @param bool $value
+     * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setStopServiceDue(bool $value)
+    public function setStopServiceDue(bool $value): Client
     {
         $this->stopServiceDue = $value;
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -861,19 +908,21 @@ final class Client extends Endpoint
     protected $stopServiceDueDays;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getStopServiceDueDays(): int
+    public function getStopServiceDueDays(): ?int
     {
         return $this->stopServiceDueDays;
     }
 
     /**
      * @param int $value
+     * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setStopServiceDueDays(int $value)
+    public function setStopServiceDueDays(int $value): Client
     {
         $this->stopServiceDueDays = $value;
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -885,19 +934,21 @@ final class Client extends Endpoint
     protected $tax1Id;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getTax1Id(): int
+    public function getTax1Id(): ?int
     {
         return $this->tax1Id;
     }
 
     /**
      * @param int $value
+     * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setTax1Id(int $value)
+    public function setTax1Id(int $value): Client
     {
         $this->tax1Id = $value;
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -909,19 +960,21 @@ final class Client extends Endpoint
     protected $tax2Id;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getTax2Id(): int
+    public function getTax2Id(): ?int
     {
         return $this->tax2Id;
     }
 
     /**
      * @param int $value
+     * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setTax2Id(int $value)
+    public function setTax2Id(int $value): Client
     {
         $this->tax2Id = $value;
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -933,19 +986,21 @@ final class Client extends Endpoint
     protected $tax3Id;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getTax3Id(): int
+    public function getTax3Id(): ?int
     {
         return $this->tax3Id;
     }
 
     /**
      * @param int $value
+     * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setTax3Id(int $value)
+    public function setTax3Id(int $value): Client
     {
         $this->tax3Id = $value;
+        return $this;
     }
 
     // TODO: Add lookup functionality for TaxIDs ???
@@ -954,24 +1009,26 @@ final class Client extends Endpoint
     /**
      * @var string
      * @post
-     * @patch
+     * @patch-required
      */
     protected $registrationDate;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getRegistrationDate(): string
+    public function getRegistrationDate(): ?string
     {
         return $this->registrationDate;
     }
 
     /**
      * @param string $value
+     * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setRegistrationDate(string $value)
+    public function setRegistrationDate(string $value): Client
     {
         $this->registrationDate = $value;
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -983,19 +1040,21 @@ final class Client extends Endpoint
     protected $previousIsp;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPreviousIsp(): string
+    public function getPreviousIsp(): ?string
     {
         return $this->previousIsp;
     }
 
     /**
      * @param string $value
+     * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setPreviousIsp(string $value)
+    public function setPreviousIsp(string $value): Client
     {
         $this->previousIsp = $value;
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -1007,19 +1066,21 @@ final class Client extends Endpoint
     protected $note;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getNote(): string
+    public function getNote(): ?string
     {
         return $this->note;
     }
 
     /**
      * @param string $value
+     * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setNote(string $value)
+    public function setNote(string $value): Client
     {
         $this->note = $value;
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -1031,19 +1092,21 @@ final class Client extends Endpoint
     protected $username;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getUsername(): string
+    public function getUsername(): ?string
     {
         return $this->username;
     }
 
     /**
      * @param string $value
+     * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setUsername(string $value)
+    public function setUsername(string $value): Client
     {
         $this->username = $value;
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -1055,19 +1118,21 @@ final class Client extends Endpoint
     protected $avatarColor;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getAvatarColor(): string
+    public function getAvatarColor(): ?string
     {
         return $this->avatarColor;
     }
 
     /**
      * @param string $value
+     * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setAvatarColor(string $value)
+    public function setAvatarColor(string $value): Client
     {
         $this->avatarColor = $value;
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -1079,33 +1144,75 @@ final class Client extends Endpoint
     protected $contacts;
 
     /**
-     * @return ClientContact[]
+     * @param array|null $set
+     * @param bool $reindex
+     * @return ClientContact[]|null
      */
-    public function getContacts(): array
+    public function getContacts(?array $set = null, bool $reindex = false): ?array
     {
-        $contacts = [];
-        foreach($this->contacts as $contact)
-        {
-            $contacts[] = new ClientContact($contact);
-        }
+        if($this->contacts === null)
+            return null;
 
-        //return $this->contacts;
+        /** @var ClientContact[] $contacts */
+        $contacts = $this->getCollection(ClientContact::class, $this->contacts, $set, $reindex);
         return $contacts;
     }
 
     /**
-     * @param ClientContact[] $values
+     * @param int $id
+     * @param int|null $index
+     * @return ClientContact|null
+     * @throws RestObjectException
      */
-    public function setContacts(array $values)
+    public function getContactById(int $id, int &$index = null): ?ClientContact
     {
-        $contacts = [];
-        foreach($values as $value)
-        {
-            $contacts[] = $value->toFields();
-        }
-
-        $this->contacts = $value;
+        /** @var ClientContact $contact */
+        $contact = $this->getCollectionItemById(ClientContact::class, $this->contacts, $id, $index);
+        return $contact;
     }
+
+    /**
+     * @param ClientContact[]|array $values
+     * @return Client Returns the Client instance, for method chaining purposes.
+     */
+    public function setContacts(array $values): Client
+    {
+        $this->setCollection(ClientContact::class, $this->contacts, $values);
+        return $this;
+    }
+
+    /**
+     * @param int $id
+     * @param ClientContact $contact
+     * @return Client Returns the Client instance, for method chaining purposes.
+     * @throws RestObjectException
+     */
+    public function setContactById(int $id, ClientContact $contact): Client
+    {
+        $this->setCollectionItemById(ClientContact::class, $this->contacts, $id, $contact);
+        return $this;
+    }
+
+
+
+    /*
+
+    public function delContact(ClientContact $contact): Client
+    {
+        $contact = $this->getContactById($contact->getId(), $index);
+        $this->contacts[$index] = null;
+        return $this;
+    }
+
+    public function delContactById(int $id): Client
+    {
+        $contact = $this->getContactById($id, $index);
+        $this->contacts[$index] = null;
+        return $this;
+    }
+
+    */
+
 
     // -----------------------------------------------------------------------------------------------------------------
     /**
@@ -1116,28 +1223,26 @@ final class Client extends Endpoint
     protected $attributes;
 
     /**
-     * @return ClientContactAttribute[]
+     * @return ClientContactAttribute[]|null
      */
-    public function getAttributes(): array
+    public function getAttributes(): ?array
     {
-        $attributes = [];
+        if($this->attributes === null)
+            return null;
 
-        foreach($this->attributes as $attribute)
-            $attributes[] = new ClientContactAttribute($attribute);
-
+        /** @var ClientContactAttribute[] $attributes */
+        $attributes = $this->getCollection(ClientContact::class, $this->attributes);
         return $attributes;
-
-        //return $this->attributes;
     }
 
     /**
-     * @param ClientContactAttribute[] $value
+     * @param ClientContactAttribute[] $values
+     * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setAttributes(array $value)
+    public function setAttributes(array $values): Client
     {
-
-
-        $this->attributes = $value;
+        $this->setCollection(ClientContactAttribute::class, $this->attributes, $values);
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -1147,9 +1252,9 @@ final class Client extends Endpoint
     protected $accountBalance;
 
     /**
-     * @return float
+     * @return float|null
      */
-    public function getAccountBalance(): float
+    public function getAccountBalance(): ?float
     {
         return $this->accountBalance;
     }
@@ -1161,9 +1266,9 @@ final class Client extends Endpoint
     protected $accountCredit;
 
     /**
-     * @return float
+     * @return float|null
      */
-    public function getAccountCredit(): float
+    public function getAccountCredit(): ?float
     {
         return $this->accountCredit;
     }
@@ -1175,9 +1280,9 @@ final class Client extends Endpoint
     protected $accountOutstanding;
 
     /**
-     * @return float
+     * @return float|null
      */
-    public function getAccountOutstanding(): float
+    public function getAccountOutstanding(): ?float
     {
         return $this->accountOutstanding;
     }
@@ -1189,9 +1294,9 @@ final class Client extends Endpoint
     protected $currencyCode;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCurrencyCode(): string
+    public function getCurrencyCode(): ?string
     {
         return $this->currencyCode;
     }
@@ -1203,9 +1308,9 @@ final class Client extends Endpoint
     protected $organizationName;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getOrganizationName(): string
+    public function getOrganizationName(): ?string
     {
         return $this->organizationName;
     }
@@ -1217,9 +1322,9 @@ final class Client extends Endpoint
     protected $bankAccounts;
 
     /**
-     * @return ContactBankAccount[]
+     * @return ContactBankAccount[]|null
      */
-    public function getBankAccounts(): array
+    public function getBankAccounts(): ?array
     {
         return $this->bankAccounts;
     }
@@ -1231,9 +1336,9 @@ final class Client extends Endpoint
     protected $invitationEmailSentDate;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getInvitationEmailSentDate(): string
+    public function getInvitationEmailSentDate(): ?string
     {
         return $this->invitationEmailSentDate;
     }
@@ -1245,47 +1350,40 @@ final class Client extends Endpoint
     protected $tags;
 
     /**
-     * @return ClientContactTag[]
+     * @return ClientContactTag[]|null
      */
-    public function getTags(): array
+    public function getTags(): ?array
     {
-        return $this->tags;
+        if($this->tags === null)
+            return null;
+
+        /** @var ClientContactTag[] $tags */
+        $tags = $this->getCollection(ClientContactTag::class, $this->tags);
+        return $tags;
     }
+
 
 
 
     // -----------------------------------------------------------------------------------------------------------------
-    /**
-     * @return Endpoint|null
-     */
-    public function sendInvitationEmail(): ?Endpoint
-    {
-        return Client::patch($this->id, null, "/send-invitation");
-    }
-
-
-
-
-
-
 
     /**
-     * @return Endpoint|null
+     * @return Client
      * @throws RestClientException
+     * @throws AnnotationReaderException
+     * @throws ArrayHelperPathException
+     * @throws PatternMatchException
+     * @throws \ReflectionException
      */
-    public function insert(): ?Endpoint
+    public function sendInvitationEmail(): Client
     {
-        return Client::post($this);
+        /** @var Client $client */
+        $client = Client::patch($this->id, null, "/send-invitation");
+        return $client;
     }
 
 
-    /**
-     * @return Endpoint|null
-     */
-    public function update(): ?Endpoint
-    {
-        return Client::patch($this->id, $this);
-    }
+
 
 
 

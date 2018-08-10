@@ -3,38 +3,97 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
-
-
 use MVQN\Annotations\AnnotationReader;
 use MVQN\Helpers\ArrayHelpers;
 use MVQN\Helpers\PatternMatcher;
-use UCRM\REST\{RestClient, Scraper};
+use MVQN\Annotations\AnnotationReaderException;
+use MVQN\Helpers\PatternMatchException;
+use MVQN\Helpers\ArrayHelperPathException;
+
+
+use UCRM\REST\RestClient;
 use UCRM\REST\Exceptions\RestClientException;
 
 
 
-
 /**
- * Class Country
+ * Class Endpoint
  *
  * @package UCRM\REST\Endpoints
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  */
 abstract class Endpoint extends RestObject
 {
-    /** @const string  */
-    protected const ENDPOINT = "";
-    /** @const string  */
-    protected const ENDPOINT_PARENT = "";
+    // -----------------------------------------------------------------------------------------------------------------
+    /**
+     * @var int $id
+     */
+    protected $id;
 
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
 
+    // -----------------------------------------------------------------------------------------------------------------
 
+    /**
+     * Inserts (via POST) an Endpoint Object to the REST server.
+     *
+     * @return Endpoint Returns an Endpoint object representing the newly created object on the REST server.
+     * @throws RestClientException Throws an exception if there were any issues during communication to the server.
+     */
+    public function insert(): Endpoint
+    {
+        /** @var Endpoint $class */
+        $class = get_called_class();
 
+        /** @var Endpoint $client */
+        $client = $class::post($this);
+        return $client;
+    }
 
+    // -----------------------------------------------------------------------------------------------------------------
+    /**
+     * Updates (via PATCH) an Endpoint Object to the REST server.
+     *
+     * @return Endpoint Returns an Endpoint object representing the newly created object on the REST server.
+     * @throws RestClientException Throws an exception if there were any issues during communication to the server.
+     * @throws AnnotationReaderException Throws an exception if there were any issues with the AnnotationReader.
+     * @throws ArrayHelperPathException Throws an exception if there were any issues with the Array Helpers.
+     * @throws PatternMatchException Throws an exception if there were any issues with the Pattern Matching system.
+     * @throws \ReflectionException Throws an exception if there were any issues with the Reflection engine.
+     */
+    public function update(): Endpoint
+    {
+        /** @var Endpoint $class */
+        $class = get_called_class();
 
+        /** @var Endpoint $client */
+        $client = $class::patch($this->id, $this);
+        return $client;
+    }
 
+    // -----------------------------------------------------------------------------------------------------------------
+    /**
+     * Deletes (via DELETE) an Endpoint Object to the REST API.
+     *
+     * @return Endpoint
+     */
+    public function delete(): Endpoint
+    {
+        /** @var static $class */
+        $class = get_called_class();
 
+        // TODO: Implement DELETE functionality.
 
+        /** @var Endpoint $client */
+        //$client = $class::delete($this->id, $this);
+        return $client;
+    }
 
 
 
@@ -154,10 +213,17 @@ abstract class Endpoint extends RestObject
     }
 
 
-
-
-
-
+    /**
+     * @param int $id
+     * @param null|Endpoint $data
+     * @param string $suffix
+     * @return null|Endpoint
+     * @throws RestClientException
+     * @throws \MVQN\Annotations\AnnotationReaderException
+     * @throws \MVQN\Helpers\ArrayHelperPathException
+     * @throws \MVQN\Helpers\PatternMatchException
+     * @throws \ReflectionException
+     */
     public static function patch(int $id, ?Endpoint $data, string $suffix = ""): ?Endpoint
     {
         /** @var static */
@@ -178,7 +244,7 @@ abstract class Endpoint extends RestObject
         echo "PATCH $endpoint\n";
 
         // Get an array of all Model properties.
-        $data = ($data !== null) ? $data->toFields("patch") : "{}";
+        $data = ($data !== null) ? $data->toJSON("patch") : "{}";
 
         // TODO: Remove all uneccessary fields!
 

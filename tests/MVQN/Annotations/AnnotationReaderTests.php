@@ -51,4 +51,19 @@ class AnnotationReaderTests extends \PHPUnit\Framework\TestCase
 
 
 
+    public function testParseProperty()
+    {
+        $annotations = new AnnotationReader(Client::class, "firstName", "property");
+        $parameters = $annotations->getParameters();
+
+        $info = $annotations->getPropertyInfo();
+        $this->assertNotEmpty($info);
+
+        print_r($info);
+    }
+
+
+
+
+
 }
