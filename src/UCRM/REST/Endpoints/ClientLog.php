@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
+use UCRM\REST\Endpoints\Helpers\ClientLogHelper;
 use UCRM\REST\Exceptions\RestClientException;
 
 
@@ -14,9 +15,12 @@ use UCRM\REST\Exceptions\RestClientException;
  * @final
  *
  * @endpoints { "get": "/client-logs", "getById": "/client-logs/:id" }
+ * @endpoints { "post": "/client-logs" }
  */
 final class ClientLog extends Endpoint
 {
+    use ClientLogHelper;
+
     // -----------------------------------------------------------------------------------------------------------------
     /**
      * @var int
@@ -44,23 +48,7 @@ final class ClientLog extends Endpoint
         return $this;
     }
 
-    /**
-     * @var Client $client
-     */
-    protected $client = null;
 
-    /**
-     * @return Client|null
-     * @throws RestClientException
-     */
-    public function getClient(): ?Client
-    {
-        // Cache the value here for future lookups...
-        if($this->client === null && $this->clientId !== null)
-            $this->client = Client::getById($this->clientId);
-
-        return $this->client;
-    }
 
     // -----------------------------------------------------------------------------------------------------------------
     /**
@@ -114,23 +102,7 @@ final class ClientLog extends Endpoint
         return $this;
     }
 
-    /**
-     * @var User $user
-     */
-    protected $user = null;
 
-    /**
-     * @return User|null
-     * @throws RestClientException
-     */
-    public function getUser(): ?User
-    {
-        // Cache the value here for future lookups...
-        if($this->user === null && $this->userId !== null)
-            $this->user = User::getById($this->userId);
-
-        return $this->user;
-    }
     // -----------------------------------------------------------------------------------------------------------------
     /**
      * @var string
@@ -148,14 +120,16 @@ final class ClientLog extends Endpoint
     }
 
     /**
-     * @param string $value
+     * @param \DateTime $value
      * @return ClientLog Returns the ClientLog instance, for method chaining purposes.
      */
-    public function setCreatedDate(string $value): ClientLog
+    public function setCreatedDate(\DateTime $value): ClientLog
     {
-        $this->createdDate = $value;
+        $this->createdDate = $value->format("c");
         return $this;
     }
+
+
 
 }
 

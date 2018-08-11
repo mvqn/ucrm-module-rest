@@ -77,5 +77,48 @@ class RestObjectTests extends \PHPUnit\Framework\TestCase
 
 
 
+    public function testFindAllFunc()
+    {
+        $unitedCountries = Country::findAllFunc("name",
+            function($current)
+            {
+                return (strpos($current, "United") === 0);
+            }
+        );
+
+        $this->assertNotEmpty($unitedCountries);
+
+        print_r($unitedCountries);
+    }
+
+    public function testFindAllFuncIn()
+    {
+        $countries = Country::get();
+
+        $unitedCountries = Country::findAllFuncIn($countries, "name",
+            function($current)
+            {
+                return (strpos($current, "United") === 0);
+            }
+        );
+        $this->assertNotEmpty($unitedCountries);
+
+        print_r($unitedCountries);
+
+        // Shoudl return an empty array, as the provided objects are not extended from RestObject
+        $unitedCountries = Country::findAllFuncIn([ "A", "B", "C" ], "name",
+            function($current)
+            {
+                return (strpos($current, "United") === 0);
+            }
+        );
+        $this->assertEmpty($unitedCountries);
+
+
+    }
+
+
+
+
 
 }

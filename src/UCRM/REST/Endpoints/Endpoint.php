@@ -11,6 +11,7 @@ use MVQN\Helpers\PatternMatchException;
 use MVQN\Helpers\ArrayHelperPathException;
 
 
+use UCRM\REST\Exceptions\RestObjectException;
 use UCRM\REST\RestClient;
 use UCRM\REST\Exceptions\RestClientException;
 
@@ -96,17 +97,25 @@ abstract class Endpoint extends RestObject
     }
 
 
+
+
+
+
+
+
+
+
     /**
      * @param string $column
      * @param string $value
-     * @return null|Endpoint
+     * @return Endpoint|null
      * @throws AnnotationReaderException
      * @throws ArrayHelperPathException
      * @throws PatternMatchException
      * @throws RestClientException
      * @throws \ReflectionException
      */
-    public static function find(string $column, string $value): ?Endpoint
+    public static function findFirst(string $column, string $value): ?Endpoint
     {
         /** @var Endpoint $class */
         $class = get_called_class();
@@ -119,12 +128,16 @@ abstract class Endpoint extends RestObject
         {
             if($result->$column === $value)
                 return $result;
+
+
         }
 
         return null;
     }
 
-    public static function findIn(array $collection, string $column, string $value): ?Endpoint
+
+
+    public static function findFirstIn(array $collection, string $column, string $value): ?Endpoint
     {
         /** @var Endpoint $class */
         $class = get_called_class();
@@ -138,6 +151,52 @@ abstract class Endpoint extends RestObject
         return null;
     }
 
+    /**
+     * @param array $matches
+     * @return Endpoint[]|null
+     * @throws AnnotationReaderException
+     * @throws ArrayHelperPathException
+     * @throws PatternMatchException
+     * @throws RestClientException
+     * @throws RestObjectException
+     * @throws \ReflectionException
+     */
+    public static function whereAll(array $matches): ?array
+    {
+        /** @var Endpoint $class */
+        $class = get_called_class();
+
+        // Chekc to make certain all the requested matches are valid columns (properties) on the calling object.
+        foreach($matches as $property => $match)
+        {
+            if(!property_exists($class, $property))
+                throw new RestObjectException("'$class' does not have a $property property for which to match in ".
+                    "Endpoint::where()!");
+        }
+
+        $results = $class::get();
+
+        $foundMatches = [];
+
+        foreach($results as $result)
+        {
+            $fullMatch = true;
+
+            foreach($matches as $property => $match)
+            {
+                if($result->$property !== $match)
+                {
+                    $fullMatch = false;
+                    break;
+                }
+            }
+
+            if($fullMatch)
+                $foundMatches[] = $result;
+        }
+
+        return (count($foundMatches) > 0) ? $foundMatches : null;
+    }
 
 
 

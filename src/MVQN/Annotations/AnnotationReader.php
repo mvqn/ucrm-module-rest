@@ -114,6 +114,9 @@ class AnnotationReader
                 }
                 else
                 {
+                    if(!is_array($value))
+                        throw new AnnotationReaderException("Malformed annotation entry found: '$value'");
+
                     $params[$key] = array_merge($params[$key], $value);
                 }
             }

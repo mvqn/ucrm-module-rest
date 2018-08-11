@@ -7,10 +7,10 @@ use UCRM\REST\RestClient;
 
 
 
-class ClientLogTest extends \PHPUnit\Framework\TestCase
+class ClientHelperTests extends \PHPUnit\Framework\TestCase
 {
     /** @var string Location of the .env file for development. */
-    protected const DOTENV_PATH = __DIR__."/../../../../";
+    protected const DOTENV_PATH = __DIR__."/../../../../../";
 
 
 
@@ -36,22 +36,41 @@ class ClientLogTest extends \PHPUnit\Framework\TestCase
 
     public function testGet()
     {
+        /** @var Client $client */
+        //$client = Client::getById(1);
+        $client = new Client();
 
-        $clientLogs = ClientLog::get();
-        $this->assertNotEmpty($clientLogs);
+        //print_r($client->getOrganization());
 
-        foreach($clientLogs as $clientLog)
-            echo $clientLog."\n";
+        //die();
+
+
+
+        $client->setCountryByName("United States");
+        $client->setStateByCode("NV");
+
+        print_r($client);
+
+        die();
+
+
+
+
+        $organization = $client->getOrganization();
+        echo $organization->getName()."\n";
+
+        $client->setOrganization($organization);
+
+        print_r($client);
+
     }
 
 
     public function testGetById()
     {
-        $clientLog = ClientLog::getById(1);
-        $this->assertInstanceOf(ClientLog::class, $clientLog);
 
-        echo $clientLog."\n";
     }
+
 
 
 

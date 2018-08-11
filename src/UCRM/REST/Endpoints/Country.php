@@ -70,7 +70,7 @@ final class Country extends Endpoint
     /**
      * @var State[] $states
      */
-    protected $states = null;
+    private $states = null;
 
     /**
      * @return State[]

@@ -5,6 +5,8 @@ namespace UCRM\REST\Endpoints;
 
 
 
+use UCRM\REST\Endpoints\Helpers\UserHelper;
+
 /**
  * Class User
  *
@@ -16,35 +18,29 @@ namespace UCRM\REST\Endpoints;
  */
 final class User extends Endpoint
 {
-    /** @const string  */
-    protected const ENDPOINT = "/users/admins";
+    use UserHelper;
+
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
-    protected $id;
-
     /**
-     * @return int
+     * @var string
      */
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
     protected $email;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getEmail(): string
+    public function getEmail(): ?string
     {
         return $this->email;
     }
 
+
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     */
     protected $username;
 
     /**
@@ -55,26 +51,32 @@ final class User extends Endpoint
         return $this->username;
     }
 
+
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     */
     protected $firstName;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getFirstName(): string
+    public function getFirstName(): ?string
     {
         return $this->firstName;
     }
+
+
 
     // -----------------------------------------------------------------------------------------------------------------
     /** @var string  */
     protected $lastName;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getLastName(): string
+    public function getLastName(): ?string
     {
         return $this->lastName;
     }
@@ -84,9 +86,9 @@ final class User extends Endpoint
     protected $avatarColor;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getAvatarColor(): string
+    public function getAvatarColor(): ?string
     {
         return $this->avatarColor;
     }

@@ -117,7 +117,7 @@ final class State extends Endpoint
         $states = $country->getStates();
 
         /** @var State $state */
-        $state = State::findIn($states, "name", $name);
+        $state = State::findFirstIn($states, "name", $name);
 
         return $state;
     }
@@ -130,7 +130,7 @@ final class State extends Endpoint
         $states = $country->getStates();
 
         /** @var State $state */
-        $state = State::findIn($states, "code", $code);
+        $state = State::findFirstIn($states, "code", $code);
 
         return $state;
     }

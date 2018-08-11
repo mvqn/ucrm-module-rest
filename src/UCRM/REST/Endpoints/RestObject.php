@@ -431,4 +431,92 @@ abstract class RestObject implements \JsonSerializable
     }
 
 
+    /**
+     * @param array $collection
+     * @param string $column
+     * @param callable $evaluator
+     * @return array
+     * @throws AnnotationReaderException
+     * @throws RestClientException
+     * @throws \MVQN\Helpers\ArrayHelperPathException
+     * @throws \MVQN\Helpers\PatternMatchException
+     * @throws \ReflectionException
+     */
+    public static function findAllFuncIn(array $collection, string $column, callable $evaluator): array
+    {
+        /** @var Endpoint $class */
+        $class = get_called_class();
+        $results = $class::get();
+
+        // Initialize a collection of matches.
+        $matches = [];
+
+        // Loop through each element of the collection...
+        foreach($collection as $result)
+        {
+            // Run the evaluator callback on the current value...
+            if(is_subclass_of($result, __CLASS__) && $evaluator($result->$column))
+                // AND add the result to the collection of matches if the evaluator returns true.
+                $matches[] = $result;
+        }
+
+        // Return the collection of matches, even if it is empty!
+        return $matches;
+    }
+
+    /**
+     * @param string $column
+     * @param callable $evaluator
+     * @return array
+     * @throws AnnotationReaderException
+     * @throws RestClientException
+     * @throws \MVQN\Helpers\ArrayHelperPathException
+     * @throws \MVQN\Helpers\PatternMatchException
+     * @throws \ReflectionException
+     */
+    public static function findAllFunc(string $column, callable $evaluator): array
+    {
+        /** @var Endpoint $class */
+        $class = get_called_class();
+        $results = $class::get();
+
+        // Initialize a collection of matches.
+        $matches = [];
+
+        // Loop through each element of the collection...
+        foreach($results as $result)
+        {
+            // Run the evaluator callback on the current value...
+            if($evaluator($result->$column))
+                // AND add the result to the collection of matches if the evaluator returns true.
+                $matches[] = $result;
+        }
+
+        // Return the collection of matches, even if it is empty!
+        return $matches;
+    }
+
+
+
+    /**
+     * @param string $column
+     * @param string $value
+     * @return array|null
+     * @throws AnnotationReaderException
+     * @throws RestClientException
+     * @throws \MVQN\Helpers\ArrayHelperPathException
+     * @throws \MVQN\Helpers\PatternMatchException
+     * @throws \ReflectionException
+     */
+    public static function findAll(string $column, string $value): ?array
+    {
+        return self::findAllFunc($column,
+            function($current) use ($value)
+            {
+                return ($current === $value);
+            }
+        );
+    }
+
+
 }

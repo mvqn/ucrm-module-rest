@@ -167,7 +167,7 @@ class _02_ClientTests extends \PHPUnit\Framework\TestCase
      */
     public function testInsert()
     {
-        $this->markTestSkipped("No need to insert additional Clients!");
+        //$this->markTestSkipped("No need to insert additional Clients!");
 
         $organizations = Organization::get();
 
@@ -271,6 +271,7 @@ class _02_ClientTests extends \PHPUnit\Framework\TestCase
 
             // --- CUSTOM ATTRIBUTES -----------------------------------------------------------------------------------
             // TODO: Test Attributes Later!
+
 
         $inserted = $client->insert();
 
