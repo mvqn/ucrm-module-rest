@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace MVQN\Collections;
 
-
-
 /**
  * Class Collection
  *
@@ -25,7 +23,7 @@ class Collection implements \JsonSerializable
 
     // -----------------------------------------------------------------------------------------------------------------
 
-    #region MAGIC METHODS
+    #region METHODS: ( __construct, __toString )
 
     /**
      * Collection constructor.
@@ -40,7 +38,7 @@ class Collection implements \JsonSerializable
             throw new CollectionException("The specified type: '$type' must extend '".Collectible::class."'!");
 
         $this->type = $type;
-        $this->addMany($elements);
+        $this->pushMany($elements);
     }
 
     /**
@@ -58,7 +56,7 @@ class Collection implements \JsonSerializable
 
     // -----------------------------------------------------------------------------------------------------------------
 
-    #region JSON IMPLEMEMENTATION
+    #region METHODS: ( JsonSerializable )
 
     /**
      * Specify data which should be serialized to JSON.
@@ -76,7 +74,7 @@ class Collection implements \JsonSerializable
 
     // -----------------------------------------------------------------------------------------------------------------
 
-    #region GET METHODS
+    #region METHODS: ( elements, at, first, last, all, every, slice )
 
     /**
      * @return Collectible[]
@@ -93,10 +91,7 @@ class Collection implements \JsonSerializable
      */
     public function at(int $index): ?Collectible
     {
-        if(!$this->hasIndex($index))
-            throw new CollectionException("The index: '$index' was not found in the Collection!");
-
-        return $this->elements[$index];
+        return $this->elements[$this->validIndex($index)];
     }
 
     /**
@@ -105,12 +100,7 @@ class Collection implements \JsonSerializable
      */
     public function first(): ?Collectible
     {
-        $index = 0;
-
-        if(!$this->hasIndex($index))
-            throw new CollectionException("The index: '$index' is invalid!");
-
-        return $this->elements[$index];
+        return $this->elements[$this->validIndex(0)];
     }
 
     /**
@@ -119,15 +109,8 @@ class Collection implements \JsonSerializable
      */
     public function last(): ?Collectible
     {
-        $index = $this->count() - 1;
-
-        if(!$this->hasIndex($index))
-            throw new CollectionException("The index: '$index' is invalid!");
-
-        return $this->elements[$index];
+        return $this->elements[$this->validIndex($this->count() - 1)];
     }
-
-
 
     /**
      * @return Collection
@@ -151,12 +134,7 @@ class Collection implements \JsonSerializable
         $collection = [];
 
         foreach($range as $index)
-        {
-            if(!$this->hasIndex($index))
-                throw new CollectionException("The index: '$index' was not found in the Collection!");
-
-            $collection[] = $this->elements[$index];
-        }
+            $collection[] = $this->elements[$this->validIndex($index)];
 
         return new Collection($this->type, $collection);
     }
@@ -167,60 +145,26 @@ class Collection implements \JsonSerializable
      * @return Collection
      * @throws CollectionException
      */
-    public function section(int $index, int $count): Collection
+    public function slice(int $index, int $count): Collection
     {
         $range = range($index, $index + $count);
         return $this->every($range);
-    }
-
-
-
-    public function push(?Collectible $element): Collection
-    {
-
-    }
-
-    public function pop(): ?Collectible
-    {
-
-    }
-
-    public function popMany(int $count): Collection
-    {
-
-    }
-
-
-
-    public function shift(?Collectible $element): Collection
-    {
-
-    }
-
-    public function unshift(): ?Collectible
-    {
-
-    }
-
-    public function unshiftMany(int $count): Collection
-    {
-
     }
 
     #endregion
 
     // -----------------------------------------------------------------------------------------------------------------
 
-    #region ADD METHODS
+    #region METHODS: ( push, pushMany, unshift, unshiftMany, insert, insertMany )
 
     /**
      * @param Collectible|null $element
      * @return Collection
      * @throws CollectionException
      */
-    public function add(?Collectible $element): Collection
+    public function push(?Collectible $element): Collection
     {
-        $this->addMany([ $element ]);
+        $this->pushMany([ $element ]);
         return $this;
     }
 
@@ -229,25 +173,33 @@ class Collection implements \JsonSerializable
      * @return Collection
      * @throws CollectionException
      */
-    public function addMany(array $elements): Collection
+    public function pushMany(array $elements): Collection
     {
-        foreach($elements as $element)
-        {
-            if(!is_subclass_of($element, $this->type, true))
-                throw new CollectionException("The element type: '".get_class($element)."' must match or extend '".
-                    get_class($this->type)."'!");
-
-            $this->elements[] = $element;
-        }
-
+        array_push($this->elements, $this->validElements($elements));
         return $this;
     }
 
-    #endregion
+    /**
+     * @param Collectible|null $element
+     * @return Collection
+     * @throws CollectionException
+     */
+    public function unshift(?Collectible $element): Collection
+    {
+        $this->unshiftMany([ $element ]);
+        return $this;
+    }
 
-    // -----------------------------------------------------------------------------------------------------------------
-
-    #region INSERT METHODS
+    /**
+     * @param array $elements
+     * @return Collection
+     * @throws CollectionException
+     */
+    public function unshiftMany(array $elements): Collection
+    {
+        array_unshift($this->elements, $this->validElements($elements));
+        return $this;
+    }
 
     /**
      * @param int $index
@@ -268,15 +220,7 @@ class Collection implements \JsonSerializable
      */
     public function insertMany(int $index, array $elements): Collection
     {
-        foreach($elements as $element)
-        {
-            if(!is_subclass_of($element, $this->type, true))
-                throw new CollectionException("The element type: '".get_class($element)."' must match or extend '".
-                    get_class($this->type)."'!");
-        }
-
-        array_splice($this->elements, $index, 0, $elements);
-
+        array_splice($this->elements, $index, 0, $this->validElements($elements));
         return $this;
     }
 
@@ -284,7 +228,67 @@ class Collection implements \JsonSerializable
 
     // -----------------------------------------------------------------------------------------------------------------
 
-    #region DELETE METHODS
+    #region METHODS: ( pop, popMany, shift, shiftMany, delete, deleteMany )
+
+    /**
+     * @return Collectible|null
+     * @throws CollectionException
+     */
+    public function pop(): ?Collectible
+    {
+        return $this->popMany(1)[0];
+    }
+
+    /**
+     * @param int $count
+     * @return Collection
+     * @throws CollectionException
+     */
+    public function popMany(int $count): Collection
+    {
+        if($count > $this->count())
+            throw new CollectionException("The count '$count' is more than the number of elements in this Collection!");
+
+        if($count === $this->count())
+            return $this->all();
+
+        $elements = [];
+
+        for($i = 0; $i < $count; $i++)
+            $elements[] = array_pop($this->elements);
+
+        return new Collection($this->type, array_reverse($elements));
+    }
+
+    /**
+     * @return Collectible|null
+     * @throws CollectionException
+     */
+    public function shift(): ?Collectible
+    {
+        return $this->shiftMany(1)[0];
+    }
+
+    /**
+     * @param int $count
+     * @return Collection
+     * @throws CollectionException
+     */
+    public function shiftMany(int $count): Collection
+    {
+        if($count > $this->count())
+            throw new CollectionException("The count '$count' is more than the number of elements in this Collection!");
+
+        if($count === $this->count())
+            return $this->all();
+
+        $elements = [];
+
+        for($i = 0; $i < $count; $i++)
+            $elements[] = array_shift($this->elements);
+
+        return new Collection($this->type, $elements);
+    }
 
     /**
      * @param Collectible|null $element
@@ -335,7 +339,7 @@ class Collection implements \JsonSerializable
 
     // -----------------------------------------------------------------------------------------------------------------
 
-    #region EXEC METHODS
+    #region METHODS: ( each )
 
     /**
      * @param callable $executer
@@ -344,21 +348,11 @@ class Collection implements \JsonSerializable
      */
     public function each(callable $executer, array &$results = null): Collection
     {
-        return $this->execFunc($executer, $results);
-    }
-
-    /**
-     * @param callable $executer
-     * @param array|null $results
-     * @return Collection
-     */
-    public function execFunc(callable $executer, array &$results = null): Collection
-    {
         // Loop through each element of the collection...
         foreach($this->elements as $element)
         {
             // Run the executer callback on the current element and append the result to the results array.
-            $result[] = $executer($element);
+            $results[] = $executer($element);
         }
 
         // Return this Collection for chaining methods!
@@ -369,14 +363,14 @@ class Collection implements \JsonSerializable
 
     // -----------------------------------------------------------------------------------------------------------------
 
-    #region FIND METHODS
+    #region METHODS: ( find, where, whereAll, whereAny )
 
     /**
      * @param callable $evaluator
      * @return Collection
      * @throws CollectionException
      */
-    public function findFunc(callable $evaluator): Collection
+    public function find(callable $evaluator): Collection
     {
         // Initialize a collection of matches.
         $matches = [];
@@ -400,9 +394,9 @@ class Collection implements \JsonSerializable
      * @return Collection
      * @throws CollectionException
      */
-    public function findWhere(string $property, $value): Collection
+    public function where(string $property, $value): Collection
     {
-        return $this->findWhereAll([ $property => $value ]);
+        return $this->whereAll([ $property => $value ]);
     }
 
     /**
@@ -410,7 +404,7 @@ class Collection implements \JsonSerializable
      * @return Collection
      * @throws CollectionException
      */
-    public function findWhereAll(array $comparisons): Collection
+    public function whereAll(array $comparisons): Collection
     {
         foreach($comparisons as $property => $value)
         {
@@ -419,7 +413,7 @@ class Collection implements \JsonSerializable
                 "exist on the Collectible '{$this->type}'");
         }
 
-        return $this->findFunc(
+        return $this->find(
             function ($current) use ($comparisons)
             {
                 foreach ($comparisons as $property => $value)
@@ -438,7 +432,7 @@ class Collection implements \JsonSerializable
      * @return Collection
      * @throws CollectionException
      */
-    public function findWhereAny(array $comparisons): Collection
+    public function whereAny(array $comparisons): Collection
     {
         foreach($comparisons as $property => $value)
         {
@@ -447,7 +441,7 @@ class Collection implements \JsonSerializable
                     "exist on the Collectible '{$this->type}'");
         }
 
-        return $this->findFunc(
+        return $this->find(
             function ($current) use ($comparisons)
             {
                 foreach ($comparisons as $property => $value)
@@ -465,7 +459,30 @@ class Collection implements \JsonSerializable
 
     // -----------------------------------------------------------------------------------------------------------------
 
-    #region UTILITY METHODS
+    #region METHODS: ( count, clear )
+
+    /**
+     * @return int
+     */
+    public function count(): int
+    {
+        return count($this->elements);
+    }
+
+    /**
+     * @return Collection
+     */
+    public function clear(): Collection
+    {
+        $this->elements = [];
+        return $this;
+    }
+
+    #endregion
+
+    // -----------------------------------------------------------------------------------------------------------------
+
+    #region METHODS: ( hasIndex, hasElement, validIndex, validElements )
 
     /**
      * @param int $index
@@ -492,25 +509,37 @@ class Collection implements \JsonSerializable
     }
 
     /**
+     * @param int $index
      * @return int
+     * @throws CollectionException
      */
-    public function count(): int
+    public function validIndex(int $index): int
     {
-        return count($this->elements);
+        if(!$this->hasIndex($index))
+            throw new CollectionException("The index: '$index' is invalid!");
+
+        return $index;
     }
 
+
     /**
-     * @return Collection
+     * @param Collectible[] $elements
+     * @return Collectible[]
+     * @throws CollectionException
      */
-    public function clear(): Collection
+    public function validElements(array $elements): array
     {
-        $this->elements = [];
-        return $this;
+        foreach($elements as $element)
+        {
+            if(!is_subclass_of($element, $this->type, true))
+                throw new CollectionException("The element type: '".get_class($element)."' must match or extend '".
+                    get_class($this->type)."'!");
+        }
+
+        return $elements;
     }
 
     #endregion
-
-
 
 
 }
