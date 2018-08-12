@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace UCRM\REST\Endpoints;
 
 use UCRM\REST\RestClient;
-use UCRM\REST\Exceptions\RestClientException;
 
 use MVQN\Annotations\AnnotationReader;
 
@@ -17,5 +16,9 @@ use MVQN\Annotations\AnnotationReader;
  */
 abstract class Lookup extends RestObject
 {
+
+
+
+
 
 }

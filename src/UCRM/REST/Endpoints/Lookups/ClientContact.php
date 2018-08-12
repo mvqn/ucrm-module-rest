@@ -1,11 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace UCRM\REST\Endpoints;
+namespace UCRM\REST\Endpoints\Lookups;
 
 use UCRM\REST\RestClient;
-use UCRM\REST\Exceptions\RestClientException;
-
+use UCRM\REST\Endpoints\{Lookup,Client};
 
 /**
  * Class ClientContact
@@ -17,6 +16,7 @@ use UCRM\REST\Exceptions\RestClientException;
 final class ClientContact extends Lookup
 {
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var int
      */

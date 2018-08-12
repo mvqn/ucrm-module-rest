@@ -11,9 +11,10 @@ use MVQN\Helpers\PatternMatchException;
 use MVQN\Helpers\ArrayHelperPathException;
 
 
+use UCRM\REST\Endpoints\Exceptions\EndpointException;
 use UCRM\REST\Exceptions\RestObjectException;
+use UCRM\REST\RestClientException;
 use UCRM\REST\RestClient;
-use UCRM\REST\Exceptions\RestClientException;
 
 
 
@@ -38,6 +39,15 @@ abstract class Endpoint extends RestObject
     {
         return $this->id;
     }
+
+
+
+
+
+
+
+
+
 
     // -----------------------------------------------------------------------------------------------------------------
 
@@ -170,7 +180,7 @@ abstract class Endpoint extends RestObject
         foreach($matches as $property => $match)
         {
             if(!property_exists($class, $property))
-                throw new RestObjectException("'$class' does not have a $property property for which to match in ".
+                throw new EndpointException("'$class' does not have a $property property for which to match in ".
                     "Endpoint::where()!");
         }
 
@@ -199,28 +209,40 @@ abstract class Endpoint extends RestObject
     }
 
 
-
-
     /**
+     * @param string $override
      * @return Endpoint[]
      * @throws AnnotationReaderException
      * @throws ArrayHelperPathException
      * @throws PatternMatchException
-     * @throws RestClientException
      * @throws \ReflectionException
+     * @throws \UCRM\REST\RestClientException
      */
-    public static function get(): array
+    public static function get(string $override = ""): array
     {
         $class = get_called_class();
 
-        $annotations = new AnnotationReader($class);
-        $endpoints = $annotations->getParameter("endpoints");
+        $excludeId = false;
 
-        if(!array_key_exists("get", $endpoints) || $endpoints["get"] === "")
-            throw new RestClientException("An '@endpoint { \"get\": \"/examples\" }' annotation on the class must ".
-                "be declared in order to resolve this endpoint'");
+        if($override === "")
+        {
+            $annotations = new AnnotationReader($class);
+            $endpoints = $annotations->getParameter("endpoints");
+            $excludeId = $annotations->hasParameter("excludeId");
 
-        $endpoint = PatternMatcher::interpolateUrl($endpoints["get"], []);
+
+
+            if (!array_key_exists("get", $endpoints) || $endpoints["get"] === "")
+                throw new RestClientException("An '@endpoint { \"get\": \"/examples\" }' annotation on the class must " .
+                    "be declared in order to resolve this endpoint'");
+
+            $endpoint = PatternMatcher::interpolateUrl($endpoints["get"], []);
+        }
+        else
+        {
+            $endpoint = $override;
+        }
+
 
         $response = RestClient::get($endpoint);
 
@@ -234,13 +256,27 @@ abstract class Endpoint extends RestObject
 
         //$objects = json_decode($response, true);
 
+        // IF this is a single element response...
         if(ArrayHelpers::is_assoc($response))
-            //return new $class($response);
-            return [new $class($response)];
+        {
+            $object = new $class($response);
 
+            if($excludeId)
+                unset($object->id);
+
+            //return new $class($response);
+            return [$object];
+        }
+
+        // OTHERWISE, multiple elements have been returned!
         $endpoints = [];
         foreach($response as $object)
+        {
+            if($excludeId)
+                unset($object->id);
+
             $endpoints[] = new $class($object);
+        }
 
         return $endpoints;
     }
@@ -404,3 +440,5 @@ abstract class Endpoint extends RestObject
 
 
 }
+
+

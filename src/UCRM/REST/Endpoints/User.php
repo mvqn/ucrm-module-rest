@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
-
-
 use UCRM\REST\Endpoints\Helpers\UserHelper;
 
 /**
@@ -20,8 +18,8 @@ final class User extends Endpoint
 {
     use UserHelper;
 
-
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var string
      */
@@ -35,8 +33,6 @@ final class User extends Endpoint
         return $this->email;
     }
 
-
-
     // -----------------------------------------------------------------------------------------------------------------
     /**
      * @var string
@@ -44,14 +40,12 @@ final class User extends Endpoint
     protected $username;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getUsername(): string
+    public function getUsername(): ?string
     {
         return $this->username;
     }
-
-
 
     // -----------------------------------------------------------------------------------------------------------------
     /**
@@ -66,8 +60,6 @@ final class User extends Endpoint
     {
         return $this->firstName;
     }
-
-
 
     // -----------------------------------------------------------------------------------------------------------------
     /** @var string  */
@@ -92,6 +84,7 @@ final class User extends Endpoint
     {
         return $this->avatarColor;
     }
+
 
 }
 

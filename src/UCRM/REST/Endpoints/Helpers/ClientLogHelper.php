@@ -8,7 +8,6 @@ use MVQN\Helpers\ArrayHelperPathException;
 use MVQN\Helpers\PatternMatchException;
 use UCRM\REST\Endpoints\ClientLog;
 use UCRM\REST\Endpoints\User;
-use UCRM\REST\Exceptions\RestClientException;
 use UCRM\REST\Exceptions\RestObjectException;
 
 use UCRM\REST\Endpoints\Endpoint;

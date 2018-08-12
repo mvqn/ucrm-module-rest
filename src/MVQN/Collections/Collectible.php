@@ -19,7 +19,6 @@ abstract class Collectible implements \JsonSerializable
      */
     public function jsonSerialize()
     {
-        // Returns an array of all Model properties.
         return get_object_vars($this);
     }
 

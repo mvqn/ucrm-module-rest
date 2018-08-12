@@ -8,9 +8,8 @@ use MVQN\Helpers\PatternMatchException;
 use MVQN\Helpers\ArrayHelperPathException;
 
 use UCRM\REST\Endpoints\Helpers\ClientHelper;
-use UCRM\REST\Exceptions\RestObjectException;
-use UCRM\REST\Exceptions\RestClientException;
 
+use UCRM\REST\Endpoints\Lookups\{ClientBankAccount,ClientContact,ClientContactAttribute,ClientContactType,ClientTag};
 
 
 /**

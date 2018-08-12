@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
+use MVQN\Collections\Collectible;
 use MVQN\Helpers\ArrayHelpers;
 use Nette\PhpGenerator\Helpers;
 use UCRM\REST\Exceptions\RestObjectException;
 use UCRM\REST\RestClient;
-use UCRM\REST\Exceptions\RestClientException;
 use MVQN\Annotations\AnnotationReader;
 use MVQN\Annotations\AnnotationReaderException;
 
@@ -20,7 +20,7 @@ use MVQN\Annotations\AnnotationReaderException;
  * @package UCRM\REST\Endpoints
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  */
-abstract class RestObject implements \JsonSerializable
+abstract class RestObject extends Collectible // implements \JsonSerializable
 {
 
     /**
@@ -37,6 +37,7 @@ abstract class RestObject implements \JsonSerializable
 
 
 
+
     /**
      * Specify data which should be serialized to JSON
      * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
@@ -44,10 +45,15 @@ abstract class RestObject implements \JsonSerializable
      * which is a value of any type other than a resource.
      * @since 5.4.0
      */
+
     public function jsonSerialize()
     {
         // Get an array of all Model properties.
         $assoc = get_object_vars($this);
+
+        if(array_key_exists("id", $assoc))
+            $assoc = ["id" => $assoc["id"]] + $assoc;
+
         return $assoc;
     }
 
@@ -57,16 +63,11 @@ abstract class RestObject implements \JsonSerializable
      *
      * @return string Returns a JSON representation of this Model.
      */
+
     public function __toString()
     {
-        // Get an array of all Model properties.
-        $assoc = get_object_vars($this);
-
-        // Remove any that contain NULL values.
-        //$assoc = array_filter($assoc);
-
         // Return the array as a JSON string.
-        return json_encode($assoc, JSON_UNESCAPED_SLASHES);
+        return json_encode($this, JSON_UNESCAPED_SLASHES);
     }
 
 

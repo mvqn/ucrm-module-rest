@@ -3,10 +3,9 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
+use UCRM\REST\Endpoints\Helpers\StateHelper;
 use UCRM\REST\Exceptions\RestObjectException;
 use UCRM\REST\RestClient;
-use UCRM\REST\Exceptions\RestClientException;
-
 
 /**
  * Class State
@@ -19,70 +18,34 @@ use UCRM\REST\Exceptions\RestClientException;
  */
 final class State extends Endpoint
 {
-    /** @const string  */
-    //protected const ENDPOINT = "/states";
-
-    /** @const string  */
-    //protected const ENDPOINT_PARENT = "/countries";
-
-
+    use StateHelper;
 
     // -----------------------------------------------------------------------------------------------------------------
-    /**
-     * @var int
-     */
-    protected $id;
 
-    /**
-     * @return int
-     */
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
     /**
      * @var int
      */
     protected $countryId;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getCountryId(): int
+    public function getCountryId(): ?int
     {
         return $this->countryId;
     }
 
-    /**
-     * @var Country $country
-     */
-    protected $country = null;
-
-    /**
-     * @return Country
-     * @throws RestClientException
-     */
-    public function getCountry(): Country
-    {
-        // Cache the value here for future lookups...
-        if($this->country === null)
-            $this->country = Country::getById($this->countryId);
-
-        return $this->country;
-    }
-
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var string
      */
     protected $name;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -94,45 +57,11 @@ final class State extends Endpoint
     protected $code;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCode(): string
+    public function getCode(): ?string
     {
         return $this->code;
-    }
-
-
-    /**
-     * @param Country $country
-     * @param string $name
-     * @return State
-     * @throws RestClientException
-     * @throws RestObjectException
-     */
-    public static function getByName(Country $country, string $name): State
-    {
-        if($country === null)
-            throw new RestObjectException("Cannot call State->getByName() without providing a valid Country!");
-
-        $states = $country->getStates();
-
-        /** @var State $state */
-        $state = State::findFirstIn($states, "name", $name);
-
-        return $state;
-    }
-
-    public static function getByCode(Country $country, string $code): State
-    {
-        if($country === null)
-            throw new RestObjectException("Cannot call State->getByName() without providing a valid Country!");
-
-        $states = $country->getStates();
-
-        /** @var State $state */
-        $state = State::findFirstIn($states, "code", $code);
-
-        return $state;
     }
 
 

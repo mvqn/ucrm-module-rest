@@ -204,7 +204,10 @@ class AnnotationReader
         return $info;
     }
 
-
+    public function hasParameter(string $key)
+    {
+        return array_key_exists($key, $this->parameters);
+    }
 
 
 }

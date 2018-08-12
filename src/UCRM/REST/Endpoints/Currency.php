@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
-
-
 /**
  * Class Currency
  *
@@ -16,59 +14,50 @@ namespace UCRM\REST\Endpoints;
  */
 final class Currency extends Endpoint
 {
-    /** @const string  */
-    protected const ENDPOINT = "/currencies";
-
-
+    use Helpers\CurrencyHelper;
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
-    protected $id;
 
-    /**
-     * @return int
-     */
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
     /** @var string  */
     protected $name;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+
+    /**
+     * @var string
+     */
     protected $code;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCode(): string
+    public function getCode(): ?string
     {
         return $this->code;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+
+    /**
+     * @var string
+     */
     protected $symbol;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getSymbol(): string
+    public function getSymbol(): ?string
     {
         return $this->symbol;
     }
-
 
 }
 

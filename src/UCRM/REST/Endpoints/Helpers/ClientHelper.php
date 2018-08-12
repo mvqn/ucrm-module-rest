@@ -6,15 +6,10 @@ namespace UCRM\REST\Endpoints\Helpers;
 use MVQN\Annotations\AnnotationReaderException;
 use MVQN\Helpers\ArrayHelperPathException;
 use MVQN\Helpers\PatternMatchException;
-use UCRM\REST\Exceptions\RestClientException;
-use UCRM\REST\Exceptions\RestObjectException;
 
-use UCRM\REST\Endpoints\Endpoint;
-use UCRM\REST\Endpoints\Organization;
-use UCRM\REST\Endpoints\Client;
-use UCRM\REST\Endpoints\Country;
-use UCRM\REST\Endpoints\State;
-use UCRM\REST\Endpoints\ClientContact;
+//use UCRM\REST\Endpoints\Endpoint;
+use UCRM\REST\Endpoints\{Organization,Client,Country,State};
+use UCRM\REST\Endpoints\Lookups\{ClientBankAccount,ClientContact,ClientContactAttribute,ClientContactType,ClientTag};
 
 
 trait ClientHelper
@@ -482,7 +477,7 @@ trait ClientHelper
         // Noew get all of the states for the selected Country.
         $states = $country->getStates();
         // And then find the state in that Country that has the matching column value.
-        $state = State::findFirstIn($states, $column, $value);
+        $state = State::findFirstIn($states->elements(), $column, $value);
 
         // Set the StateId property on this Client object.
         $this->{$property."Id"} = $state->getId();

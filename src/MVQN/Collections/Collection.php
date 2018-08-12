@@ -9,7 +9,7 @@ namespace MVQN\Collections;
  * @package MVQN\Collections
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  */
-class Collection implements \JsonSerializable
+class Collection implements \JsonSerializable, \Countable, \Iterator
 {
     /**
      * @var Collectible[] $elements
@@ -20,6 +20,11 @@ class Collection implements \JsonSerializable
      * @var string
      */
     protected $type;
+
+
+    private $position;
+
+
 
     // -----------------------------------------------------------------------------------------------------------------
 
@@ -38,7 +43,13 @@ class Collection implements \JsonSerializable
             throw new CollectionException("The specified type: '$type' must extend '".Collectible::class."'!");
 
         $this->type = $type;
-        $this->pushMany($elements);
+        $this->elements = [];
+
+        if($elements !== [])
+            $this->pushMany($elements);
+            //$this->elements = $elements;
+
+        $this->position = 0;
     }
 
     /**
@@ -54,9 +65,19 @@ class Collection implements \JsonSerializable
 
     #endregion
 
+    /**
+     * @return string
+     */
+    public function type(): string
+    {
+        return $this->type;
+    }
+
+
+
     // -----------------------------------------------------------------------------------------------------------------
 
-    #region METHODS: ( JsonSerializable )
+    #region METHODS: ( for JsonSerializable )
 
     /**
      * Specify data which should be serialized to JSON.
@@ -67,7 +88,63 @@ class Collection implements \JsonSerializable
     public function jsonSerialize()
     {
         // Returns an array of all Model properties.
-        return get_object_vars($this);
+        return $this->elements;
+    }
+
+    #endregion
+
+    #region METHODS: ( for Countable )
+
+    /**
+     * @return int
+     */
+    public function count(): int
+    {
+        return count($this->elements);
+    }
+
+    #endregion
+
+    #region METHODS: ( for Iterator )
+
+    /**
+     * Moves the iterator cursor to the beginning.
+     */
+    public function rewind(): void
+    {
+        $this->position = 0;
+    }
+
+    /**
+     * @return Collectible Returns the currently iterated item.
+     */
+    public function current(): Collectible
+    {
+        return $this->elements[$this->position];
+    }
+
+    /**
+     * @return int Returns the current position as the iterator key.
+     */
+    public function key(): int
+    {
+        return $this->position;
+    }
+
+    /**
+     * Moves the iterator cursor to the next position.
+     */
+    public function next(): void
+    {
+        ++$this->position;
+    }
+
+    /**
+     * @return bool Returns true if there is a valid element at the current position, otherwise false.
+     */
+    public function valid(): bool
+    {
+        return isset($this->elements[$this->position]);
     }
 
     #endregion
@@ -100,7 +177,11 @@ class Collection implements \JsonSerializable
      */
     public function first(): ?Collectible
     {
-        return $this->elements[$this->validIndex(0)];
+        if(!$this->hasIndex(0))
+            return null;
+
+        //return $this->elements[$this->validIndex(0)];
+        return $this->elements[0];
     }
 
     /**
@@ -168,14 +249,17 @@ class Collection implements \JsonSerializable
         return $this;
     }
 
+
     /**
-     * @param Collectible[] $elements
-     * @return Collection
-     * @throws CollectionException
+     * Appends the specified elements to the end of the Collection.
+     *
+     * @param Collectible[] $elements An array of Collectible objects.
+     * @return Collection Returns the current Collection after the appended values.
+     * @throws CollectionException Throws an exception if there were any issues appneding the elements.
      */
     public function pushMany(array $elements): Collection
     {
-        array_push($this->elements, $this->validElements($elements));
+        $this->elements += $this->validElements($elements);
         return $this;
     }
 
@@ -359,6 +443,24 @@ class Collection implements \JsonSerializable
         return $this;
     }
 
+
+    public function convert(array $array): Collection
+    {
+        $elements = [];
+
+        foreach($array as $element)
+        {
+            if(!is_array($element))
+                throw new CollectionException("Elements must be an array to attempt conversion!");
+
+            $elements[] = new $this->type($element);
+        }
+
+        $this->elements = $elements;
+
+        return $this;
+    }
+
     #endregion
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -418,7 +520,15 @@ class Collection implements \JsonSerializable
             {
                 foreach ($comparisons as $property => $value)
                 {
-                    if ($current->$property !== $value)
+                    $getter = "get".ucfirst($property);
+
+                    if(!method_exists($current, $getter))
+                        throw new CollectionException("Cannot compare a private/protected property directly and no ".
+                        "'{$current}->{$getter}()' method could be found!");
+
+                    // TODO: Handle code to check for private/protected properties ???
+
+                    if ($current->$getter() !== $value)
                         return false;
                 }
 
@@ -459,15 +569,7 @@ class Collection implements \JsonSerializable
 
     // -----------------------------------------------------------------------------------------------------------------
 
-    #region METHODS: ( count, clear )
-
-    /**
-     * @return int
-     */
-    public function count(): int
-    {
-        return count($this->elements);
-    }
+    #region METHODS: ( clear )
 
     /**
      * @return Collection
@@ -531,9 +633,9 @@ class Collection implements \JsonSerializable
     {
         foreach($elements as $element)
         {
-            if(!is_subclass_of($element, $this->type, true))
+            if(get_class($element) != $this->type && !is_subclass_of($element, $this->type, true))
                 throw new CollectionException("The element type: '".get_class($element)."' must match or extend '".
-                    get_class($this->type)."'!");
+                    $this->type."'!");
         }
 
         return $elements;
