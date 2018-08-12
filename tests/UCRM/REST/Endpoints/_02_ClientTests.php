@@ -5,20 +5,20 @@ namespace UCRM\REST\Endpoints;
 
 use UCRM\REST\RestClient;
 
+use UCRM\REST\Endpoints\Lookups\ClientContact;
 
 
 class _02_ClientTests extends \PHPUnit\Framework\TestCase
 {
+    // =================================================================================================================
+    // INITIALIZATION
+    // -----------------------------------------------------------------------------------------------------------------
+
     /** @var string Location of the .env file for development. */
     protected const DOTENV_PATH = __DIR__."/../../../../";
 
+    // -----------------------------------------------------------------------------------------------------------------
 
-
-    /**
-     * Sets up the RestClient for testing.
-     *
-     * @throws \UCRM\REST\Exceptions\RestClientException
-     */
     protected function setUp()
     {
         // Load ENV variables from a file during development.
@@ -32,18 +32,16 @@ class _02_ClientTests extends \PHPUnit\Framework\TestCase
         RestClient::ucrmKey(getenv("REST_KEY"));
     }
 
-    /**
-     * Tests all Client getter methods!
-     *
-     * @throws \ReflectionException
-     * @throws \UCRM\REST\Exceptions\RestClientException
-     */
-    public function testGetters()
+    // =================================================================================================================
+    // TESTS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    public function testAllGetters()
     {
         $client = Client::getById(1);
         $this->assertNotEmpty($client);
 
-        echo ">>> ClientTests->testGetters()\n";
+        echo ">>> ClientTests->testAllGetters()\n";
 
         $reflection = new \ReflectionClass(Client::class);
         $properties = $reflection->getProperties(\ReflectionProperty::IS_PROTECTED);
@@ -272,10 +270,13 @@ class _02_ClientTests extends \PHPUnit\Framework\TestCase
             // --- CUSTOM ATTRIBUTES -----------------------------------------------------------------------------------
             // TODO: Test Attributes Later!
 
+        print_r($client);
 
-        $inserted = $client->insert();
+        $this->markTestSkipped("Skip so we do not keep creating Clients in the UCRM!");
 
-        print_r($inserted);
+        //$inserted = $client->insert();
+
+        //print_r($inserted);
     }
 
 
