@@ -3,8 +3,12 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
-
-
+use MVQN\Collections\Exceptions\CollectionException;
+use UCRM\REST\Endpoints\Collections\InvoiceItemCollection;
+use UCRM\REST\Endpoints\Collections\InvoiceTaxCollection;
+use UCRM\REST\Endpoints\Collections\PaymentCoverCollection;
+use UCRM\REST\Endpoints\Lookups\InvoiceItem;
+use UCRM\REST\Endpoints\Lookups\InvoiceTax;
 
 /**
  * Class Invoice
@@ -17,599 +21,731 @@ namespace UCRM\REST\Endpoints;
  */
 final class Invoice extends Endpoint
 {
-    /** @const string  */
-    //protected const ENDPOINT = "/invoices";
-
-
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
-    protected $id;
 
     /**
-     * @return int
+     * @var int
      */
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
     protected $clientId;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getClientId(): int
+    public function getClientId(): ?int
     {
         return $this->clientId;
     }
 
+
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+
+    /**
+     * @var string
+     */
     protected $number;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getNumber(): string
+    public function getNumber(): ?string
     {
         return $this->number;
     }
 
+
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+
+    /**
+     * @var string
+     */
     protected $createdDate;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCreatedDate(): string
+    public function getCreatedDate(): ?string
     {
         return $this->createdDate;
     }
 
+
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+
+    /**
+     * @var string
+     */
     protected $emailSentDate;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getEmailSentDate(): string
+    public function getEmailSentDate(): ?string
     {
         return $this->emailSentDate;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
+
+    /**
+     * @var int
+     */
     protected $maturityDays;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getMaturityDays(): int
+    public function getMaturityDays(): ?int
     {
         return $this->maturityDays;
     }
 
+
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+
+    /**
+     * @var string
+     */
     protected $notes;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getNotes(): string
+    public function getNotes(): ?string
     {
         return $this->notes;
     }
 
+
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+
+    /**
+     * @var string
+     */
     protected $adminNotes;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getAdminNotes(): string
+    public function getAdminNotes(): ?string
     {
         return $this->adminNotes;
     }
 
+
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
+
+    /**
+     * @var int
+     */
     protected $invoiceTemplateId;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getInvoiceTemplateId(): int
+    public function getInvoiceTemplateId(): ?int
     {
         return $this->invoiceTemplateId;
     }
 
+
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+
+    /**
+     * @var string
+     */
     protected $organizationName;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getOrganizationName(): string
+    public function getOrganizationName(): ?string
     {
         return $this->organizationName;
     }
 
+
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+
+    /**
+     * @var string
+     */
     protected $organizationRegistrationNumber;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getOrganizationRegistrationNumber(): string
+    public function getOrganizationRegistrationNumber(): ?string
     {
         return $this->organizationRegistrationNumber;
     }
 
+
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+
+    /**
+     * @var string
+     */
     protected $organizationTaxId;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getOrganizationTaxId(): string
+    public function getOrganizationTaxId(): ?string
     {
         return $this->organizationTaxId;
     }
 
+
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+
+    /**
+     * @var string
+     */
     protected $organizationStreet1;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getOrganizationStreet1(): string
+    public function getOrganizationStreet1(): ?string
     {
         return $this->organizationStreet1;
     }
 
+
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+
+    /**
+     * @var string
+     */
     protected $organizationStreet2;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getOrganizationStreet2(): string
+    public function getOrganizationStreet2(): ?string
     {
         return $this->organizationStreet2;
     }
 
+
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+
+    /**
+     * @var string
+     */
     protected $organizationCity;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getOrganizationCity(): string
+    public function getOrganizationCity(): ?string
     {
         return $this->organizationCity;
     }
 
+
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
+
+    /**
+     * @var int
+     */
     protected $organizationCountryId;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getOrganizationCountryId(): int
+    public function getOrganizationCountryId(): ?int
     {
         return $this->organizationCountryId;
     }
 
-    /** @var Country $organzationCountry */
-    protected $organizationCountry = null;
 
-    /**
-     * @return Country
-     * @throws RestClientException
-     */
-    public function getOrganizationCountry(): Country
-    {
-        // Cache the value here for future lookups...
-        if($this->organizationCountry === null)
-            $this->organizationCountry = Country::getById($this->organizationCountryId);
-
-        return $this->organizationCountry;
-    }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
+
+    /**
+     * @var int
+     */
     protected $organizationStateId;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getOrganizationStateId(): int
+    public function getOrganizationStateId(): ?int
     {
         return $this->organizationStateId;
     }
 
-    /** @var State $organizationState */
-    protected $organizationState = null;
 
-    /**
-     * @return State
-     * @throws RestClientException
-     */
-    public function getOrganizationState(): State
-    {
-        // Cache the value here for future lookups...
-        if($this->organizationState === null)
-            $this->organizationState = State::getById($this->organizationStateId);
-
-        return $this->organizationState;
-    }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+
+    /**
+     * @var string
+     */
     protected $organizationZipCode;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getOrganizationZipCode(): string
+    public function getOrganizationZipCode(): ?string
     {
         return $this->organizationZipCode;
     }
 
+
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+
+    /**
+     * @var string
+     */
     protected $organizationBankAccountName;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getOrganizationBankAccountName(): string
+    public function getOrganizationBankAccountName(): ?string
     {
         return $this->organizationBankAccountName;
     }
 
+
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+
+    /**
+     * @var string
+     */
     protected $organizationBankAccountField1;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getOrganizationBankAccountField1(): string
+    public function getOrganizationBankAccountField1(): ?string
     {
         return $this->organizationBankAccountField1;
     }
 
+
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+
+    /**
+     * @var string
+     */
     protected $organizationBankAccountField2;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getOrganizationBankAccountField2(): string
+    public function getOrganizationBankAccountField2(): ?string
     {
         return $this->organizationBankAccountField2;
     }
 
+
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+
+    /**
+     * @var string
+     */
     protected $clientFirstName;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getClientFirstName(): string
+    public function getClientFirstName(): ?string
     {
         return $this->clientFirstName;
     }
 
+
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+
+    /**
+     * @var string
+     */
     protected $clientLastName;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getClientLastName(): string
+    public function getClientLastName(): ?string
     {
         return $this->clientLastName;
     }
 
+
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+
+    /**
+     * @var string
+     */
     protected $clientCompanyName;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getClientCompanyName(): string
+    public function getClientCompanyName(): ?string
     {
         return $this->clientCompanyName;
     }
 
+
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+
+    /**
+     * @var string
+     */
     protected $clientCompanyRegistrationNumber;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getClientCompanyRegistrationNumber(): string
+    public function getClientCompanyRegistrationNumber(): ?string
     {
         return $this->clientCompanyRegistrationNumber;
     }
 
+
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+
+    /**
+     * @var string
+     */
     protected $clientCompanyTaxId;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getClientCompanyTaxId(): string
+    public function getClientCompanyTaxId(): ?string
     {
         return $this->clientCompanyTaxId;
     }
 
+
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+
+    /**
+     * @var string
+     */
     protected $clientStreet1;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getClientStreet1(): string
+    public function getClientStreet1(): ?string
     {
         return $this->clientStreet1;
     }
 
+
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+
+    /**
+     * @var string
+     */
     protected $clientStreet2;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getClientStreet2(): string
+    public function getClientStreet2(): ?string
     {
         return $this->clientStreet2;
     }
 
+
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+
+    /**
+     * @var string
+     */
     protected $clientCity;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getClientCity(): string
+    public function getClientCity(): ?string
     {
         return $this->clientCity;
     }
 
+
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
+
+    /**
+     * @var int
+     */
     protected $clientCountryId;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getClientCountryId(): int
+    public function getClientCountryId(): ?int
     {
         return $this->clientCountryId;
     }
 
-    /** @var Country $clientCountry */
-    protected $clientCountry = null;
 
-    /**
-     * @return Country
-     * @throws RestClientException
-     */
-    public function getClientCountry(): Country
-    {
-        // Cache the value here for future lookups...
-        if($this->clientCountry === null)
-            $this->clientCountry = Country::getById($this->clientCountryId);
-
-        return $this->clientCountry;
-    }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
+
+    /**
+     * @var int
+     */
     protected $clientStateId;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getClientStateId(): int
+    public function getClientStateId(): ?int
     {
         return $this->clientStateId;
     }
 
-    /** @var State $clientState */
-    protected $clientState = null;
 
-    /**
-     * @return State
-     * @throws RestClientException
-     */
-    public function getClientState(): State
-    {
-        // Cache the value here for future lookups...
-        if($this->clientState === null)
-            $this->clientState = State::getById($this->clientStateId);
-
-        return $this->clientState;
-    }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+
+    /**
+     * @var string
+     */
     protected $clientZipCode;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getClientZipCode(): string
+    public function getClientZipCode(): ?string
     {
         return $this->clientZipCode;
     }
 
+
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+
+    /**
+     * @var string
+     */
     protected $dueDate;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getDueDate(): string
+    public function getDueDate(): ?string
     {
         return $this->dueDate;
     }
 
+
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var InvoiceItem[]  */
+
+    /**
+     * @var InvoiceItem[]
+     */
     protected $items;
 
     /**
-     * @return InvoiceItem[]
+     * @return InvoiceItemCollection
+     * @throws CollectionException
      */
-    public function getItems(): array
+    public function getItems(): InvoiceItemCollection
     {
-        return $this->items;
+        return new InvoiceItemCollection($this->items);
     }
 
+
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var float  */
+
+    /**
+     * @var float
+     */
     protected $subtotal;
 
     /**
-     * @return float
+     * @return float|null
      */
-    public function getSubtotal(): float
+    public function getSubtotal(): ?float
     {
         return $this->subtotal;
     }
 
+
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var float  */
+
+    /**
+     * @var float
+     */
     protected $discount;
 
     /**
-     * @return float
+     * @return float|null
      */
-    public function getDiscount(): float
+    public function getDiscount(): ?float
     {
         return $this->discount;
     }
 
+
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+
+    /**
+     * @var string
+     */
     protected $discountLabel;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getDiscountLabel(): string
+    public function getDiscountLabel(): ?string
     {
         return $this->discountLabel;
     }
 
+
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var InvoiceTax[]  */
+
+    /**
+     * @var InvoiceTax[]
+     */
     protected $taxes;
 
     /**
-     * @return InvoiceTax[]
+     * @return InvoiceTaxCollection
+     * @throws CollectionException
      */
-    public function getTaxes(): array
+    public function getTaxes(): InvoiceTaxCollection
     {
-        return $this->taxes;
+        return new InvoiceTaxCollection($this->taxes);
     }
 
+
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var float  */
+
+    /**
+     * @var float
+     */
     protected $total;
 
     /**
-     * @return float
+     * @return float|null
      */
-    public function getTotal(): float
+    public function getTotal(): ?float
     {
         return $this->total;
     }
 
+
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var float  */
+
+    /**
+     * @var float
+     */
     protected $amountPaid;
 
     /**
-     * @return float
+     * @return float|null
      */
-    public function getAmountPaid(): float
+    public function getAmountPaid(): ?float
     {
         return $this->amountPaid;
     }
 
+
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+
+    /**
+     * @var string
+     */
     protected $currencyCode;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCurrencyCode(): string
+    public function getCurrencyCode(): ?string
     {
         return $this->currencyCode;
     }
 
+
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var float  */
+
+    /**
+     * @var float
+     */
     protected $status;
 
     /**
-     * @return float
+     * @return float|null
      */
-    public function getStatus(): float
+    public function getStatus(): ?float
     {
         return $this->status;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var PaymentCover[]  */
+
+    /**
+     * @var PaymentCover[]
+     */
     protected $paymentCovers;
 
     /**
-     * @return PaymentCover[]
+     * @return PaymentCoverCollection
+     * @throws CollectionException
      */
-    public function getPaymentCovers(): array
+    public function getPaymentCovers(): PaymentCoverCollection
     {
-        return $this->paymentCovers;
+        return new PaymentCoverCollection($this->paymentCovers);
     }
 
+
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var bool  */
+
+    /**
+     * @var bool
+     */
     protected $uncollectible;
 
     /**
-     * @return bool
+     * @return bool|null
      */
-    public function getUncollectible(): bool
+    public function getUncollectible(): ?bool
     {
         return $this->uncollectible;
     }

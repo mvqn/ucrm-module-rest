@@ -7,7 +7,7 @@ use UCRM\REST\RestClient;
 
 
 
-class PaymentTest extends \PHPUnit\Framework\TestCase
+class _22_TaxTests extends \PHPUnit\Framework\TestCase
 {
     /** @var string Location of the .env file for development. */
     protected const DOTENV_PATH = __DIR__."/../../../../";
@@ -36,27 +36,41 @@ class PaymentTest extends \PHPUnit\Framework\TestCase
 
     public function testGet()
     {
-        $this->markTestSkipped("No payments are entered in UCRM!");
+        $this->markTestSkipped("No taxes are entered in UCRM!");
 
-        $payments = Payment::get();
-        $this->assertEmpty($payments);
+        $taxes = Tax::get();
+        $this->assertNotEmpty($taxes);
 
-        foreach($payments as $payment)
-            echo $payment."\n";
+        echo ">>> Tax::get()\n";
+
+        foreach($taxes as $tax)
+            echo $tax."\n";
+
+        echo "\n";
     }
 
+    public function testGetCountryById()
+    {
+        $this->markTestSkipped("No taxes are entered in UCRM!");
 
+        $tax = Tax::getById(1);
+        $this->assertNotNull($tax);
+
+        echo ">>> Tax::getById(1)\n";
+        echo $tax."\n";
+        echo "\n";
+
+    }
+
+    /*
     public function testGetById()
     {
-        $this->markTestSkipped("No payments are entered in UCRM!");
+        $client = Client::getById(1);
+        $this->assertInstanceOf(Client::class, $client);
 
-        $payment = Payment::getById(1);
-        $this->assertInstanceOf(Payment::class, $payment);
-        $this->assertNull($payment);
-
-        echo $payment."\n";
+        echo $client."\n";
     }
-
+    */
 
 
 

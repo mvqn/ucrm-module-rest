@@ -1,9 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace UCRM\REST\Endpoints;
+namespace UCRM\REST\Endpoints\Lookups;
 
-
+use UCRM\REST\Endpoints\Invoice;
+use UCRM\REST\Endpoints\Payment;
+use UCRM\REST\Endpoints\Refund;
+use UCRM\REST\Exceptions\RestClientException;
 
 /**
  * Class PaymentCover
