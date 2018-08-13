@@ -23,7 +23,9 @@ class Collection implements \JsonSerializable, \Countable, \Iterator
      */
     protected $type;
 
-
+    /**
+     * @var int
+     */
     private $position;
 
 

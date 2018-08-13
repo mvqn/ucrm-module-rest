@@ -134,8 +134,8 @@ class AnnotationReader
 
     /**
      * @param string $key
-     * @return mixed|null
-     * @throws \MVQN\Helpers\ArrayHelperPathException
+     * @return array|mixed|null
+     * @throws \MVQN\Helpers\Exceptions\ArrayHelperException
      */
     public function getParameter(string $key)
     {

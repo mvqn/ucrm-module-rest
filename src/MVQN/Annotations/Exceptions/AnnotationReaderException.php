@@ -5,6 +5,7 @@ namespace MVQN\Annotations\Exceptions;
 
 /**
  * Class AnnotationReaderException
+ *
  * @package MVQN\Annotations
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  */

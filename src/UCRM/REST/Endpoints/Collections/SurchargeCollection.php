@@ -3,16 +3,15 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Collections;
 
-use MVQN\Collections\Collection;
+use MVQN\Collections\{Collection,Exceptions\CollectionException};
 use UCRM\REST\Endpoints\Surcharge;
 
 final class SurchargeCollection extends Collection
 {
     /**
      * SurchargeCollection constructor.
-     *
-     * @param Surcharge[] $elements
-     * @throws \MVQN\Collections\Exceptions\CollectionException
+     * @param array $elements
+     * @throws CollectionException
      */
     public function __construct(array $elements = [])
     {

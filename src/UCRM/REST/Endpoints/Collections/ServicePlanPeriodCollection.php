@@ -3,16 +3,15 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Collections;
 
-use MVQN\Collections\Collection;
+use MVQN\Collections\{Collection,Exceptions\CollectionException};
 use UCRM\REST\Endpoints\Lookups\ServicePlanPeriod;
 
 final class ServicePlanPeriodCollection extends Collection
 {
     /**
-     * ServicePlanCollection constructor.
-     *
-     * @param ServicePlanPeriod[] $elements
-     * @throws \MVQN\Collections\CollectionException
+     * ServicePlanPeriodCollection constructor.
+     * @param array $elements
+     * @throws CollectionException
      */
     public function __construct(array $elements = [])
     {

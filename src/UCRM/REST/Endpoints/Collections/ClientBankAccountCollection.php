@@ -3,16 +3,15 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Collections;
 
-use MVQN\Collections\Collection;
+use MVQN\Collections\{Collection,Exceptions\CollectionException};
 use UCRM\REST\Endpoints\Lookups\ClientBankAccount;
 
 final class ClientBankAccountCollection extends Collection
 {
     /**
-     * ClientTagCollection constructor.
-     *
-     * @param ClientBankAccount[] $elements
-     * @throws \MVQN\Collections\CollectionException
+     * ClientBankAccountCollection constructor.
+     * @param array $elements
+     * @throws CollectionException
      */
     public function __construct(array $elements = [])
     {
