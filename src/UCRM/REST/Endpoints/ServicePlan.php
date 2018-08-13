@@ -5,6 +5,10 @@ namespace UCRM\REST\Endpoints;
 
 
 
+use UCRM\REST\Endpoints\Collections\ServicePlanPeriodCollection;
+use UCRM\REST\Endpoints\Helpers\ServicePlanHelper;
+use UCRM\REST\Endpoints\Lookups\ServicePlanPeriod;
+
 /**
  * Class ServicePlan
  *
@@ -13,138 +17,263 @@ namespace UCRM\REST\Endpoints;
  * @final
  *
  * @endpoints { "get": "/service-plans", "getById": "/service-plans/:id" }
+ * @endpoints { "post": "/service-plans" }
+ * @endpoints { "patch": "/service-plans" }
  */
 final class ServicePlan extends Endpoint
 {
-    /** @const string  */
-    //protected const ENDPOINT = "/service-plans";
+    use ServicePlanHelper;
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+
+    /**
+     * @var string
+     * @post-required
+     * @patch-required
+     */
     protected $name;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
 
+    /**
+     * @param string $value
+     * @return ServicePlan
+     */
+    public function setName(string $value): ServicePlan
+    {
+        $this->name = $value;
+        return $this;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
+
+    /**
+     * @var int
+     * @post
+     * @patch
+     */
     protected $organizationId;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getOrganizationId(): int
+    public function getOrganizationId(): ?int
     {
         return $this->organizationId;
     }
 
-    /** @var Organization $organization */
-    protected $organization = null;
-
     /**
-     * @return Organization
-     * @throws RestClientException
+     * @param int $value
+     * @return ServicePlan
      */
-    public function getClient(): Organization
+    public function setOrganizationId(int $value): ServicePlan
     {
-        // Cache the value here for future lookups...
-        if($this->organization === null)
-            $this->organization = Organization::getById($this->organizationId);
-
-        return $this->organization;
+        $this->organizationId = $value;
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+
+    /**
+     * @var string
+     * @post
+     * @patch
+     */
     protected $invoiceLabel;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getInvoiceLabel(): string
+    public function getInvoiceLabel(): ?string
     {
         return $this->invoiceLabel;
     }
 
+    /**
+     * @param string $value
+     * @return ServicePlan
+     */
+    public function setInvoiceLabel(string $value): ServicePlan
+    {
+        $this->invoiceLabel = $value;
+        return $this;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
+
+    /**
+     * @var float
+     * @post
+     * @patch
+     */
     protected $downloadBurst;
 
     /**
-     * @return int
+     * @return float|null
      */
-    public function getDownloadBurst(): int
+    public function getDownloadBurst(): ?float
     {
         return $this->downloadBurst;
     }
 
+    /**
+     * @param float $value
+     * @return ServicePlan
+     */
+    public function setDownloadBurst(float $value): ServicePlan
+    {
+        $this->downloadBurst = $value;
+        return $this;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
+
+    /**
+     * @var float
+     * @post
+     * @patch
+     */
     protected $uploadBurst;
 
     /**
-     * @return int
+     * @return float|null
      */
-    public function getUploadBurst(): int
+    public function getUploadBurst(): ?float
     {
         return $this->uploadBurst;
     }
 
+    /**
+     * @param float $value
+     * @return ServicePlan
+     */
+    public function setUploadBurst(float $value): ServicePlan
+    {
+        $this->uploadBurst = $value;
+        return $this;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
+
+    /**
+     * @var float
+     * @post
+     * @patch
+     */
     protected $downloadSpeed;
 
     /**
-     * @return int
+     * @return float|null
      */
-    public function getDownloadSpeed(): int
+    public function getDownloadSpeed(): ?float
     {
         return $this->downloadSpeed;
     }
 
+    /**
+     * @param float $value
+     * @return ServicePlan
+     */
+    public function setDownloadSpeed(float $value): ServicePlan
+    {
+        $this->downloadSpeed = $value;
+        return $this;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
+
+    /**
+     * @var float
+     * @post
+     * @patch
+     */
     protected $uploadSpeed;
 
     /**
-     * @return int
+     * @return float|null
      */
-    public function getUploadSpeed(): int
+    public function getUploadSpeed(): ?float
     {
         return $this->uploadSpeed;
     }
 
+    /**
+     * @param float $value
+     * @return ServicePlan
+     */
+    public function setUploadSpeed(float $value): ServicePlan
+    {
+        $this->uploadSpeed = $value;
+        return $this;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
+
+    /**
+     * @var int
+     * @post
+     * @patch
+     */
     protected $dataUsageLimit;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getDataUsageLimit(): int
+    public function getDataUsageLimit(): ?int
     {
         return $this->dataUsageLimit;
     }
 
+    /**
+     * @param int $value
+     * @return ServicePlan
+     */
+    public function setDataUsageLimit(int $value): ServicePlan
+    {
+        $this->dataUsageLimit = $value;
+        return $this;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var bool  */
+
+    /**
+     * @var bool
+     * @post
+     * @patch
+     */
     protected $taxable;
 
     /**
-     * @return bool
+     * @return bool|null
      */
-    public function getTaxable(): bool
+    public function getTaxable(): ?bool
     {
         return $this->taxable;
     }
 
+    /**
+     * @param bool $value
+     * @return ServicePlan
+     */
+    public function setTaxable(bool $value): ServicePlan
+    {
+        $this->taxable = $value;
+        return $this;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var ServicePlanPeriod[] $periods  */
+
+    /**
+     * @var ServicePlanPeriod[] $periods
+     * @post
+     * @patch
+     */
     protected $periods;
 
     /**
@@ -153,6 +282,16 @@ final class ServicePlan extends Endpoint
     public function getPeriods(): array
     {
         return $this->periods;
+    }
+
+    /**
+     * @param ServicePlanPeriodCollection $value
+     * @return ServicePlan
+     */
+    public function setPeriods(ServicePlanPeriodCollection $value): ServicePlan
+    {
+        $this->periods = $value->elements();
+        return $this;
     }
 
 }

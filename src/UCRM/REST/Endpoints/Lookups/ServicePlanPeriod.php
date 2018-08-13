@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace UCRM\REST\Endpoints;
+namespace UCRM\REST\Endpoints\Lookups;
 
 
 /**
@@ -14,37 +14,43 @@ namespace UCRM\REST\Endpoints;
 final class ServicePlanPeriod extends Lookup
 {
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
+    /**
+     * @var int
+     */
     protected $period;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getPeriod(): int
+    public function getPeriod(): ?int
     {
         return $this->period;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var float  */
+    /**
+     * @var float
+     */
     protected $price;
 
     /**
-     * @return float
+     * @return float|null
      */
-    public function getPrice(): float
+    public function getPrice(): ?float
     {
         return $this->price;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var bool  */
+    /**
+     * @var bool
+     */
     protected $enabled;
 
     /**
-     * @return bool
+     * @return bool|null
      */
-    public function getEnabled(): bool
+    public function getEnabled(): ?bool
     {
         return $this->enabled;
     }

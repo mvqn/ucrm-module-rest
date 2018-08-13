@@ -7,6 +7,7 @@ use UCRM\REST\RestClient;
 
 use UCRM\REST\Endpoints\Lookups\ClientContact;
 
+require_once __DIR__."/TestFunctions.php";
 
 class _02_ClientTests extends \PHPUnit\Framework\TestCase
 {
@@ -38,35 +39,14 @@ class _02_ClientTests extends \PHPUnit\Framework\TestCase
 
     public function testAllGetters()
     {
-        $client = Client::getById(1);
-        $this->assertNotEmpty($client);
+        $clients = Client::getById(1);
 
-        echo ">>> ClientTests->testAllGetters()\n";
-
-        $reflection = new \ReflectionClass(Client::class);
-        $properties = $reflection->getProperties(\ReflectionProperty::IS_PROTECTED);
-
-        foreach($properties as $property)
-        {
-            $name = $property->getName();
-            $func = "get".ucfirst($name);
-
-            $value = $client->$func();
-
-            if(is_array($value))
-                echo ">   Client::get".ucfirst($name)."() => ".json_encode($value, JSON_UNESCAPED_SLASHES)."\n";
-            else
-                echo ">   Client::get".ucfirst($name)."() => $value\n";
-        }
-
-        echo "\n";
+        $test = TestFunctions::testAllGetters($clients);
+        $this->assertTrue($test);
     }
 
-    /**
-     * Tests Client::get()
-     *
-     * @throws \UCRM\REST\Exceptions\RestClientException
-     */
+    // -----------------------------------------------------------------------------------------------------------------
+
     public function testGet()
     {
         $clients = Client::get();
@@ -80,99 +60,33 @@ class _02_ClientTests extends \PHPUnit\Framework\TestCase
         echo "\n";
     }
 
-    /**
-     * Tests Client::getById(1)
-     *
-     * @throws \UCRM\REST\Exceptions\RestClientException
-     */
     public function testGetById()
     {
+        /** @var Client $client */
         $client = Client::getById(1);
         $this->assertInstanceOf(Client::class, $client);
 
         echo ">>> Client::getById(1)\n";
         echo $client."\n";
         echo "\n";
+
+        $tags = $client->getTags();
+        echo $tags;
     }
 
-    /**
-     * Tests Client->sendInvitationEmail()
-     *
-     * @throws \MVQN\Annotations\AnnotationReaderException
-     * @throws \MVQN\Helpers\ArrayHelperPathException
-     * @throws \MVQN\Helpers\PatternMatchException
-     * @throws \ReflectionException
-     * @throws \UCRM\REST\Exceptions\RestClientException
-     */
-    public function testSendInvitation()
-    {
-        $client = Client::getById(1)->sendInvitationEmail();
-        $this->assertNotNull($client);
+    // -----------------------------------------------------------------------------------------------------------------
 
-        echo ">>> Client::getById(1)->sendInvitationEmail()\n";
-        echo $client."\n";
-        echo "\n";
-    }
-
-    /**
-     * Tests Client->update()
-     *
-     * @throws \MVQN\Annotations\AnnotationReaderException
-     * @throws \MVQN\Helpers\ArrayHelperPathException
-     * @throws \MVQN\Helpers\PatternMatchException
-     * @throws \ReflectionException
-     * @throws \UCRM\REST\Exceptions\RestClientException
-     * @throws \UCRM\REST\Exceptions\RestObjectException
-     */
-    public function testUpdate()
-    {
-        /** @var Client $client */
-        $client = Client::getById(1);
-
-        // Clear all non-required properties.
-        $client->minimal("patch");
-
-        // Update any setting here...
-        $name = "Worthen".rand(0, 9);
-        $client->setLastName($name);
-
-        // Use the built-in reset commands to change back to system defaults.
-        //$client->setSendInvoiceByPost(true);
-        $client->resetSendInvoiceByPost();
-
-        // Validate the information...
-        if($client->validate("patch", $missing))
-        {
-            /** @var Client $updated */
-            $updated = $client->update();
-            $this->assertEquals($name ,$updated->getLastName());
-        }
-        else
-        {
-            echo ">>> MISSING: ";
-            print_r($missing);
-            echo "\n";
-        }
-    }
-
-    /**
-     * @throws \MVQN\Annotations\AnnotationReaderException
-     * @throws \MVQN\Helpers\ArrayHelperPathException
-     * @throws \MVQN\Helpers\PatternMatchException
-     * @throws \ReflectionException
-     * @throws \UCRM\REST\Exceptions\RestClientException
-     * @throws \UCRM\REST\Exceptions\RestObjectException
-     */
     public function testInsert()
     {
         //$this->markTestSkipped("No need to insert additional Clients!");
 
-        $organizations = Organization::get();
+        /** @var Organization $organization */
+        $organization = Organization::get()->first();
 
         $client = new Client();
         $client
             // REQUIRED: Organization (NOT AVAILABLE ON EDIT SCREEN)
-            ->setOrganizationId($organizations[0]->getId())
+            ->setOrganizationId($organization->getId())
 
             // --- GENERAL ---------------------------------------------------------------------------------------------
             // REQUIRED (FOR COMMERCIAL): Company Name
@@ -274,13 +188,58 @@ class _02_ClientTests extends \PHPUnit\Framework\TestCase
 
         $this->markTestSkipped("Skip so we do not keep creating Clients in the UCRM!");
 
-        //$inserted = $client->insert();
-
-        //print_r($inserted);
+        $inserted = $client->create();
+        print_r($inserted);
     }
 
+    // -----------------------------------------------------------------------------------------------------------------
 
+    public function testUpdate()
+    {
+        /** @var Client $client */
+        $client = Client::getById(1);
 
+        // Clear all non-required properties.
+        $client->minimal("patch");
 
+        // Update any setting here...
+        $name = "Worthen".rand(0, 9);
+        $client->setLastName($name);
+
+        // Use the built-in reset commands to change back to system defaults.
+        //$client->setSendInvoiceByPost(true);
+        $client->resetSendInvoiceByPost();
+
+        // Validate the information...
+        if($client->validate("patch", $missing))
+        {
+            /** @var Client $updated */
+            $updated = $client->update();
+            $this->assertEquals($name ,$updated->getLastName());
+            echo $updated."\n";
+        }
+        else
+        {
+            echo ">>> MISSING: ";
+            print_r($missing);
+            echo "\n";
+        }
+    }
+
+    // -----------------------------------------------------------------------------------------------------------------
+
+    public function testSendInvitation()
+    {
+        $this->markTestSkipped("Skip so we do not keep attempting to send emails to Clients in the UCRM!");
+
+        /** @var Client $client */
+        $client = Client::getById(1);
+        $client->sendInvitationEmail();
+        $this->assertNotNull($client);
+
+        echo ">>> Client::getById(1)->sendInvitationEmail()\n";
+        echo $client."\n";
+        echo "\n";
+    }
 
 }

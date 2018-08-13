@@ -1,18 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace UCRM\REST\Endpoints;
+namespace UCRM\REST;
 
+use MVQN\Annotations\{AnnotationReader,Exceptions\AnnotationReaderException};
 use MVQN\Collections\Collectible;
-use MVQN\Helpers\ArrayHelpers;
-use Nette\PhpGenerator\Helpers;
+use MVQN\Helpers\ArrayHelper;
+
 use UCRM\REST\Exceptions\RestObjectException;
-use UCRM\REST\RestClient;
-use MVQN\Annotations\AnnotationReader;
-use MVQN\Annotations\AnnotationReaderException;
-
-
-
 
 /**
  * Class RestObject
@@ -20,43 +15,44 @@ use MVQN\Annotations\AnnotationReaderException;
  * @package UCRM\REST\Endpoints
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  */
-abstract class RestObject extends Collectible // implements \JsonSerializable
+abstract class RestObject extends Collectible implements \JsonSerializable
 {
 
     /**
-     * Endpoint constructor.
+     * RestObject constructor.
+     *
      * @param array $values
      */
     public function __construct(array $values = [])
     {
         foreach($values as $key => $value)
             $this->$key = $value;
-
-        //return $this;
     }
 
-
-
+    // -----------------------------------------------------------------------------------------------------------------
 
     /**
-     * Specify data which should be serialized to JSON
+     * Specify data which should be serialized to JSON.
+     *
      * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
      * @return mixed data which can be serialized by <b>json_encode</b>,
      * which is a value of any type other than a resource.
      * @since 5.4.0
      */
-
     public function jsonSerialize()
     {
         // Get an array of all Model properties.
         $assoc = get_object_vars($this);
 
+        // Move ID to the first element in the array for readability.
         if(array_key_exists("id", $assoc))
             $assoc = ["id" => $assoc["id"]] + $assoc;
 
+        // Return the array!
         return $assoc;
     }
 
+    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * Overrides the default string representation of the class.
@@ -70,6 +66,7 @@ abstract class RestObject extends Collectible // implements \JsonSerializable
         return json_encode($this, JSON_UNESCAPED_SLASHES);
     }
 
+    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @param string $method
@@ -151,24 +148,20 @@ abstract class RestObject extends Collectible // implements \JsonSerializable
                             }
                             else
                             {
-                                // OTHERWISE, WHY DID WE GET HERE???
-
-                                throw new RestObjectException("WTF???");
+                                // OTHERWISE, The child is an Array!
 
 
-                                foreach($child as $s)
-                                    echo $s."\n";
+                                //foreach($child as $s)
+                                //    echo $s."\n";
                                     //$fields[$name][] = $s->toFields($method);
 
-                                //$fields[$name][] = $child;
+                                $fields[$name][] = $child;
                             }
 
                         }
 
 
                     }
-
-
                 }
                 else
                 {
@@ -182,7 +175,7 @@ abstract class RestObject extends Collectible // implements \JsonSerializable
             }
         }
 
-        $fields = $filter ? ArrayHelpers::array_filter_recursive($fields) : $fields;
+        $fields = $filter ? ArrayHelper::array_filter_recursive($fields) : $fields;
 
         return json_encode($fields, $options);
     }
@@ -432,92 +425,7 @@ abstract class RestObject extends Collectible // implements \JsonSerializable
     }
 
 
-    /**
-     * @param array $collection
-     * @param string $column
-     * @param callable $evaluator
-     * @return array
-     * @throws AnnotationReaderException
-     * @throws RestClientException
-     * @throws \MVQN\Helpers\ArrayHelperPathException
-     * @throws \MVQN\Helpers\PatternMatchException
-     * @throws \ReflectionException
-     */
-    public static function findAllFuncIn(array $collection, string $column, callable $evaluator): array
-    {
-        /** @var Endpoint $class */
-        $class = get_called_class();
-        $results = $class::get();
 
-        // Initialize a collection of matches.
-        $matches = [];
-
-        // Loop through each element of the collection...
-        foreach($collection as $result)
-        {
-            // Run the evaluator callback on the current value...
-            if(is_subclass_of($result, __CLASS__) && $evaluator($result->$column))
-                // AND add the result to the collection of matches if the evaluator returns true.
-                $matches[] = $result;
-        }
-
-        // Return the collection of matches, even if it is empty!
-        return $matches;
-    }
-
-    /**
-     * @param string $column
-     * @param callable $evaluator
-     * @return array
-     * @throws AnnotationReaderException
-     * @throws RestClientException
-     * @throws \MVQN\Helpers\ArrayHelperPathException
-     * @throws \MVQN\Helpers\PatternMatchException
-     * @throws \ReflectionException
-     */
-    public static function findAllFunc(string $column, callable $evaluator): array
-    {
-        /** @var Endpoint $class */
-        $class = get_called_class();
-        $results = $class::get();
-
-        // Initialize a collection of matches.
-        $matches = [];
-
-        // Loop through each element of the collection...
-        foreach($results as $result)
-        {
-            // Run the evaluator callback on the current value...
-            if($evaluator($result->$column))
-                // AND add the result to the collection of matches if the evaluator returns true.
-                $matches[] = $result;
-        }
-
-        // Return the collection of matches, even if it is empty!
-        return $matches;
-    }
-
-
-
-    /**
-     * @param string $column
-     * @param string $value
-     * @return array|null
-     * @throws AnnotationReaderException
-     * @throws RestClientException
-     * @throws \MVQN\Helpers\ArrayHelperPathException
-     * @throws \MVQN\Helpers\PatternMatchException
-     * @throws \ReflectionException
-     */
-    public static function findAll(string $column, string $value): ?array
-    {
-        return self::findAllFunc($column,
-            function($current) use ($value)
-            {
-                return ($current === $value);
-            }
-        );
-    }
 
 
 }

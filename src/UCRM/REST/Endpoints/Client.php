@@ -3,14 +3,19 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
-use MVQN\Annotations\AnnotationReaderException;
-use MVQN\Helpers\PatternMatchException;
-use MVQN\Helpers\ArrayHelperPathException;
+use UCRM\REST\Endpoints\Lookups\{
+    ClientBankAccount,
+    ClientContact,
+    ClientContactAttribute,
+    ClientTag
+};
 
-use UCRM\REST\Endpoints\Helpers\ClientHelper;
-
-use UCRM\REST\Endpoints\Lookups\{ClientBankAccount,ClientContact,ClientContactAttribute,ClientContactType,ClientTag};
-
+use UCRM\REST\Endpoints\Collections\{
+    ClientBankAccountCollection,
+    ClientContactCollection,
+    ClientContactAttributeCollection,
+    ClientTagCollection
+};
 
 /**
  * Class Client
@@ -21,21 +26,19 @@ use UCRM\REST\Endpoints\Lookups\{ClientBankAccount,ClientContact,ClientContactAt
  *
  * @endpoints { "get": "/clients", "getById": "/clients/:id" }
  * @endpoints { "post": "/clients" }
- * @endpoints { "patch": "/clients" }
+ * @endpoints { "patch": "/clients/:id" }
  *
  */
 final class Client extends Endpoint
 {
+    use Helpers\ClientHelper;
+
+    // -----------------------------------------------------------------------------------------------------------------
+
     public const CLIENT_TYPE_RESIDENTIAL = 1;
     public const CLIENT_TYPE_COMMERCIAL = 2;
 
-    use ClientHelper;
-
-    // =================================================================================================================
-    // PROPERTIES W/ GETTERS & SETTERS
     // -----------------------------------------------------------------------------------------------------------------
-
-    #region Client/userIdent
 
     /**
      * @var string
@@ -62,11 +65,7 @@ final class Client extends Endpoint
         return $this;
     }
 
-    #endregion
-
     // -----------------------------------------------------------------------------------------------------------------
-
-    #region Client/organizationId
 
     /**
      * @var int
@@ -93,9 +92,8 @@ final class Client extends Endpoint
         return $this;
     }
 
-    #endregion
-
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var bool
      * @post-required
@@ -122,6 +120,7 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var int
      * @post-required
@@ -148,6 +147,7 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var string
      * @post
@@ -174,6 +174,7 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var string
      * @post
@@ -200,6 +201,7 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var string
      * @post
@@ -226,6 +228,7 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var string
      * @post
@@ -252,6 +255,7 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var string
      * @post
@@ -278,6 +282,7 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var string
      * @post
@@ -304,6 +309,7 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var string
      * @post
@@ -330,6 +336,7 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var string
      * @post
@@ -356,6 +363,7 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var string
      * @post
@@ -382,6 +390,7 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var string
      * @post
@@ -408,6 +417,7 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var string
      * @post
@@ -434,6 +444,7 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var int
      * @post
@@ -460,6 +471,7 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var int
      * @post
@@ -485,9 +497,8 @@ final class Client extends Endpoint
         return $this;
     }
 
-
-
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var string
      * @post
@@ -514,6 +525,7 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var bool
      * @post
@@ -540,6 +552,7 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var string
      * @post
@@ -566,6 +579,7 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var string
      * @post
@@ -592,6 +606,7 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var string
      * @post
@@ -618,6 +633,7 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var int
      * @post
@@ -643,9 +659,8 @@ final class Client extends Endpoint
         return $this;
     }
 
-
-
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var int
      * @post
@@ -671,14 +686,8 @@ final class Client extends Endpoint
         return $this;
     }
 
-
-
-
-
-
-
-
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var string
      * @post
@@ -705,6 +714,7 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var bool
      * @post
@@ -730,6 +740,9 @@ final class Client extends Endpoint
         return $this;
     }
 
+    /**
+     * @return Client
+     */
     public function resetSendInvoiceByPost(): Client
     {
         $this->sendInvoiceByPost = null;
@@ -737,6 +750,7 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var int
      * @post
@@ -762,6 +776,9 @@ final class Client extends Endpoint
         return $this;
     }
 
+    /**
+     * @return Client
+     */
     public function resetInvoiceMaturityDays(): Client
     {
         $this->invoiceMaturityDays = null;
@@ -769,6 +786,7 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var bool
      * @post
@@ -794,6 +812,9 @@ final class Client extends Endpoint
         return $this;
     }
 
+    /**
+     * @return Client
+     */
     public function resetStopServiceDue(): Client
     {
         $this->stopServiceDue = null;
@@ -801,6 +822,7 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var int
      * @post
@@ -826,6 +848,9 @@ final class Client extends Endpoint
         return $this;
     }
 
+    /**
+     * @return Client
+     */
     public function resetStopServiceDueDays(): Client
     {
         $this->stopServiceDueDays = null;
@@ -833,6 +858,7 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var int
      * @post
@@ -859,6 +885,7 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var int
      * @post
@@ -885,6 +912,7 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var int
      * @post
@@ -913,6 +941,7 @@ final class Client extends Endpoint
     // TODO: Add lookup functionality for TaxIDs ???
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var string
      * @post
@@ -939,6 +968,7 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var string
      * @post
@@ -965,6 +995,7 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var string
      * @post
@@ -991,6 +1022,7 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var string
      * @post
@@ -1017,6 +1049,7 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var string
      * @post
@@ -1043,6 +1076,7 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var ClientContact[]
      * @post
@@ -1051,31 +1085,28 @@ final class Client extends Endpoint
     protected $contacts;
 
     /**
-     * @param array|null $set
-     * @param bool $reindex
-     * @return ClientContact[]|null
+     * @return ClientContactCollection
+     * @throws \MVQN\Collections\CollectionException
      */
-    public function getContacts(?array $set = null, bool $reindex = false): ?array
+    public function getContacts(): ClientContactCollection
     {
-        if($this->contacts === null)
-            return null;
-
-        /** @var ClientContact[] $contacts */
-        $contacts = $this->getCollection(ClientContact::class, $this->contacts, $set, $reindex);
+        /** @var ClientContactCollection $contacts */
+        $contacts = new ClientContactCollection($this->contacts);
         return $contacts;
     }
 
     /**
-     * @param ClientContact[]|array $values
+     * @param ClientContactCollection $values
      * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setContacts(array $values): Client
+    public function setContacts(ClientContactCollection $values): Client
     {
-        $this->setCollection(ClientContact::class, $this->contacts, $values);
+        $this->contacts = $values->elements();
         return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var ClientContactAttribute[]
      * @post
@@ -1084,29 +1115,28 @@ final class Client extends Endpoint
     protected $attributes;
 
     /**
-     * @return ClientContactAttribute[]|null
+     * @return ClientContactAttributeCollection
+     * @throws \MVQN\Collections\CollectionException
      */
-    public function getAttributes(): ?array
+    public function getAttributes(): ClientContactAttributeCollection
     {
-        if($this->attributes === null)
-            return null;
-
-        /** @var ClientContactAttribute[] $attributes */
-        $attributes = $this->getCollection(ClientContact::class, $this->attributes);
+        /** @var ClientContactAttributeCollection $attributes */
+        $attributes = new ClientContactAttributeCollection($this->attributes);
         return $attributes;
     }
 
     /**
-     * @param ClientContactAttribute[] $values
+     * @param ClientContactAttributeCollection $values
      * @return Client Returns the Client instance, for method chaining purposes.
      */
-    public function setAttributes(array $values): Client
+    public function setAttributes(ClientContactAttributeCollection $values): Client
     {
-        $this->setCollection(ClientContactAttribute::class, $this->attributes, $values);
+        $this->attributes = $values->elements();
         return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var float
      */
@@ -1121,6 +1151,7 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var float
      */
@@ -1135,6 +1166,7 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var float
      */
@@ -1149,6 +1181,7 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var string
      */
@@ -1163,6 +1196,7 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var string
      */
@@ -1177,20 +1211,25 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var ClientBankAccount[]
      */
     protected $bankAccounts;
 
     /**
-     * @return ClientBankAccount[]|null
+     * @return ClientBankAccountCollection
+     * @throws \MVQN\Collections\CollectionException
      */
-    public function getBankAccounts(): ?array
+    public function getBankAccounts(): ClientBankAccountCollection
     {
-        return $this->bankAccounts;
+        /** @var ClientBankAccountCollection $bankAccounts */
+        $bankAccounts = new ClientBankAccountCollection($this->bankAccounts);
+        return $bankAccounts;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var string
      */
@@ -1205,47 +1244,22 @@ final class Client extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var ClientTag[]
      */
     protected $tags;
 
     /**
-     * @return ClientTag[]|null
+     * @return ClientTagCollection
+     * @throws \MVQN\Collections\CollectionException
      */
-    public function getTags(): ?array
+    public function getTags(): ClientTagCollection
     {
-        if($this->tags === null)
-            return null;
-
-        /** @var ClientTag[] $tags */
-        $tags = $this->getCollection(ClientTag::class, $this->tags);
+        /** @var ClientTagCollection $tags */
+        $tags = new ClientTagCollection($this->tags);
         return $tags;
     }
-
-
-
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
-     * @return Client
-     * @throws RestClientException
-     * @throws AnnotationReaderException
-     * @throws ArrayHelperPathException
-     * @throws PatternMatchException
-     * @throws \ReflectionException
-     */
-    public function sendInvitationEmail(): Client
-    {
-        /** @var Client $client */
-        $client = Client::patch($this->id, null, "/send-invitation");
-        return $client;
-    }
-
-
-
-
 
 
 }

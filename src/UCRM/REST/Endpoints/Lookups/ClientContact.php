@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace UCRM\REST\Endpoints\Lookups;
 
 use UCRM\REST\RestClient;
-use UCRM\REST\Endpoints\{Lookup,Client};
+use UCRM\REST\Endpoints\Client;
 
 /**
  * Class ClientContact
@@ -44,27 +44,7 @@ final class ClientContact extends Lookup
         return $this->clientId;
     }
 
-    /**
-     * @var Client $client
-     */
-    protected $client = null;
 
-    /**
-     * @return Client|null
-     * @throws RestClientException
-     * @throws \MVQN\Annotations\AnnotationReaderException
-     * @throws \MVQN\Helpers\ArrayHelperPathException
-     * @throws \MVQN\Helpers\PatternMatchException
-     * @throws \ReflectionException
-     */
-    public function getClient(): ?Client
-    {
-        // Cache the value here for future lookups...
-        if($this->client === null && $this->clientId !== null)
-            $this->client = Client::getById($this->clientId);
-
-        return $this->client;
-    }
 
     // -----------------------------------------------------------------------------------------------------------------
     /**

@@ -16,6 +16,7 @@ use UCRM\REST\Endpoints\Helpers\PaymentHelper;
  * @final
  *
  * @endpoints { "get": "/payments", "getById": "/payments/:id" }
+ * @endpoints { "post": "/payments" }
  */
 final class Payment extends Endpoint
 {
@@ -48,6 +49,7 @@ final class Payment extends Endpoint
     /**
      * @var int
      * @post
+     * @patch
      */
     protected $clientId;
 
@@ -71,23 +73,35 @@ final class Payment extends Endpoint
 
     // -----------------------------------------------------------------------------------------------------------------
     /**
-     * @var string
+     * @var int
      * @post-required
+     * @patch
      */
     protected $method;
 
     /**
-     * @return string
+     * @return int
      */
-    public function getMethod(): string
+    public function getMethod(): int
     {
         return $this->method;
+    }
+
+    /**
+     * @param int $value
+     * @return Payment
+     */
+    public function setMethod(int $value): Payment
+    {
+        $this->method = $value;
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
     /**
      * @var string
      * @post
+     * @patch
      */
     protected $checkNumber;
 
@@ -113,6 +127,7 @@ final class Payment extends Endpoint
     /**
      * @var string
      * @post
+     * @patch
      */
     protected $createdDate;
 
@@ -138,6 +153,7 @@ final class Payment extends Endpoint
     /**
      * @var float
      * @post-required
+     * @patch
      */
     protected $amount;
 
@@ -163,6 +179,7 @@ final class Payment extends Endpoint
     /**
      * @var string
      * @post
+     * @patch
      */
     protected $currencyCode;
 
@@ -188,6 +205,7 @@ final class Payment extends Endpoint
     /**
      * @var string
      * @post
+     * @patch
      */
     protected $note;
 
@@ -237,6 +255,7 @@ final class Payment extends Endpoint
     /**
      * @var string
      * @post
+     * @patch
      */
     protected $providerName;
 
@@ -262,6 +281,7 @@ final class Payment extends Endpoint
     /**
      * @var string
      * @post
+     * @patch
      */
     protected $providerPaymentId;
 
@@ -287,6 +307,7 @@ final class Payment extends Endpoint
     /**
      * @var string
      * @post
+     * @patch
      */
     protected $providerPaymentTime;
 
@@ -362,6 +383,7 @@ final class Payment extends Endpoint
     /**
      * @var int
      * @post
+     * @patch
      *
      * @deprecated
      */
@@ -392,12 +414,12 @@ final class Payment extends Endpoint
     /**
      * @var int[]
      * @post
+     * @patch
      */
     protected $invoiceIds;
 
     /**
      * @return int[]|null
-     * @deprecated
      */
     public function getInvoiceIds(): ?array
     {
@@ -407,7 +429,6 @@ final class Payment extends Endpoint
     /**
      * @param int[] $value
      * @return Payment
-     * @deprecated
      */
     public function setInvoiceIds(array $value): Payment
     {
@@ -420,13 +441,14 @@ final class Payment extends Endpoint
     /**
      * @var bool
      * @post
+     * @patch
      */
     protected $applyToInvoicesAutomatically;
 
     /**
      * @return bool|null
      */
-    public function getApplyToInvoiceAutomatically(): ?bool
+    public function getApplyToInvoicesAutomatically(): ?bool
     {
         return $this->applyToInvoicesAutomatically;
     }
@@ -435,7 +457,7 @@ final class Payment extends Endpoint
      * @param bool $value
      * @return Payment
      */
-    public function setApplyToInvoiceAutomatically(bool $value): Payment
+    public function setApplyToInvoicesAutomatically(bool $value): Payment
     {
         if($value)
         {
@@ -446,10 +468,6 @@ final class Payment extends Endpoint
         $this->applyToInvoicesAutomatically = $value;
         return $this;
     }
-
-
-
-
 
 }
 

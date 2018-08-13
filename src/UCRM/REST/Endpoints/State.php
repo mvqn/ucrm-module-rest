@@ -4,8 +4,6 @@ declare(strict_types=1);
 namespace UCRM\REST\Endpoints;
 
 use UCRM\REST\Endpoints\Helpers\StateHelper;
-use UCRM\REST\Exceptions\RestObjectException;
-use UCRM\REST\RestClient;
 
 /**
  * Class State
@@ -51,6 +49,7 @@ final class State extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var string
      */
@@ -63,8 +62,6 @@ final class State extends Endpoint
     {
         return $this->code;
     }
-
-
 
 }
 

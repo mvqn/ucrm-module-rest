@@ -85,7 +85,6 @@ final class User extends Endpoint
         return $this->avatarColor;
     }
 
-
 }
 
 

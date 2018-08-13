@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace MVQN\Collections;
 
+use MVQN\Collections\Exceptions\CollectionException;
+
 /**
  * Class Collection
  *
@@ -43,11 +45,8 @@ class Collection implements \JsonSerializable, \Countable, \Iterator
             throw new CollectionException("The specified type: '$type' must extend '".Collectible::class."'!");
 
         $this->type = $type;
-        $this->elements = [];
-
-        if($elements !== [])
-            $this->pushMany($elements);
-            //$this->elements = $elements;
+        //$this->elements = [];
+        $this->pushMany($elements);
 
         $this->position = 0;
     }
@@ -173,14 +172,12 @@ class Collection implements \JsonSerializable, \Countable, \Iterator
 
     /**
      * @return Collectible|null
-     * @throws CollectionException
      */
     public function first(): ?Collectible
     {
         if(!$this->hasIndex(0))
             return null;
 
-        //return $this->elements[$this->validIndex(0)];
         return $this->elements[0];
     }
 
@@ -259,7 +256,43 @@ class Collection implements \JsonSerializable, \Countable, \Iterator
      */
     public function pushMany(array $elements): Collection
     {
-        $this->elements += $this->validElements($elements);
+        foreach($elements as $element) {
+
+
+            // IF the item is an array...
+            if (is_array($element))
+            {
+                // THEN attempt to instantiate it before appending it!
+                $element = new $this->type($element);
+
+                if (get_class($element) != $this->type && !is_subclass_of($element, $this->type, true))
+                    throw new CollectionException("The element type: '" . get_class($element) . "' must match or extend '" .
+                        $this->type . "'!");
+
+                $this->elements[] = $element;
+            } else
+            // IF the item is an object...
+            if (is_object($element))
+            {
+                if (get_class($element) != $this->type && !is_subclass_of($element, $this->type, true))
+                    throw new CollectionException("The element type: '" . get_class($element) . "' must match or extend '" .
+                        $this->type . "'!");
+
+                // THEN it does not need to be instantiated, simply appen it!
+                $this->elements[] = $element;
+            }
+            else
+            {
+                if (get_class($element) != $this->type && !is_subclass_of($element, $this->type, true))
+                    throw new CollectionException("The element type: '" . get_class($element) . "' must match or extend '" .
+                        $this->type . "'!");
+
+                // OTHERWISE, simply add the type!
+                $this->elements[] = $elements;
+            }
+        }
+
+        //$this->elements += $this->validElements($elements);
         return $this;
     }
 

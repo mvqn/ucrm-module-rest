@@ -1,11 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace UCRM\REST\Endpoints;
+namespace UCRM\REST\Endpoints\Lookups;
 
-use UCRM\REST\RestClient;
-
-use MVQN\Annotations\AnnotationReader;
+use UCRM\REST\RestObject;
 
 
 /**

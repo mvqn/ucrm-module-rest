@@ -3,20 +3,13 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
-use MVQN\Annotations\AnnotationReader;
-use MVQN\Helpers\ArrayHelpers;
-use MVQN\Helpers\PatternMatcher;
-use MVQN\Annotations\AnnotationReaderException;
-use MVQN\Helpers\PatternMatchException;
-use MVQN\Helpers\ArrayHelperPathException;
-
+use MVQN\Annotations\{AnnotationReader,Exceptions\AnnotationReaderException};
+use MVQN\Collections\{Collection,Exceptions\CollectionException};
+use MVQN\Helpers\ArrayHelper;
+use MVQN\Helpers\{PatternMatcher,Exceptions\PatternMatchException};
 
 use UCRM\REST\Endpoints\Exceptions\EndpointException;
-use UCRM\REST\Exceptions\RestObjectException;
-use UCRM\REST\RestClientException;
-use UCRM\REST\RestClient;
-
-
+use UCRM\REST\{RestObject,RestClient,Exceptions\RestClientException};
 
 /**
  * Class Endpoint
@@ -26,7 +19,10 @@ use UCRM\REST\RestClient;
  */
 abstract class Endpoint extends RestObject
 {
+    // =================================================================================================================
+    // PROPERTIES
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var int $id
      */
@@ -40,404 +36,291 @@ abstract class Endpoint extends RestObject
         return $this->id;
     }
 
-
-
-
-
-
-
-
-
-
+    // =================================================================================================================
+    // GET METHODS
     // -----------------------------------------------------------------------------------------------------------------
-
-    /**
-     * Inserts (via POST) an Endpoint Object to the REST server.
-     *
-     * @return Endpoint Returns an Endpoint object representing the newly created object on the REST server.
-     * @throws RestClientException Throws an exception if there were any issues during communication to the server.
-     */
-    public function insert(): Endpoint
-    {
-        /** @var Endpoint $class */
-        $class = get_called_class();
-
-        /** @var Endpoint $client */
-        $client = $class::post($this);
-        return $client;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-    /**
-     * Updates (via PATCH) an Endpoint Object to the REST server.
-     *
-     * @return Endpoint Returns an Endpoint object representing the newly created object on the REST server.
-     * @throws RestClientException Throws an exception if there were any issues during communication to the server.
-     * @throws AnnotationReaderException Throws an exception if there were any issues with the AnnotationReader.
-     * @throws ArrayHelperPathException Throws an exception if there were any issues with the Array Helpers.
-     * @throws PatternMatchException Throws an exception if there were any issues with the Pattern Matching system.
-     * @throws \ReflectionException Throws an exception if there were any issues with the Reflection engine.
-     */
-    public function update(): Endpoint
-    {
-        /** @var Endpoint $class */
-        $class = get_called_class();
-
-        /** @var Endpoint $client */
-        $client = $class::patch($this->id, $this);
-        return $client;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-    /**
-     * Deletes (via DELETE) an Endpoint Object to the REST API.
-     *
-     * @return Endpoint
-     */
-    public function delete(): Endpoint
-    {
-        /** @var static $class */
-        $class = get_called_class();
-
-        // TODO: Implement DELETE functionality.
-
-        /** @var Endpoint $client */
-        //$client = $class::delete($this->id, $this);
-        return $client;
-    }
-
-
-
-
-
-
-
-
-
-
-    /**
-     * @param string $column
-     * @param string $value
-     * @return Endpoint|null
-     * @throws AnnotationReaderException
-     * @throws ArrayHelperPathException
-     * @throws PatternMatchException
-     * @throws RestClientException
-     * @throws \ReflectionException
-     */
-    public static function findFirst(string $column, string $value): ?Endpoint
-    {
-        /** @var Endpoint $class */
-        $class = get_called_class();
-
-        $results = $class::get();
-
-        //print_r($results);
-
-        foreach($results as $result)
-        {
-            if($result->$column === $value)
-                return $result;
-
-
-        }
-
-        return null;
-    }
-
-
-
-    public static function findFirstIn(array $collection, string $column, string $value): ?Endpoint
-    {
-        /** @var Endpoint $class */
-        $class = get_called_class();
-
-        foreach($collection as $item)
-        {
-            if($item->$column === $value)
-                return $item;
-        }
-
-        return null;
-    }
-
-    /**
-     * @param array $matches
-     * @return Endpoint[]|null
-     * @throws AnnotationReaderException
-     * @throws ArrayHelperPathException
-     * @throws PatternMatchException
-     * @throws RestClientException
-     * @throws RestObjectException
-     * @throws \ReflectionException
-     */
-    public static function whereAll(array $matches): ?array
-    {
-        /** @var Endpoint $class */
-        $class = get_called_class();
-
-        // Chekc to make certain all the requested matches are valid columns (properties) on the calling object.
-        foreach($matches as $property => $match)
-        {
-            if(!property_exists($class, $property))
-                throw new EndpointException("'$class' does not have a $property property for which to match in ".
-                    "Endpoint::where()!");
-        }
-
-        $results = $class::get();
-
-        $foundMatches = [];
-
-        foreach($results as $result)
-        {
-            $fullMatch = true;
-
-            foreach($matches as $property => $match)
-            {
-                if($result->$property !== $match)
-                {
-                    $fullMatch = false;
-                    break;
-                }
-            }
-
-            if($fullMatch)
-                $foundMatches[] = $result;
-        }
-
-        return (count($foundMatches) > 0) ? $foundMatches : null;
-    }
-
 
     /**
      * @param string $override
-     * @return Endpoint[]
+     * @param array $params
+     * @return Collection
      * @throws AnnotationReaderException
-     * @throws ArrayHelperPathException
+     * @throws CollectionException
+     * @throws EndpointException
      * @throws PatternMatchException
+     * @throws RestClientException
      * @throws \ReflectionException
-     * @throws \UCRM\REST\RestClientException
      */
-    public static function get(string $override = ""): array
+    public static function get(string $override = "", array $params = []): Collection
     {
+        // Get a reference to the type of Endpoint calling this function.
         $class = get_called_class();
 
+        // Set any flags here for special cases!
         $excludeId = false;
 
+        // IF no override path has been provided...
         if($override === "")
         {
+            // THEN instantiate an AnnotationReader for this class AND check for the important parameters.
             $annotations = new AnnotationReader($class);
             $endpoints = $annotations->getParameter("endpoints");
             $excludeId = $annotations->hasParameter("excludeId");
 
-
-
+            // Make certain we have found a valid set of GET annotations, or throw an error!
             if (!array_key_exists("get", $endpoints) || $endpoints["get"] === "")
-                throw new RestClientException("An '@endpoint { \"get\": \"/examples\" }' annotation on the class must " .
+                throw new EndpointException("An '@endpoint { \"get\": \"/examples\" }' annotation on the class must " .
                     "be declared in order to resolve this endpoint'");
 
-            $endpoint = PatternMatcher::interpolateUrl($endpoints["get"], []);
+            // Interpolate the URL patterns against any provided parameters.
+            $endpoint = PatternMatcher::interpolateUrl($endpoints["get"], $params);
         }
         else
         {
-            $endpoint = $override;
+            // Interpolate the overridden URL pattern against any provided parameters.
+            $endpoint = PatternMatcher::interpolateUrl($override, $params);
+            //$endpoint = $override;
         }
 
-
+        // Attempt to GET the specified Endpoint.
         $response = RestClient::get($endpoint);
 
-        //echo "*** ".json_encode($response, JSON_UNESCAPED_SLASHES);
-
-        if(array_key_exists("code", $response) && $response["code"] === 404)
-            throw new RestClientException("Endpoint '$endpoint' was not found for class '$class'!");
-
+        // IF the response is empty...
         if($response === [])
-            return []; // Really empty?
-
-        //$objects = json_decode($response, true);
-
-        // IF this is a single element response...
-        if(ArrayHelpers::is_assoc($response))
         {
-            $object = new $class($response);
-
-            if($excludeId)
-                unset($object->id);
-
-            //return new $class($response);
-            return [$object];
+            // THEN return null, as we got nothing back!
+            return new Collection($class, []);
         }
 
-        // OTHERWISE, multiple elements have been returned!
-        $endpoints = [];
+        // HANDLE ANY ERROR CODES HERE...
+        if(array_key_exists("code", $response))
+        {
+            switch($response["code"])
+            {
+                case 401: throw new EndpointException("The REST Client was not authorized to make this request!");
+                case 403: throw new EndpointException("The provided App Key does not have sufficient privileges!");
+                case 404: throw new EndpointException("Endpoint '$endpoint' was not found for class '$class'!");
+
+                // TODO: Add other response codes, as they are encountered!
+
+                default:  break; // Likely the key "code" from an actual Endpoint!
+            }
+        }
+
+        // Handle shifting any single object responses into a single indexed array for further processing.
+        $response = ArrayHelper::is_assoc($response) ? [ $response ] : $response;
+
+        // Create a collection to store the object versions of the response.
+        $endpoints = new Collection($class);
+
+        // Loop through each resulting object...
         foreach($response as $object)
         {
+            // Remove the ID property, if the '@excludeId' annotation was set on this class.
             if($excludeId)
                 unset($object->id);
 
-            $endpoints[] = new $class($object);
+            // Add the newly instantiated Endpoint to the collection.
+            $endpoints->push(new $class($object));
         }
 
+        // Finally, return the collection of Endpoints!
         return $endpoints;
     }
 
-
-
-
+    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @param int $id
      * @return Endpoint|null
      * @throws AnnotationReaderException
-     * @throws ArrayHelperPathException
+     * @throws EndpointException
      * @throws PatternMatchException
      * @throws RestClientException
      * @throws \ReflectionException
      */
     public static function getById(int $id): ?Endpoint
     {
-        /** @var static */
+        // Get a reference to the type of Endpoint calling this function.
         $class = get_called_class();
 
+        // Instantiate an AnnotationReader for this class AND check for the important parameters.
         $annotations = new AnnotationReader($class);
         $endpoints = $annotations->getParameter("endpoints");
 
+        // Make certain we have found a valid set of GET annotations, or throw an error!
         if(!array_key_exists("getById", $endpoints))
-            throw new RestClientException("An '@endpoint { \"getById\": \"/examples/:id\" }' annotation on the ".
+            throw new EndpointException("An '@endpoint { \"getById\": \"/examples/:id\" }' annotation on the ".
                 "'$class' class must be declared in order to resolve this endpoint'");
 
+        // Interpolate the URL patterns against any provided parameters.
         $endpoint = PatternMatcher::interpolateUrl($endpoints["getById"], [ "id" => $id ]);
 
+        // Attempt to GET the specified Endpoint.
         $response = RestClient::get($endpoint);
 
-        //echo "*** ".json_encode($response, JSON_UNESCAPED_SLASHES);
+        // IF the response is empty, somthing went VERY wrong!
+        if($response === [])
+        {
+            throw new EndpointException("WTF???");
+            //return [];
+        }
 
-        if(array_key_exists("code", $response) && $response["code"] === 404)
-            throw new RestClientException("Endpoint '$endpoint' was not found for class '$class'!");
+        // HANDLE ANY ERROR CODES HERE...
+        if(array_key_exists("code", $response))
+        {
+            switch($response["code"])
+            {
+                case 401: throw new EndpointException("The REST Client was not authorized to make this request!");
+                case 403: throw new EndpointException("The provided App Key does not have sufficient privileges!");
+                case 404: throw new EndpointException("Endpoint '$endpoint' was not found for class '$class'!");
 
-        $endpoint = new $class($response);
+                // TODO: Add other response codes, as they are encountered!
 
-        return $endpoint;
+                default:  break; // Likely the key "code" from an actual Endpoint!
+            }
+        }
+
+        // Finally, return the instantiated Endpoint!
+        return new $class($response);
     }
 
-
-
+    // =================================================================================================================
+    // POST METHODS
+    // -----------------------------------------------------------------------------------------------------------------
 
     /**
-     * @param Endpoint $fields
+     * @param Endpoint $data
+     * @param array $params
      * @return Endpoint
      * @throws AnnotationReaderException
-     * @throws ArrayHelperPathException
+     * @throws EndpointException
      * @throws PatternMatchException
      * @throws RestClientException
      * @throws \ReflectionException
      */
-    public static function post(Endpoint $data): Endpoint
+    public static function post(Endpoint $data, array $params = []): Endpoint
     {
+        // Get a reference to the type of Endpoint calling this function.
         $class = get_called_class();
 
+        // Instantiate an AnnotationReader for this class AND check for the important parameters.
         $annotations = new AnnotationReader($class);
         $endpoints = $annotations->getParameter("endpoints");
 
         if(!array_key_exists("post", $endpoints))
-            throw new RestClientException("An '@endpoint { \"post\": \"/examples\" }' annotation on the ".
+            throw new EndpointException("An '@endpoint { \"post\": \"/examples\" }' annotation on the ".
                 "'$class' class must be declared in order to resolve this endpoint'");
 
-        $endpoint = $endpoints["post"];
+        // Interpolate the URL patterns against any provided parameters.
+        $endpoint = PatternMatcher::interpolateUrl($endpoints["post"], $params);
 
-        // Get an array of all Model properties.
+        // Get an array of all Model properties, with any that do not belong in the POST method removed!
         $data = ($data !== null) ? $data->toArray("post") : [];
 
+        // Attempt to POST the specified Endpoint.
         $response = RestClient::post($endpoint, $data);
 
-        // Endpoint Not Found!
-        if(array_key_exists("code", $response) && $response["code"] === 404)
-            throw new RestClientException("Endpoint '$endpoint' was not found for class '$class'!");
+        // IF the response is empty, somthing went VERY wrong!
+        if($response === [])
+        {
+            throw new EndpointException("WTF???");
+            //return [];
+        }
 
-        // Validation Failed!
-        if(array_key_exists("code", $response) && $response["code"] === 422)
-            throw new RestClientException(
-                "Data for endpoint '$endpoint' was improperly formatted!\n".
-                $response["message"]."\n".
-                json_encode($response["errors"], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT)
-            );
+        // HANDLE ANY ERROR CODES HERE...
+        if(array_key_exists("code", $response))
+        {
+            switch($response["code"])
+            {
+                case 401: throw new EndpointException("The REST Client was not authorized to make this request!");
+                case 403: throw new EndpointException("The provided App Key does not have sufficient privileges!");
+                case 404: throw new EndpointException("Endpoint '$endpoint' was not found for class '$class'!");
+                case 422: throw new EndpointException("Data for endpoint '$endpoint' was improperly formatted!\n".
+                                        $response["message"]."\n".
+                                        json_encode($response["errors"], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT)
+                                    );
 
+                // TODO: Add other response codes, as they are encountered!
+
+                default:  break; // Likely the key "code" from an actual Endpoint!
+            }
+        }
+
+        // Finally, return the instantiated Endpoint!
         return new $class($response);
     }
 
+    // =================================================================================================================
+    // POST METHODS
+    // -----------------------------------------------------------------------------------------------------------------
+
     /**
-     * @param int $id
-     * @param Endpoint|null $data
+     * @param null|Endpoint $data
+     * @param array $params
      * @param string $suffix
-     * @return Endpoint|null
+     * @return null|Endpoint
+     * @throws AnnotationReaderException
+     * @throws EndpointException
+     * @throws PatternMatchException
      * @throws RestClientException
-     * @throws \MVQN\Annotations\AnnotationReaderException
-     * @throws \MVQN\Helpers\ArrayHelperPathException
-     * @throws \MVQN\Helpers\PatternMatchException
      * @throws \ReflectionException
      */
-    public static function patch(int $id, ?Endpoint $data, string $suffix = ""): ?Endpoint
+    public static function patch(?Endpoint $data, array $params = [], string $suffix = ""): ?Endpoint
     {
+        // Get a reference to the type of Endpoint calling this function.
         $class = get_called_class();
 
+        // Instantiate an AnnotationReader for this class AND check for the important parameters.
         $annotations = new AnnotationReader($class);
         $endpoints = $annotations->getParameter("endpoints");
 
         if(!array_key_exists("getById", $endpoints))
-            throw new RestClientException("An '@endpoint { \"patch\": \"/examples/:id\" }' annotation on the ".
+            throw new EndpointException("An '@endpoint { \"patch\": \"/examples/:id\" }' annotation on the ".
                 "'$class' class must be declared in order to resolve this endpoint'");
 
-        $endpoint = PatternMatcher::interpolateUrl($endpoints["getById"], [ "id" => $id ]);
+        // Interpolate the URL patterns against any provided parameters.
+        $endpoint = PatternMatcher::interpolateUrl($endpoints["patch"], $params);
 
+        // Appen any provided suffixes to the URL.
         if($suffix !== "")
-            $endpoint = $endpoint.$suffix;
+            $endpoint .= $suffix;
 
-        //echo "PATCH $endpoint\n";
-
-        // Get an array of all Model properties.
+        // Get an array of all Model properties, with any that do not belong in the PATCH method removed!
         $data = ($data !== null) ? $data->toArray("patch") : [];
 
+        // Attempt to PATCH the specified Endpoint.
         $response = RestClient::patch($endpoint, $data);
 
-        // Endpoint Not Found!
-        if(array_key_exists("code", $response) && $response["code"] === 404)
-            throw new RestClientException("Endpoint '$endpoint' was not found for class '$class'!");
+        // IF the response is empty, somthing went VERY wrong!
+        if($response === [])
+        {
+            throw new EndpointException("WTF???");
+            //return [];
+        }
 
-        // Validation Failed!
-        if(array_key_exists("code", $response) && $response["code"] === 422)
-            throw new RestClientException(
-                "Data for endpoint '$endpoint' was improperly formatted!\n".
-                $response["message"]."\n".
-                json_encode($response["errors"], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT)
-            );
+        // HANDLE ANY ERROR CODES HERE...
+        if(array_key_exists("code", $response))
+        {
+            switch($response["code"])
+            {
+                case 401: throw new EndpointException("The REST Client was not authorized to make this request!");
+                case 403: throw new EndpointException("The provided App Key does not have sufficient privileges!");
+                case 404: throw new EndpointException("Endpoint '$endpoint' was not found for class '$class'!");
+                case 422: throw new EndpointException("Data for endpoint '$endpoint' was improperly formatted!\n".
+                    $response["message"]."\n".
+                    json_encode($response["errors"], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT)
+                );
 
+                // TODO: Add other response codes, as they are encountered!
+
+                default:  break; // Likely the key "code" from an actual Endpoint!
+            }
+        }
+
+        // Finally, return the instantiated Endpoint!
         return new $class($response);
     }
-
-
-
-
-
-
-
-
-
-    public static function scrape(string $url, EndpointOptions $options): ?Endpoint
-    {
-        /*
-        Scraper::download(
-            "https://ucrmbeta.docs.apiary.io/#reference/clients/clientsuseridentcustomattributekeycustomattributevalueorderdirection/get",
-            __DIR__."/.cache/test.html");
-        */
-
-        // TODO: Determine best approach to complete Scraper or APIB.
-
-        return null;
-    }
-
-
-
-
 
 }
 

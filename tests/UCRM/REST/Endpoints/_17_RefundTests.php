@@ -38,8 +38,6 @@ class _17_RefundTests extends \PHPUnit\Framework\TestCase
 
     public function testAllGetters()
     {
-        $this->markTestSkipped("No payments are entered in UCRM!");
-
         $refund = Refund::getById(1);
 
         $test = TestFunctions::testAllGetters($refund);
@@ -50,9 +48,7 @@ class _17_RefundTests extends \PHPUnit\Framework\TestCase
 
     public function testGet()
     {
-        $this->markTestSkipped("No payments are entered in UCRM!");
-
-        $refunds = new Collection(Refund::class, Refund::get());
+        $refunds = Refund::get();
         $this->assertNotNull($refunds);
 
         echo ">>> Refund::get()\n";
@@ -62,8 +58,6 @@ class _17_RefundTests extends \PHPUnit\Framework\TestCase
 
     public function testGetById()
     {
-        $this->markTestSkipped("No payments are entered in UCRM!");
-
         $refund = Refund::getById(1);
         $this->assertEquals(1, $refund->getId());
 
@@ -74,19 +68,26 @@ class _17_RefundTests extends \PHPUnit\Framework\TestCase
 
     // -----------------------------------------------------------------------------------------------------------------
 
-
-    public function testCreateRefund()
+    public function testRefundInsert()
     {
+        /** @var Client $client */
         $client = Client::getById(1);
 
         $refund = (new Refund())
-            ->setMethod
+            ->setMethod(Payment::METHOD_CUSTOM)
+            ->setCreatedDate(new \DateTime())
+            ->setAmount(10)
+            ->setNote("Partial refund from API.")
+            ->setClientId(1)
+            ->setCurrencyCode("USD");
 
+        echo ">>> Refund::insert()\n";
+        print_r($refund);
+        echo "\n";
 
+        //$refund->insert();
 
+        $this->assertTrue(true);
     }
-
-
-
 
 }

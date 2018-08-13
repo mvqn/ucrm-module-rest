@@ -3,13 +3,16 @@ declare(strict_types=1);
 
 namespace MVQN\Helpers;
 
-class ArrayHelperPathException extends \Exception
-{
-}
+use MVQN\Helpers\Exceptions\ArrayHelperException;
 
-
-
-final class ArrayHelpers
+/**
+ * Class ArrayHelper
+ *
+ * @package MVQN\Helpers
+ * @author Ryan Spaeth <rspaeth@mvqn.net>
+ * @final
+ */
+final class ArrayHelper
 {
 
 
@@ -27,7 +30,7 @@ final class ArrayHelpers
         foreach ($steps as $step)
         {
             if (!is_array($current) || !array_key_exists($step, $current))
-                throw new ArrayHelperPathException("Could not traverse the path '$path' in ".print_r($array, true));
+                throw new ArrayHelperException("Could not traverse the path '$path' in ".print_r($array, true));
 
             $current = $current[$step];
         }

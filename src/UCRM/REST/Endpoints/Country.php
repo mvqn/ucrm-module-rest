@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace UCRM\REST\Endpoints;
 
 use UCRM\REST\Endpoints\Helpers\CountryHelper;
-use UCRM\REST\RestClient;
 
 /**
  * Class Country
@@ -35,6 +34,7 @@ final class Country extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var string
      */

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
+use UCRM\REST\Endpoints\Helpers\OrganizationHelper;
 use UCRM\REST\RestClient;
 
 
@@ -17,205 +18,186 @@ use UCRM\REST\RestClient;
  */
 final class Organization extends Endpoint
 {
-    /** @const string  */
-    //protected const ENDPOINT = "/organizations";
-
-
+    use OrganizationHelper;
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
-    protected $id;
-
     /**
-     * @return int
+     * @var string
      */
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
     protected $name;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     */
     protected $registrationNumber;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getRegistrationNumber(): string
+    public function getRegistrationNumber(): ?string
     {
         return $this->registrationNumber;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     */
     protected $taxId;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getTaxId(): string
+    public function getTaxId(): ?string
     {
         return $this->taxId;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     */
     protected $phone;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPhone(): string
+    public function getPhone(): ?string
     {
         return $this->phone;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     */
     protected $email;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getEmail(): string
+    public function getEmail(): ?string
     {
         return $this->email;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     */
     protected $website;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getWebsite(): string
+    public function getWebsite(): ?string
     {
         return $this->website;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     */
     protected $street1;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getStreet1(): string
+    public function getStreet1(): ?string
     {
         return $this->street1;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     */
     protected $street2;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getStreet2(): string
+    public function getStreet2(): ?string
     {
         return $this->street2;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     */
     protected $city;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCity(): string
+    public function getCity(): ?string
     {
         return $this->city;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
+    /**
+     * @var int
+     */
     protected $countryId;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getCountryId(): int
+    public function getCountryId(): ?int
     {
         return $this->countryId;
     }
 
-    /** @var Country $country */
-    protected $country = null;
-
-    /**
-     * @return Country
-     */
-    public function getCountry(): Country
-    {
-        // Cache the value here for future lookups...
-        if($this->country === null)
-            $this->country = Country::getById($this->countryId);
-
-        return $this->country;
-    }
-
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
+    /**
+     * @var int
+     */
     protected $stateId;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getStateId(): int
+    public function getStateId(): ?int
     {
         return $this->stateId;
     }
 
-    /** @var State $state */
-    protected $state = null;
-
-    /**
-     * @return State
-     */
-    public function getState(): State
-    {
-        // Cache the value here for future lookups...
-        if($this->state === null)
-            $this->state = State::getById($this->stateId);
-
-        return $this->state;
-    }
-
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+    /**
+     * @var string
+     */
     protected $zipCode;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getZipCode(): string
+    public function getZipCode(): ?string
     {
         return $this->zipCode;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var bool  */
+    /**
+     * @var bool
+     */
     protected $selected;
 
     /**
-     * @return bool
+     * @return bool|null
      */
-    public function getSelected(): bool
+    public function getSelected(): ?bool
     {
         return $this->selected;
     }

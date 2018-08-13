@@ -5,8 +5,6 @@ namespace UCRM\REST\Endpoints\Lookups;
 
 use UCRM\REST\RestClient;
 
-use UCRM\REST\Endpoints\Lookup;
-
 /**
  * Class ClientBankAccount
  *

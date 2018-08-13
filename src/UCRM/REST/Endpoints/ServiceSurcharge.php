@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
-
+use UCRM\REST\Endpoints\Helpers\ServiceSurchargeHelper;
 
 /**
  * Class ServiceSurcharge
@@ -12,103 +12,148 @@ namespace UCRM\REST\Endpoints;
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
  *
- * @endpoints { "get": "", "getById": "/clients/services/service-surcharges/:id" }
+ * @endpoints { "get": "/clients/services/:serviceId/service-surcharges" }
+ * @endpoints { "getById": "/clients/services/service-surcharges/:id" }
+ * @endpoints { "post": "/clients/services/:serviceId/service-surcharges" }
+ * @endpoints { "patch": "/clients/services/service-surcharges/:id" }
  */
 final class ServiceSurcharge extends Endpoint
 {
-    /** @const string  */
-    //protected const ENDPOINT = "/service-surcharges";
-
-    /** @const string  */
-    //protected const ENDPOINT_PARENT = "/clients/services";
+    use ServiceSurchargeHelper;
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
-    protected $id;
 
     /**
-     * @return int
+     * @var int
      */
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
     protected $serviceId;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getServiceId(): int
+    public function getServiceId(): ?int
     {
         return $this->serviceId;
     }
 
-    /** @var Service $service */
-    protected $service = null;
-
     /**
-     * @return Service
-     * @throws RestClientException
+     * @param int $value
+     * @return ServiceSurcharge
      */
-    public function getClient(): Service
+    public function setServiceId(int $value): ServiceSurcharge
     {
-        // Cache the value here for future lookups...
-        if($this->service === null)
-            $this->service = Service::getById($this->serviceId);
-
-        return $this->service;
+        $this->serviceId = $value;
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
+
+    /**
+     * @var int
+     * @post-required
+     * @patch
+     */
     protected $surchargeId;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getSurchargeId(): int
+    public function getSurchargeId(): ?int
     {
         return $this->surchargeId;
     }
 
+    /**
+     * @param int $value
+     * @return ServiceSurcharge
+     */
+    public function setSurchargeId(int $value): ServiceSurcharge
+    {
+        $this->surchargeId = $value;
+        return $this;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+
+    /**
+     * @var string
+     * @post
+     * @patch
+     */
     protected $invoiceLabel;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getInvoiceLabel(): string
+    public function getInvoiceLabel(): ?string
     {
         return $this->invoiceLabel;
     }
 
+    /**
+     * @param string $value
+     * @return ServiceSurcharge
+     */
+    public function setInvoiceLabel(string $value): ServiceSurcharge
+    {
+        $this->invoiceLabel = $value;
+        return $this;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var float  */
+
+    /**
+     * @var float
+     * @post
+     * @patch
+     */
     protected $price;
 
     /**
-     * @return float
+     * @return float|null
      */
-    public function getPrice(): float
+    public function getPrice(): ?float
     {
         return $this->price;
     }
 
+    /**
+     * @param float $value
+     * @return ServiceSurcharge
+     */
+    public function setPrice(float $value): ServiceSurcharge
+    {
+        $this->price = $value;
+        return $this;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var bool  */
+
+    /**
+     * @var bool
+     * @post
+     * @patch
+     */
     protected $taxable;
 
     /**
-     * @return bool
+     * @return bool|null
      */
-    public function getTaxable(): bool
+    public function getTaxable(): ?bool
     {
         return $this->taxable;
     }
+
+    /**
+     * @param bool $value
+     * @return ServiceSurcharge
+     */
+    public function setTaxable(bool $value): ServiceSurcharge
+    {
+        $this->taxable = $value;
+        return $this;
+    }
+
 
 }
 

@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace MVQN\Helpers;
 
+use MVQN\Helpers\Exceptions\PatternMatchException;
 
-
-
-class PatternMatchException extends \Exception
-{
-}
-
-
-
+/**
+ * Class PatternMatcher
+ *
+ * @package MVQN\Helpers
+ * @author Ryan Spaeth <rspaeth@mvqn.net>
+ * @final
+ */
 final class PatternMatcher
 {
 
@@ -19,7 +19,7 @@ final class PatternMatcher
     /**
      * @param string $pattern
      * @param array $params
-     * @param array $tokens
+     * @param string $token
      * @return string
      * @throws PatternMatchException
      */

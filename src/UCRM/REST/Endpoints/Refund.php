@@ -13,6 +13,7 @@ use UCRM\REST\Endpoints\Helpers\RefundHelper;
  * @final
  *
  * @endpoints { "get": "/refunds", "getById": "/refunds/:id" }
+ * @endpoints { "post": "/refunds" }
  */
 final class Refund extends Endpoint
 {
@@ -42,15 +43,15 @@ final class Refund extends Endpoint
 
     // -----------------------------------------------------------------------------------------------------------------
     /**
-     * @var string
+     * @var int
      * @post-required
      */
     protected $method;
 
     /**
-     * @return string|null
+     * @return int|null
      */
-    public function getMethod(): ?string
+    public function getMethod(): ?int
     {
         return $this->method;
     }
@@ -173,9 +174,9 @@ final class Refund extends Endpoint
     protected $currencyCode;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCurrencyCode(): string
+    public function getCurrencyCode(): ?string
     {
         return $this->currencyCode;
     }
@@ -198,9 +199,9 @@ final class Refund extends Endpoint
     protected $paymentCovers;
 
     /**
-     * @return PaymentCover[]
+     * @return PaymentCover[]|null
      */
-    public function getPaymentCovers(): array
+    public function getPaymentCovers(): ?array
     {
         return $this->paymentCovers;
     }

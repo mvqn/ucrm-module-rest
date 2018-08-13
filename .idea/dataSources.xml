@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="ucrm@ucrm.dev.mvqn.net" uuid="a9326925-11ec-4d24-b9d1-ae2904813434">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://ucrm.dev.mvqn.net:5432/ucrm</jdbc-url>
+    </data-source>
+  </component>
+</project>

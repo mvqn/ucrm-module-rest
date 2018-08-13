@@ -3,22 +3,15 @@ declare(strict_types=1);
 
 namespace MVQN\Annotations;
 
-use MVQN\Helpers\ArrayHelpers;
-
-class AnnotationReaderException extends \Exception
-{
-}
-
-
+use MVQN\Annotations\Exceptions\AnnotationReaderException;
+use MVQN\Helpers\ArrayHelper;
 
 
 class AnnotationReader
 {
     protected $docblock = "";
     protected $parameters = [];
-    //private $keyPattern = "[A-z0-9\_\-]+";
-    //private $endPattern = "[ ]*(?:@|\r\n|\n)";
-    //private $parsedAll = FALSE;
+
     protected $pattern = "/(?:\*)(?:[\t ]*)?@([\w\_\-]+)(?:[\t ]*)?(.*)/m";
     protected $json_pattern = "/(\{.*\})/";
     protected $array_pattern = "/ (\[.*\])/";
@@ -147,7 +140,7 @@ class AnnotationReader
     public function getParameter(string $key)
     {
         if(strpos($key, "/") !== false)
-            return ArrayHelpers::array_path($this->parameters, $key);
+            return ArrayHelper::array_path($this->parameters, $key);
         else
             return array_key_exists($key, $this->parameters) ? $this->parameters[$key] : null;
     }

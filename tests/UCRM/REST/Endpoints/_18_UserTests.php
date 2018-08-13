@@ -48,7 +48,7 @@ class _18_UserTests extends \PHPUnit\Framework\TestCase
 
     public function testGet()
     {
-        $users = new Collection(User::class, User::get());
+        $users = User::get();
         $this->assertNotNull($users);
 
         echo ">>> User::get()\n";

@@ -51,7 +51,7 @@ class _01_GeneralTests extends \PHPUnit\Framework\TestCase
 
     public function testCountryGet()
     {
-        $countries = new Collection(Country::class, Country::get());
+        $countries = Country::get();
         $this->assertNotNull($countries);
 
         echo ">>> Country::get()\n";
@@ -72,7 +72,7 @@ class _01_GeneralTests extends \PHPUnit\Framework\TestCase
     public function testCountryGetByName()
     {
         /** @var Country $country */
-        $country = Country::getByName("United States");
+        $country = Country::getByName("United States")->first();
         $this->assertEquals("United States", $country->getName());
 
         echo ">>> Country::getByName('United States')\n";
@@ -109,7 +109,7 @@ class _01_GeneralTests extends \PHPUnit\Framework\TestCase
 
     public function testCurrencyGet()
     {
-        $currencies = new Collection(Currency::class, Currency::get());
+        $currencies = Currency::get();
         $this->assertNotNull($currencies);
 
         echo ">>> Currency::get()\n";

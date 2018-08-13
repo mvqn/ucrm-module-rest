@@ -27,32 +27,7 @@ trait PaymentHelper
     // HELPER METHODS
     // -----------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return Client
-     * @throws AnnotationReaderException
-     * @throws ArrayHelperPathException
-     * @throws PatternMatchException
-     * @throws \ReflectionException
-     */
-    public function getClient(): Client
-    {
-        if($this->clientId !== null)
-            $client = Client::getById($this->clientId);
 
-        /** @var Client $client */
-        return $client;
-    }
-
-    /**
-     * @param Client $client
-     * @return Payment
-     */
-    public function setClient(Client $client): Payment
-    {
-        $this->clientId = $client->getId();
-        /** @var Payment $this */
-        return $this;
-    }
 
     // -----------------------------------------------------------------------------------------------------------------
 
@@ -86,8 +61,10 @@ trait PaymentHelper
 
     // -----------------------------------------------------------------------------------------------------------------
 
-    public function getInvoice(): Invoice
+    public function getInvoice(): ?Invoice
     {
+        $invoice = null;
+
         if($this->invoiceId !== null)
             $invoice = Invoice::getById($this->invoiceId);
 
@@ -105,11 +82,19 @@ trait PaymentHelper
 
     // -----------------------------------------------------------------------------------------------------------------
 
+    /**
+     * @return Collection
+     * @throws AnnotationReaderException
+     * @throws ArrayHelperPathException
+     * @throws PatternMatchException
+     * @throws \MVQN\Collections\CollectionException
+     * @throws \ReflectionException
+     */
     public function getInvoices(): Collection
     {
         if($this->invoiceIds !== null && $this->invoiceIds !== [])
         {
-            $allInvoices = new Collection(Invoice::class, Invoice::get());
+            $allInvoices = Invoice::get();
             $invoices = [];
 
             foreach($this->invoiceIds as $id)
@@ -148,5 +133,19 @@ trait PaymentHelper
         return $this;
     }
 
+
+    /**
+     * @return Payment
+     * @throws AnnotationReaderException
+     * @throws ArrayHelperPathException
+     * @throws PatternMatchException
+     * @throws \ReflectionException
+     */
+    public function sendReceipt(): Payment
+    {
+        /** @var Payment $payment */
+        $payment = Payment::patch($this->id, null, "/send-receipt");
+        return $payment;
+    }
 
 }

@@ -3,22 +3,22 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
+use MVQN\Collections\Collection;
 use UCRM\REST\RestClient;
 
-
+require_once __DIR__."/TestFunctions.php";
 
 class _04_ClientLogTests extends \PHPUnit\Framework\TestCase
 {
+    // =================================================================================================================
+    // INITIALIZATION
+    // -----------------------------------------------------------------------------------------------------------------
+
     /** @var string Location of the .env file for development. */
     protected const DOTENV_PATH = __DIR__."/../../../../";
 
+    // -----------------------------------------------------------------------------------------------------------------
 
-
-    /**
-     * Sets up the RestClient for testing.
-     *
-     * @throws \UCRM\REST\Exceptions\RestClientException
-     */
     protected function setUp()
     {
         // Load ENV variables from a file during development.
@@ -32,74 +32,100 @@ class _04_ClientLogTests extends \PHPUnit\Framework\TestCase
         RestClient::ucrmKey(getenv("REST_KEY"));
     }
 
+    // =================================================================================================================
+    // TESTS
+    // -----------------------------------------------------------------------------------------------------------------
 
+    public function testAllGetters()
+    {
+        $clientLog = ClientLog::getById(1);
+
+        $test = TestFunctions::testAllGetters($clientLog);
+        $this->assertTrue($test);
+    }
 
     public function testGet()
     {
-
         $clientLogs = ClientLog::get();
-        $this->assertNotEmpty($clientLogs);
+        $this->assertNotNull($clientLogs);
 
-        foreach($clientLogs as $clientLog)
-            echo $clientLog."\n";
+        echo ">>> ClientLog::get()\n";
+        echo $clientLogs."\n";
+        echo "\n";
     }
-
 
     public function testGetById()
     {
         $clientLog = ClientLog::getById(1);
-        $this->assertInstanceOf(ClientLog::class, $clientLog);
+        $this->assertEquals(1, $clientLog->getId());
 
+        echo ">>> ClientLog::getById(1)\n";
         echo $clientLog."\n";
+        echo "\n";
     }
 
+    // -----------------------------------------------------------------------------------------------------------------
 
-    public function testGetters()
+    public function testHelperMethods()
     {
-        $log = ClientLog::getById(1);
-        $this->assertNotEmpty($log);
+        /** @var ClientLog $clientLog */
+        $clientLog = ClientLog::getById(1);
 
-        echo ">>> ClientTests->testGetters()\n";
+        echo ">>> ClientLogTests::testHelperMethods()\n";
 
-        $reflection = new \ReflectionClass(ClientLog::class);
-        $properties = $reflection->getProperties(\ReflectionProperty::IS_PROTECTED);
+        $client = $clientLog->getClient();
+        echo "> getClient() => ".$client."\n";
+        echo "> setClient() => ".$clientLog->setClient($client)."\n";
+        $this->assertEquals(1, $client->getId());
 
-        foreach($properties as $property)
-        {
-            $name = $property->getName();
-            $func = "get".ucfirst($name);
 
-            $value = $log->$func();
-
-            if(is_array($value))
-                echo ">   ClientLog::get".ucfirst($name)."() => ".json_encode($value, JSON_UNESCAPED_SLASHES)."\n";
-            else
-                echo ">   ClientLog::get".ucfirst($name)."() => $value\n";
-        }
+        $user = $clientLog->getUser();
+        echo "> getUser() => ".$user."\n";
+        echo "> setUser() => ".$clientLog->setUser($user)."\n";
+        $this->assertEquals(1, $user->getId());
 
         echo "\n";
     }
 
-    public function testSetters()
+    // -----------------------------------------------------------------------------------------------------------------
+
+    public function testClientLogInsert()
     {
-        $log = new ClientLog();
+        /** @var Client $client */
+        $client = Client::getById(1);
 
-        $log
+        $clientLog = (new ClientLog())
+            ->setMessage("This is a test from the API.")
             //->setClientId(1)
-            ->setClientByName("Dwight", "Worthen")
+            ->setClient($client)
             //->setUserId(1)
-            //->setUserByName("Ryan", "Spaeth")
-            ->setUserByEmail("rspaeth@mvqn.net")
-            ->setCreatedDate(new \DateTime())
-            ->setMessage("This is a another test entry from the API!");
+            ->setUser(User::getByEmail("rspaeth@mvqn.net"))
+            ->setCreatedDate(new \DateTime());
 
-        print_r($log);
+        echo ">>> ClientLog::insert()\n";
+        print_r($clientLog);
+        echo "\n";
 
+        //$clientLog->insert();
 
-        //$log->insert();
-
-
+        $this->assertTrue(true);
     }
 
+    public function testClientLogUpdate()
+    {
+        /** @var ClientLog $clientLog */
+        $clientLog = ClientLog::getById(1);
+
+        $clientLog
+            ->setCreatedDate(new \DateTime("01/01/2018"));
+
+        echo ">>> ClientLog::update()\n";
+        print_r($clientLog);
+        echo "\n";
+
+        //$clientLog->update();
+
+        $this->assertTrue(true);
+    }
 
 }
