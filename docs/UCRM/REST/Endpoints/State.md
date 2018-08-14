@@ -1,4 +1,4 @@
-## Country
+# Country
 
 **GET**:
 - [All States by Country](#all-states-by-country)
@@ -6,10 +6,10 @@
 - [State by Name](#state-by-name)
 - [State by Code](#state-by-code)
 
-#### All States by Country
+## All States by Country
 > /countries/<span style="color:red">countryId</span>/states
 
-###### Example
+#### Example
 ```php
 <?php
 
@@ -25,7 +25,7 @@ $states = $country->getStates();
 echo $states;
 ```
 
-###### Output
+#### Output
 *NOTE: Formatting altered for claridy, all real output is in minified JSON.*
 ```json
 [
@@ -84,9 +84,9 @@ echo $states;
 ```
 
 
-#### State by ID
+## State by ID
 
-###### Example
+#### Example
 ```php
 <?php
 
@@ -98,15 +98,15 @@ $state = State::getById(28);
 echo $state;
 ```
 
-###### Output
+#### Output
 ```json
 {"id":28,"countryId":249,"name":"Nevada","code":"NV"}
 ```
 
 
-#### State by Name
+## State by Name
 
-###### Example
+#### Example
 ```php
 <?php
 
@@ -122,15 +122,15 @@ $state = State::getByName($country, "Nevada");
 echo $state;
 ```
 
-###### Output
+#### Output
 ```json
 {"id":28,"countryId":249,"name":"Nevada","code":"NV"}
 ```
 
 
-#### State by Code
+## State by Code
 
-###### Example
+#### Example
 ```php
 <?php
 
@@ -146,7 +146,7 @@ $state = State::getByCode($country, "NV");
 echo $state;
 ```
 
-###### Output
+#### Output
 ```json
 {"id":28,"countryId":249,"name":"Nevada","code":"NV"}
 ```
