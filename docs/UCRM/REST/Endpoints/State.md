@@ -1,4 +1,4 @@
-# Country
+# State
 
 **GET**:
 - [All States by Country](#all-states-by-country)
