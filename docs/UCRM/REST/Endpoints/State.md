@@ -6,6 +6,7 @@
 - [State by Name](#state-by-name)
 - [State by Code](#state-by-code)
 
+&nbsp;
 ## All States by Country
 > /countries/<span style="color:red">countryId</span>/states
 
@@ -83,7 +84,7 @@ echo $states;
 ]
 ```
 
-
+&nbsp;
 ## State by ID
 
 #### Example
