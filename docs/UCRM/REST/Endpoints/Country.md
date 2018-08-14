@@ -1,21 +1,33 @@
-## Country
+# Country
 
-**GET**: [/countries](#all-countries) **|** [/countries/id](#country-by-id)
+**GET**:
+- [All Countries](#all-countries)
+- [State by ID](#state-by-id)
+- [State by Name](#state-by-name)
+- [State by Code](#state-by-code)
 
-#### All Countries
 
-###### Example
+&nbsp;
+## All Countries
+```
+GET /countries
+```
+
+#### Example
 ```php
 <?php
 
 use UCRM\REST\Endpoints\Country;
+use UCRM\REST\Endpoints\Collections\CountryCollection;
 
-$version = Country::get();
+/** @var CountryCollection $countries */
+$countries = Country::get();
 
-echo $version;
+echo $countries;
 ```
 
-###### Output
+#### Output
+> *NOTE: Formatting altered for clarity, all real output is in minified JSON.*
 ```json
 [
 	{"id":19,"name":"Afghanistan","code":"AF"},
@@ -271,20 +283,75 @@ echo $version;
 ```
 
 
-#### Country by ID
+&nbsp;
+## Country by ID
+```
+GET /countries/{countryId}
+```
 
-###### Example
+#### Example
 ```php
 <?php
 
 use UCRM\REST\Endpoints\Country;
 
+/** @var Country $country */
 $country = Country::getById(249);
 
 echo $country;
 ```
 
-###### Output
+#### Output
+```json
+{"id":249,"name":"United States","code":"US"}
+```
+
+
+&nbsp;
+## Country by Name
+> *NOTE: This is not a valid UCRM API endpoint, but rather an equivalent representation.*
+```
+GET /countries?name={name}
+```
+
+#### Example
+```php
+<?php
+
+use UCRM\REST\Endpoints\Country;
+
+/** @var Country $country */
+$country = Country::getByName("United States");
+
+echo $country;
+```
+
+#### Output
+```json
+{"id":249,"name":"United States","code":"US"}
+```
+
+
+&nbsp;
+## Country by Code
+> *NOTE: This is not a valid UCRM API endpoint, but rather an equivalent representation.*
+```
+GET /countries?code={code}
+```
+
+#### Example
+```php
+<?php
+
+use UCRM\REST\Endpoints\Country;
+
+/** @var Country $country */
+$country = Country::getByCode("US");
+
+echo $country;
+```
+
+#### Output
 ```json
 {"id":249,"name":"United States","code":"US"}
 ```

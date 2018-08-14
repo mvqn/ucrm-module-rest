@@ -30,7 +30,7 @@ echo $states;
 ```
 
 #### Output
-> *NOTE: Formatting altered for claridy, all real output is in minified JSON.*
+> *NOTE: Formatting altered for clarity, all real output is in minified JSON.*
 ```json
 [
 	{"id":1,"countryId":249,"name":"Alabama","code":"AL"},
