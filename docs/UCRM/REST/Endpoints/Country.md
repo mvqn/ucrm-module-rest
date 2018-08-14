@@ -1,8 +1,8 @@
 ## Country
-#### /countries
-> GET
 
-&nbsp;
+**GET**: [/countries](#all-countries) **|** [/countries/id](#country-by-id)
+
+#### All Countries
 
 ###### Example
 ```php
@@ -14,8 +14,6 @@ $version = Country::get();
 
 echo $version;
 ```
-
-&nbsp;
 
 ###### Output
 ```json
@@ -272,25 +270,21 @@ echo $version;
 ]
 ```
 
-#### /countries
-> GET
 
-&nbsp;
+#### Country by ID
 
 ###### Example
 ```php
 <?php
 
-use UCRM\REST\Endpoints\Version;
+use UCRM\REST\Endpoints\Country;
 
-$version = Version::get()->first();
+$country = Country::getById(249);
 
-echo $version;
+echo $country;
 ```
-
-&nbsp;
 
 ###### Output
 ```json
-{"version":"2.13.0-beta2"}
+{"id":249,"name":"United States","code":"US"}
 ```

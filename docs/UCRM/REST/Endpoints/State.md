@@ -7,7 +7,7 @@
 - [State by Code](#state-by-code)
 
 #### All States by Country
-*(/countries/<span style="color:red">countryId</span>/states)*
+> /countries/<span style="color:red">countryId</span>/states
 
 ###### Example
 ```php

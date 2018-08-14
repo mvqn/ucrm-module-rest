@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
+use UCRM\REST\Endpoints\Collections\StateCollection;
 use UCRM\REST\RestClient;
 
 require_once __DIR__."/TestFunctions.php";
@@ -58,7 +59,10 @@ class _01_GeneralTests extends \PHPUnit\Framework\TestCase
         $this->assertNotNull($countries);
 
         echo ">>> Country::get()\n";
-        echo $countries."\n";
+        echo "[\n";
+        foreach($countries as $country)
+            echo "\t".$country.",\n";
+        echo "]\n";
         echo "\n";
     }
 
@@ -207,6 +211,9 @@ class _01_GeneralTests extends \PHPUnit\Framework\TestCase
         /** @var Country $country */
         $country = Country::getById(249);
 
+
+
+
         $state = State::getByName($country, "Nevada");
         $this->assertEquals("Nevada", $state->getName());
 
@@ -237,4 +244,18 @@ class _01_GeneralTests extends \PHPUnit\Framework\TestCase
     // -----------------------------------------------------------------------------------------------------------------
 
     // ...
+
+
+    public function testDocs()
+    {
+        /** @var Country $country */
+        $country = Country::getById(249);
+
+        /** @var State $state */
+        $state = State::getByCode($country, "NV");
+
+        echo $state;
+    }
+
+
 }
