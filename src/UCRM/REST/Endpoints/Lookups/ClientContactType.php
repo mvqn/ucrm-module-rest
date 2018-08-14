@@ -3,10 +3,6 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Lookups;
 
-use UCRM\REST\RestClient;
-
-
-
 /**
  * Class ClientContactType
  *
@@ -16,7 +12,11 @@ use UCRM\REST\RestClient;
  */
 final class ClientContactType extends Lookup
 {
+
+    // =================================================================================================================
+    // PROPERTIES
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var int
      */
@@ -30,7 +30,10 @@ final class ClientContactType extends Lookup
         return $this->id;
     }
 
+
+
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var string
      * @post
@@ -57,6 +60,3 @@ final class ClientContactType extends Lookup
     }
 
 }
-
-
-

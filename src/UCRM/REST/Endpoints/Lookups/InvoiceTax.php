@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Lookups;
 
-
-
 /**
  * Class InvoiceTax
  *
@@ -14,32 +12,39 @@ namespace UCRM\REST\Endpoints\Lookups;
  */
 final class InvoiceTax extends Lookup
 {
+
+    // =================================================================================================================
+    // PROPERTIES
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var string  */
+
+    /**
+     * @var string
+     */
     protected $name;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
 
+
+
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var float  */
+
+    /**
+     * @var float
+     */
     protected $totalValue;
 
     /**
-     * @return float
+     * @return float|null
      */
-    public function getTotalValue(): float
+    public function getTotalValue(): ?float
     {
         return $this->totalValue;
     }
 
-
 }
-
-
-

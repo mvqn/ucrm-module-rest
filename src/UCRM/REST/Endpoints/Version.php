@@ -12,23 +12,26 @@ namespace UCRM\REST\Endpoints;
  *
  * @endpoints { "get": "/version" }
  * @excludeId
+ * @singular
  */
 final class Version extends Endpoint
 {
+
+    // =================================================================================================================
+    // PROPERTIES
     // -----------------------------------------------------------------------------------------------------------------
 
-    /** @var string  */
+    /**
+     * @var string
+     */
     protected $version;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getVersion(): string
+    public function getVersion(): ?string
     {
         return $this->version;
     }
 
 }
-
-
-

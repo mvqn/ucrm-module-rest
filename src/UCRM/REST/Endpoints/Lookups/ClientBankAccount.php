@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Lookups;
 
-use UCRM\REST\RestClient;
-
 /**
  * Class ClientBankAccount
  *
@@ -14,7 +12,11 @@ use UCRM\REST\RestClient;
  */
 final class ClientBankAccount extends Lookup
 {
+
+    // =================================================================================================================
+    // PROPERTIES
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var string
      */
@@ -39,6 +41,3 @@ final class ClientBankAccount extends Lookup
     }
 
 }
-
-
-

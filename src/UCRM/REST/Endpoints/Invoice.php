@@ -38,6 +38,8 @@ final class Invoice extends Endpoint
     public const STATUS_PAID            = 3;
     public const STATUS_VOID            = 4;
 
+    // =================================================================================================================
+    // PROPERTIES
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
@@ -1182,7 +1184,5 @@ final class Invoice extends Endpoint
         $this->uncollectible = $value;
         return $this;
     }
+
 }
-
-
-

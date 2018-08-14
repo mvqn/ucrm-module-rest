@@ -19,42 +19,28 @@ use UCRM\REST\Exceptions\RestObjectException;
 abstract class RestObject extends Collectible implements \JsonSerializable
 {
 
+    // =================================================================================================================
+    // CONSTANTS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    /** @var string The root namespace of Lookup classes. */
     private const LOOKUP_NAMESPACE = __NAMESPACE__."\\Endpoints\\Lookups";
 
+    /** @var string A string delimiter to use when @keepNull and @keepNullElements annotations are used. */
     private const NULL_DELIMITER = "#NULL#";
 
+    // =================================================================================================================
+    // MAGIC METHODS
+    // -----------------------------------------------------------------------------------------------------------------
+
     /**
-     * RestObject constructor.
-     *
      * @param array $values
      */
     public function __construct(array $values = [])
     {
+        // Add each provided key as a property with the given value to this object...
         foreach($values as $key => $value)
             $this->$key = $value;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
-     * Specify data which should be serialized to JSON.
-     *
-     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
-     * @return mixed data which can be serialized by <b>json_encode</b>,
-     * which is a value of any type other than a resource.
-     * @since 5.4.0
-     */
-    public function jsonSerialize()
-    {
-        // Get an array of all Model properties.
-        $assoc = get_object_vars($this);
-
-        // Move ID to the first element in the array for readability.
-        if(array_key_exists("id", $assoc))
-            $assoc = ["id" => $assoc["id"]] + $assoc;
-
-        // Return the array!
-        return $assoc;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -71,15 +57,46 @@ abstract class RestObject extends Collectible implements \JsonSerializable
         return json_encode($this, JSON_UNESCAPED_SLASHES);
     }
 
+    // =================================================================================================================
+    // INTERFACE IMPLEMENTATIONS
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
-     * @param string $method
-     * @param int $options
-     * @param bool $filter
-     * @return string
-     * @throws \MVQN\Annotations\AnnotationReaderException
-     * @throws \ReflectionException
+     * Specify data which should be serialized to JSON.
+     *
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed Data which can be serialized by <b>json_encode</b>, as a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    public function jsonSerialize()
+    {
+        // Get an array of all Model properties.
+        $assoc = get_object_vars($this);
+
+        // Move ID to the first element in the array for readability.
+        if(array_key_exists("id", $assoc))
+            $assoc = ["id" => $assoc["id"]] + $assoc;
+
+        // Return the array!
+        return $assoc;
+    }
+
+    // =================================================================================================================
+    // PREPARATION METHODS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Converts the RestObject to it's JSON representation, removing and values that should not be provided given the
+     * specified HTTP method/verb and optionally removing all null fields not specifically annotated with '@keepNull' or
+     * '@keepNullElements'.
+     *
+     * @param string $method The HTTP method/verb for which to examine each property for exclusion.
+     * @param bool $filter A flag to request the resulting JSON be stripped of fields containing null values.
+     * @param int $options Any optional <b>json_encode</b> options to be used.
+     * @return string Returns a JSON string prepared for provision to any HTTP REST request body.
+     * @throws AnnotationReaderException Throws an exception if any errors occurred during parsing of the annotations.
+     * @throws RestObjectException Throws an exception if any errors occurred during the preparation process.
+     * @throws \ReflectionException Throws an exception if any errors occurred while using the Reflection engine.
      */
     public function toJSON(string $method = "", bool $filter = true, int $options = 0): string
     {
@@ -100,8 +117,6 @@ abstract class RestObject extends Collectible implements \JsonSerializable
         {
             // Get the name of this property.
             $name = $property->getName();
-
-
 
             // Create an AnnotationReader for this property and get all of it's annotations.
             $annotations = new AnnotationReader($class, $name, "property");
@@ -140,8 +155,6 @@ abstract class RestObject extends Collectible implements \JsonSerializable
                         if($children === null)
                             continue;
 
-                        //$isEmpty = true;
-
                         // Loop through each child class object...
                         foreach($children as $child)
                         {
@@ -150,53 +163,43 @@ abstract class RestObject extends Collectible implements \JsonSerializable
                             // IF the current child's value is NOT an array...
                             if(!is_array($child))
                             {
-                                // THEN decode and add the child object to the collection.
+                                // AND the value is NOT null...
                                 if($child !== null)
                                 {
+                                    // THEN run this method recursively on this child object.
                                     $assoc = json_decode($child->toJSON($method), true);
 
+                                    // IF the '@keepNullElements' annotation has been set
+                                    // AND this would be an empty array...
                                     if(array_key_exists("keepNullElements", $params) && array_filter($assoc) === [])
+                                        // THEN add the NULL delimiter string as a placeholder.
                                         $fields[$name][] = self::NULL_DELIMITER;
                                     else
+                                        // OTHERWISE simply add the array as the current field.
                                         $fields[$name][] = $assoc;
-
-                                    //$isEmpty = false;
                                 }
                                 else
+                                    // OTHERWISE simply add null to the current field.
                                     $fields[$name][] = null;
                             }
                             else
                             {
-                                // OTHERWISE, The child is an Array!
+                                // OTHERWISE, the child is an Array and we should create a Lookup class for it!
 
-                                // Should NEVER reach this block!
-                                throw new RestObjectException("WTF???");
-
-                                //$fields[$name][] = $child;
+                                // We should NEVER reach this block, in theory!
+                                throw new RestObjectException("An array was found for which a Lookup class should be ".
+                                    "created: ".print_r($child, true));
                             }
-
                         }
-
-
-
-
-
-
-
-                        if($name === "items")
-                            echo "";
-
-
                     }
                     else
                     {
-                        // Should NEVER reach this block!
-                        throw new RestObjectException("WTF???");
+                        // OTHERWISE, the child is a class object that we did not expect to encounter or for which we
+                        // forgot to extend the Lookup class.
+
+                        // We should NEVER reach this block, in theory!
+                        throw new RestObjectException("An object was found that does not extend from Lookup: $type");
                     }
-
-
-
-
                 }
                 else
                 {
@@ -205,28 +208,36 @@ abstract class RestObject extends Collectible implements \JsonSerializable
                     $property->setAccessible(true);
                     $value = $property->getValue($this);
 
-                    $fields[$name] = $value; // $assoc[$name];
+                    // Simply append the property as the current field.
+                    $fields[$name] = $value;
                 }
             }
         }
 
+        // If set to be filtered, do so now, which will recursively remove all keys with null values.
         $fields = $filter ? ArrayHelper::array_filter_recursive($fields) : $fields;
 
+        // Convert the array to JSON.
         $json = json_encode($fields, $options);
 
+        // Now replace any occurrences of the NULL delimiter with the actual 'null' value.
         $json = str_replace("\"".self::NULL_DELIMITER."\"", "null", $json);
 
-        // TODO: Determine how UCRM handles deleting single indices!
-
+        // Finally, return the JSON string.
         return $json;
     }
 
     /**
-     * @param string $method
-     * @param bool $filter
-     * @return array
-     * @throws \MVQN\Annotations\AnnotationReaderException
-     * @throws \ReflectionException
+     * Converts the RestObject to it's associative array representation, removing and values that should not be provided
+     * given the specified HTTP method/verb and optionally removing all null fields not specifically annotated with
+     * '@keepNull' or '@keepNullElements'.
+     *
+     * @param string $method The HTTP method/verb for which to examine each property for exclusion.
+     * @param bool $filter A flag to request the resulting JSON be stripped of fields containing null values.
+     * @return array Returns an associative array prepared for provision to any HTTP REST request body.
+     * @throws AnnotationReaderException Throws an exception if any errors occurred during parsing of the annotations.
+     * @throws RestObjectException Throws an exception if any errors occurred during the preparation process.
+     * @throws \ReflectionException Throws an exception if any errors occurred while using the Reflection engine.
      */
     public function toArray(string $method = "", bool $filter = false): array
     {
@@ -235,137 +246,19 @@ abstract class RestObject extends Collectible implements \JsonSerializable
         return $assoc;
     }
 
-
-    /**
-     * @param string $class
-     * @param RestObject[] $array
-     * @param int[]|null $set
-     * @param bool $reindex
-     * @return RestObject[]|null
-     */
-    protected function getCollection(string $class, array $array, ?array $set = null, bool $reindex = false): ?array
-    {
-        if($array === null)
-            return null;
-
-        if($set === null)
-        {
-            $fullset = [];
-            foreach($array as $index => $value)
-                $fullset[] = $index;
-
-            $set = $fullset;
-        }
-
-        $collection = [];
-        foreach($set as $index)
-        {
-            //if($index === 0)
-                //echo "TEST";
-
-            //if(!is_array($array[$index]))
-            //    echo "TEST";
-
-            $collection[$index] = ($array[$index] !== null) ? new $class($array[$index]) : null;
-        }
-
-        return $reindex ? array_values($collection) : $collection;
-    }
-
-
-    /**
-     * @param string $class
-     * @param RestObject[] $array
-     * @param int $id
-     * @param int|null $index
-     * @return RestObject|null
-     * @throws RestObjectException
-     */
-    public function getCollectionItemById(string $class, array $array, int $id, int &$index = null): ?RestObject
-    {
-        $index = -1;
-
-        for($i = 0; $i < count($array); $i++)
-        {
-            if(!array_key_exists("id", $array[$i]))
-                throw new RestObjectException("The collection items must have an \$id property for ".
-                    "'RestObject->getCollectionItemById()' to work!");
-
-            if(!is_subclass_of($class, __NAMESPACE__."\\RestObject", true))
-                throw new RestObjectException("The \$class parameter must be a child of RestObject!");
-
-            if($array[$i]["id"] === $id)
-            {
-                $index = $i;
-                return ($array[$i] !== null) ? new $class($array[$i]) : null;
-            }
-        }
-
-        return null;
-    }
-
-
-    /**
-     * @param string $class
-     * @param array $array
-     * @param array $values
-     * @return RestObject
-     */
-    public function setCollection(string $class, array &$array, array $values): RestObject
-    {
-        foreach($values as $index => $value)
-        {
-
-
-            if(is_array($value)) // ARRAY
-                $array[$index] = $value;
-            else
-            if(is_object($value)) // OBJECT
-                $array[$index] = $value->toArray();
-            else
-            if(is_string($value)) // JSON?
-            {
-                $assoc = json_decode($value, true);
-
-                if($assoc !== null)
-                    $array[$index] = $assoc;
-                else
-                    $array[$index] = $value;
-            }
-            else
-                $array[$index] = $value;
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * @param string $class
-     * @param array $array
-     * @param int $id
-     * @param RestObject $object
-     * @return RestObject
-     * @throws RestObjectException
-     */
-    public function setCollectionItemById(string $class, array &$array, int $id, RestObject $object): RestObject
-    {
-        $current = $this->getCollectionItemById($class, $array, $id, $index);
-        $this->setCollection($class, $array, [ $index => $object ]);
-
-        return $this;
-    }
-
+    // =================================================================================================================
+    // VALIDATION METHODS
+    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * Checks to determine the validity of a RestObject, by comparing each properties value to NULL, when it has been
-     * annotated with '@<method>-required'.
+     * annotated with either '@<method>' or '@<method>-required'.
      *
-     * @param string $method The HTTP method for which to check validity.
-     * @param array|null $missing A reference array used to store the missing/unset properties.
-     * @return bool Returns TRUE if all required properties have a value set.
-     * @throws AnnotationReaderException Throws an exception if the AnnotationReader encounters any errors.
-     * @throws \ReflectionException Throws an exception if the Reflection engine encounters any errors.
+     * @param string $method The HTTP method/verb for which to examine each property for validity.
+     * @param array|null $missing A reference array used to store the missing/unset properties for later use.
+     * @return bool Returns TRUE if all required properties have a value set, otherwise FALSE.
+     * @throws AnnotationReaderException Throws an exception if any errors occurred during parsing of the annotations.
+     * @throws \ReflectionException Throws an exception if any errors occurred while using the Reflection engine.
      */
     public function validate(string $method, array &$missing = null): bool
     {
@@ -382,7 +275,7 @@ abstract class RestObject extends Collectible implements \JsonSerializable
         // Loop through each property of the protected properties...
         foreach($properties as $property)
         {
-            // get the name of the property.
+            // Get the name of the property.
             $name = $property->getName();
 
             // Create an AnnotationReader to parse the annotations for this property and get the list of annotations.
@@ -408,9 +301,22 @@ abstract class RestObject extends Collectible implements \JsonSerializable
         return ($missing === []);
     }
 
-
-
-    public function minimal(string $method, array &$missing = null, array $exceptions = [ "id" ]): RestObject
+    /**
+     * Creates a minimalistic version of the RestObject by removing any fields that are not flagged as required by an
+     * annotation of '@<method>-required'.
+     *
+     * @param string $method The HTTP method/verb for which to examine each property for exclusion.
+     * @param array|null $excluded A reference array used to store the excluded properties for later use.
+     * @param array $exceptions An optional array of exceptions to be included even without the proper annotations.
+     * @return RestObject Returns the newly minimalized RestObject, which has any non-required fileds set to null.
+     * @throws AnnotationReaderException
+     * @throws RestObjectException
+     * @throws \ReflectionException
+     *
+     * @deprecated
+     * @todo Determine if this method is really necessary and complete it as needed!
+     */
+    public function minimal(string $method, array &$excluded = null, array $exceptions = [ "id" ]): RestObject
     {
         $supported = [ "post", /*"put",*/ "patch" ];
 
@@ -424,7 +330,7 @@ abstract class RestObject extends Collectible implements \JsonSerializable
         // Get an array of all Model properties, via Reflection.
         $properties = $reflection->getProperties(\ReflectionProperty::IS_PROTECTED);
 
-        $missing = [];
+        $excluded = [];
 
         // Loop through each property of the protected properties...
         foreach($properties as $property)
@@ -447,7 +353,7 @@ abstract class RestObject extends Collectible implements \JsonSerializable
 
                 // And add it to the list of missing properties, as needed.
                 if($value === null)
-                    $missing[] = $name;
+                    $excluded[] = $name;
             }
             else
             {
@@ -459,14 +365,6 @@ abstract class RestObject extends Collectible implements \JsonSerializable
 
         // Finally, return THIS!
         return $this;
-
-
-
-
     }
-
-
-
-
 
 }

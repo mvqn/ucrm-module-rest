@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace UCRM\REST\Endpoints\Lookups;
 
 use UCRM\REST\RestClient;
-
+use UCRM\REST\Endpoints\Helpers\Common\ClientHelpers;
 
 /**
  * Class ClientContactAttribute
@@ -15,7 +15,12 @@ use UCRM\REST\RestClient;
  */
 final class ClientContactAttribute extends Lookup
 {
+    use ClientHelpers;
+
+    // =================================================================================================================
+    // PROPERTIES
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var int
      */
@@ -29,7 +34,10 @@ final class ClientContactAttribute extends Lookup
         return $this->id;
     }
 
+
+
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var int
      */
@@ -43,25 +51,10 @@ final class ClientContactAttribute extends Lookup
         return $this->clientId;
     }
 
-    /**
-     * @var Client $client
-     */
-    protected $client = null;
 
-    /**
-     * @return Client|null
-     * @throws RestClientException
-     */
-    public function getClient(): ?Client
-    {
-        // Cache the value here for future lookups...
-        if($this->client === null)
-            $this->client = Client::getById($this->clientId);
-
-        return $this->client;
-    }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var string
      */
@@ -75,7 +68,10 @@ final class ClientContactAttribute extends Lookup
         return $this->name;
     }
 
+
+
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var string
      */
@@ -89,7 +85,10 @@ final class ClientContactAttribute extends Lookup
         return $this->key;
     }
 
+
+
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var string
      * @post
@@ -116,6 +115,7 @@ final class ClientContactAttribute extends Lookup
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var int
      * @post
@@ -142,6 +142,3 @@ final class ClientContactAttribute extends Lookup
     }
 
 }
-
-
-

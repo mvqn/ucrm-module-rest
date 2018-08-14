@@ -3,9 +3,7 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
-use Nette\NotImplementedException;
 use UCRM\REST\Endpoints\Helpers\TaxHelper;
-use UCRM\REST\RestClient;
 
 /**
  * Class Tax
@@ -22,6 +20,8 @@ final class Tax extends Endpoint
 {
     use TaxHelper;
 
+    // =================================================================================================================
+    // PROPERTIES
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
@@ -131,7 +131,5 @@ final class Tax extends Endpoint
         //$this->selected = $value;
         return $this;
     }
-
-
 
 }

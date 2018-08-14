@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
-
-
 use UCRM\REST\Endpoints\Collections\ServicePlanPeriodCollection;
 use UCRM\REST\Endpoints\Helpers\ServicePlanHelper;
 use UCRM\REST\Endpoints\Lookups\ServicePlanPeriod;
@@ -24,6 +22,8 @@ final class ServicePlan extends Endpoint
 {
     use ServicePlanHelper;
 
+    // =================================================================================================================
+    // PROPERTIES
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
@@ -295,6 +295,3 @@ final class ServicePlan extends Endpoint
     }
 
 }
-
-
-

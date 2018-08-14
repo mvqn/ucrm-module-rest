@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
+use MVQN\Collections\Exceptions\CollectionException;
+
 use UCRM\REST\Endpoints\Lookups\{
     ClientBankAccount,
     ClientContact,
@@ -942,8 +944,6 @@ final class Client extends Endpoint
         return $this;
     }
 
-    // TODO: Add lookup functionality for TaxIDs ???
-
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
@@ -1090,7 +1090,7 @@ final class Client extends Endpoint
 
     /**
      * @return ClientContactCollection
-     * @throws \MVQN\Collections\CollectionException
+     * @throws CollectionException
      */
     public function getContacts(): ClientContactCollection
     {
@@ -1120,7 +1120,7 @@ final class Client extends Endpoint
 
     /**
      * @return ClientContactAttributeCollection
-     * @throws \MVQN\Collections\CollectionException
+     * @throws CollectionException
      */
     public function getAttributes(): ClientContactAttributeCollection
     {
@@ -1223,7 +1223,7 @@ final class Client extends Endpoint
 
     /**
      * @return ClientBankAccountCollection
-     * @throws \MVQN\Collections\CollectionException
+     * @throws CollectionException
      */
     public function getBankAccounts(): ClientBankAccountCollection
     {
@@ -1256,7 +1256,7 @@ final class Client extends Endpoint
 
     /**
      * @return ClientTagCollection
-     * @throws \MVQN\Collections\CollectionException
+     * @throws CollectionException
      */
     public function getTags(): ClientTagCollection
     {

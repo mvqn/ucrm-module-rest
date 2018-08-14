@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
-
-
 use UCRM\REST\Endpoints\Helpers\ServiceHelper;
 
 /**
@@ -22,6 +20,8 @@ final class Service extends Endpoint
 {
     use ServiceHelper;
 
+    // =================================================================================================================
+    // ENUMS
     // -----------------------------------------------------------------------------------------------------------------
 
     public const INVOICING_PERIOD_TYPE_BACKWARD     = 1;
@@ -43,6 +43,8 @@ final class Service extends Endpoint
     public const STATUS_DEFERRED                    = 6;
     public const STATUS_QUOTED                      = 7;
 
+    // =================================================================================================================
+    // PROPERTIES
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
@@ -1318,6 +1320,3 @@ final class Service extends Endpoint
     }
 
 }
-
-
-

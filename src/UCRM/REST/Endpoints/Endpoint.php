@@ -49,6 +49,7 @@ abstract class Endpoint extends RestObject
      * @throws EndpointException
      * @throws PatternMatchException
      * @throws RestClientException
+     * @throws \MVQN\Helpers\Exceptions\ArrayHelperException
      * @throws \ReflectionException
      */
     public static function get(string $override = "", array $params = []): Collection
@@ -66,6 +67,7 @@ abstract class Endpoint extends RestObject
             $annotations = new AnnotationReader($class);
             $endpoints = $annotations->getParameter("endpoints");
             $excludeId = $annotations->hasParameter("excludeId");
+            //$singular = $annotations->hasParameter("singular");
 
             // Make certain we have found a valid set of GET annotations, or throw an error!
             if (!array_key_exists("get", $endpoints) || $endpoints["get"] === "")
@@ -116,12 +118,14 @@ abstract class Endpoint extends RestObject
         // Loop through each resulting object...
         foreach($response as $object)
         {
+            $classObject = new $class($object);
+
             // Remove the ID property, if the '@excludeId' annotation was set on this class.
             if($excludeId)
-                unset($object->id);
+                unset($classObject->id);
 
             // Add the newly instantiated Endpoint to the collection.
-            $endpoints->push(new $class($object));
+            $endpoints->push($classObject);
         }
 
         // Finally, return the collection of Endpoints!
@@ -132,11 +136,12 @@ abstract class Endpoint extends RestObject
 
     /**
      * @param int $id
-     * @return Endpoint|null
+     * @return null|Endpoint
      * @throws AnnotationReaderException
      * @throws EndpointException
      * @throws PatternMatchException
      * @throws RestClientException
+     * @throws \MVQN\Helpers\Exceptions\ArrayHelperException
      * @throws \ReflectionException
      */
     public static function getById(int $id): ?Endpoint
@@ -197,6 +202,7 @@ abstract class Endpoint extends RestObject
      * @throws EndpointException
      * @throws PatternMatchException
      * @throws RestClientException
+     * @throws \MVQN\Helpers\Exceptions\ArrayHelperException
      * @throws \ReflectionException
      */
     public static function post(Endpoint $data, array $params = []): Endpoint
@@ -252,7 +258,7 @@ abstract class Endpoint extends RestObject
     }
 
     // =================================================================================================================
-    // POST METHODS
+    // PATCH METHODS
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
@@ -264,6 +270,7 @@ abstract class Endpoint extends RestObject
      * @throws EndpointException
      * @throws PatternMatchException
      * @throws RestClientException
+     * @throws \MVQN\Helpers\Exceptions\ArrayHelperException
      * @throws \ReflectionException
      */
     public static function patch(?Endpoint $data, array $params = [], string $suffix = ""): ?Endpoint
@@ -323,5 +330,3 @@ abstract class Endpoint extends RestObject
     }
 
 }
-
-

@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="REST-Tests" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" singleton="true">
-    <TestRunner directory="$PROJECT_DIR$/tests/UCRM/REST" />
+    <TestRunner directory="$PROJECT_DIR$/../ucrm-module-rest/tests/UCRM/REST" />
     <method v="2" />
   </configuration>
 </component>

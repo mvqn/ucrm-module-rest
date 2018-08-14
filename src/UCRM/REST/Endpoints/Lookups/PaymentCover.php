@@ -3,10 +3,7 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Lookups;
 
-use UCRM\REST\Endpoints\Invoice;
-use UCRM\REST\Endpoints\Payment;
-use UCRM\REST\Endpoints\Refund;
-use UCRM\REST\Exceptions\RestClientException;
+use UCRM\REST\Endpoints\Helpers\Common\{InvoiceHelpers,PaymentHelpers,RefundHelpers};
 
 /**
  * Class PaymentCover
@@ -17,115 +14,91 @@ use UCRM\REST\Exceptions\RestClientException;
  */
 final class PaymentCover extends Lookup
 {
+    use InvoiceHelpers;
+    use PaymentHelpers;
+    use RefundHelpers;
+
+    // =================================================================================================================
+    // PROPERTIES
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
+
+    /**
+     * @var int
+     */
     protected $id;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
+
+    /**
+     * @var int
+     */
     protected $paymentId;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getPaymentId(): int
+    public function getPaymentId(): ?int
     {
         return $this->paymentId;
     }
 
-    /** @var Payment $payment */
-    protected $payment = null;
 
-    /**
-     * @return Payment
-     * @throws RestClientException
-     */
-    public function getPayment(): Payment
-    {
-        // Cache the value here for future lookups...
-        if($this->payment === null)
-            $this->payment = Payment::getById($this->paymentId);
-
-        return $this->payment;
-    }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
+
+    /**
+     * @var int
+     */
     protected $invoiceId;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getInvoiceId(): int
+    public function getInvoiceId(): ?int
     {
         return $this->invoiceId;
     }
 
-    /** @var Invoice $invoice */
-    protected $invoice = null;
 
-    /**
-     * @return Invoice
-     * @throws RestClientException
-     */
-    public function getInvoice(): Invoice
-    {
-        // Cache the value here for future lookups...
-        if($this->invoice === null)
-            $this->invoice = Invoice::getById($this->invoiceId);
-
-        return $this->invoice;
-    }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var int  */
+
+    /**
+     * @var int
+     */
     protected $refundId;
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getRefundId(): int
+    public function getRefundId(): ?int
     {
         return $this->refundId;
     }
 
-    /** @var Refund $refund */
-    protected $refund = null;
 
-    /**
-     * @return Refund
-     * @throws RestClientException
-     */
-    public function getRefund(): Refund
-    {
-        // Cache the value here for future lookups...
-        if($this->refund === null)
-            $this->refund = Refund::getById($this->refundId);
-
-        return $this->refund;
-    }
 
     // -----------------------------------------------------------------------------------------------------------------
-    /** @var float  */
+
+    /**
+     * @var float
+     */
     protected $amount;
 
     /**
-     * @return float
+     * @return float|null
      */
-    public function getAmount(): float
+    public function getAmount(): ?float
     {
         return $this->amount;
     }
 
 }
-
-
-

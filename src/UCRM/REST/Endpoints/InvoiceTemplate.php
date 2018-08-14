@@ -3,15 +3,7 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
-use MVQN\Collections\Exceptions\CollectionException;
-use UCRM\REST\Endpoints\Collections\InvoiceItemCollection;
-use UCRM\REST\Endpoints\Collections\InvoiceTaxCollection;
-use UCRM\REST\Endpoints\Collections\PaymentCoverCollection;
-use UCRM\REST\Endpoints\Helpers\InvoiceHelper;
 use UCRM\REST\Endpoints\Helpers\InvoiceTemplateHelper;
-use UCRM\REST\Endpoints\Lookups\InvoiceItem;
-use UCRM\REST\Endpoints\Lookups\InvoiceTax;
-use UCRM\REST\Endpoints\Lookups\PaymentCover;
 
 /**
  * Class InvoiceTemplate
@@ -26,6 +18,8 @@ final class InvoiceTemplate extends Endpoint
 {
     use InvoiceTemplateHelper;
 
+    // =================================================================================================================
+    // PROPERTIES
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
@@ -39,16 +33,6 @@ final class InvoiceTemplate extends Endpoint
     public function getName(): ?string
     {
         return $this->name;
-    }
-
-    /**
-     * @param string $value
-     * @return InvoiceTemplate
-     */
-    public function setName(string $value): InvoiceTemplate
-    {
-        $this->name = $value;
-        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -66,16 +50,6 @@ final class InvoiceTemplate extends Endpoint
         return $this->createdDate;
     }
 
-    /**
-     * @param \DateTime $value
-     * @return InvoiceTemplate
-     */
-    public function setCreatedDate(\DateTime $value): InvoiceTemplate
-    {
-        $this->createdDate = $value->format("c");
-        return $this;
-    }
-
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
@@ -89,16 +63,6 @@ final class InvoiceTemplate extends Endpoint
     public function getIsOfficial(): ?bool
     {
         return $this->isOfficial;
-    }
-
-    /**
-     * @param bool $value
-     * @return InvoiceTemplate
-     */
-    public function setIsOfficial(bool $value): InvoiceTemplate
-    {
-        $this->isOfficial = $value;
-        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -116,17 +80,4 @@ final class InvoiceTemplate extends Endpoint
         return $this->isValid;
     }
 
-    /**
-     * @param bool $value
-     * @return InvoiceTemplate
-     */
-    public function setIsValid(bool $value): InvoiceTemplate
-    {
-        $this->isValid = $value;
-        return $this;
-    }
-
 }
-
-
-

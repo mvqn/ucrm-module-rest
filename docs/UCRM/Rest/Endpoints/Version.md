@@ -1,5 +1,5 @@
-## Version
-#### /version
+# Version
+### /version
 > GET
 
 &nbsp;

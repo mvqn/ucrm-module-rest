@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace UCRM\REST\Endpoints;
 
 use UCRM\REST\Endpoints\Helpers\RefundHelper;
+use UCRM\REST\Endpoints\Lookups\PaymentCover;
 
 /**
  * Class Refund
@@ -19,6 +20,8 @@ final class Refund extends Endpoint
 {
     use RefundHelper;
 
+    // =================================================================================================================
+    // ENUMS
     // -----------------------------------------------------------------------------------------------------------------
 
     public const METHOD_CHECK                       = 1;
@@ -31,17 +34,20 @@ final class Refund extends Endpoint
     public const METHOD_PAYPAL_SUBSCRIPTION         = 8;
     public const METHOD_AUTHORIZENET_CREDIT_CARD    = 9;
     public const METHOD_AUTHORIZENET_SUBSCRIPTION   = 10;
-    public const METHOD_COURTESY_CREDIT             = 11; // NOT APPLICABLE TO REFUND!
+    //public const METHOD_COURTESY_CREDIT           = 11; // NOT APPLICABLE TO REFUND!
     public const METHOD_IPPAY                       = 12;
     public const METHOD_IPPAY_SUBSCRIPTION          = 13;
     public const METHOD_MERCADOPAGO                 = 14;
     public const METHOD_MERCADOPAGO_SUBSCRIPTION    = 15;
     public const METHOD_STRIPE_ACH                  = 16;
     public const METHOD_STRIPE_ACH_SUBSCRIPTION     = 17;
-    // TODO: Update as more are added!
-    public const METHOD_CUSTOM = 99;
 
+    public const METHOD_CUSTOM                      = 99;
+
+    // =================================================================================================================
+    // PROPERTIES
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var int
      * @post-required
@@ -67,6 +73,7 @@ final class Refund extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var string
      * @post
@@ -92,6 +99,7 @@ final class Refund extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var float
      * @post-required
@@ -117,6 +125,7 @@ final class Refund extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var string
      * @post
@@ -142,6 +151,7 @@ final class Refund extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var int
      * @post
@@ -167,6 +177,7 @@ final class Refund extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var string
      * @post
@@ -192,6 +203,7 @@ final class Refund extends Endpoint
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var PaymentCover[]
      * @post
@@ -216,8 +228,4 @@ final class Refund extends Endpoint
         return $this;
     }
 
-
 }
-
-
-

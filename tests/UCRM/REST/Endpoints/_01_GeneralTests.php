@@ -38,14 +38,11 @@ class _01_GeneralTests extends \PHPUnit\Framework\TestCase
 
     public function testVersionGet()
     {
-        $versions = Version::get();
-        $this->assertNotEmpty($versions);
+        $version = Version::get()->first();
+        $this->assertNotEmpty($version);
 
         echo ">>> Version::get()\n";
-
-        foreach($versions as $version)
-            echo $version."\n";
-
+        echo $version."\n";
         echo "\n";
     }
 

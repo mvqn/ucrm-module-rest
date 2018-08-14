@@ -18,6 +18,8 @@ final class Country extends Endpoint
 {
     use CountryHelper;
 
+    // =================================================================================================================
+    // PROPERTIES
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
@@ -26,9 +28,9 @@ final class Country extends Endpoint
     protected $name;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -41,14 +43,11 @@ final class Country extends Endpoint
     protected $code;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCode(): string
+    public function getCode(): ?string
     {
         return $this->code;
     }
 
 }
-
-
-

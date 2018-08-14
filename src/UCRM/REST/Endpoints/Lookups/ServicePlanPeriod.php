@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Lookups;
 
-
 /**
  * Class ServicePlanPeriod
  *
@@ -13,7 +12,11 @@ namespace UCRM\REST\Endpoints\Lookups;
  */
 final class ServicePlanPeriod extends Lookup
 {
+
+    // =================================================================================================================
+    // PROPERTIES
     // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @var int
      */
@@ -56,6 +59,3 @@ final class ServicePlanPeriod extends Lookup
     }
 
 }
-
-
-

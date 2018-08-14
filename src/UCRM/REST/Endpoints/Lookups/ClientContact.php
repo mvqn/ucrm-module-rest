@@ -3,8 +3,7 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Lookups;
 
-use UCRM\REST\RestClient;
-use UCRM\REST\Endpoints\Client;
+use UCRM\REST\Endpoints\Collections\ClientContactCollection;
 
 /**
  * Class ClientContact
@@ -15,6 +14,9 @@ use UCRM\REST\Endpoints\Client;
  */
 final class ClientContact extends Lookup
 {
+
+    // =================================================================================================================
+    // PROPERTIES
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
@@ -185,21 +187,14 @@ final class ClientContact extends Lookup
     protected $types;
 
     /**
-     * @return ClientContactType[]|null
+     * @return ClientContactCollection
+     * @throws \MVQN\Collections\Exceptions\CollectionException
      */
-    public function getTypes(): ?array
+    public function getTypes(): ClientContactCollection
     {
-        if($this->types === null)
-            return null;
-
-        /** @var ClientContactType[] $types */
-        $types = $this->getCollection(ClientContactType::class, $this->types);
+        /** @var ClientContactCollection $types */
+        $types = new ClientContactCollection($this->types);
         return $types;
     }
 
-
-
 }
-
-
-

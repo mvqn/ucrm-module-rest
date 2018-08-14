@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Client (Tests)" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" singleton="true">
-    <TestRunner class="UCRM\REST\Endpoints\_02_ClientTests" file="$PROJECT_DIR$/tests/UCRM/REST/Endpoints/_02_ClientTests.php" scope="Class" />
+    <TestRunner class="UCRM\REST\Endpoints\_02_ClientTests" file="$PROJECT_DIR$/../ucrm-module-rest/tests/UCRM/REST/Endpoints/_02_ClientTests.php" scope="Class" />
     <method v="2" />
   </configuration>
 </component>
