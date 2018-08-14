@@ -4,13 +4,13 @@ declare(strict_types=1);
 namespace UCRM\REST\Endpoints;
 
 use UCRM\REST\RestClient;
-
 use UCRM\REST\Endpoints\Lookups\ClientContact;
 
 require_once __DIR__."/TestFunctions.php";
 
 class _02_ClientTests extends \PHPUnit\Framework\TestCase
 {
+
     // =================================================================================================================
     // INITIALIZATION
     // -----------------------------------------------------------------------------------------------------------------
@@ -34,7 +34,7 @@ class _02_ClientTests extends \PHPUnit\Framework\TestCase
     }
 
     // =================================================================================================================
-    // TESTS
+    // GETTERS & SETTERS
     // -----------------------------------------------------------------------------------------------------------------
 
     public function testAllGetters()
@@ -45,43 +45,65 @@ class _02_ClientTests extends \PHPUnit\Framework\TestCase
         $this->assertTrue($test);
     }
 
+
+    // =================================================================================================================
+    // CREATE METHDOS
     // -----------------------------------------------------------------------------------------------------------------
 
-    public function testGet()
+    public function testCreateResidential()
     {
-        $clients = Client::get();
-        $this->assertNotEmpty($clients);
+        $this->markTestSkipped("Skip test, as to not keep generating Clients!");
 
-        echo ">>> Client::get()\n";
+        $lastName = "Doe";
+        $firstName = "John".rand(1, 9);
 
-        foreach($clients as $client)
-            echo $client."\n";
+        $inserted = Client::createResidential($firstName, $lastName, true)->insert();
+        $this->assertEquals($lastName, $inserted->getLastName());
 
-        echo "\n";
+        echo $inserted."\n";
     }
 
-    public function testGetById()
+    public function testCreateCommericial()
     {
-        /** @var Client $client */
-        $client = Client::getById(1);
-        $this->assertInstanceOf(Client::class, $client);
+        $this->markTestSkipped("Skip test, as to not keep generating Clients!");
 
-        echo ">>> Client::getById(1)\n";
-        echo $client."\n";
-        echo "\n";
+        $lastName = "Doe";
+        $firstName = "John".rand(1, 9);
+        $companyName = "ACME Rockets, Inc.";
 
-        $tags = $client->getTags();
-        echo $tags;
+        $inserted = Client::createCommercial($companyName, $firstName, $lastName, true)->insert();
+        $this->assertEquals($companyName, $inserted->getCompanyName());
+
+        echo $inserted."\n";
+    }
+
+    public function testCreate()
+    {
+        $this->markTestSkipped("Skip test, as to not keep generating Clients!");
+
+        $created =
+            (Client::create())
+                // DEFAULTS:
+                // - clientType = Residential
+                // - isLead = true
+                // - invoiceAddressSameAsContact = true
+                // - organizationId = Default
+                // - registrationDate = NOW!
+                // REQUIRED:
+                ->setFirstName("John")
+                ->setLastName("Doe");
+
+        $created->insert();
+
+        echo $created."\n";
     }
 
     // -----------------------------------------------------------------------------------------------------------------
 
     public function testInsert()
     {
-        //$this->markTestSkipped("No need to insert additional Clients!");
-
         /** @var Organization $organization */
-        $organization = Organization::get()->first();
+        $organization = Organization::getByDefault();
 
         $client = new Client();
         $client
@@ -188,10 +210,45 @@ class _02_ClientTests extends \PHPUnit\Framework\TestCase
 
         $this->markTestSkipped("Skip so we do not keep creating Clients in the UCRM!");
 
-        $inserted = $client->create();
+        $inserted = $client->insert();
         print_r($inserted);
     }
 
+
+
+    // =================================================================================================================
+    // READ METHODS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    public function testGet()
+    {
+        $clients = Client::get();
+        $this->assertNotNull($clients);
+
+        echo ">>> Client::get()\n";
+        echo $clients."\n";
+        echo "\n";
+    }
+
+    public function testGetById()
+    {
+        /** @var Client $first */
+        $first = Client::get()->first();
+        $id = $first->getId();
+
+        /** @var Client $client */
+        $client = Client::getById($id);
+        $this->assertEquals($id, $client->getId());
+
+        echo ">>> Client::getById($id)\n";
+        echo $client."\n";
+        echo "\n";
+    }
+
+
+
+    // =================================================================================================================
+    // UPDATE METHODS
     // -----------------------------------------------------------------------------------------------------------------
 
     public function testUpdate()
@@ -226,6 +283,18 @@ class _02_ClientTests extends \PHPUnit\Framework\TestCase
         }
     }
 
+
+
+    // =================================================================================================================
+    // DELETE METHODS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // NO DELETE ENDPOINTS
+
+
+
+    // =================================================================================================================
+    // EXTRA METHODS
     // -----------------------------------------------------------------------------------------------------------------
 
     public function testSendInvitation()

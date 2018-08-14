@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
+use UCRM\REST\Endpoints\Lookups\InvoiceItem;
 use UCRM\REST\RestClient;
 
 require_once __DIR__."/TestFunctions.php";
@@ -63,8 +64,58 @@ class _12_InvoiceTests extends \PHPUnit\Framework\TestCase
         echo $invoice."\n";
     }
 
+    public function testAddInvoiceItem()
+    {
+        $this->markTestSkipped("Each addition duplicates all other line items as well; waiting on info from UBNT!");
+
+        /** @var Invoice $invoice */
+        $invoice = Invoice::getById(4);
+        $this->assertInstanceOf(Invoice::class, $invoice);
+
+        $invoice->addInvoiceItem(
+            (new InvoiceItem())
+                ->setId(4)
+                ->setLabel("Monthly Internet Service (0.8Mbps) 1 May 2018 - 30 May 2018")
+                ->setPrice(10)
+                ->setQuantity(1)
+        );
+
+        $inserted = $invoice->update();
+
+        echo $inserted."\n";
+    }
 
 
+    public function testDelInvoiceItem()
+    {
+        $this->markTestSkipped("Each addition duplicates all other line items as well; waiting on info from UBNT!");
+
+        // TODO: May have to do this through the DB???
+
+        /** @var Invoice $invoice */
+        $invoice = Invoice::getById(4);
+        $this->assertInstanceOf(Invoice::class, $invoice);
+
+        $invoice->delInvoiceItem(0);
+        $invoice->delInvoiceItem(1);
+        $invoice->delInvoiceItem(2);
+
+        $test = $invoice->toJSON("patch", true, JSON_UNESCAPED_SLASHES);
+
+        $test = str_replace("\"items\":[null,null,null,{\"label\":\"Test Item\",\"price\":1,\"quantity\":1},{\"label\":\"Test Item\",\"price\":1,\"quantity\":1},{\"label\":\"Monthly Internet Service (0.8Mbps) 1 May 2018 - 30 May 2018\",\"price\":10,\"quantity\":1}]", "\"items\":null", $test);
+
+        echo $test."\n";
+
+        $response = RestClient::patchJSON("/invoices/4", $test);
+
+        print_r($response);
+
+
+        //$invoice->update();
+
+        //echo $invoice."\n";
+
+    }
 
 
 }

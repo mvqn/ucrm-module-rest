@@ -18,6 +18,9 @@ use UCRM\REST\Endpoints\Exceptions\EndpointException;
  */
 trait OrganizationHelper
 {
+    use Common\CountryHelpers;
+    use Common\StateHelpers;
+
     // =================================================================================================================
     // HELPER METHODS
     // -----------------------------------------------------------------------------------------------------------------
@@ -25,10 +28,11 @@ trait OrganizationHelper
     /**
      * @param string $name
      * @return null|Organization
-     * @throws \MVQN\Annotations\AnnotationReaderException
-     * @throws \MVQN\Collections\CollectionException
-     * @throws \MVQN\Helpers\ArrayHelperPathException
-     * @throws \MVQN\Helpers\PatternMatchException
+     * @throws EndpointException
+     * @throws RestClientException
+     * @throws \MVQN\Annotations\Exceptions\AnnotationReaderException
+     * @throws \MVQN\Collections\Exceptions\CollectionException
+     * @throws \MVQN\Helpers\Exceptions\PatternMatchException
      * @throws \ReflectionException
      */
     public static function getByName(string $name): ?Organization
@@ -42,10 +46,11 @@ trait OrganizationHelper
 
     /**
      * @return null|Organization
-     * @throws \MVQN\Annotations\AnnotationReaderException
-     * @throws \MVQN\Collections\CollectionException
-     * @throws \MVQN\Helpers\ArrayHelperPathException
-     * @throws \MVQN\Helpers\PatternMatchException
+     * @throws EndpointException
+     * @throws RestClientException
+     * @throws \MVQN\Annotations\Exceptions\AnnotationReaderException
+     * @throws \MVQN\Collections\Exceptions\CollectionException
+     * @throws \MVQN\Helpers\Exceptions\PatternMatchException
      * @throws \ReflectionException
      */
     public static function getByDefault(): ?Organization
@@ -57,65 +62,6 @@ trait OrganizationHelper
         return $organization;
     }
 
-    // -----------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return Country
-     * @throws RestClientException
-     * @throws \MVQN\Annotations\AnnotationReaderException
-     * @throws \MVQN\Helpers\ArrayHelperPathException
-     * @throws \MVQN\Helpers\PatternMatchException
-     * @throws \ReflectionException
-     */
-    public function getCountry(): Country
-    {
-        if($this->countryId !== null)
-            $country = Country::getById($this->countryId);
-
-        /** @var Country $country */
-        return $country;
-    }
-
-    /**
-     * @param Country $country
-     * @return Organization
-     */
-    public function setCountry(Country $country): Organization
-    {
-        $this->countryId = $country->getId();
-
-        /** @var Organization $this */
-        return $this;
-    }
-
-
-    /**
-     * @return State
-     * @throws RestClientException
-     * @throws \MVQN\Annotations\AnnotationReaderException
-     * @throws \MVQN\Helpers\ArrayHelperPathException
-     * @throws \MVQN\Helpers\PatternMatchException
-     * @throws \ReflectionException
-     */
-    public function getState(): State
-    {
-        if($this->stateId !== null)
-            $state = State::getById($this->stateId);
-
-        /** @var State $state */
-        return $state;
-    }
-
-    /**
-     * @param State $state
-     * @return Organization
-     */
-    public function setState(State $state): Organization
-    {
-        $this->countryId = $state->getId();
-
-        /** @var Organization $this */
-        return $this;
-    }
 
 }

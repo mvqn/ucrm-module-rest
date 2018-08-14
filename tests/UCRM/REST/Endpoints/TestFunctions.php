@@ -3,15 +3,11 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
-use MVQN\Collections\Collection;
-use UCRM\REST\RestClient;
-
 class TestFunctions extends \PHPUnit\Framework\TestCase
 {
 
-
     // =================================================================================================================
-    // TESTS
+    // GLOBAL TESTS
     // -----------------------------------------------------------------------------------------------------------------
 
     public static function testAllGetters(Endpoint $endpoint): bool
@@ -29,10 +25,9 @@ class TestFunctions extends \PHPUnit\Framework\TestCase
 
             $value = $endpoint->$func();
 
-            if (is_array($value))
-                echo ">   {$reflection->getShortName()}::get" . ucfirst($name) . "() => " . json_encode($value, JSON_UNESCAPED_SLASHES) . "\n";
-            else
-                echo ">   {$reflection->getShortName()}::get" . ucfirst($name) . "() => $value\n";
+            $funcName = $reflection->getShortName()."::get".ucfirst($name)."()";
+
+            echo ">   $funcName => ".(is_array($value) ? json_encode($value, JSON_UNESCAPED_SLASHES) : $value)."\n";
         }
 
         echo "\n";

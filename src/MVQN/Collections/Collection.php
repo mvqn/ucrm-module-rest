@@ -38,11 +38,14 @@ class Collection implements \JsonSerializable, \Countable, \Iterator
      * Collection constructor.
      *
      * @param string $type
-     * @param Collectible[] $elements
+     * @param Collectible[]|null $elements
      * @throws CollectionException
      */
-    public function __construct(string $type, array $elements = [])
+    public function __construct(string $type, ?array $elements = [])
     {
+        if($elements === null)
+            $elements = [];
+
         if(!is_subclass_of($type, Collectible::class, true))
             throw new CollectionException("The specified type: '$type' must extend '".Collectible::class."'!");
 

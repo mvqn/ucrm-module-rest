@@ -3,11 +3,13 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
-use MVQN\Collections\Collection;
 use UCRM\REST\RestClient;
+
+require_once __DIR__."/TestFunctions.php";
 
 class _01_GeneralTests extends \PHPUnit\Framework\TestCase
 {
+
     // =================================================================================================================
     // INITIALIZATION
     // -----------------------------------------------------------------------------------------------------------------
@@ -31,7 +33,7 @@ class _01_GeneralTests extends \PHPUnit\Framework\TestCase
     }
 
     // =================================================================================================================
-    // TESTS
+    // VERSION TESTS
     // -----------------------------------------------------------------------------------------------------------------
 
     public function testVersionGet()
@@ -47,6 +49,10 @@ class _01_GeneralTests extends \PHPUnit\Framework\TestCase
         echo "\n";
     }
 
+
+
+    // =================================================================================================================
+    // COUNTRY TESTS
     // -----------------------------------------------------------------------------------------------------------------
 
     public function testCountryGet()
@@ -59,6 +65,8 @@ class _01_GeneralTests extends \PHPUnit\Framework\TestCase
         echo "\n";
     }
 
+    // -----------------------------------------------------------------------------------------------------------------
+
     public function testCountryGetById()
     {
         $country = Country::getById(249);
@@ -68,6 +76,8 @@ class _01_GeneralTests extends \PHPUnit\Framework\TestCase
         echo $country."\n";
         echo "\n";
     }
+
+    // -----------------------------------------------------------------------------------------------------------------
 
     public function testCountryGetByName()
     {
@@ -80,6 +90,8 @@ class _01_GeneralTests extends \PHPUnit\Framework\TestCase
         echo "\n";
     }
 
+    // -----------------------------------------------------------------------------------------------------------------
+
     public function testCountryGetByCode()
     {
         /** @var Country $country */
@@ -90,6 +102,8 @@ class _01_GeneralTests extends \PHPUnit\Framework\TestCase
         echo $country."\n";
         echo "\n";
     }
+
+    // -----------------------------------------------------------------------------------------------------------------
 
     public function testCountryGetStates()
     {
@@ -105,6 +119,10 @@ class _01_GeneralTests extends \PHPUnit\Framework\TestCase
         echo "\n";
     }
 
+
+
+    // =================================================================================================================
+    // CURRENCY TESTS
     // -----------------------------------------------------------------------------------------------------------------
 
     public function testCurrencyGet()
@@ -117,6 +135,8 @@ class _01_GeneralTests extends \PHPUnit\Framework\TestCase
         echo "\n";
     }
 
+    // -----------------------------------------------------------------------------------------------------------------
+
     public function testCurrencyGetById()
     {
         $currency = Currency::getById(33);
@@ -126,6 +146,8 @@ class _01_GeneralTests extends \PHPUnit\Framework\TestCase
         echo $currency."\n";
         echo "\n";
     }
+
+    // -----------------------------------------------------------------------------------------------------------------
 
     public function testCurrencyGetByName()
     {
@@ -138,6 +160,8 @@ class _01_GeneralTests extends \PHPUnit\Framework\TestCase
         echo "\n";
     }
 
+    // -----------------------------------------------------------------------------------------------------------------
+
     public function testCurrencyGetByCode()
     {
         /** @var Currency $currency */
@@ -148,6 +172,8 @@ class _01_GeneralTests extends \PHPUnit\Framework\TestCase
         echo $currency."\n";
         echo "\n";
     }
+
+    // -----------------------------------------------------------------------------------------------------------------
 
     public function testCurrencyGetBySymbol()
     {
@@ -160,6 +186,10 @@ class _01_GeneralTests extends \PHPUnit\Framework\TestCase
         echo "\n";
     }
 
+
+
+    // =================================================================================================================
+    // STATE TESTS
     // -----------------------------------------------------------------------------------------------------------------
 
     public function testStateGetById()
@@ -173,6 +203,8 @@ class _01_GeneralTests extends \PHPUnit\Framework\TestCase
         echo "\n";
     }
 
+    // -----------------------------------------------------------------------------------------------------------------
+
     public function testStateGetByName()
     {
         /** @var Country $country */
@@ -185,6 +217,8 @@ class _01_GeneralTests extends \PHPUnit\Framework\TestCase
         echo $state."\n";
         echo "\n";
     }
+
+    // -----------------------------------------------------------------------------------------------------------------
 
     public function testStateGetByCode()
     {
@@ -201,4 +235,9 @@ class _01_GeneralTests extends \PHPUnit\Framework\TestCase
 
 
 
+    // =================================================================================================================
+    // OTHER TESTS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // ...
 }

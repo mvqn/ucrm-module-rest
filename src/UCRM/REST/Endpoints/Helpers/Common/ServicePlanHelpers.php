@@ -3,41 +3,46 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Helpers\Common;
 
+use UCRM\REST\Endpoints\Collections\UserCollection;
 use UCRM\REST\Endpoints\Endpoint;
-use UCRM\REST\Endpoints\{Collections\ClientContactCollection, Country, Lookups\ClientContact, State, Client};
+use UCRM\REST\Endpoints\Service;
 
-trait ClientHelpers
+trait ServiceHelpers
 {
     // =================================================================================================================
     // HELPER METHODS
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
-     * @return Client
+     * @return Service
      * @throws \MVQN\Annotations\Exceptions\AnnotationReaderException
      * @throws \MVQN\Helpers\Exceptions\PatternMatchException
      * @throws \ReflectionException
      * @throws \UCRM\REST\Endpoints\Exceptions\EndpointException
      * @throws \UCRM\REST\Exceptions\RestClientException
      */
-    public function getClient(): Client
+    public function getService(): Service
     {
-        if(property_exists($this, "clientId") && $this->{"clientId"} !== null)
-            $client = Client::getById($this->{"clientId"});
+        if(property_exists($this, "serviceId") && $this->{"serviceId"} !== null)
+            $service = Service::getById($this->{"serviceId"});
 
-        /** @var Client $client */
-        return $client;
+        /** @var Service $service */
+        return $service;
     }
 
+    // -----------------------------------------------------------------------------------------------------------------
+
     /**
-     * @param Client $client
+     * @param Service $service
      * @return self
      */
-    public function setClient(Client $client): self
+    public function setService(Service $service): self
     {
-        $this->{"clientId"} = $client->getId();
+        $this->{"serviceId"} = $service->getId();
+
         /** @var self $this */
         return $this;
     }
+
 
 }

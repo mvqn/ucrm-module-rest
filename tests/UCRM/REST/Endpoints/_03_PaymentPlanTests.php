@@ -34,7 +34,7 @@ class _03_PaymentPlanTests extends \PHPUnit\Framework\TestCase
     }
 
     // =================================================================================================================
-    // TESTS
+    // GETTERS & SETTERS
     // -----------------------------------------------------------------------------------------------------------------
 
     public function testAllGetters()
@@ -45,6 +45,56 @@ class _03_PaymentPlanTests extends \PHPUnit\Framework\TestCase
         $this->assertTrue($test);
     }
 
+
+
+    // =================================================================================================================
+    // CREATE METHODS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    public function testCreateMonthly()
+    {
+        $this->markTestSkipped("Skip test, as to not keep generating PaymentPlans!");
+
+        /** @var Client $client */
+        $client = Client::getById(14);
+
+        $paymentPlan = PaymentPlan::createMonthly($client, new \DateTime("01/01/2019"), 20);
+
+        $inserted = $paymentPlan->insert();
+
+        echo $inserted."\n";
+    }
+
+    public function testInsert()
+    {
+        $this->markTestSkipped("Skip test, as to not keep generating PaymentPlans!");
+
+        $client = Client::getById(1);
+
+        $paymentPlan = (new PaymentPlan())
+            ->setProvider(PaymentPlan::PROVIDER_IPPAY)
+            ->setProviderPlanId("")
+            ->setProviderSubscriptionId("")
+            ->setClientId($client->getId())
+            ->setCurrencyByCode("USD")
+            ->setAmount(10)
+            ->setPeriod(PaymentPlan::PERIOD_MONTHS_3)
+            ->setStartDate(new \DateTime("01/01/2020"));
+
+        echo ">>> PaymentPlan::insert()\n";
+        print_r($paymentPlan);
+        echo "\n";
+
+        $inserted = $paymentPlan->insert();
+        echo $inserted."\n";
+
+        $this->assertTrue(true);
+    }
+
+
+
+    // =================================================================================================================
+    // READ UPDATES
     // -----------------------------------------------------------------------------------------------------------------
 
     public function testGet()
@@ -67,6 +117,22 @@ class _03_PaymentPlanTests extends \PHPUnit\Framework\TestCase
         echo "\n";
     }
 
+
+
+    // =================================================================================================================
+    // UPDATE METHODS
+    // -----------------------------------------------------------------------------------------------------------------
+
+
+
+    // =================================================================================================================
+    // DELETE METHODS
+    // -----------------------------------------------------------------------------------------------------------------
+
+
+
+    // =================================================================================================================
+    // EXTRA METHODS
     // -----------------------------------------------------------------------------------------------------------------
 
     public function testHelperMethods()
@@ -92,29 +158,6 @@ class _03_PaymentPlanTests extends \PHPUnit\Framework\TestCase
 
     // -----------------------------------------------------------------------------------------------------------------
 
-    public function testPaymentPlanInsert()
-    {
-        $client = Client::getById(1);
-
-        $paymentPlan = (new PaymentPlan())
-            ->setProvider(PaymentPlan::PROVIDER_IPPAY)
-            ->setProviderPlanId("")
-            ->setProviderSubscriptionId("")
-            ->setClientId($client->getId())
-            ->setCurrencyByCode("USD")
-            ->setAmount(10)
-            ->setPeriod(PaymentPlan::PERIOD_MONTHS_3)
-            ->setStartDate(new \DateTime("01/01/2020"));
-
-        echo ">>> PaymentPlan::insert()\n";
-        print_r($paymentPlan);
-        echo "\n";
-
-        //$inserted = $paymentPlan->insert();
-        //print_r($inserted);
-
-        $this->assertTrue(true);
-    }
 
 
 }

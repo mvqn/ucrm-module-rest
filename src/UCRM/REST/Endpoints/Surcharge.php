@@ -42,7 +42,7 @@ final class Surcharge extends Endpoint
      * @param string $value
      * @return Surcharge
      */
-    public function setSurchargeId(string $value): Surcharge
+    public function setName(string $value): Surcharge
     {
         $this->name = $value;
         return $this;

@@ -23,76 +23,45 @@ use UCRM\REST\Endpoints\PaymentPlan;
 
 trait PaymentPlanHelper
 {
+    use Common\ClientHelpers;
+    use Common\CurrencyHelpers;
+
     // =================================================================================================================
-    // HELPER METHODS
+    // CREATE
     // -----------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return Client
-     * @throws AnnotationReaderException
-     * @throws ArrayHelperPathException
-     * @throws PatternMatchException
-     * @throws \ReflectionException
-     * @throws \UCRM\REST\Exceptions\RestClientException
-     */
-    public function getClient(): Client
+    public static function createMonthly(Client $client, \DateTime $startDate, float $amount): PaymentPlan
     {
-        if($this->clientId !== null)
-            $client = Client::getById($this->clientId);
+        $paymentPlan = (new PaymentPlan())
+            ->setProvider(PaymentPlan::PROVIDER_IPPAY)
+            ->setProviderPlanId("")
+            ->setProviderSubscriptionId("")
+            ->setClient($client)
+            ->setCurrencyByCode("USD")
+            ->setAmount($amount)
+            ->setPeriod(PaymentPlan::PERIOD_MONTHS_1)
+            ->setStartDate($startDate);
 
-        /** @var Client $client */
-        return $client;
+        return $paymentPlan;
     }
 
-    /**
-     * @param Client $client
-     * @return PaymentPlan
-     */
-    public function setClient(Client $client): PaymentPlan
+
+
+
+
+    public function insert(): PaymentPlan
     {
-        $this->clientId = $client->getId();
-        /** @var PaymentPlan $this */
-        return $this;
+        /** @var PaymentPlan $data */
+        $data = $this;
+
+        /** @var PaymentPlan $result */
+        $result = PaymentPlan::post($data);
+        return $result;
     }
 
-    // -----------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return Currency
-     * @throws AnnotationReaderException
-     * @throws ArrayHelperPathException
-     * @throws PatternMatchException
-     * @throws \ReflectionException
-     * @throws \UCRM\REST\Exceptions\RestClientException
-     */
-    public function getCurrency(): Currency
-    {
-        if($this->currencyId !== null)
-            $currency = Currency::getById($this->currencyId);
 
-        /** @var Currency $currency */
-        return $currency;
-    }
 
-    /**
-     * @param Currency $currency
-     * @return PaymentPlan
-     */
-    public function setCurrency(Currency $currency): PaymentPlan
-    {
-        $this->currencyId = $currency->getId();
-        /** @var PaymentPlan $this */
-        return $this;
-    }
-
-    public function setCurrencyByCode(string $code): PaymentPlan
-    {
-        $currency = Currency::getByCode($code);
-
-        $this->currencyId = $currency ? $currency->getId() : null;
-        /** @var PaymentPlan $this */
-        return $this;
-    }
 
 
 }

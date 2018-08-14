@@ -7,40 +7,57 @@ use UCRM\REST\Endpoints\Collections\UserCollection;
 use UCRM\REST\Endpoints\Endpoint;
 use UCRM\REST\Endpoints\Service;
 
-trait ServiceHelpers
+trait ServicePlanHelpers
 {
     // =================================================================================================================
     // HELPER METHODS
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
-     * @return Service
-     * @throws \MVQN\Annotations\Exceptions\AnnotationReaderException
-     * @throws \MVQN\Helpers\Exceptions\PatternMatchException
+     * @return null|ServicePlan
+     * @throws AnnotationReaderException
+     * @throws ArrayHelperPathException
+     * @throws PatternMatchException
      * @throws \ReflectionException
-     * @throws \UCRM\REST\Endpoints\Exceptions\EndpointException
      * @throws \UCRM\REST\Exceptions\RestClientException
      */
-    public function getService(): Service
+    public function getServicePlan(): ?ServicePlan
     {
-        if(property_exists($this, "serviceId") && $this->{"serviceId"} !== null)
-            $service = Service::getById($this->{"serviceId"});
+        if($this->servicePlanId !== null)
+            $servicePlan = ServicePlan::getById($this->servicePlanId);
 
-        /** @var Service $service */
-        return $service;
+        /** @var ServicePlan $servicePlan */
+        return $servicePlan;
     }
 
-    // -----------------------------------------------------------------------------------------------------------------
+    /**
+     * @param ServicePlan $value
+     * @return Service Returns the Service instance, for method chaining purposes.
+     */
+    public function setServicePlan(ServicePlan $value): Service
+    {
+        $this->servicePlanId = $value->getId();
+
+        /** @var Service $this */
+        return $this;
+    }
 
     /**
-     * @param Service $service
-     * @return self
+     * @param string $name
+     * @return Service
+     * @throws AnnotationReaderException
+     * @throws ArrayHelperPathException
+     * @throws PatternMatchException
+     * @throws \MVQN\Collections\CollectionException
+     * @throws \ReflectionException
      */
-    public function setService(Service $service): self
+    public function setServicePlanByName(string $name): Service
     {
-        $this->{"serviceId"} = $service->getId();
+        /** @var ServicePlan $servicePlan */
+        $servicePlan = ServicePlan::getByName($name);
+        $this->servicePlanId = $servicePlan->getId();
 
-        /** @var self $this */
+        /** @var Service $this */
         return $this;
     }
 

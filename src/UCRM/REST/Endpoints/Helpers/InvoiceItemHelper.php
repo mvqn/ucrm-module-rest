@@ -3,16 +3,11 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Helpers;
 
-use UCRM\REST\Endpoints\ClientLog;
+use UCRM\REST\Endpoints\Collections\InvoiceTemplateCollection;
+use UCRM\REST\Endpoints\InvoiceTemplate;
 
-/**
- * Trait ClientLogHelper
- * @package UCRM\REST\Endpoints\Helpers
- */
-trait ClientLogHelper
+trait InvoiceItemHelper
 {
-    use Common\ClientHelpers;
-    use Common\UserHelpers;
 
     // =================================================================================================================
     // HELPER METHODS

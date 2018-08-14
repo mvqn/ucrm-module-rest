@@ -28,7 +28,78 @@ trait ClientHelper
     use Common\ContactHelpers;
 
     // =================================================================================================================
-    // CRUD FUNCTIONS
+    // CREATE METHODS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    /**
+     * @param int $clientType
+     * @param bool $isLead
+     * @param Organization|null $organization
+     * @return Client
+     * @throws \ReflectionException
+     */
+    public static function create(int $clientType = Client::CLIENT_TYPE_RESIDENTIAL, bool $isLead = true,
+        Organization $organization = null): Client
+    {
+        if($organization === null)
+            $organization = Organization::getByDefault();
+
+        $client = new Client([
+            "clientType" => $clientType,
+            "isLead" => $isLead,
+            // DEFAULTS...
+            "invoiceAddressSameAsContact" => true,
+            "organizationId" => $organization->getId(),
+            "registrationDate" => (new \DateTime())->format("c")
+        ]);
+
+        return $client;
+    }
+
+    // -----------------------------------------------------------------------------------------------------------------
+
+    /**
+     * @param string $firstName
+     * @param string $lastName
+     * @param bool $isLead
+     * @param Organization|null $organization
+     * @return Client
+     * @throws \ReflectionException
+     */
+    public static function createResidential(string $firstName, string $lastName, bool $isLead = false,
+        Organization $organization = null): Client
+    {
+        $client =
+            Client::create(Client::CLIENT_TYPE_RESIDENTIAL, $isLead, $organization)
+                ->setFirstName($firstName)
+                ->setLastName($lastName);
+
+        return $client;
+    }
+
+    // -----------------------------------------------------------------------------------------------------------------
+
+    /**
+     * @param string $companyName
+     * @param string $firstName
+     * @param string $lastName
+     * @param bool $isLead
+     * @param Organization|null $organization
+     * @return Client
+     * @throws \ReflectionException
+     */
+    public static function createCommercial(string $companyName, string $firstName, string $lastName,
+        bool $isLead = false, Organization $organization = null): Client
+    {
+        $client =
+            Client::create(Client::CLIENT_TYPE_COMMERCIAL, $isLead, $organization)
+                ->setFirstName($firstName)
+                ->setLastName($lastName)
+                ->setCompanyName($companyName);
+
+        return $client;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
@@ -39,16 +110,27 @@ trait ClientHelper
      * @throws \ReflectionException
      * @throws \UCRM\REST\Exceptions\RestClientException
      */
-    public function create(): Client
+    public function insert(): Client
     {
         /** @var Client $data */
         $data = $this;
 
-        /** @var Client $client */
-        $client = Client::post($data, []);
-
-        return $client;
+        /** @var Client $result */
+        $result = Client::post($data);
+        return $result;
     }
+
+    // =================================================================================================================
+    // READ METHODS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // BASE GET METHODS USED!
+
+
+
+    // =================================================================================================================
+    // UPDATE METHODS
+    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @return Client
@@ -68,6 +150,16 @@ trait ClientHelper
 
         return $client;
     }
+
+
+
+    // =================================================================================================================
+    // DELETE METHODS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // NO DELETE ENDPOINTS
+
+
 
     // =================================================================================================================
     // EXTRA FUNCTIONS

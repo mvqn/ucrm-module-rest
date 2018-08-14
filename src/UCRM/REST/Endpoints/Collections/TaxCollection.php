@@ -4,17 +4,17 @@ declare(strict_types=1);
 namespace UCRM\REST\Endpoints\Collections;
 
 use MVQN\Collections\{Collectible, Collection, Exceptions\CollectionException};
-use UCRM\REST\Endpoints\Lookups\ServicePlanPeriod;
+use UCRM\REST\Endpoints\Tax;
 
-final class ServicePlanPeriodCollection extends Collection
+final class TaxCollection extends Collection
 {
     /**
-     * ServicePlanPeriodCollection constructor.
+     * TaxCollection constructor.
      * @param Collectible[]|null $elements
      * @throws CollectionException
      */
     public function __construct(?array $elements = [])
     {
-        parent::__construct(ServicePlanPeriod::class, $elements);
+        parent::__construct(Tax::class, $elements);
     }
 }

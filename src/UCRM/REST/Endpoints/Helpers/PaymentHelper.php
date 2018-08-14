@@ -23,41 +23,95 @@ use UCRM\REST\Endpoints\Payment;
 
 trait PaymentHelper
 {
+    use Common\CurrencyHelpers;
+
     // =================================================================================================================
-    // HELPER METHODS
+    // CREATE METHODS
     // -----------------------------------------------------------------------------------------------------------------
 
 
+    public static function create(): Payment
+    {
+        $client = new Payment([
+
+        ]);
+
+        return $client;
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
-     * @return Currency
-     * @throws AnnotationReaderException
-     * @throws ArrayHelperPathException
-     * @throws PatternMatchException
-     * @throws \MVQN\Collections\CollectionException
+     * @param string $firstName
+     * @param string $lastName
+     * @param bool $isLead
+     * @param Organization|null $organization
+     * @return Client
      * @throws \ReflectionException
      */
-    public function getCurrency(): Currency
+    public static function createResidential(string $firstName, string $lastName, bool $isLead = false,
+                                             Organization $organization = null): Client
     {
-        if($this->currencyCode !== null)
-            $currency = Currency::getByCode($this->currencyCode);
+        $client =
+            Client::create(Client::CLIENT_TYPE_RESIDENTIAL, $isLead, $organization)
+                ->setFirstName($firstName)
+                ->setLastName($lastName);
 
-        /** @var Currency $currency */
-        return $currency;
+        return $client;
     }
+
+    // -----------------------------------------------------------------------------------------------------------------
 
     /**
-     * @param Currency $currency
-     * @return Payment
+     * @param string $companyName
+     * @param string $firstName
+     * @param string $lastName
+     * @param bool $isLead
+     * @param Organization|null $organization
+     * @return Client
+     * @throws \ReflectionException
      */
-    public function setCurrency(Currency $currency): Payment
+    public static function createCommercial(string $companyName, string $firstName, string $lastName,
+                                            bool $isLead = false, Organization $organization = null): Client
     {
-        $this->currencyCode = $currency->getCode();
-        /** @var Payment $this */
-        return $this;
+        $client =
+            Client::create(Client::CLIENT_TYPE_COMMERCIAL, $isLead, $organization)
+                ->setFirstName($firstName)
+                ->setLastName($lastName)
+                ->setCompanyName($companyName);
+
+        return $client;
     }
+
+    // -----------------------------------------------------------------------------------------------------------------
+
+    /**
+     * @return Client
+     * @throws EndpointException
+     * @throws \MVQN\Annotations\Exceptions\AnnotationReaderException
+     * @throws \MVQN\Helpers\Exceptions\PatternMatchException
+     * @throws \ReflectionException
+     * @throws \UCRM\REST\Exceptions\RestClientException
+     */
+    public function insert(): Client
+    {
+        /** @var Client $data */
+        $data = $this;
+
+        /** @var Client $result */
+        $result = Client::post($data);
+        return $result;
+    }
+
+
+
+
+
+
+
+    // -----------------------------------------------------------------------------------------------------------------
+
+
 
     // -----------------------------------------------------------------------------------------------------------------
 

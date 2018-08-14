@@ -7,8 +7,10 @@ use MVQN\Collections\Exceptions\CollectionException;
 use UCRM\REST\Endpoints\Collections\InvoiceItemCollection;
 use UCRM\REST\Endpoints\Collections\InvoiceTaxCollection;
 use UCRM\REST\Endpoints\Collections\PaymentCoverCollection;
+use UCRM\REST\Endpoints\Helpers\InvoiceHelper;
 use UCRM\REST\Endpoints\Lookups\InvoiceItem;
 use UCRM\REST\Endpoints\Lookups\InvoiceTax;
+use UCRM\REST\Endpoints\Lookups\PaymentCover;
 
 /**
  * Class Invoice
@@ -17,10 +19,24 @@ use UCRM\REST\Endpoints\Lookups\InvoiceTax;
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
  *
- * @endpoints { "get": "/invoices", "getById": "/invoices/:id" }
+ * @endpoints { "get": "/invoices" }
+ * @endpoints { "getById": "/invoices/:id" }
+ * @endpoints { "post": "/clients/:clientId/invoices" }
+ * @endpoints { "patch": "/invoices/:id" }
  */
 final class Invoice extends Endpoint
 {
+    use InvoiceHelper;
+
+    // =================================================================================================================
+    // ENUMS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    public const STATUS_DRAFT           = 0;
+    public const STATUS_UNPAID          = 1;
+    public const STATUS_PARTIALLY_PAID  = 2;
+    public const STATUS_PAID            = 3;
+    public const STATUS_VOID            = 4;
 
     // -----------------------------------------------------------------------------------------------------------------
 
@@ -37,12 +53,22 @@ final class Invoice extends Endpoint
         return $this->clientId;
     }
 
-
+    /**
+     * @param int $value
+     * @return Invoice
+     */
+    public function setClientId(int $value): Invoice
+    {
+        $this->clientId = $value;
+        return $this;
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var string
+     * @post
+     * @patch
      */
     protected $number;
 
@@ -54,12 +80,22 @@ final class Invoice extends Endpoint
         return $this->number;
     }
 
-
+    /**
+     * @param string $value
+     * @return Invoice
+     */
+    public function setNumber(string $value): Invoice
+    {
+        $this->number = $value;
+        return $this;
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var string
+     * @post
+     * @patch
      */
     protected $createdDate;
 
@@ -71,12 +107,22 @@ final class Invoice extends Endpoint
         return $this->createdDate;
     }
 
-
+    /**
+     * @param \DateTime $value
+     * @return Invoice
+     */
+    public function setCreatedDate(\DateTime $value): Invoice
+    {
+        $this->createdDate = $value->format("c");
+        return $this;
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var string
+     * @post
+     * @patch
      */
     protected $emailSentDate;
 
@@ -88,10 +134,22 @@ final class Invoice extends Endpoint
         return $this->emailSentDate;
     }
 
+    /**
+     * @param \DateTime $value
+     * @return Invoice
+     */
+    public function setEmailSentDate(\DateTime $value): Invoice
+    {
+        $this->emailSentDate = $value->format("c");
+        return $this;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var int
+     * @post
+     * @patch
      */
     protected $maturityDays;
 
@@ -103,12 +161,22 @@ final class Invoice extends Endpoint
         return $this->maturityDays;
     }
 
-
+    /**
+     * @param int $value
+     * @return Invoice
+     */
+    public function setMaturityDays(int $value): Invoice
+    {
+        $this->maturityDays = $value;
+        return $this;
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var string
+     * @post
+     * @patch
      */
     protected $notes;
 
@@ -120,12 +188,22 @@ final class Invoice extends Endpoint
         return $this->notes;
     }
 
-
+    /**
+     * @param string $value
+     * @return Invoice
+     */
+    public function setNotes(string $value): Invoice
+    {
+        $this->notes = $value;
+        return $this;
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var string
+     * @post
+     * @patch
      */
     protected $adminNotes;
 
@@ -137,12 +215,22 @@ final class Invoice extends Endpoint
         return $this->adminNotes;
     }
 
-
+    /**
+     * @param string $value
+     * @return Invoice
+     */
+    public function setAdminNotes(string $value): Invoice
+    {
+        $this->adminNotes = $value;
+        return $this;
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var int
+     * @post
+     * @patch
      */
     protected $invoiceTemplateId;
 
@@ -154,12 +242,22 @@ final class Invoice extends Endpoint
         return $this->invoiceTemplateId;
     }
 
-
+    /**
+     * @param int $value
+     * @return Invoice
+     */
+    public function setInvoiceTemplateId(int $value): Invoice
+    {
+        $this->invoiceTemplateId = $value;
+        return $this;
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var string
+     * @post
+     * @patch
      */
     protected $organizationName;
 
@@ -171,12 +269,22 @@ final class Invoice extends Endpoint
         return $this->organizationName;
     }
 
-
+    /**
+     * @param string $value
+     * @return Invoice
+     */
+    public function setOrganizationName(string $value): Invoice
+    {
+        $this->organizationName = $value;
+        return $this;
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var string
+     * @post
+     * @patch
      */
     protected $organizationRegistrationNumber;
 
@@ -188,12 +296,22 @@ final class Invoice extends Endpoint
         return $this->organizationRegistrationNumber;
     }
 
-
+    /**
+     * @param string $value
+     * @return Invoice
+     */
+    public function setOrganizationRegistrationNumber(string $value): Invoice
+    {
+        $this->organizationRegistrationNumber = $value;
+        return $this;
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var string
+     * @post
+     * @patch
      */
     protected $organizationTaxId;
 
@@ -205,12 +323,22 @@ final class Invoice extends Endpoint
         return $this->organizationTaxId;
     }
 
-
+    /**
+     * @param string $value
+     * @return Invoice
+     */
+    public function setOrganizationTaxId(string $value): Invoice
+    {
+        $this->organizationTaxId = $value;
+        return $this;
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var string
+     * @post
+     * @patch
      */
     protected $organizationStreet1;
 
@@ -222,12 +350,22 @@ final class Invoice extends Endpoint
         return $this->organizationStreet1;
     }
 
-
+    /**
+     * @param string $value
+     * @return Invoice
+     */
+    public function setOrganizationStreet1(string $value): Invoice
+    {
+        $this->organizationStreet1 = $value;
+        return $this;
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var string
+     * @post
+     * @patch
      */
     protected $organizationStreet2;
 
@@ -239,12 +377,22 @@ final class Invoice extends Endpoint
         return $this->organizationStreet2;
     }
 
-
+    /**
+     * @param string $value
+     * @return Invoice
+     */
+    public function setOrganizationStreet2(string $value): Invoice
+    {
+        $this->organizationStreet2 = $value;
+        return $this;
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var string
+     * @post
+     * @patch
      */
     protected $organizationCity;
 
@@ -256,12 +404,22 @@ final class Invoice extends Endpoint
         return $this->organizationCity;
     }
 
-
+    /**
+     * @param string $value
+     * @return Invoice
+     */
+    public function setOrganizationCity(string $value): Invoice
+    {
+        $this->organizationCity = $value;
+        return $this;
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var int
+     * @post
+     * @patch
      */
     protected $organizationCountryId;
 
@@ -273,12 +431,22 @@ final class Invoice extends Endpoint
         return $this->organizationCountryId;
     }
 
-
+    /**
+     * @param int $value
+     * @return Invoice
+     */
+    public function setOrganizationCountryId(int $value): Invoice
+    {
+        $this->organizationCountryId = $value;
+        return $this;
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var int
+     * @post
+     * @patch
      */
     protected $organizationStateId;
 
@@ -290,12 +458,22 @@ final class Invoice extends Endpoint
         return $this->organizationStateId;
     }
 
-
+    /**
+     * @param int $value
+     * @return Invoice
+     */
+    public function setOrganizationStateId(int $value): Invoice
+    {
+        $this->organizationStateId = $value;
+        return $this;
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var string
+     * @post
+     * @patch
      */
     protected $organizationZipCode;
 
@@ -307,12 +485,22 @@ final class Invoice extends Endpoint
         return $this->organizationZipCode;
     }
 
-
+    /**
+     * @param string $value
+     * @return Invoice
+     */
+    public function setOrganizationZipCode(string $value): Invoice
+    {
+        $this->organizationZipCode = $value;
+        return $this;
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var string
+     * @post
+     * @patch
      */
     protected $organizationBankAccountName;
 
@@ -324,12 +512,22 @@ final class Invoice extends Endpoint
         return $this->organizationBankAccountName;
     }
 
-
+    /**
+     * @param string $value
+     * @return Invoice
+     */
+    public function setOrganizationBankAccountName(string $value): Invoice
+    {
+        $this->organizationBankAccountName = $value;
+        return $this;
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var string
+     * @post
+     * @patch
      */
     protected $organizationBankAccountField1;
 
@@ -341,12 +539,22 @@ final class Invoice extends Endpoint
         return $this->organizationBankAccountField1;
     }
 
-
+    /**
+     * @param string $value
+     * @return Invoice
+     */
+    public function setOrganizationBankAccountField1(string $value): Invoice
+    {
+        $this->organizationBankAccountField1 = $value;
+        return $this;
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var string
+     * @post
+     * @patch
      */
     protected $organizationBankAccountField2;
 
@@ -358,12 +566,22 @@ final class Invoice extends Endpoint
         return $this->organizationBankAccountField2;
     }
 
-
+    /**
+     * @param string $value
+     * @return Invoice
+     */
+    public function setOrganizationBankAccountField2(string $value): Invoice
+    {
+        $this->organizationBankAccountField2 = $value;
+        return $this;
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var string
+     * @post
+     * @patch
      */
     protected $clientFirstName;
 
@@ -375,12 +593,22 @@ final class Invoice extends Endpoint
         return $this->clientFirstName;
     }
 
-
+    /**
+     * @param string $value
+     * @return Invoice
+     */
+    public function setClientFirstName(string $value): Invoice
+    {
+        $this->clientFirstName = $value;
+        return $this;
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var string
+     * @post
+     * @patch
      */
     protected $clientLastName;
 
@@ -392,12 +620,22 @@ final class Invoice extends Endpoint
         return $this->clientLastName;
     }
 
-
+    /**
+     * @param string $value
+     * @return Invoice
+     */
+    public function setClientLastName(string $value): Invoice
+    {
+        $this->clientLastName = $value;
+        return $this;
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var string
+     * @post
+     * @patch
      */
     protected $clientCompanyName;
 
@@ -409,12 +647,22 @@ final class Invoice extends Endpoint
         return $this->clientCompanyName;
     }
 
-
+    /**
+     * @param string $value
+     * @return Invoice
+     */
+    public function setClientCompanyName(string $value): Invoice
+    {
+        $this->clientCompanyName = $value;
+        return $this;
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var string
+     * @post
+     * @patch
      */
     protected $clientCompanyRegistrationNumber;
 
@@ -426,12 +674,22 @@ final class Invoice extends Endpoint
         return $this->clientCompanyRegistrationNumber;
     }
 
-
+    /**
+     * @param string $value
+     * @return Invoice
+     */
+    public function setClientCompanyRegistrationNumber(string $value): Invoice
+    {
+        $this->clientCompanyRegistrationNumber = $value;
+        return $this;
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var string
+     * @post
+     * @patch
      */
     protected $clientCompanyTaxId;
 
@@ -443,12 +701,22 @@ final class Invoice extends Endpoint
         return $this->clientCompanyTaxId;
     }
 
-
+    /**
+     * @param string $value
+     * @return Invoice
+     */
+    public function setClientCompanyTaxId(string $value): Invoice
+    {
+        $this->clientCompanyTaxId = $value;
+        return $this;
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var string
+     * @post
+     * @patch
      */
     protected $clientStreet1;
 
@@ -460,12 +728,22 @@ final class Invoice extends Endpoint
         return $this->clientStreet1;
     }
 
-
+    /**
+     * @param string $value
+     * @return Invoice
+     */
+    public function setClientStreet1(string $value): Invoice
+    {
+        $this->clientStreet1 = $value;
+        return $this;
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var string
+     * @post
+     * @patch
      */
     protected $clientStreet2;
 
@@ -477,12 +755,22 @@ final class Invoice extends Endpoint
         return $this->clientStreet2;
     }
 
-
+    /**
+     * @param string $value
+     * @return Invoice
+     */
+    public function setClientStreet2(string $value): Invoice
+    {
+        $this->clientStreet2 = $value;
+        return $this;
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var string
+     * @post
+     * @patch
      */
     protected $clientCity;
 
@@ -494,12 +782,22 @@ final class Invoice extends Endpoint
         return $this->clientCity;
     }
 
-
+    /**
+     * @param string $value
+     * @return Invoice
+     */
+    public function setClientCity(string $value): Invoice
+    {
+        $this->clientCity = $value;
+        return $this;
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var int
+     * @post
+     * @patch
      */
     protected $clientCountryId;
 
@@ -511,12 +809,22 @@ final class Invoice extends Endpoint
         return $this->clientCountryId;
     }
 
-
+    /**
+     * @param int $value
+     * @return Invoice
+     */
+    public function setClientCountryId(int $value): Invoice
+    {
+        $this->clientCountryId = $value;
+        return $this;
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var int
+     * @post
+     * @patch
      */
     protected $clientStateId;
 
@@ -528,12 +836,22 @@ final class Invoice extends Endpoint
         return $this->clientStateId;
     }
 
-
+    /**
+     * @param int $value
+     * @return Invoice
+     */
+    public function setClientStateId(int $value): Invoice
+    {
+        $this->clientStateId = $value;
+        return $this;
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var string
+     * @post
+     * @patch
      */
     protected $clientZipCode;
 
@@ -545,7 +863,15 @@ final class Invoice extends Endpoint
         return $this->clientZipCode;
     }
 
-
+    /**
+     * @param string $value
+     * @return Invoice
+     */
+    public function setClientZipCode(string $value): Invoice
+    {
+        $this->clientZipCode = $value;
+        return $this;
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
 
@@ -562,12 +888,24 @@ final class Invoice extends Endpoint
         return $this->dueDate;
     }
 
-
+    /**
+     * @param \DateTime $value
+     * @return Invoice
+     */
+    public function setDueDate(\DateTime $value): Invoice
+    {
+        $this->dueDate = $value->format("c");
+        return $this;
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var InvoiceItem[]
+     * @post-required
+     * @patch
+     *
+     * @keepNullElements
      */
     protected $items;
 
@@ -580,7 +918,15 @@ final class Invoice extends Endpoint
         return new InvoiceItemCollection($this->items);
     }
 
-
+    /**
+     * @param InvoiceItemCollection $value
+     * @return Invoice
+     */
+    public function setItems(InvoiceItemCollection $value): Invoice
+    {
+        $this->items = $value->elements();
+        return $this;
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
 
@@ -597,7 +943,15 @@ final class Invoice extends Endpoint
         return $this->subtotal;
     }
 
-
+    /**
+     * @param float $value
+     * @return Invoice
+     */
+    public function setSubtotal(float $value): Invoice
+    {
+        $this->subtotal = $value;
+        return $this;
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
 
@@ -614,7 +968,15 @@ final class Invoice extends Endpoint
         return $this->discount;
     }
 
-
+    /**
+     * @param float $value
+     * @return Invoice
+     */
+    public function setDiscount(float $value): Invoice
+    {
+        $this->discount = $value;
+        return $this;
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
 
@@ -631,12 +993,21 @@ final class Invoice extends Endpoint
         return $this->discountLabel;
     }
 
-
+    /**
+     * @param string $value
+     * @return Invoice
+     */
+    public function setDiscountLabel(string $value): Invoice
+    {
+        $this->discountLabel = $value;
+        return $this;
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var InvoiceTax[]
+     * @patch
      */
     protected $taxes;
 
@@ -649,7 +1020,15 @@ final class Invoice extends Endpoint
         return new InvoiceTaxCollection($this->taxes);
     }
 
-
+    /**
+     * @param InvoiceTaxCollection $value
+     * @return Invoice
+     */
+    public function setTaxes(InvoiceTaxCollection $value): Invoice
+    {
+        $this->taxes = $value->elements();
+        return $this;
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
 
@@ -666,7 +1045,15 @@ final class Invoice extends Endpoint
         return $this->total;
     }
 
-
+    /**
+     * @param float $value
+     * @return Invoice
+     */
+    public function setTotal(float $value): Invoice
+    {
+        $this->total = $value;
+        return $this;
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
 
@@ -683,7 +1070,15 @@ final class Invoice extends Endpoint
         return $this->amountPaid;
     }
 
-
+    /**
+     * @param float $value
+     * @return Invoice
+     */
+    public function setAmountPaid(float $value): Invoice
+    {
+        $this->amountPaid = $value;
+        return $this;
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
 
@@ -700,27 +1095,46 @@ final class Invoice extends Endpoint
         return $this->currencyCode;
     }
 
-
+    /**
+     * @param string $value
+     * @return Invoice
+     */
+    public function setCurrencyCode(string $value): Invoice
+    {
+        $this->currencyCode = $value;
+        return $this;
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
-     * @var float
+     * @var int
      */
     protected $status;
 
     /**
-     * @return float|null
+     * @return int|null
      */
-    public function getStatus(): ?float
+    public function getStatus(): ?int
     {
         return $this->status;
+    }
+
+    /**
+     * @param int $value
+     * @return Invoice
+     */
+    public function setStatus(int $value): Invoice
+    {
+        $this->status = $value;
+        return $this;
     }
 
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var PaymentCover[]
+     * @patch
      */
     protected $paymentCovers;
 
@@ -733,12 +1147,21 @@ final class Invoice extends Endpoint
         return new PaymentCoverCollection($this->paymentCovers);
     }
 
-
+    /**
+     * @param PaymentCoverCollection $value
+     * @return Invoice
+     */
+    public function setPaymentCovers(PaymentCoverCollection $value): Invoice
+    {
+        $this->paymentCovers = $value->elements();
+        return $this;
+    }
 
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var bool
+     * @patch
      */
     protected $uncollectible;
 
@@ -750,6 +1173,15 @@ final class Invoice extends Endpoint
         return $this->uncollectible;
     }
 
+    /**
+     * @param bool $value
+     * @return Invoice
+     */
+    public function setUncollectible(bool $value): Invoice
+    {
+        $this->uncollectible = $value;
+        return $this;
+    }
 }
 
 

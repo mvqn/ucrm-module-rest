@@ -7,6 +7,7 @@ use MVQN\Annotations\{AnnotationReader,Exceptions\AnnotationReaderException};
 use MVQN\Collections\Collectible;
 use MVQN\Helpers\ArrayHelper;
 
+use UCRM\REST\Endpoints\Lookups\Lookup;
 use UCRM\REST\Exceptions\RestObjectException;
 
 /**
@@ -17,6 +18,10 @@ use UCRM\REST\Exceptions\RestObjectException;
  */
 abstract class RestObject extends Collectible implements \JsonSerializable
 {
+
+    private const LOOKUP_NAMESPACE = __NAMESPACE__."\\Endpoints\\Lookups";
+
+    private const NULL_DELIMITER = "#NULL#";
 
     /**
      * RestObject constructor.
@@ -96,6 +101,8 @@ abstract class RestObject extends Collectible implements \JsonSerializable
             // Get the name of this property.
             $name = $property->getName();
 
+
+
             // Create an AnnotationReader for this property and get all of it's annotations.
             $annotations = new AnnotationReader($class, $name, "property");
             $params = $annotations->getParameters();
@@ -103,6 +110,7 @@ abstract class RestObject extends Collectible implements \JsonSerializable
             // Get the information for this property, specifically the type!
             $info = $annotations->getPropertyInfo();
 
+            // ERROR if we are unable to find the 'types' part of the DocBlock!
             if(!array_key_exists("types", $info))
                 throw new AnnotationReaderException("Unable to successfully parse the DocBlock for '$name'");
 
@@ -116,8 +124,8 @@ abstract class RestObject extends Collectible implements \JsonSerializable
                 if($type !== null && !in_array($type, $types))
                 {
                     // THEN determine the FQCN for the 'type' and the the 'Lookup' classes.
-                    $type = __NAMESPACE__."\\$type";
-                    $base = __NAMESPACE__."\\Lookup";
+                    $type = self::LOOKUP_NAMESPACE."\\$type";
+                    $base = self::LOOKUP_NAMESPACE."\\Lookup";
 
                     // IF the current property's type is a child of 'Lookup'...
                     if(is_subclass_of($type, $base, true))
@@ -132,6 +140,8 @@ abstract class RestObject extends Collectible implements \JsonSerializable
                         if($children === null)
                             continue;
 
+                        //$isEmpty = true;
+
                         // Loop through each child class object...
                         foreach($children as $child)
                         {
@@ -142,7 +152,16 @@ abstract class RestObject extends Collectible implements \JsonSerializable
                             {
                                 // THEN decode and add the child object to the collection.
                                 if($child !== null)
-                                    $fields[$name][] = json_decode($child->toJSON($method), true);
+                                {
+                                    $assoc = json_decode($child->toJSON($method), true);
+
+                                    if(array_key_exists("keepNullElements", $params) && array_filter($assoc) === [])
+                                        $fields[$name][] = self::NULL_DELIMITER;
+                                    else
+                                        $fields[$name][] = $assoc;
+
+                                    //$isEmpty = false;
+                                }
                                 else
                                     $fields[$name][] = null;
                             }
@@ -150,18 +169,34 @@ abstract class RestObject extends Collectible implements \JsonSerializable
                             {
                                 // OTHERWISE, The child is an Array!
 
+                                // Should NEVER reach this block!
+                                throw new RestObjectException("WTF???");
 
-                                //foreach($child as $s)
-                                //    echo $s."\n";
-                                    //$fields[$name][] = $s->toFields($method);
-
-                                $fields[$name][] = $child;
+                                //$fields[$name][] = $child;
                             }
 
                         }
 
 
+
+
+
+
+
+                        if($name === "items")
+                            echo "";
+
+
                     }
+                    else
+                    {
+                        // Should NEVER reach this block!
+                        throw new RestObjectException("WTF???");
+                    }
+
+
+
+
                 }
                 else
                 {
@@ -177,7 +212,13 @@ abstract class RestObject extends Collectible implements \JsonSerializable
 
         $fields = $filter ? ArrayHelper::array_filter_recursive($fields) : $fields;
 
-        return json_encode($fields, $options);
+        $json = json_encode($fields, $options);
+
+        $json = str_replace("\"".self::NULL_DELIMITER."\"", "null", $json);
+
+        // TODO: Determine how UCRM handles deleting single indices!
+
+        return $json;
     }
 
     /**
