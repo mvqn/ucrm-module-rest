@@ -9,7 +9,9 @@
 
 &nbsp;
 ## All States by Country
-/countries/<span style="color:red">countryId</span>/states
+```
+GET /countries/{countryId}/states
+```
 
 #### Example
 ```php
@@ -28,7 +30,7 @@ echo $states;
 ```
 
 #### Output
-*NOTE: Formatting altered for claridy, all real output is in minified JSON.*
+> *NOTE: Formatting altered for claridy, all real output is in minified JSON.*
 ```json
 [
 	{"id":1,"countryId":249,"name":"Alabama","code":"AL"},
@@ -88,6 +90,9 @@ echo $states;
 
 &nbsp;
 ## State by ID
+```
+GET /countries/states/{stateId}
+```
 
 #### Example
 ```php
@@ -109,6 +114,10 @@ echo $state;
 
 &nbsp;
 ## State by Name
+> *NOTE: This is not a valid UCRM API endpoint, but rather an equivalent representation.*
+```
+GET /countries/{countryId}/states?name={name}
+```
 
 #### Example
 ```php
@@ -134,6 +143,10 @@ echo $state;
 
 &nbsp;
 ## State by Code
+> *NOTE: This is not a valid UCRM API endpoint, but rather an equivalent representation.*
+```
+GET /countries/{countryId}/states?code={code}
+```
 
 #### Example
 ```php
