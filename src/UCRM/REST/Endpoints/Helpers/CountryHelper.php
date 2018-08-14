@@ -52,13 +52,13 @@ trait CountryHelper
      * @throws \MVQN\Helpers\Exceptions\PatternMatchException
      * @throws \ReflectionException
      */
-    public static function getByName(string $name): CountryCollection
+    public static function getByName(string $name): ?Country
     {
         $countries = Country::get();
 
-        /** @var CountryCollection $countryList */
-        $countryList = $countries->where("name", $name);
-        return new CountryCollection($countryList->elements());
+        /** @var Country $country */
+        $country = $countries->where("name", $name)->first();
+        return $country;
     }
 
     /**

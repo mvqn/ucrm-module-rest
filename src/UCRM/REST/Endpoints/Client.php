@@ -534,7 +534,7 @@ final class Client extends Endpoint
 
     /**
      * @var bool
-     * @post
+     * @post-required
      * @patch-required
      */
     protected $invoiceAddressSameAsContact;
@@ -948,7 +948,7 @@ final class Client extends Endpoint
 
     /**
      * @var string
-     * @post
+     * @post-required
      * @patch-required
      */
     protected $registrationDate;

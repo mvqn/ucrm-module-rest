@@ -248,13 +248,32 @@ class _01_GeneralTests extends \PHPUnit\Framework\TestCase
 
     public function testDocs()
     {
-        /** @var Country $country */
-        $country = Country::getById(249);
+        /** @var Organization $organization */
+        $organization = Organization::getByDefault();
 
-        /** @var State $state */
-        $state = State::getByCode($country, "NV");
+        /** @var Client $client */
+        $client = (new Client())
+            ->setOrganization($organization)
+            ->setIsLead(true)
+            ->setClientType(Client::CLIENT_TYPE_COMMERCIAL)
+            //->setFirstName("Ronald")
+            //->setLastName("Reagan")
+            ->setInvoiceAddressSameAsContact(true)
+            ->setRegistrationDate(new \DateTime());
 
-        echo $state;
+        //$client = new Client();
+
+        if(!$client->validate("post", $missing))
+        {
+           print_r($missing);
+
+        }
+
+        $inserted = $client->insert();
+        echo $inserted;
+
+
+
     }
 
 

@@ -233,7 +233,7 @@ class _02_ClientTests extends \PHPUnit\Framework\TestCase
     public function testGetById()
     {
         /** @var Client $first */
-        $first = Client::get()->first();
+        $first = Client::get()->last();
         $id = $first->getId();
 
         /** @var Client $client */

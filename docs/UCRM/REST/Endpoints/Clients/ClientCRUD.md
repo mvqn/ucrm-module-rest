@@ -2,9 +2,9 @@
 
 **GET**:
 - [All Countries](#all-countries)
-- [State by ID](#state-by-id)
-- [State by Name](#state-by-name)
-- [State by Code](#state-by-code)
+- [Country by ID](#country-by-id)
+- [Country by Name](#country-by-name)
+- [Country by Code](#country-by-code)
 
 
 &nbsp;

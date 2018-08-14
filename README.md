@@ -2,12 +2,14 @@
 This library is a helper module for interacting with the UCRM REST API.
 This package is not a Plugin itself, but will greatly help in the development of actual UCRM Plugins. 
 
+&nbsp;
 ## Installation
 Install the latest version with
 ```bash
 composer require mvqn/ucrm-module-rest
 ```
 
+&nbsp;
 ## Basic Usage
 ```php
 <?php
@@ -15,12 +17,26 @@ composer require mvqn/ucrm-module-rest
 // COMING SOON
 ```
 
+&nbsp;
 ## Documentation
 
-- [Country](docs/UCRM/REST/Endpoints/Country.md)
+**General:**
+- [Version](docs/UCRM/REST/Endpoints/Examples/Version.md)
+- [Country](docs/UCRM/REST/Endpoints/Examples/Country.md)
+- [Currency](docs/UCRM/REST/Endpoints/Examples/Currency.md)
+- [State](docs/UCRM/REST/Endpoints/Examples/State.md)
+
+**Clients:**
+- [Client](docs/UCRM/REST/Endpoints/Examples/Client.md)
+
+&nbsp;
+
+**MORE COMING SOON**
 
 
 
+
+&nbsp;
 ## Third Party Packages
 COMING SOON
 

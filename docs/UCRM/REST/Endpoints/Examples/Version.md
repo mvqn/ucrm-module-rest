@@ -1,10 +1,17 @@
 # Version
-### /version
-> GET
+
+
+**GET**
+- [Version](#version)
+
 
 &nbsp;
+## Version
+```
+GET /version
+```
 
-###### Example
+#### Example
 ```php
 <?php
 
@@ -15,9 +22,7 @@ $version = Version::get()->first();
 echo $version;
 ```
 
-&nbsp;
-
-###### Output
+#### Output
 ```json
 {"version":"2.13.0-beta2"}
 ```
