@@ -6,9 +6,10 @@
 - [State by Name](#state-by-name)
 - [State by Code](#state-by-code)
 
+
 &nbsp;
 ## All States by Country
-> /countries/<span style="color:red">countryId</span>/states
+/countries/<span style="color:red">countryId</span>/states
 
 #### Example
 ```php
@@ -84,6 +85,7 @@ echo $states;
 ]
 ```
 
+
 &nbsp;
 ## State by ID
 
@@ -105,6 +107,7 @@ echo $state;
 ```
 
 
+&nbsp;
 ## State by Name
 
 #### Example
@@ -129,6 +132,7 @@ echo $state;
 ```
 
 
+&nbsp;
 ## State by Code
 
 #### Example
