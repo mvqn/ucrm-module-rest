@@ -1,11 +1,11 @@
-# ucrm-plugin-rest
-This library is a helper package for interacting with the UCRM REST API.
+# ucrm-module-rest
+This library is a helper module for interacting with the UCRM REST API.
 This package is not a Plugin itself, but will greatly help in the development of actual UCRM Plugins. 
 
 ## Installation
 Install the latest version with
 ```bash
-$ composer require mvqn/ucrm-plugin-rest
+composer require mvqn/ucrm-module-rest
 ```
 
 ## Basic Usage
@@ -16,7 +16,10 @@ $ composer require mvqn/ucrm-plugin-rest
 ```
 
 ## Documentation
-COMING SOON
+
+- [Country](docs/UCRM/REST/Endpoints/Country.md)
+
+
 
 ## Third Party Packages
 COMING SOON
