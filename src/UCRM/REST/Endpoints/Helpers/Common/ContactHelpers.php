@@ -3,8 +3,12 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Helpers\Common;
 
-use UCRM\REST\Endpoints\Endpoint;
-use UCRM\REST\Endpoints\{Collections\ClientContactCollection, Country, Lookups\ClientContact, State};
+use MVQN\Collections\Exceptions\CollectionException;
+use MVQN\Annotations\Exceptions\AnnotationReaderException;
+
+use UCRM\REST\Endpoints\Collections\ClientContactCollection;
+use UCRM\REST\Endpoints\Lookups\ClientContact;
+use UCRM\REST\Exceptions\RestObjectException;
 
 trait ContactHelpers
 {
@@ -14,8 +18,8 @@ trait ContactHelpers
 
     /**
      * @param int $id
-     * @return ClientContact
-     * @throws \MVQN\Collections\CollectionException
+     * @return ClientContact|null
+     * @throws CollectionException
      */
     public function getContactById(int $id): ?ClientContact
     {
@@ -24,6 +28,13 @@ trait ContactHelpers
         return $contact;
     }
 
+    /**
+     * @param ClientContact $contact
+     * @return ContactHelpers
+     * @throws AnnotationReaderException
+     * @throws RestObjectException
+     * @throws \ReflectionException
+     */
     public function addContact(ClientContact $contact): self
     {
         $this->{"contacts"}[] = $contact->toArray();

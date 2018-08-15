@@ -746,15 +746,6 @@ final class Client extends Endpoint
         return $this;
     }
 
-    /**
-     * @return Client
-     */
-    public function resetSendInvoiceByPost(): Client
-    {
-        $this->sendInvoiceByPost = null;
-        return $this;
-    }
-
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
@@ -779,15 +770,6 @@ final class Client extends Endpoint
     public function setInvoiceMaturityDays(int $value): Client
     {
         $this->invoiceMaturityDays = $value;
-        return $this;
-    }
-
-    /**
-     * @return Client
-     */
-    public function resetInvoiceMaturityDays(): Client
-    {
-        $this->invoiceMaturityDays = null;
         return $this;
     }
 
@@ -818,15 +800,6 @@ final class Client extends Endpoint
         return $this;
     }
 
-    /**
-     * @return Client
-     */
-    public function resetStopServiceDue(): Client
-    {
-        $this->stopServiceDue = null;
-        return $this;
-    }
-
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
@@ -851,15 +824,6 @@ final class Client extends Endpoint
     public function setStopServiceDueDays(int $value): Client
     {
         $this->stopServiceDueDays = $value;
-        return $this;
-    }
-
-    /**
-     * @return Client
-     */
-    public function resetStopServiceDueDays(): Client
-    {
-        $this->stopServiceDueDays = null;
         return $this;
     }
 

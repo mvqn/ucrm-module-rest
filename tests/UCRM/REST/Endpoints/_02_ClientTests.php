@@ -52,12 +52,22 @@ class _02_ClientTests extends \PHPUnit\Framework\TestCase
 
     public function testCreateResidential()
     {
-        $this->markTestSkipped("Skip test, as to not keep generating Clients!");
+        //$this->markTestSkipped("Skip test, as to not keep generating Clients!");
 
         $lastName = "Doe";
         $firstName = "John".rand(1, 9);
 
-        $inserted = Client::createResidential($firstName, $lastName, true)->insert();
+        $client = Client::createResidential($firstName, $lastName);
+
+        $client->setAddress("422 Silver Star Court\nc/o Michelle Spaeth", "Yerington", "NV", "US", "89447");
+        $client->setInvoiceAddress("422 Silver Star Court\nc/o Ryan Spaeth", "Yerington", "NV", "US", "89447");
+
+        $client->setSendInvoiceByPost(true);
+        $client->setInvoiceMaturityDays(10);
+
+        $client->resetInvoiceOptions();
+
+        $inserted = $client->insert();
         $this->assertEquals($lastName, $inserted->getLastName());
 
         echo $inserted."\n";
