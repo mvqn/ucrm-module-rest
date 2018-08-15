@@ -54,7 +54,7 @@ The core plugin package used by all UCRM Plugins developed internally.
 Another plugin package used to access the UCRM database directly.
 
 ### Submitting bugs and feature requests
-Bugs and feature request are tracked on [Bitbucket](https://bitbucket.org/mvqn/ucrm-plugin-rest/issues)
+Bugs and feature request are tracked on [Github](https://github.com/mvqn/ucrm-module-rest/issues)
 
 ### Author
 Ryan Spaeth <[rspaeth@mvqn.net](mailto:rspaeth@mvqn.net)>
