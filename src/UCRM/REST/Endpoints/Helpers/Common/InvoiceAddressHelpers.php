@@ -5,13 +5,20 @@ namespace UCRM\REST\Endpoints\Helpers\Common;
 
 use MVQN\Annotations\Exceptions\AnnotationReaderException;
 use MVQN\Collections\Exceptions\CollectionException;
+//use MVQN\Helpers\Exceptions\ArrayHelperException;
 use MVQN\Helpers\Exceptions\PatternMatchException;
 
-use UCRM\REST\Endpoints\Country;
 use UCRM\REST\Endpoints\Exceptions\EndpointException;
-use UCRM\REST\Endpoints\State;
 use UCRM\REST\Exceptions\RestClientException;
 
+use UCRM\REST\Endpoints\{Country, State};
+
+/**
+ * Trait InvoiceAddressHelpers
+ *
+ * @package UCRM\REST\Endpoints\Helpers\Common
+ * @author Ryan Spaeth <rspaeth@mvqn.net>
+ */
 trait InvoiceAddressHelpers
 {
     // =================================================================================================================
@@ -24,7 +31,7 @@ trait InvoiceAddressHelpers
      * @param string $stateCode
      * @param string $countryCode
      * @param string $zipCode
-     * @return self
+     * @return self Returns the appropriate Endpoint instance, for method chaining purposes.
      * @throws AnnotationReaderException
      * @throws CollectionException
      * @throws EndpointException

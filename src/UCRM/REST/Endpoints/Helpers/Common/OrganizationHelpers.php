@@ -56,7 +56,7 @@ trait OrganizationHelpers
     }
 
     /**
-     * @return self
+     * @return self Returns the appropriate Endpoint instance, for method chaining purposes.
      * @throws AnnotationReaderException
      * @throws CollectionException
      * @throws EndpointException

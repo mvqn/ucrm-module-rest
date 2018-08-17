@@ -3,8 +3,22 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Helpers\Common;
 
+use MVQN\Annotations\Exceptions\AnnotationReaderException;
+use MVQN\Collections\Exceptions\CollectionException;
+use MVQN\Helpers\Exceptions\ArrayHelperException;
+use MVQN\Helpers\Exceptions\PatternMatchException;
+
+use UCRM\REST\Endpoints\Exceptions\EndpointException;
+use UCRM\REST\Exceptions\RestClientException;
+
 use UCRM\REST\Endpoints\Country;
 
+/**
+ * Trait OrganizationCountryHelpers
+ *
+ * @package UCRM\REST\Endpoints\Helpers\Common
+ * @author Ryan Spaeth <rspaeth@mvqn.net>
+ */
 trait OrganizationCountryHelpers
 {
     // =================================================================================================================
@@ -12,12 +26,13 @@ trait OrganizationCountryHelpers
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
-     * @return null|Country
-     * @throws \MVQN\Annotations\Exceptions\AnnotationReaderException
-     * @throws \MVQN\Helpers\Exceptions\PatternMatchException
+     * @return Country|null
+     * @throws AnnotationReaderException
+     * @throws ArrayHelperException
+     * @throws EndpointException
+     * @throws PatternMatchException
+     * @throws RestClientException
      * @throws \ReflectionException
-     * @throws \UCRM\REST\Endpoints\Exceptions\EndpointException
-     * @throws \UCRM\REST\Exceptions\RestClientException
      */
     public function getOrganizationCountry(): ?Country
     {
@@ -42,13 +57,13 @@ trait OrganizationCountryHelpers
 
     /**
      * @param string $name
-     * @return OrganizationCountryHelpers
-     * @throws \MVQN\Annotations\Exceptions\AnnotationReaderException
-     * @throws \MVQN\Collections\Exceptions\CollectionException
-     * @throws \MVQN\Helpers\Exceptions\PatternMatchException
+     * @return self Returns the appropriate Endpoint instance, for method chaining purposes.
+     * @throws AnnotationReaderException
+     * @throws CollectionException
+     * @throws EndpointException
+     * @throws PatternMatchException
+     * @throws RestClientException
      * @throws \ReflectionException
-     * @throws \UCRM\REST\Endpoints\Exceptions\EndpointException
-     * @throws \UCRM\REST\Exceptions\RestClientException
      */
     public function setOrganizationCountryByName(string $name): self
     {
@@ -62,13 +77,13 @@ trait OrganizationCountryHelpers
 
     /**
      * @param string $code
-     * @return OrganizationCountryHelpers
-     * @throws \MVQN\Annotations\Exceptions\AnnotationReaderException
-     * @throws \MVQN\Collections\Exceptions\CollectionException
-     * @throws \MVQN\Helpers\Exceptions\PatternMatchException
+     * @return self Returns the appropriate Endpoint instance, for method chaining purposes.
+     * @throws AnnotationReaderException
+     * @throws CollectionException
+     * @throws EndpointException
+     * @throws PatternMatchException
+     * @throws RestClientException
      * @throws \ReflectionException
-     * @throws \UCRM\REST\Endpoints\Exceptions\EndpointException
-     * @throws \UCRM\REST\Exceptions\RestClientException
      */
     public function setOrganizationCountryByCode(string $code): self
     {

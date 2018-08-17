@@ -5,13 +5,21 @@ namespace UCRM\REST\Endpoints\Helpers\Common;
 
 use MVQN\Annotations\Exceptions\AnnotationReaderException;
 use MVQN\Collections\Exceptions\CollectionException;
+//use MVQN\Helpers\Exceptions\ArrayHelperException;
 use MVQN\Helpers\Exceptions\PatternMatchException;
 
-use UCRM\REST\Endpoints\Country;
 use UCRM\REST\Endpoints\Exceptions\EndpointException;
-use UCRM\REST\Endpoints\State;
 use UCRM\REST\Exceptions\RestClientException;
 
+use UCRM\REST\Endpoints\Country;
+use UCRM\REST\Endpoints\State;
+
+/**
+ * Trait AddressHelpers
+ *
+ * @package UCRM\REST\Endpoints\Helpers\Common
+ * @author Ryan Spaeth <rspaeth@mvqn.net>
+ */
 trait AddressHelpers
 {
     // =================================================================================================================
@@ -24,7 +32,7 @@ trait AddressHelpers
      * @param string $stateCode
      * @param string $countryCode
      * @param string $zip
-     * @return self
+     * @return AddressHelpers
      * @throws AnnotationReaderException
      * @throws CollectionException
      * @throws EndpointException
@@ -34,7 +42,7 @@ trait AddressHelpers
      */
     public function setAddress(string $street, string $city, string $stateCode, string $countryCode, string $zip): self
     {
-        $street1 = "";
+        //$street1 = "";
         $street2 = "";
 
         if(strpos($street, "\n") !== false)

@@ -3,8 +3,22 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Helpers\Common;
 
+use MVQN\Annotations\Exceptions\AnnotationReaderException;
+//use MVQN\Collections\Exceptions\CollectionException;
+use MVQN\Helpers\Exceptions\ArrayHelperException;
+use MVQN\Helpers\Exceptions\PatternMatchException;
+
+use UCRM\REST\Endpoints\Exceptions\EndpointException;
+use UCRM\REST\Exceptions\RestClientException;
+
 use UCRM\REST\Endpoints\InvoiceTemplate;
 
+/**
+ * Trait InvoiceTemplateHelpers
+ *
+ * @package UCRM\REST\Endpoints\Helpers\Common
+ * @author Ryan Spaeth <rspaeth@mvqn.net>
+ */
 trait InvoiceTemplateHelpers
 {
     // =================================================================================================================
@@ -12,12 +26,13 @@ trait InvoiceTemplateHelpers
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
-     * @return null|InvoiceTemplate
-     * @throws \MVQN\Annotations\Exceptions\AnnotationReaderException
-     * @throws \MVQN\Helpers\Exceptions\PatternMatchException
+     * @return InvoiceTemplate|null
+     * @throws AnnotationReaderException
+     * @throws ArrayHelperException
+     * @throws EndpointException
+     * @throws PatternMatchException
+     * @throws RestClientException
      * @throws \ReflectionException
-     * @throws \UCRM\REST\Endpoints\Exceptions\EndpointException
-     * @throws \UCRM\REST\Exceptions\RestClientException
      */
     public function getInvoiceTemplate(): ?InvoiceTemplate
     {
@@ -42,7 +57,7 @@ trait InvoiceTemplateHelpers
 
     /**
      * @param string $name
-     * @return InvoiceTemplateHelpers
+     * @return self Returns the appropriate Endpoint instance, for method chaining purposes.
      */
     public function setInvoiceTemplateByName(string $name): self
     {

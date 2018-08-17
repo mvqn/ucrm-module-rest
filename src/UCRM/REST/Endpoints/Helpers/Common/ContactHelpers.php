@@ -3,13 +3,24 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Helpers\Common;
 
-use MVQN\Collections\Exceptions\CollectionException;
 use MVQN\Annotations\Exceptions\AnnotationReaderException;
+use MVQN\Collections\Exceptions\CollectionException;
+use MVQN\Helpers\Exceptions\ArrayHelperException;
+use MVQN\Helpers\Exceptions\PatternMatchException;
+
+use UCRM\REST\Endpoints\Exceptions\EndpointException;
+use UCRM\REST\Exceptions\RestClientException;
+use UCRM\REST\Exceptions\RestObjectException;
 
 use UCRM\REST\Endpoints\Collections\ClientContactCollection;
 use UCRM\REST\Endpoints\Lookups\ClientContact;
-use UCRM\REST\Exceptions\RestObjectException;
 
+
+/**
+ * Trait ContactHelpers
+ * @package UCRM\REST\Endpoints\Helpers\Common
+ * @author Ryan Spaeth <rspaeth@mvqn.net>
+ */
 trait ContactHelpers
 {
     // =================================================================================================================
@@ -30,7 +41,7 @@ trait ContactHelpers
 
     /**
      * @param ClientContact $contact
-     * @return ContactHelpers
+     * @return self Returns the appropriate Endpoint instance, for method chaining purposes.
      * @throws AnnotationReaderException
      * @throws RestObjectException
      * @throws \ReflectionException

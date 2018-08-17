@@ -3,9 +3,22 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Helpers\Common;
 
-use UCRM\REST\Endpoints\Endpoint;
-use UCRM\REST\Endpoints\{Collections\ClientContactCollection, Country, Lookups\ClientContact, State, Client};
+use MVQN\Annotations\Exceptions\AnnotationReaderException;
+//use MVQN\Collections\Exceptions\CollectionException;
+use MVQN\Helpers\Exceptions\ArrayHelperException;
+use MVQN\Helpers\Exceptions\PatternMatchException;
 
+use UCRM\REST\Endpoints\Exceptions\EndpointException;
+use UCRM\REST\Exceptions\RestClientException;
+
+use UCRM\REST\Endpoints\Client;
+
+/**
+ * Trait ClientHelpers
+ *
+ * @package UCRM\REST\Endpoints\Helpers\Common
+ * @author Ryan Spaeth <rspaeth@mvqn.net>
+ */
 trait ClientHelpers
 {
     // =================================================================================================================
@@ -14,11 +27,12 @@ trait ClientHelpers
 
     /**
      * @return Client
-     * @throws \MVQN\Annotations\Exceptions\AnnotationReaderException
-     * @throws \MVQN\Helpers\Exceptions\PatternMatchException
+     * @throws AnnotationReaderException
+     * @throws ArrayHelperException
+     * @throws EndpointException
+     * @throws PatternMatchException
+     * @throws RestClientException
      * @throws \ReflectionException
-     * @throws \UCRM\REST\Endpoints\Exceptions\EndpointException
-     * @throws \UCRM\REST\Exceptions\RestClientException
      */
     public function getClient(): Client
     {
@@ -36,6 +50,7 @@ trait ClientHelpers
     public function setClient(Client $client): self
     {
         $this->{"clientId"} = $client->getId();
+
         /** @var self $this */
         return $this;
     }

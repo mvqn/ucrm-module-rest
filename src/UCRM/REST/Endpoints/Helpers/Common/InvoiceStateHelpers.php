@@ -3,15 +3,37 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Helpers\Common;
 
-use UCRM\REST\Endpoints\Endpoint;
-use UCRM\REST\Endpoints\{Country, Exceptions\EndpointException, State};
+use MVQN\Annotations\Exceptions\AnnotationReaderException;
+use MVQN\Collections\Exceptions\CollectionException;
+use MVQN\Helpers\Exceptions\ArrayHelperException;
+use MVQN\Helpers\Exceptions\PatternMatchException;
 
+use UCRM\REST\Endpoints\Exceptions\EndpointException;
+use UCRM\REST\Exceptions\RestClientException;
+
+use UCRM\REST\Endpoints\{Country, State};
+
+/**
+ * Trait InvoiceStateHelpers
+ *
+ * @package UCRM\REST\Endpoints\Helpers\Common
+ * @author Ryan Spaeth <rspaeth@mvqn.net>
+ */
 trait InvoiceStateHelpers
 {
     // =================================================================================================================
     // HELPER METHODS
     // -----------------------------------------------------------------------------------------------------------------
 
+    /**
+     * @return State|null
+     * @throws AnnotationReaderException
+     * @throws ArrayHelperException
+     * @throws EndpointException
+     * @throws PatternMatchException
+     * @throws ReflectionException
+     * @throws RestClientException
+     */
     public function getInvoiceState(): ?State
     {
         if(property_exists($this, "invoiceStateId") && $this->{"invoiceStateId"} !== null)
@@ -33,6 +55,17 @@ trait InvoiceStateHelpers
         return $this;
     }
 
+    /**
+     * @param string $name
+     * @return self Returns the appropriate Endpoint instance, for method chaining purposes.
+     * @throws AnnotationReaderException
+     * @throws ArrayHelperException
+     * @throws CollectionException
+     * @throws EndpointException
+     * @throws PatternMatchException
+     * @throws ReflectionException
+     * @throws RestClientException
+     */
     public function setInvoiceStateByName(string $name): self
     {
         if(!property_exists($this, "invoiceCountryId") || $this->{"invoiceCountryId"} === null)
@@ -49,6 +82,17 @@ trait InvoiceStateHelpers
         return $this;
     }
 
+    /**
+     * @param string $code
+     * @return self Returns the appropriate Endpoint instance, for method chaining purposes.
+     * @throws AnnotationReaderException
+     * @throws ArrayHelperException
+     * @throws CollectionException
+     * @throws EndpointException
+     * @throws PatternMatchException
+     * @throws ReflectionException
+     * @throws RestClientException
+     */
     public function setInvoiceStateByCode(string $code): self
     {
         if(!property_exists($this, "invoiceCountryId") || $this->{"invoiceCountryId"} === null)

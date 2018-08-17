@@ -3,9 +3,22 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Helpers\Common;
 
-use UCRM\REST\Endpoints\Endpoint;
-use UCRM\REST\Endpoints\{Country,State};
+use MVQN\Annotations\Exceptions\AnnotationReaderException;
+use MVQN\Collections\Exceptions\CollectionException;
+use MVQN\Helpers\Exceptions\ArrayHelperException;
+use MVQN\Helpers\Exceptions\PatternMatchException;
 
+use UCRM\REST\Endpoints\Exceptions\EndpointException;
+use UCRM\REST\Exceptions\RestClientException;
+
+use UCRM\REST\Endpoints\Country;
+
+/**
+ * Trait CountryHelpers
+ *
+ * @package UCRM\REST\Endpoints\Helpers\Common
+ * @author Ryan Spaeth <rspaeth@mvqn.net>
+ */
 trait CountryHelpers
 {
     // =================================================================================================================
@@ -13,12 +26,13 @@ trait CountryHelpers
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
-     * @return null|Country
-     * @throws \MVQN\Annotations\AnnotationReaderException
-     * @throws \MVQN\Helpers\ArrayHelperPathException
-     * @throws \MVQN\Helpers\PatternMatchException
+     * @return Country|null
+     * @throws AnnotationReaderException
+     * @throws ArrayHelperException
+     * @throws EndpointException
+     * @throws PatternMatchException
+     * @throws RestClientException
      * @throws \ReflectionException
-     * @throws \UCRM\REST\Exceptions\RestClientException
      */
     public function getCountry(): ?Country
     {
@@ -44,10 +58,11 @@ trait CountryHelpers
     /**
      * @param string $name
      * @return self Returns the appropriate Endpoint instance, for method chaining purposes.
-     * @throws \MVQN\Annotations\AnnotationReaderException
-     * @throws \MVQN\Collections\CollectionException
-     * @throws \MVQN\Helpers\ArrayHelperPathException
-     * @throws \MVQN\Helpers\PatternMatchException
+     * @throws AnnotationReaderException
+     * @throws CollectionException
+     * @throws EndpointException
+     * @throws PatternMatchException
+     * @throws RestClientException
      * @throws \ReflectionException
      */
     public function setCountryByName(string $name): self
@@ -62,11 +77,12 @@ trait CountryHelpers
 
     /**
      * @param string $code
-     * @return self
-     * @throws \MVQN\Annotations\AnnotationReaderException
-     * @throws \MVQN\Collections\CollectionException
-     * @throws \MVQN\Helpers\ArrayHelperPathException
-     * @throws \MVQN\Helpers\PatternMatchException
+     * @return self Returns the appropriate Endpoint instance, for method chaining purposes.
+     * @throws AnnotationReaderException
+     * @throws CollectionException
+     * @throws EndpointException
+     * @throws PatternMatchException
+     * @throws RestClientException
      * @throws \ReflectionException
      */
     public function setCountryByCode(string $code): self
