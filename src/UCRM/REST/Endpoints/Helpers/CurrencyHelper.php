@@ -3,7 +3,14 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Helpers;
 
-use MVQN\Collections\Collection;
+use MVQN\Annotations\Exceptions\AnnotationReaderException;
+use MVQN\Collections\Exceptions\CollectionException;
+use MVQN\Helpers\Exceptions\ArrayHelperException;
+use MVQN\Helpers\Exceptions\PatternMatchException;
+
+use UCRM\REST\Endpoints\Exceptions\EndpointException;
+use UCRM\REST\Exceptions\RestClientException;
+
 use UCRM\REST\Endpoints\Collections\CurrencyCollection;
 use UCRM\REST\Endpoints\Currency;
 
@@ -19,6 +26,17 @@ trait CurrencyHelper
     // HELPER METHODS
     // -----------------------------------------------------------------------------------------------------------------
 
+    /**
+     * @param string $name
+     * @return CurrencyCollection
+     * @throws AnnotationReaderException
+     * @throws ArrayHelperException
+     * @throws CollectionException
+     * @throws EndpointException
+     * @throws PatternMatchException
+     * @throws RestClientException
+     * @throws \ReflectionException
+     */
     public static function getByName(string $name): CurrencyCollection
     {
         $currencies = Currency::get();
@@ -30,13 +48,14 @@ trait CurrencyHelper
 
     /**
      * @param string $code
-     * @return null|Currency
-     * @throws \MVQN\Annotations\Exceptions\AnnotationReaderException
-     * @throws \MVQN\Collections\Exceptions\CollectionException
-     * @throws \MVQN\Helpers\Exceptions\PatternMatchException
+     * @return Currency|null
+     * @throws AnnotationReaderException
+     * @throws ArrayHelperException
+     * @throws CollectionException
+     * @throws EndpointException
+     * @throws PatternMatchException
+     * @throws RestClientException
      * @throws \ReflectionException
-     * @throws \UCRM\REST\Endpoints\Exceptions\EndpointException
-     * @throws \UCRM\REST\Exceptions\RestClientException
      */
     public static function getByCode(string $code): ?Currency
     {
@@ -49,19 +68,20 @@ trait CurrencyHelper
 
     /**
      * @param string $symbol
-     * @return null|Currency
-     * @throws \MVQN\Annotations\Exceptions\AnnotationReaderException
-     * @throws \MVQN\Collections\Exceptions\CollectionException
-     * @throws \MVQN\Helpers\Exceptions\PatternMatchException
+     * @return CurrencyCollection
+     * @throws AnnotationReaderException
+     * @throws ArrayHelperException
+     * @throws CollectionException
+     * @throws EndpointException
+     * @throws PatternMatchException
+     * @throws RestClientException
      * @throws \ReflectionException
-     * @throws \UCRM\REST\Endpoints\Exceptions\EndpointException
-     * @throws \UCRM\REST\Exceptions\RestClientException
      */
     public static function getBySymbol(string $symbol): CurrencyCollection
     {
         $currencies = Currency::get();
 
-        /** @var Collection $currencies */
+        /** @var CurrencyCollection $currencies */
         $currencies = $currencies->where("symbol", $symbol);
         return new CurrencyCollection($currencies->elements());
     }

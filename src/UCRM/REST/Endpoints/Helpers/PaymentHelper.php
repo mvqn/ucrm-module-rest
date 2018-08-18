@@ -3,24 +3,22 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Helpers;
 
-use MVQN\Annotations\AnnotationReaderException;
-use MVQN\Collections\Collection;
-use MVQN\Helpers\ArrayHelperPathException;
-use MVQN\Helpers\PatternMatchException;
-use UCRM\REST\Endpoints\Currency;
-use UCRM\REST\Endpoints\Invoice;
-use UCRM\REST\Endpoints\PaymentCover;
-use UCRM\REST\Endpoints\User;
-use UCRM\REST\Exceptions\RestObjectException;
+use MVQN\Annotations\Exceptions\AnnotationReaderException;
+use MVQN\Collections\Exceptions\CollectionException;
+use MVQN\Helpers\Exceptions\ArrayHelperException;
+use MVQN\Helpers\Exceptions\PatternMatchException;
 
-use UCRM\REST\Endpoints\Endpoint;
-use UCRM\REST\Endpoints\Organization;
-use UCRM\REST\Endpoints\Client;
-use UCRM\REST\Endpoints\Country;
-use UCRM\REST\Endpoints\State;
-use UCRM\REST\Endpoints\Payment;
+use UCRM\REST\Endpoints\Exceptions\EndpointException;
+use UCRM\REST\Exceptions\RestClientException;
 
+use UCRM\REST\Endpoints\Collections\{InvoiceCollection};
+use UCRM\REST\Endpoints\{Invoice, Payment};
 
+/**
+ * Trait PaymentHelper
+ * @package UCRM\REST\Endpoints\Helpers
+ * @author Ryan Spaeth <rspaeth@mvqn.net>
+ */
 trait PaymentHelper
 {
     use Common\CurrencyHelpers;
@@ -29,7 +27,9 @@ trait PaymentHelper
     // CREATE METHODS
     // -----------------------------------------------------------------------------------------------------------------
 
-
+    /**
+     * @return Payment
+     */
     public static function create(): Payment
     {
         $client = new Payment([
@@ -39,79 +39,28 @@ trait PaymentHelper
         return $client;
     }
 
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
-     * @param string $firstName
-     * @param string $lastName
-     * @param bool $isLead
-     * @param Organization|null $organization
-     * @return Client
-     * @throws \ReflectionException
-     */
-    public static function createResidential(string $firstName, string $lastName, bool $isLead = false,
-                                             Organization $organization = null): Client
-    {
-        $client =
-            Client::create(Client::CLIENT_TYPE_RESIDENTIAL, $isLead, $organization)
-                ->setFirstName($firstName)
-                ->setLastName($lastName);
-
-        return $client;
-    }
 
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
-     * @param string $companyName
-     * @param string $firstName
-     * @param string $lastName
-     * @param bool $isLead
-     * @param Organization|null $organization
-     * @return Client
-     * @throws \ReflectionException
-     */
-    public static function createCommercial(string $companyName, string $firstName, string $lastName,
-                                            bool $isLead = false, Organization $organization = null): Client
-    {
-        $client =
-            Client::create(Client::CLIENT_TYPE_COMMERCIAL, $isLead, $organization)
-                ->setFirstName($firstName)
-                ->setLastName($lastName)
-                ->setCompanyName($companyName);
-
-        return $client;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
-     * @return Client
+     * @return Payment
+     * @throws AnnotationReaderException
+     * @throws ArrayHelperException
      * @throws EndpointException
-     * @throws \MVQN\Annotations\Exceptions\AnnotationReaderException
-     * @throws \MVQN\Helpers\Exceptions\PatternMatchException
+     * @throws PatternMatchException
+     * @throws RestClientException
      * @throws \ReflectionException
-     * @throws \UCRM\REST\Exceptions\RestClientException
      */
-    public function insert(): Client
+    public function insert(): Payment
     {
-        /** @var Client $data */
+        /** @var Payment $data */
         $data = $this;
 
-        /** @var Client $result */
-        $result = Client::post($data);
+        /** @var Payment $result */
+        $result = Payment::post($data);
+
         return $result;
     }
-
-
-
-
-
-
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-
 
     // -----------------------------------------------------------------------------------------------------------------
 
@@ -137,14 +86,16 @@ trait PaymentHelper
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
-     * @return Collection
+     * @return InvoiceCollection
      * @throws AnnotationReaderException
-     * @throws ArrayHelperPathException
+     * @throws ArrayHelperException
+     * @throws CollectionException
+     * @throws EndpointException
      * @throws PatternMatchException
-     * @throws \MVQN\Collections\CollectionException
+     * @throws RestClientException
      * @throws \ReflectionException
      */
-    public function getInvoices(): Collection
+    public function getInvoices(): InvoiceCollection
     {
         if($this->invoiceIds !== null && $this->invoiceIds !== [])
         {
@@ -154,17 +105,17 @@ trait PaymentHelper
             foreach($this->invoiceIds as $id)
                 $invoices = $allInvoices->where("id", $id);
 
-            return new Collection(Invoice::class, $invoices);
+            return new InvoiceCollection($invoices);
         }
 
-        return new Collection(Invoice::class);
+        return new InvoiceCollection();
     }
 
     /**
-     * @param Collection $invoices
+     * @param InvoiceCollection $invoices
      * @return Payment
      */
-    public function setInvoices(Collection $invoices): Payment
+    public function setInvoices(InvoiceCollection $invoices): Payment
     {
 
         if($invoices->type() === Invoice::class && $invoices->count() > 0)
@@ -187,12 +138,13 @@ trait PaymentHelper
         return $this;
     }
 
-
     /**
      * @return Payment
      * @throws AnnotationReaderException
-     * @throws ArrayHelperPathException
+     * @throws ArrayHelperException
+     * @throws EndpointException
      * @throws PatternMatchException
+     * @throws RestClientException
      * @throws \ReflectionException
      */
     public function sendReceipt(): Payment

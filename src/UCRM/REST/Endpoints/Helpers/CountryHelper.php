@@ -3,13 +3,17 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Helpers;
 
-use MVQN\Collections\Collection;
+use MVQN\Annotations\Exceptions\AnnotationReaderException;
+use MVQN\Collections\Exceptions\CollectionException;
+use MVQN\Helpers\Exceptions\ArrayHelperException;
+use MVQN\Helpers\Exceptions\PatternMatchException;
 
+use UCRM\REST\Endpoints\Exceptions\EndpointException;
 use UCRM\REST\Exceptions\RestClientException;
 
+use UCRM\REST\Endpoints\Collections\StateCollection;
 use UCRM\REST\Endpoints\{Country, State};
-use UCRM\REST\Endpoints\Exceptions\EndpointException;
-use UCRM\REST\Endpoints\Collections\{CountryCollection};
+
 
 /**
  * Trait CountryHelper
@@ -24,32 +28,34 @@ trait CountryHelper
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
-     * @return Collection
+     * @return StateCollection
+     * @throws AnnotationReaderException
+     * @throws ArrayHelperException
+     * @throws CollectionException
      * @throws EndpointException
+     * @throws PatternMatchException
      * @throws RestClientException
-     * @throws \MVQN\Annotations\Exceptions\AnnotationReaderException
-     * @throws \MVQN\Collections\Exceptions\CollectionException
-     * @throws \MVQN\Helpers\Exceptions\PatternMatchException
      * @throws \ReflectionException
      */
-    public function getStates(): Collection
+    public function getStates(): StateCollection
     {
         if($this->id === null)
             throw new EndpointException("Country->getStates() cannot be called when the Country ID is not set!");
 
-        return State::get("/countries/".$this->id."/states");
+        return new StateCollection(State::get("/countries/".$this->id."/states"));
     }
 
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @param string $name
-     * @return CountryCollection
+     * @return Country|null
+     * @throws AnnotationReaderException
+     * @throws ArrayHelperException
+     * @throws CollectionException
      * @throws EndpointException
+     * @throws PatternMatchException
      * @throws RestClientException
-     * @throws \MVQN\Annotations\Exceptions\AnnotationReaderException
-     * @throws \MVQN\Collections\Exceptions\CollectionException
-     * @throws \MVQN\Helpers\Exceptions\PatternMatchException
      * @throws \ReflectionException
      */
     public static function getByName(string $name): ?Country
@@ -63,12 +69,13 @@ trait CountryHelper
 
     /**
      * @param string $code
-     * @return null|Country
+     * @return Country|null
+     * @throws AnnotationReaderException
+     * @throws ArrayHelperException
+     * @throws CollectionException
      * @throws EndpointException
+     * @throws PatternMatchException
      * @throws RestClientException
-     * @throws \MVQN\Annotations\Exceptions\AnnotationReaderException
-     * @throws \MVQN\Collections\Exceptions\CollectionException
-     * @throws \MVQN\Helpers\Exceptions\PatternMatchException
      * @throws \ReflectionException
      */
     public static function getByCode(string $code): ?Country

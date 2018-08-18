@@ -166,7 +166,7 @@ class AnnotationReader
         // Ensure the end-user has included a valid DocBlock for this property!
         if($var === null)
             throw new AnnotationReaderException("AnnotationReader->getPropertyInfo() could not find a valid ".
-                "'@var <type> \$<name> <descrition>' entry in the DocBlock");
+                "'@var [type] \$[name] [descrition]' entry in the DocBlock");
 
         // Initialize a collection to store the information about this property.
         $info = [];
