@@ -51,7 +51,6 @@ trait PaymentPlanHelper
         return $paymentPlan;
     }
 
-
     /**
      * @return PaymentPlan
      * @throws AnnotationReaderException
