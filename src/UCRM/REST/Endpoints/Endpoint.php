@@ -43,6 +43,7 @@ abstract class Endpoint extends RestObject
     /**
      * @param string $override
      * @param array $params
+     * @param array $query
      * @return Collection
      * @throws AnnotationReaderException
      * @throws CollectionException
@@ -52,7 +53,7 @@ abstract class Endpoint extends RestObject
      * @throws \MVQN\Helpers\Exceptions\ArrayHelperException
      * @throws \ReflectionException
      */
-    public static function get(string $override = "", array $params = []): Collection
+    public static function get(string $override = "", array $params = [], array $query = []): Collection
     {
         // Get a reference to the type of Endpoint calling this function.
         $class = get_called_class();
@@ -82,6 +83,17 @@ abstract class Endpoint extends RestObject
             // Interpolate the overridden URL pattern against any provided parameters.
             $endpoint = PatternMatcher::interpolateUrl($override, $params);
             //$endpoint = $override;
+        }
+
+        // Appen any provided suffixes to the URL (i.e. query string).
+        if($query !== [])
+        {
+            $pairs = [];
+
+            foreach($query as $key => $value)
+                $pairs[] = "$key=$value";
+
+            $endpoint .= "?".implode("&", $pairs);
         }
 
         // Attempt to GET the specified Endpoint.

@@ -64,6 +64,24 @@ class _12_InvoiceTests extends \PHPUnit\Framework\TestCase
         echo $invoice."\n";
     }
 
+
+    public function testGetByClientId()
+    {
+        $invoices = Invoice::getByClientId(1);
+        $this->assertNotNull($invoices);
+
+        echo ">>> Invoice::getByClientId(1)\n";
+        echo $invoices."\n";
+        echo "\n";
+    }
+
+
+
+
+
+
+
+
     public function testAddInvoiceItem()
     {
         $this->markTestSkipped("Each addition duplicates all other line items as well; waiting on info from UBNT!");

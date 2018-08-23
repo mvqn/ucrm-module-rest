@@ -12,7 +12,7 @@ use UCRM\REST\Endpoints\Exceptions\EndpointException;
 use UCRM\REST\Exceptions\RestClientException;
 use UCRM\REST\Exceptions\RestObjectException;
 
-use UCRM\REST\Endpoints\{Client, Invoice};
+use UCRM\REST\Endpoints\{Client, Collections\ClientCollection, Collections\InvoiceCollection, Invoice};
 use UCRM\REST\Endpoints\Lookups\InvoiceItem;
 
 
@@ -68,6 +68,40 @@ trait InvoiceHelper
 
         return $invoice;
     }
+
+    // =================================================================================================================
+    // READ FUNCTIONS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    public static function getByClientId(int $clientId): InvoiceCollection
+    {
+        /** @var InvoiceCollection $invoices */
+        $invoices = Invoice::get("", [], [ "clientId" => $clientId ]);
+
+        return new InvoiceCollection($invoices->elements());
+    }
+
+    public static function getByCreatedDate(\DateTime $date): InvoiceCollection
+    {
+        /** @var InvoiceCollection $invoices */
+        $invoices = Invoice::get("", [], [ "createdDateFrom" => $date->format("Y-m-d"),
+            "createdDateTo" => $date->format("Y-m-d") ]);
+
+        return new InvoiceCollection($invoices->elements());
+    }
+
+    public static function getByCreatedDateBetween(\DateTime $from, \DateTime $to): InvoiceCollection
+    {
+        /** @var InvoiceCollection $invoices */
+        $invoices = Invoice::get("", [], [ "createdDateFrom" => $from->format("Y-m-d"),
+            "createdDateTo" => $to->format("Y-m-d") ]);
+
+        return new InvoiceCollection($invoices->elements());
+    }
+
+    // TODO: Add more helpers for the remaining query parameters!
+
+
 
     // =================================================================================================================
     // EXTRA FUNCTIONS
