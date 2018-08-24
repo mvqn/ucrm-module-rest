@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Lookups;
 
-use UCRM\REST\RestClient;
 use UCRM\REST\Endpoints\Helpers\Common\ClientHelpers;
 
 /**

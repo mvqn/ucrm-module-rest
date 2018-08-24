@@ -4,13 +4,13 @@ declare(strict_types=1);
 namespace UCRM\REST\Endpoints\Helpers;
 
 
-use UCRM\REST\Endpoints\{Collections\ClientContactCollection, Exceptions\EndpointException, Client, Invoice, Quote};
-use UCRM\REST\Endpoints\Lookups\{ClientBankAccount,
-    ClientContact,
-    ClientContactAttribute,
-    ClientContactType,
-    ClientTag,
-    InvoiceItem};
+use MVQN\Annotations\AnnotationReaderException;
+use MVQN\Common\ArraysException;
+use MVQN\Common\PatternsException;
+use UCRM\REST\Endpoints\{Quote, EndpointException};
+
+use UCRM\REST\RestClientException;
+use UCRM\REST\RestObjectException;
 
 
 trait QuoteHelper
@@ -28,12 +28,13 @@ trait QuoteHelper
 
     /**
      * @return Quote
+     * @throws AnnotationReaderException
+     * @throws ArraysException
      * @throws EndpointException
-     * @throws \MVQN\Annotations\Exceptions\AnnotationReaderException
-     * @throws \MVQN\Helpers\Exceptions\ArrayHelperException
-     * @throws \MVQN\Helpers\Exceptions\PatternMatchException
+     * @throws PatternsException
+     * @throws RestClientException
+     * @throws RestObjectException
      * @throws \ReflectionException
-     * @throws \UCRM\REST\Exceptions\RestClientException
      */
     public function create(): Quote
     {
@@ -48,12 +49,13 @@ trait QuoteHelper
 
     /**
      * @return Quote
+     * @throws AnnotationReaderException
+     * @throws ArraysException
      * @throws EndpointException
-     * @throws \MVQN\Annotations\Exceptions\AnnotationReaderException
-     * @throws \MVQN\Helpers\Exceptions\ArrayHelperException
-     * @throws \MVQN\Helpers\Exceptions\PatternMatchException
+     * @throws PatternsException
+     * @throws RestClientException
+     * @throws RestObjectException
      * @throws \ReflectionException
-     * @throws \UCRM\REST\Exceptions\RestClientException
      */
     public function update(): Quote
     {

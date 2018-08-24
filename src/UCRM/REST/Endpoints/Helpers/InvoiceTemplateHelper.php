@@ -7,8 +7,8 @@ use MVQN\Annotations\AnnotationReaderException;
 use MVQN\Collections\CollectionException;
 use MVQN\Common\{ArraysException, PatternsException};
 
-use UCRM\REST\Endpoints\Exceptions\EndpointException;
-use UCRM\REST\Exceptions\RestClientException;
+use UCRM\REST\Endpoints\EndpointException;
+use UCRM\REST\RestClientException;
 
 use UCRM\REST\Endpoints\Collections\InvoiceTemplateCollection;
 use UCRM\REST\Endpoints\InvoiceTemplate;

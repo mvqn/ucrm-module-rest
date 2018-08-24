@@ -7,8 +7,7 @@ use MVQN\Annotations\{AnnotationReader, AnnotationReaderException};
 use MVQN\Collections\{Collection, CollectionException};
 use MVQN\Common\{Arrays, ArraysException, Patterns, PatternsException};
 
-use UCRM\REST\Endpoints\Exceptions\EndpointException;
-use UCRM\REST\{RestObject, Exceptions\RestObjectException, RestClient, Exceptions\RestClientException};
+use UCRM\REST\{RestObject, RestObjectException, RestClient, RestClientException};
 
 /**
  * Class Endpoint

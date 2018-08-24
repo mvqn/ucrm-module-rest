@@ -8,7 +8,6 @@ use MVQN\Collections\Collectible;
 use MVQN\Common\Arrays;
 
 use UCRM\REST\Endpoints\Lookups\Lookup;
-use UCRM\REST\Exceptions\RestObjectException;
 
 /**
  * Class RestObject

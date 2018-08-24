@@ -8,10 +8,10 @@ use MVQN\Collections\CollectionException;
 use MVQN\Common\{ArraysException, PatternsException};
 
 use MVQN\Collections\Collection;
-use UCRM\REST\Exceptions\RestClientException;
+use UCRM\REST\RestClientException;
 
 use UCRM\REST\Endpoints\{Country,State};
-use UCRM\REST\Endpoints\Exceptions\EndpointException;
+use UCRM\REST\Endpoints\EndpointException;
 
 /**
  * Trait StateHelper

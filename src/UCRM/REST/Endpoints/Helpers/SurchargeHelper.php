@@ -7,8 +7,8 @@ use MVQN\Annotations\AnnotationReaderException;
 use MVQN\Collections\CollectionException;
 use MVQN\Common\{ArraysException, PatternsException};
 
-use UCRM\REST\Exceptions\RestClientException;
-use UCRM\REST\Endpoints\{Collections\SurchargeCollection, Exceptions\EndpointException, Endpoint, Surcharge, Service};
+use UCRM\REST\RestClientException;
+use UCRM\REST\Endpoints\{Collections\SurchargeCollection, EndpointException, Surcharge};
 
 /**
  * Trait SurchargeHelper

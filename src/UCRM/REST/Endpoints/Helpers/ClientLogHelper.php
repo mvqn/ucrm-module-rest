@@ -8,11 +8,10 @@ use MVQN\Collections\CollectionException;
 use MVQN\Common\ArraysException;
 use MVQN\Common\PatternsException;
 
-use UCRM\REST\Endpoints\Exceptions\EndpointException;
-use UCRM\REST\Exceptions\RestClientException;
-
 use UCRM\REST\Endpoints\ClientLog;
 use UCRM\REST\Endpoints\Collections\ClientLogCollection;
+use UCRM\REST\Endpoints\EndpointException;
+use UCRM\REST\RestClientException;
 
 /**
  * Trait ClientLogHelper

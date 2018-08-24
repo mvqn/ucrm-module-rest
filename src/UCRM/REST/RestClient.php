@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace UCRM\REST;
 
 
-use UCRM\REST\Exceptions\RestClientException;
 
 /**
  * Class RestClient

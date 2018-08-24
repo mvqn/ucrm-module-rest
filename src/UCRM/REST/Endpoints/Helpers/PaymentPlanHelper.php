@@ -7,8 +7,7 @@ namespace UCRM\REST\Endpoints\Helpers;
 //use MVQN\Collections\CollectionException;
 //use MVQN\Common\{ArraysException, PatternsException};
 
-use UCRM\REST\Endpoints\Exceptions\EndpointException;
-use UCRM\REST\Exceptions\RestClientException;
+use UCRM\REST\RestClientException;
 
 use UCRM\REST\Endpoints\Client;
 use UCRM\REST\Endpoints\PaymentPlan;
@@ -38,7 +37,6 @@ trait PaymentPlanHelper
      * @param \DateTime $startDate
      * @param float $amount
      * @return PaymentPlan
-     * @throws EndpointException
      * @throws RestClientException
      * @throws \ReflectionException
      */

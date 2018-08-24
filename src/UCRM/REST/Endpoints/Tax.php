@@ -128,6 +128,7 @@ final class Tax extends Endpoint
      */
     public function setSelected(bool $value): Tax
     {
+        echo "Tax->setSelected($value) is not currently supported!\n";
         //$this->selected = $value;
         return $this;
     }

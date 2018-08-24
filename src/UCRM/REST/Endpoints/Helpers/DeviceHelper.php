@@ -7,7 +7,7 @@ namespace UCRM\REST\Endpoints\Helpers;
 //use MVQN\Collections\CollectionException;
 //use MVQN\Common\{ArraysException, PatternsException};
 
-//use UCRM\REST\Endpoints\Exceptions\EndpointException;
+//use UCRM\REST\Endpoints\EndpointException;
 //use UCRM\REST\Exceptions\RestClientException;
 
 //use UCRM\REST\Endpoints\DeviceInterface;

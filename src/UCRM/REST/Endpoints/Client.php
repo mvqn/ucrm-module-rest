@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
+use MVQN\Collections\CollectionException;
 
 use UCRM\REST\Endpoints\Lookups\{
     ClientBankAccount,
@@ -1054,6 +1055,7 @@ final class Client extends Endpoint
 
     /**
      * @return ClientContactCollection
+     * @throws CollectionException
      */
     public function getContacts(): ClientContactCollection
     {
@@ -1083,6 +1085,7 @@ final class Client extends Endpoint
 
     /**
      * @return ClientContactAttributeCollection
+     * @throws CollectionException
      */
     public function getAttributes(): ClientContactAttributeCollection
     {
@@ -1185,6 +1188,7 @@ final class Client extends Endpoint
 
     /**
      * @return ClientBankAccountCollection
+     * @throws CollectionException
      */
     public function getBankAccounts(): ClientBankAccountCollection
     {
@@ -1217,6 +1221,7 @@ final class Client extends Endpoint
 
     /**
      * @return ClientTagCollection
+     * @throws CollectionException
      */
     public function getTags(): ClientTagCollection
     {

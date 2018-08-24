@@ -7,9 +7,9 @@ use MVQN\Annotations\AnnotationReaderException;
 use MVQN\Collections\CollectionException;
 use MVQN\Common\{ArraysException, PatternsException};
 
-use UCRM\REST\Endpoints\Exceptions\EndpointException;
-use UCRM\REST\Exceptions\RestClientException;
-use UCRM\REST\Exceptions\RestObjectException;
+use UCRM\REST\Endpoints\EndpointException;
+use UCRM\REST\RestClientException;
+use UCRM\REST\RestObjectException;
 
 use UCRM\REST\Endpoints\{Invoice, Collections\InvoiceCollection};
 use UCRM\REST\Endpoints\Lookups\InvoiceItem;

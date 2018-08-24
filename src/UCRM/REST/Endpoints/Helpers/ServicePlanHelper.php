@@ -4,8 +4,13 @@ declare(strict_types=1);
 namespace UCRM\REST\Endpoints\Helpers;
 
 
-use UCRM\REST\Endpoints\{Helpers\Common\OrganizationHelpers, ServicePlan};
-use UCRM\REST\Endpoints\Collections\{CountryCollection, ServicePlanCollection, StateCollection};
+use MVQN\Annotations\AnnotationReaderException;
+use MVQN\Collections\CollectionException;
+use MVQN\Common\ArraysException;
+use MVQN\Common\PatternsException;
+use UCRM\REST\Endpoints\{EndpointException, Helpers\Common\OrganizationHelpers, ServicePlan};
+use UCRM\REST\Endpoints\Collections\ServicePlanCollection;
+use UCRM\REST\RestClientException;
 
 /**
  * Trait ServicePlanHelper
@@ -23,11 +28,13 @@ trait ServicePlanHelper
 
     /**
      * @param string $name
-     * @return ServicePlanCollection|null
-     * @throws \MVQN\Annotations\AnnotationReaderException
-     * @throws \MVQN\Collections\CollectionException
-     * @throws \MVQN\Helpers\ArrayHelperPathException
-     * @throws \MVQN\Helpers\PatternMatchException
+     * @return ServicePlanCollection
+     * @throws AnnotationReaderException
+     * @throws ArraysException
+     * @throws CollectionException
+     * @throws EndpointException
+     * @throws PatternsException
+     * @throws RestClientException
      * @throws \ReflectionException
      */
     public static function getByName(string $name): ServicePlanCollection

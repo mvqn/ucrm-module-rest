@@ -3,13 +3,18 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Helpers;
 
+use MVQN\Annotations\AnnotationReaderException;
+use MVQN\Common\ArraysException;
+use MVQN\Common\PatternsException;
 use UCRM\REST\Endpoints\Collections\ServiceDeviceCollection;
-use UCRM\REST\Endpoints\Device;
 use UCRM\REST\Endpoints\DeviceInterface;
 use UCRM\REST\Endpoints\Endpoint;
+use UCRM\REST\Endpoints\EndpointException;
 use UCRM\REST\Endpoints\Service;
 use UCRM\REST\Endpoints\ServiceDevice;
 use UCRM\REST\Endpoints\Vendor;
+use UCRM\REST\Exceptions\RestClientException;
+use UCRM\REST\Exceptions\RestObjectException;
 
 /**
  * Trait ServiceDeviceHelper
@@ -46,12 +51,13 @@ trait ServiceDeviceHelper
 
     /**
      * @return ServiceDevice
-     * @throws \MVQN\Annotations\Exceptions\AnnotationReaderException
-     * @throws \MVQN\Helpers\Exceptions\ArrayHelperException
-     * @throws \MVQN\Helpers\Exceptions\PatternMatchException
+     * @throws AnnotationReaderException
+     * @throws ArraysException
+     * @throws EndpointException
+     * @throws PatternsException
+     * @throws RestClientException
+     * @throws RestObjectException
      * @throws \ReflectionException
-     * @throws \UCRM\REST\Endpoints\Exceptions\EndpointException
-     * @throws \UCRM\REST\Exceptions\RestClientException
      */
     public function insert(): ServiceDevice
     {
@@ -66,12 +72,13 @@ trait ServiceDeviceHelper
 
     /**
      * @return ServiceDevice
-     * @throws \MVQN\Annotations\Exceptions\AnnotationReaderException
-     * @throws \MVQN\Helpers\Exceptions\ArrayHelperException
-     * @throws \MVQN\Helpers\Exceptions\PatternMatchException
+     * @throws AnnotationReaderException
+     * @throws ArraysException
+     * @throws EndpointException
+     * @throws PatternsException
+     * @throws RestClientException
+     * @throws RestObjectException
      * @throws \ReflectionException
-     * @throws \UCRM\REST\Endpoints\Exceptions\EndpointException
-     * @throws \UCRM\REST\Exceptions\RestClientException
      */
     public function update(): ServiceDevice
     {

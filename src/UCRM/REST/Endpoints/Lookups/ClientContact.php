@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Lookups;
 
+use MVQN\Collections\CollectionException;
 use UCRM\REST\Endpoints\Collections\ClientContactCollection;
 
 /**
@@ -188,7 +189,7 @@ final class ClientContact extends Lookup
 
     /**
      * @return ClientContactCollection
-     * @throws \MVQN\Collections\Exceptions\CollectionException
+     * @throws CollectionException
      */
     public function getTypes(): ClientContactCollection
     {

@@ -3,11 +3,16 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Helpers;
 
+use MVQN\Annotations\AnnotationReaderException;
+use MVQN\Common\ArraysException;
+use MVQN\Common\PatternsException;
 use UCRM\REST\Endpoints\{Collections\ServiceSurchargeCollection,
-    Exceptions\EndpointException,
+    EndpointException,
     Endpoint,
     ServiceSurcharge,
     Service};
+use UCRM\REST\RestClientException;
+use UCRM\REST\RestObjectException;
 
 /**
  * Trait ServiceSurchargeHelper
@@ -23,11 +28,13 @@ trait ServiceSurchargeHelper
 
     /**
      * @return ServiceSurcharge
+     * @throws AnnotationReaderException
+     * @throws ArraysException
      * @throws EndpointException
-     * @throws \MVQN\Annotations\Exceptions\AnnotationReaderException
-     * @throws \MVQN\Helpers\Exceptions\PatternMatchException
+     * @throws PatternsException
+     * @throws RestClientException
+     * @throws RestObjectException
      * @throws \ReflectionException
-     * @throws \UCRM\REST\Exceptions\RestClientException
      */
     public function create(): ServiceSurcharge
     {
@@ -42,11 +49,13 @@ trait ServiceSurchargeHelper
 
     /**
      * @return ServiceSurcharge
+     * @throws AnnotationReaderException
+     * @throws ArraysException
      * @throws EndpointException
-     * @throws \MVQN\Annotations\Exceptions\AnnotationReaderException
-     * @throws \MVQN\Helpers\Exceptions\PatternMatchException
+     * @throws PatternsException
+     * @throws RestClientException
+     * @throws RestObjectException
      * @throws \ReflectionException
-     * @throws \UCRM\REST\Exceptions\RestClientException
      */
     public function update(): ServiceSurcharge
     {
@@ -64,12 +73,13 @@ trait ServiceSurchargeHelper
     /**
      * @param Service $service
      * @return ServiceSurchargeCollection
+     * @throws AnnotationReaderException
+     * @throws ArraysException
      * @throws EndpointException
-     * @throws \MVQN\Annotations\Exceptions\AnnotationReaderException
-     * @throws \MVQN\Collections\Exceptions\CollectionException
-     * @throws \MVQN\Helpers\Exceptions\PatternMatchException
+     * @throws PatternsException
+     * @throws RestClientException
+     * @throws \MVQN\Collections\CollectionException
      * @throws \ReflectionException
-     * @throws \UCRM\REST\Exceptions\RestClientException
      */
     public static function getByService(Service $service): ServiceSurchargeCollection
     {

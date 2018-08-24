@@ -8,8 +8,8 @@ use MVQN\Collections\CollectionException;
 use MVQN\Common\ArraysException;
 use MVQN\Common\PatternsException;
 
-use UCRM\REST\Endpoints\Exceptions\EndpointException;
-use UCRM\REST\Exceptions\{RestClientException, RestObjectException};
+use UCRM\REST\Endpoints\EndpointException;
+use UCRM\REST\{RestClientException, RestObjectException};
 
 use UCRM\REST\Endpoints\{Collections\ClientCollection, Organization, Client};
 
@@ -107,10 +107,6 @@ trait ClientHelper
     // CREATE METHODS
     // -----------------------------------------------------------------------------------------------------------------
 
-    // STANDARD INSERT METHOD USED
-
-    // -----------------------------------------------------------------------------------------------------------------
-
     /**
      * Creates the minimal Residential Client to be used as a starting point for a new Client.
      *
@@ -118,7 +114,11 @@ trait ClientHelper
      * @param string $lastName The Client's last name.
      * @return Client Returns a partially generated Client for further use before insertion.
      *
+     * @throws AnnotationReaderException
+     * @throws ArraysException
+     * @throws CollectionException
      * @throws EndpointException
+     * @throws PatternsException
      * @throws RestClientException
      * @throws \ReflectionException
      */
@@ -146,7 +146,11 @@ trait ClientHelper
      * @param string $lastName The Client's last name.
      * @return Client Returns a partially generated Client for further use before insertion.
      *
+     * @throws AnnotationReaderException
+     * @throws ArraysException
+     * @throws CollectionException
      * @throws EndpointException
+     * @throws PatternsException
      * @throws RestClientException
      * @throws \ReflectionException
      */
@@ -175,7 +179,11 @@ trait ClientHelper
      * @param string $companyName The company name of this Commercial Client.
      * @return Client Returns a partially generated Client for further use before insertion.
      *
+     * @throws AnnotationReaderException
+     * @throws ArraysException
+     * @throws CollectionException
      * @throws EndpointException
+     * @throws PatternsException
      * @throws RestClientException
      * @throws \ReflectionException
      */
@@ -201,7 +209,11 @@ trait ClientHelper
      * @param string $companyName The company name of this Commercial Client.
      * @return Client Returns a partially generated Client for further use before insertion.
      *
+     * @throws AnnotationReaderException
+     * @throws ArraysException
+     * @throws CollectionException
      * @throws EndpointException
+     * @throws PatternsException
      * @throws RestClientException
      * @throws \ReflectionException
      */
@@ -223,10 +235,6 @@ trait ClientHelper
 
     // =================================================================================================================
     // READ METHODS
-    // -----------------------------------------------------------------------------------------------------------------
-
-    // STANDARD READ METHODS USED
-
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
@@ -281,13 +289,9 @@ trait ClientHelper
     // UPDATE METHODS
     // -----------------------------------------------------------------------------------------------------------------
 
-    // STANDARD UPDATE METHOD USED
-
     // =================================================================================================================
     // DELETE METHODS
     // -----------------------------------------------------------------------------------------------------------------
-
-    // NO DELETE ENDPOINTS
 
     // =================================================================================================================
     // EXTRA FUNCTIONS

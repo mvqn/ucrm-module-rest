@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace UCRM\REST\Exceptions;
+namespace UCRM\REST;
 
 /**
- * Class RestClientException
+ * Class RestObjectException
  *
  * @package UCRM\REST\Exceptions
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  */
-class RestClientException extends \Exception
+class RestObjectException extends \Exception
 {
 }

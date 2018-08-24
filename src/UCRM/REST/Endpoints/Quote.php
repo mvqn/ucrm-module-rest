@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
-use MVQN\Collections\Exceptions\CollectionException;
+use MVQN\Collections\CollectionException;
 use UCRM\REST\Endpoints\Collections\QuoteItemCollection;
 use UCRM\REST\Endpoints\Collections\QuoteTaxCollection;
 use UCRM\REST\Endpoints\Helpers\QuoteHelper;

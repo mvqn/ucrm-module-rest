@@ -4,12 +4,10 @@ declare(strict_types=1);
 namespace UCRM\REST\Endpoints\Helpers;
 
 use MVQN\Annotations\AnnotationReaderException;
-use MVQN\Collections\CollectionException;
 use MVQN\Common\{ArraysException, PatternsException};
 
-use UCRM\REST\Endpoints\Collections\TaxCollection;
-use UCRM\REST\Endpoints\Exceptions\EndpointException;
-use UCRM\REST\Exceptions\{RestClientException, RestObjectException};
+use UCRM\REST\Endpoints\EndpointException;
+use UCRM\REST\{RestClientException, RestObjectException};
 use UCRM\REST\Endpoints\Tax;
 
 trait TaxHelper
