@@ -4,23 +4,23 @@ declare(strict_types=1);
 namespace UCRM\REST\Endpoints\Collections;
 
 use MVQN\Collections\{Collectible, Collection, CollectionException};
-use UCRM\REST\Endpoints\Lookups\InvoiceTax;
+use UCRM\REST\Endpoints\ClientLog;
 
 /**
- * Class InvoiceTaxCollection
+ * Class ClientLogCollection
  *
  * @package UCRM\REST\Endpoints\Collections
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  */
-final class InvoiceTaxCollection extends Collection
+final class ClientLogCollection extends Collection
 {
     /**
-     * InvoiceTaxCollection constructor.
+     * ClientLogCollection constructor.
      * @param Collectible[]|null $elements
      * @throws CollectionException
      */
     public function __construct(?array $elements = [])
     {
-        parent::__construct(InvoiceTax::class, $elements);
+        parent::__construct(ClientLog::class, $elements);
     }
 }

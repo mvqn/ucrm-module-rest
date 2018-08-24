@@ -65,7 +65,7 @@ class _02_ClientTests extends \PHPUnit\Framework\TestCase
         $client->setSendInvoiceByPost(true);
         $client->setInvoiceMaturityDays(10);
 
-        $client->resetInvoiceOptions();
+        $client->resetAllInvoiceOptions();
 
         $inserted = $client->insert();
         $this->assertEquals($lastName, $inserted->getLastName());
@@ -81,7 +81,7 @@ class _02_ClientTests extends \PHPUnit\Framework\TestCase
         $firstName = "John".rand(1, 9);
         $companyName = "ACME Rockets, Inc.";
 
-        $inserted = Client::createCommercial($companyName, $firstName, $lastName, true)->insert();
+        $inserted = Client::createCommercial($companyName)->insert();
         $this->assertEquals($companyName, $inserted->getCompanyName());
 
         echo $inserted."\n";
@@ -91,17 +91,7 @@ class _02_ClientTests extends \PHPUnit\Framework\TestCase
     {
         $this->markTestSkipped("Skip test, as to not keep generating Clients!");
 
-        $created =
-            (Client::create())
-                // DEFAULTS:
-                // - clientType = Residential
-                // - isLead = true
-                // - invoiceAddressSameAsContact = true
-                // - organizationId = Default
-                // - registrationDate = NOW!
-                // REQUIRED:
-                ->setFirstName("John")
-                ->setLastName("Doe");
+        $created = Client::createResidentialLead("John", "Doe");
 
         $created->insert();
 
@@ -216,9 +206,9 @@ class _02_ClientTests extends \PHPUnit\Framework\TestCase
             // --- CUSTOM ATTRIBUTES -----------------------------------------------------------------------------------
             // TODO: Test Attributes Later!
 
-        print_r($client);
+        //print_r($client);
 
-        $this->markTestSkipped("Skip so we do not keep creating Clients in the UCRM!");
+        //$this->markTestSkipped("Skip so we do not keep creating Clients in the UCRM!");
 
         $inserted = $client->insert();
         print_r($inserted);
@@ -254,6 +244,27 @@ class _02_ClientTests extends \PHPUnit\Framework\TestCase
         echo $client."\n";
         echo "\n";
     }
+
+    public function testGetByUserIdent()
+    {
+        $client = Client::getByUserIdent("123");
+        $this->assertNotNull($client);
+
+        echo ">>> Client::getByUserIdent('123')\n";
+        echo $client."\n";
+        echo "\n";
+    }
+
+    public function testGetByCustomAttribute()
+    {
+        $clients = Client::getByCustomAttribute("age", "60");
+        $this->assertNotNull($clients);
+
+        echo ">>> Client::getByCustomAttribute('Age', '60')\n";
+        echo $clients."\n";
+        echo "\n";
+    }
+
 
 
     // =================================================================================================================

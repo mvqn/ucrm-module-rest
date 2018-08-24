@@ -3,6 +3,11 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Helpers;
 
+use MVQN\Annotations\AnnotationReaderException;
+use MVQN\Collections\CollectionException;
+use MVQN\Common\{ArraysException, PatternsException};
+
+use UCRM\REST\Exceptions\RestClientException;
 use UCRM\REST\Endpoints\{Collections\SurchargeCollection, Exceptions\EndpointException, Endpoint, Surcharge, Service};
 
 /**
@@ -12,36 +17,65 @@ use UCRM\REST\Endpoints\{Collections\SurchargeCollection, Exceptions\EndpointExc
 trait SurchargeHelper
 {
     // =================================================================================================================
-    // HELPER METHODS
+    // OBJECT METHODS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // NO OBJECT METHODS REQUIRED
+
+    // =================================================================================================================
+    // CREATE METHODS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // NO INSERT ENDPOINTS
+
+    // =================================================================================================================
+    // READ METHODS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // STANDARD READ METHODS USED
+
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
-     * @return Surcharge
+     * @param string $name
+     * @return SurchargeCollection
+     *
+     * @throws AnnotationReaderException
+     * @throws ArraysException
+     * @throws CollectionException
      * @throws EndpointException
-     * @throws \MVQN\Annotations\Exceptions\AnnotationReaderException
-     * @throws \MVQN\Helpers\Exceptions\PatternMatchException
+     * @throws PatternsException
+     * @throws RestClientException
      * @throws \ReflectionException
-     * @throws \UCRM\REST\Exceptions\RestClientException
      */
-    public function create(): Surcharge
-    {
-        /** @var Endpoint $data */
-        $data = $this;
-
-        /** @var Surcharge $surcharge */
-        $surcharge = Surcharge::post($data, []);
-
-        return $surcharge;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
     public static function getByName(string $name): SurchargeCollection
     {
         $surcharges = Surcharge::get()->where("name", $name);
 
         return new SurchargeCollection($surcharges->elements());
     }
+
+    // =================================================================================================================
+    // UPDATE METHODS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // NO UPDATE ENDPOINTS
+
+    // =================================================================================================================
+    // DELETE METHODS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // NO DELETE ENDPOINTS
+
+    // =================================================================================================================
+    // EXTRA FUNCTIONS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // NO EXTRA FUNCTIONS AT THIS TIME
+
+
+
+
 
 
 }

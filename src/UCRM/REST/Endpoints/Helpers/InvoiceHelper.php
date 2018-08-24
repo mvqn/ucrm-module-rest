@@ -3,16 +3,15 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Helpers;
 
-use MVQN\Annotations\Exceptions\AnnotationReaderException;
-//use MVQN\Collections\Exceptions\CollectionException;
-use MVQN\Helpers\Exceptions\ArrayHelperException;
-use MVQN\Helpers\Exceptions\PatternMatchException;
+use MVQN\Annotations\AnnotationReaderException;
+use MVQN\Collections\CollectionException;
+use MVQN\Common\{ArraysException, PatternsException};
 
 use UCRM\REST\Endpoints\Exceptions\EndpointException;
 use UCRM\REST\Exceptions\RestClientException;
 use UCRM\REST\Exceptions\RestObjectException;
 
-use UCRM\REST\Endpoints\{Client, Collections\ClientCollection, Collections\InvoiceCollection, Invoice};
+use UCRM\REST\Endpoints\{Invoice, Collections\InvoiceCollection};
 use UCRM\REST\Endpoints\Lookups\InvoiceItem;
 
 
@@ -26,53 +25,63 @@ trait InvoiceHelper
     use Common\ClientStateHelpers;
 
     // =================================================================================================================
-    // CRUD FUNCTIONS
+    // OBJECT METHODS
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
+     * @param InvoiceItem $item
      * @return Invoice
-     * @throws AnnotationReaderException
-     * @throws ArrayHelperException
-     * @throws EndpointException
-     * @throws PatternMatchException
-     * @throws RestClientException
-     * @throws \ReflectionException
      */
-    public function create(): Invoice
+    public function addInvoiceItem(InvoiceItem $item): Invoice
     {
-        /** @var Invoice $data */
-        $data = $this;
+        echo $item;
 
-        /** @var Invoice $invoice */
-        $invoice = Invoice::post($data, [ "clientId" => $this->getClientId() ]);
+        // TODO: Implement!
 
-        return $invoice;
+        /** @var Invoice $this */
+        return $this;
     }
 
     /**
+     * @param int $line
      * @return Invoice
-     * @throws AnnotationReaderException
-     * @throws ArrayHelperException
-     * @throws EndpointException
-     * @throws PatternMatchException
-     * @throws RestClientException
-     * @throws \ReflectionException
      */
-    public function update(): Invoice
+    public function delInvoiceItem(int $line): Invoice
     {
-        /** @var Invoice $data */
-        $data = $this;
+        echo $line;
 
-        /** @var Invoice $invoice */
-        $invoice = Invoice::patch($data, [ "id" => $this->getId() ]);
+        // TODO: Implement!
 
-        return $invoice;
+        /** @var Invoice $this */
+        return $this;
     }
 
     // =================================================================================================================
-    // READ FUNCTIONS
+    // CREATE METHODS
     // -----------------------------------------------------------------------------------------------------------------
 
+    // NO INSERT ENDPOINTS
+
+    // =================================================================================================================
+    // READ METHODS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // STANDARD READ METHODS USED
+
+    // -----------------------------------------------------------------------------------------------------------------
+
+    /**
+     * @param int $clientId
+     * @return InvoiceCollection
+     *
+     * @throws AnnotationReaderException
+     * @throws ArraysException
+     * @throws CollectionException
+     * @throws EndpointException
+     * @throws PatternsException
+     * @throws RestClientException
+     * @throws \ReflectionException
+     */
     public static function getByClientId(int $clientId): InvoiceCollection
     {
         /** @var InvoiceCollection $invoices */
@@ -81,6 +90,18 @@ trait InvoiceHelper
         return new InvoiceCollection($invoices->elements());
     }
 
+    /**
+     * @param \DateTime $date
+     * @return InvoiceCollection
+     *
+     * @throws AnnotationReaderException
+     * @throws ArraysException
+     * @throws CollectionException
+     * @throws EndpointException
+     * @throws PatternsException
+     * @throws RestClientException
+     * @throws \ReflectionException
+     */
     public static function getByCreatedDate(\DateTime $date): InvoiceCollection
     {
         /** @var InvoiceCollection $invoices */
@@ -90,6 +111,19 @@ trait InvoiceHelper
         return new InvoiceCollection($invoices->elements());
     }
 
+    /**
+     * @param \DateTime $from
+     * @param \DateTime $to
+     * @return InvoiceCollection
+     *
+     * @throws AnnotationReaderException
+     * @throws ArraysException
+     * @throws CollectionException
+     * @throws EndpointException
+     * @throws PatternsException
+     * @throws RestClientException
+     * @throws \ReflectionException
+     */
     public static function getByCreatedDateBetween(\DateTime $from, \DateTime $to): InvoiceCollection
     {
         /** @var InvoiceCollection $invoices */
@@ -101,54 +135,38 @@ trait InvoiceHelper
 
     // TODO: Add more helpers for the remaining query parameters!
 
+    // =================================================================================================================
+    // UPDATE METHODS
+    // -----------------------------------------------------------------------------------------------------------------
 
+    // STANDARD UPDATE METHODS USED
+
+    // =================================================================================================================
+    // DELETE METHODS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // NO DELETE ENDPOINTS
 
     // =================================================================================================================
     // EXTRA FUNCTIONS
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
-     * @return Client
-     * @throws AnnotationReaderException
-     * @throws ArrayHelperException
-     * @throws EndpointException
-     * @throws PatternMatchException
-     * @throws RestClientException
-     * @throws \ReflectionException
-     */
-    public function sendInvitationEmail(): Client
-    {
-        /** @var Client $client */
-        $client = Client::patch(null, [ "id" => $this->getId() ], "/send-invitation");
-        return $client;
-    }
-
-    /**
-     * @param InvoiceItem $item
      * @return Invoice
+     *
      * @throws AnnotationReaderException
+     * @throws ArraysException
+     * @throws EndpointException
+     * @throws PatternsException
+     * @throws RestClientException
      * @throws RestObjectException
      * @throws \ReflectionException
      */
-    public function addInvoiceItem(InvoiceItem $item): Invoice
+    public function send(): Invoice
     {
-        $this->items[] = $item->toArray();
-
-        /** @var Invoice $this */
-        return $this;
+        /** @var Invoice $invoice */
+        $invoice = Invoice::patch(null, [ "id" => $this->getId() ], "/send");
+        return $invoice;
     }
-
-    /**
-     * @param int $index
-     * @return Invoice
-     */
-    public function delInvoiceItem(int $index): Invoice
-    {
-        $this->items[$index] = new InvoiceItem();
-
-        /** @var Invoice $this */
-        return $this;
-    }
-
 
 }

@@ -3,10 +3,9 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Helpers;
 
-use MVQN\Annotations\Exceptions\AnnotationReaderException;
-use MVQN\Collections\Exceptions\CollectionException;
-use MVQN\Helpers\Exceptions\ArrayHelperException;
-use MVQN\Helpers\Exceptions\PatternMatchException;
+use MVQN\Annotations\AnnotationReaderException;
+use MVQN\Collections\CollectionException;
+use MVQN\Common\{ArraysException, PatternsException};
 
 use UCRM\REST\Endpoints\Exceptions\EndpointException;
 use UCRM\REST\Exceptions\RestClientException;
@@ -24,16 +23,32 @@ use UCRM\REST\Endpoints\{Country, State};
 trait CountryHelper
 {
     // =================================================================================================================
-    // HELPER METHODS
+    // OBJECT METHODS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // NO OBJECT METHODS REQUIRED
+
+    // =================================================================================================================
+    // CREATE METHODS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // STANDARD INSERT METHOD USED
+
+    // =================================================================================================================
+    // READ METHODS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // STANDARD READ METHODS USED
+
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @return StateCollection
      * @throws AnnotationReaderException
-     * @throws ArrayHelperException
+     * @throws ArraysException
      * @throws CollectionException
      * @throws EndpointException
-     * @throws PatternMatchException
+     * @throws PatternsException
      * @throws RestClientException
      * @throws \ReflectionException
      */
@@ -42,7 +57,7 @@ trait CountryHelper
         if($this->id === null)
             throw new EndpointException("Country->getStates() cannot be called when the Country ID is not set!");
 
-        return new StateCollection(State::get("/countries/".$this->id."/states"));
+        return new StateCollection(State::get("/countries/".$this->id."/states")->elements());
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -51,10 +66,10 @@ trait CountryHelper
      * @param string $name
      * @return Country|null
      * @throws AnnotationReaderException
-     * @throws ArrayHelperException
+     * @throws ArraysException
      * @throws CollectionException
      * @throws EndpointException
-     * @throws PatternMatchException
+     * @throws PatternsException
      * @throws RestClientException
      * @throws \ReflectionException
      */
@@ -71,10 +86,10 @@ trait CountryHelper
      * @param string $code
      * @return Country|null
      * @throws AnnotationReaderException
-     * @throws ArrayHelperException
+     * @throws ArraysException
      * @throws CollectionException
      * @throws EndpointException
-     * @throws PatternMatchException
+     * @throws PatternsException
      * @throws RestClientException
      * @throws \ReflectionException
      */
@@ -87,13 +102,22 @@ trait CountryHelper
         return $country;
     }
 
+    // =================================================================================================================
+    // UPDATE METHODS
+    // -----------------------------------------------------------------------------------------------------------------
 
+    // NO UPDATE ENDPOINTS
 
+    // =================================================================================================================
+    // DELETE METHODS
+    // -----------------------------------------------------------------------------------------------------------------
 
+    // NO DELETE ENDPOINTS
 
+    // =================================================================================================================
+    // EXTRA FUNCTIONS
+    // -----------------------------------------------------------------------------------------------------------------
 
-
-
-
+    // NO EXTRA FUNCTIONS AT THIS TIME
 
 }

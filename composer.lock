@@ -4,8 +4,52 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a29a8098bb5e1cd4400b628d7e4f50e2",
-    "packages": [],
+    "content-hash": "9a29beb54817c4f6525da276ea578656",
+    "packages": [
+        {
+            "name": "mvqn/ucrm-module-core",
+            "version": "1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mvqn/ucrm-module-core.git",
+                "reference": "2015a0fb0c6ee25d39310cacbbfe04fa05abb1c8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mvqn/ucrm-module-core/zipball/2015a0fb0c6ee25d39310cacbbfe04fa05abb1c8",
+                "reference": "2015a0fb0c6ee25d39310cacbbfe04fa05abb1c8",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-zip": "*",
+                "php": "~7.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "7.2.7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MVQN\\": "src/MVQN/",
+                    "UCRM\\": "src/UCRM/",
+                    "Tests\\": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ryan Spaeth",
+                    "email": "rspaeth@mvqn.net"
+                }
+            ],
+            "description": "UCRM Plugin module for bundling a plugin.",
+            "time": "2018-08-24T04:46:24+00:00"
+        }
+    ],
     "packages-dev": [
         {
             "name": "doctrine/instantiator",

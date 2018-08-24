@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace UCRM\REST\Endpoints;
 
 use UCRM\REST\Endpoints\Collections\StateCollection;
+use UCRM\REST\Endpoints\Exceptions\EndpointException;
 use UCRM\REST\RestClient;
 
 require_once __DIR__."/TestFunctions.php";
@@ -83,7 +84,7 @@ class _01_GeneralTests extends \PHPUnit\Framework\TestCase
     public function testCountryGetByName()
     {
         /** @var Country $country */
-        $country = Country::getByName("United States")->first();
+        $country = Country::getByName("United States");
         $this->assertEquals("United States", $country->getName());
 
         echo ">>> Country::getByName('United States')\n";
@@ -153,7 +154,7 @@ class _01_GeneralTests extends \PHPUnit\Framework\TestCase
     public function testCurrencyGetByName()
     {
         /** @var Currency $currency */
-        $currency = Currency::getByName("Dollars");
+        $currency = Currency::getByName("Dollars")->where("code", "USD")->first();
         $this->assertEquals("Dollars", $currency->getName());
 
         echo ">>> Currency::getByName('Dollars')\n";
@@ -179,7 +180,7 @@ class _01_GeneralTests extends \PHPUnit\Framework\TestCase
     public function testCurrencyGetBySymbol()
     {
         /** @var Currency $currency */
-        $currency = Currency::getBySymbol("$");
+        $currency = Currency::getBySymbol("$")->where("code", "USD")->first();
         $this->assertEquals("$", $currency->getSymbol());
 
         echo ">>> Currency::getBySymbol('$')\n";
@@ -248,31 +249,38 @@ class _01_GeneralTests extends \PHPUnit\Framework\TestCase
 
     public function testDocs()
     {
-        /** @var Organization $organization */
-        $organization = Organization::getByDefault();
-
-        /** @var Client $client */
-        $client = (new Client())
-            ->setOrganization($organization)
-            ->setIsLead(true)
-            ->setClientType(Client::CLIENT_TYPE_COMMERCIAL)
-            //->setFirstName("Ronald")
-            //->setLastName("Reagan")
-            ->setInvoiceAddressSameAsContact(true)
-            ->setRegistrationDate(new \DateTime());
-
-        //$client = new Client();
-
-        if(!$client->validate("post", $missing))
+        try
         {
-           print_r($missing);
+            /** @var Organization $organization */
+            $organization = Organization::getByDefault();
 
+            /** @var Client $client */
+            $client = (new Client())
+                ->setOrganization($organization)
+                ->setIsLead(true)
+                ->setClientType(Client::CLIENT_TYPE_COMMERCIAL)
+                //->setFirstName("Ronald")
+                //->setLastName("Reagan")
+                ->setInvoiceAddressSameAsContact(true)
+                ->setRegistrationDate(new \DateTime());
+
+            //$client = new Client();
+
+            if (!$client->validate("post", $missing))
+            {
+                print_r($missing);
+            }
+
+            $this->expectException(EndpointException::class);
+
+            $inserted = $client->insert();
+            echo $inserted;
         }
-
-        $inserted = $client->insert();
-        echo $inserted;
-
-
+        catch(EndpointException $ee)
+        {
+            echo $ee->getMessage();
+            throw $ee;
+        }
 
     }
 

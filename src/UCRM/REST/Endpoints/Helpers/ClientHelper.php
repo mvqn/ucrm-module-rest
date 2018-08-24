@@ -3,18 +3,19 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Helpers;
 
-use MVQN\Annotations\Exceptions\AnnotationReaderException;
-use MVQN\Collections\Exceptions\CollectionException;
-use MVQN\Helpers\Exceptions\ArrayHelperException;
-use MVQN\Helpers\Exceptions\PatternMatchException;
+use MVQN\Annotations\AnnotationReaderException;
+use MVQN\Collections\CollectionException;
+use MVQN\Common\ArraysException;
+use MVQN\Common\PatternsException;
 
 use UCRM\REST\Endpoints\Exceptions\EndpointException;
-use UCRM\REST\Exceptions\RestClientException;
+use UCRM\REST\Exceptions\{RestClientException, RestObjectException};
 
-use UCRM\REST\Endpoints\{Organization, Client};
+use UCRM\REST\Endpoints\{Collections\ClientCollection, Organization, Client};
 
 /**
  * Trait ClientHelper
+ *
  * @package UCRM\REST\Endpoints\Helpers
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  */
@@ -29,17 +30,16 @@ trait ClientHelper
     use Common\AddressHelpers;
     use Common\InvoiceAddressHelpers;
 
-
     // =================================================================================================================
-    // HELPER METHODS
+    // OBJECT METHODS
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * Resets all Invoice Options for this Client.
      *
-     * @return self
+     * @return Client Returns the current Client, for method chaining purposes.
      */
-    public function resetAllInvoiceOptions(): self
+    public function resetAllInvoiceOptions(): Client
     {
         $this->sendInvoiceByPost = null;
         $this->invoiceMaturityDays = null;
@@ -47,76 +47,78 @@ trait ClientHelper
         $this->stopServiceDueDays = null;
         // TODO: Add 'Late fee delay' to list of resets when made available!
 
-        /** @var self $this */
+        /** @var Client $this */
         return $this;
     }
 
     /**
      * Resets the 'Invoice by Post' option for this Client.
      *
-     * @return self
+     * @return Client Returns the current Client, for method chaining purposes.
      */
-    public function resetSendInvoiceByPost(): self
+    public function resetSendInvoiceByPost(): Client
     {
         $this->sendInvoiceByPost = null;
 
-        /** @var self $this */
+        /** @var Client $this */
         return $this;
     }
 
     /**
      * Resets the 'Invoice Maturity Days' option for this Client.
      *
-     * @return self
+     * @return Client Returns the current Client, for method chaining purposes.
      */
-    public function resetInvoiceMaturityDays(): self
+    public function resetInvoiceMaturityDays(): Client
     {
         $this->invoiceMaturityDays = null;
 
-        /** @var self $this */
+        /** @var Client $this */
         return $this;
     }
 
     /**
      * Resets the 'Suspend Service if Payment is Overdue' option for this Client.
      *
-     * @return self
+     * @return Client Returns the current Client, for method chaining purposes.
      */
-    public function resetStopServiceDue(): self
+    public function resetStopServiceDue(): Client
     {
         $this->stopServiceDue = null;
 
-        /** @var self $this */
+        /** @var Client $this */
         return $this;
     }
 
     /**
      * Resets the 'Suspension Delay' option for this Client.
      *
-     * @return self
+     * @return Client Returns the current Client, for method chaining purposes.
      */
-    public function resetStopServiceDueDays(): self
+    public function resetStopServiceDueDays(): Client
     {
         $this->stopServiceDueDays = null;
 
-        /** @var self $this */
+        /** @var Client $this */
         return $this;
     }
-
-
 
     // =================================================================================================================
     // CREATE METHODS
     // -----------------------------------------------------------------------------------------------------------------
 
+    // STANDARD INSERT METHOD USED
+
+    // -----------------------------------------------------------------------------------------------------------------
+
     /**
-     * @param string $firstName
-     * @param string $lastName
-     * @return Client
-     * @throws AnnotationReaderException
-     * @throws CollectionException
+     * Creates the minimal Residential Client to be used as a starting point for a new Client.
+     *
+     * @param string $firstName The Client's first name.
+     * @param string $lastName The Client's last name.
+     * @return Client Returns a partially generated Client for further use before insertion.
+     *
      * @throws EndpointException
-     * @throws PatternMatchException
      * @throws RestClientException
      * @throws \ReflectionException
      */
@@ -138,13 +140,13 @@ trait ClientHelper
     }
 
     /**
-     * @param string $firstName
-     * @param string $lastName
-     * @return Client
-     * @throws AnnotationReaderException
-     * @throws CollectionException
+     * Creates the minimal Residential Client (Lead) to be used as a starting point for a new Client.
+     *
+     * @param string $firstName The Client's first name.
+     * @param string $lastName The Client's last name.
+     * @return Client Returns a partially generated Client for further use before insertion.
+     *
      * @throws EndpointException
-     * @throws PatternMatchException
      * @throws RestClientException
      * @throws \ReflectionException
      */
@@ -168,14 +170,14 @@ trait ClientHelper
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
-     * @param string $companyName
-     * @return Client
+     * Creates the minimal Commericial Client to be used as a starting point for a new Client.
+     *
+     * @param string $companyName The company name of this Commercial Client.
+     * @return Client Returns a partially generated Client for further use before insertion.
+     *
      * @throws EndpointException
-     * @throws \MVQN\Annotations\Exceptions\AnnotationReaderException
-     * @throws \MVQN\Collections\Exceptions\CollectionException
-     * @throws \MVQN\Helpers\Exceptions\PatternMatchException
+     * @throws RestClientException
      * @throws \ReflectionException
-     * @throws \UCRM\REST\Exceptions\RestClientException
      */
     public static function createCommercial(string $companyName): Client
     {
@@ -194,14 +196,14 @@ trait ClientHelper
     }
 
     /**
-     * @param string $companyName
-     * @return Client
+     * Creates the minimal Commericial Client (Lead) to be used as a starting point for a new Client.
+     *
+     * @param string $companyName The company name of this Commercial Client.
+     * @return Client Returns a partially generated Client for further use before insertion.
+     *
      * @throws EndpointException
-     * @throws \MVQN\Annotations\Exceptions\AnnotationReaderException
-     * @throws \MVQN\Collections\Exceptions\CollectionException
-     * @throws \MVQN\Helpers\Exceptions\PatternMatchException
+     * @throws RestClientException
      * @throws \ReflectionException
-     * @throws \UCRM\REST\Exceptions\RestClientException
      */
     public static function createCommercialLead(string $companyName): Client
     {
@@ -219,62 +221,67 @@ trait ClientHelper
         return $client;
     }
 
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
-     * @return Client
-     * @throws AnnotationReaderException
-     * @throws EndpointException
-     * @throws PatternMatchException
-     * @throws RestClientException
-     * @throws ArrayHelperException
-     * @throws \ReflectionException
-     */
-    public function insert(): Client
-    {
-        /** @var Client $data */
-        $data = $this;
-
-        /** @var Client $result */
-        $result = Client::post($data);
-        return $result;
-    }
-
-
-
     // =================================================================================================================
     // READ METHODS
     // -----------------------------------------------------------------------------------------------------------------
 
-    // BASE GET METHODS USED!
+    // STANDARD READ METHODS USED
 
+    // -----------------------------------------------------------------------------------------------------------------
 
+    /**
+     * Sends an HTTP GET Request using the calling class's annotated information, for an object, given the Custom ID.
+     *
+     * @param string $userIdent The Custom ID of the Client for which to retrieve.
+     * @return Client|null Returns the matching Client or NULL, if none was found.
+     *
+     * @throws AnnotationReaderException
+     * @throws ArraysException
+     * @throws CollectionException
+     * @throws EndpointException
+     * @throws PatternsException
+     * @throws RestClientException
+     * @throws \ReflectionException
+     */
+    public static function getByUserIdent(string $userIdent): ?Client
+    {
+        /** @var Client $client */
+        $client = Client::get("", [], [ "userIdent" => $userIdent ])->first();
+
+        // Custom ID is Unique, so return the only result or null!
+        return $client;
+    }
+
+    /**
+     * Sends an HTTP GET Request using the calling class's annotated information, for objects, given an Attribute pair.
+     *
+     * @param string $key The Custom Attribute Key for which to search, will be converted to camel case as needed.
+     * @param string $value The Custom Attribute Value for which to search.
+     * @return ClientCollection Returns a collection of Clients matching the given criteria.
+     *
+     * @throws AnnotationReaderException
+     * @throws ArraysException
+     * @throws CollectionException
+     * @throws EndpointException
+     * @throws PatternsException
+     * @throws RestClientException
+     * @throws \ReflectionException
+     */
+    public static function getByCustomAttribute(string $key, string $value): ClientCollection
+    {
+        // TODO: Determine if this is ALWAYS the case!
+        $key = lcfirst($key);
+
+        /** @var ClientCollection $clients */
+        $clients = Client::get("", [], [ "customAttributeKey" => $key, "customAttributeValue" => $value ]);
+        return new ClientCollection($clients->elements());
+    }
 
     // =================================================================================================================
     // UPDATE METHODS
     // -----------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return Client
-     * @throws AnnotationReaderException
-     * @throws ArrayHelperException
-     * @throws EndpointException
-     * @throws PatternMatchException
-     * @throws RestClientException
-     * @throws \ReflectionException
-     */
-    public function update(): Client
-    {
-        /** @var Client $data */
-        $data = $this;
-
-        /** @var Client $client */
-        $client = Client::patch($data, [ "id" => $this->getId() ]);
-
-        return $client;
-    }
-
-
+    // STANDARD UPDATE METHOD USED
 
     // =================================================================================================================
     // DELETE METHODS
@@ -282,19 +289,21 @@ trait ClientHelper
 
     // NO DELETE ENDPOINTS
 
-
-
     // =================================================================================================================
     // EXTRA FUNCTIONS
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
-     * @return Client
+     * Sends an invitation email to this Client.
+     *
+     * @return Client Returns the Client for which the invitation email was just sent.
+     *
      * @throws AnnotationReaderException
-     * @throws ArrayHelperException
+     * @throws ArraysException
      * @throws EndpointException
-     * @throws PatternMatchException
+     * @throws PatternsException
      * @throws RestClientException
+     * @throws RestObjectException
      * @throws \ReflectionException
      */
     public function sendInvitationEmail(): Client
@@ -303,11 +312,5 @@ trait ClientHelper
         $client = Client::patch(null, [ "id" => $this->getId() ], "/send-invitation");
         return $client;
     }
-
-
-
-
-
-
 
 }

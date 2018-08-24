@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace UCRM\REST;
 
-use MVQN\Annotations\{AnnotationReader,Exceptions\AnnotationReaderException};
+use MVQN\Annotations\{AnnotationReader, AnnotationReaderException};
 use MVQN\Collections\Collectible;
-use MVQN\Helpers\ArrayHelper;
+use MVQN\Common\Arrays;
 
 use UCRM\REST\Endpoints\Lookups\Lookup;
 use UCRM\REST\Exceptions\RestObjectException;
@@ -215,7 +215,7 @@ abstract class RestObject extends Collectible implements \JsonSerializable
         }
 
         // If set to be filtered, do so now, which will recursively remove all keys with null values.
-        $fields = $filter ? ArrayHelper::array_filter_recursive($fields) : $fields;
+        $fields = $filter ? Arrays::array_filter_recursive($fields) : $fields;
 
         // Convert the array to JSON.
         $json = json_encode($fields, $options);

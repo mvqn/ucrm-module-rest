@@ -26,6 +26,8 @@ final class Product extends Endpoint
 
     /**
      * @var string
+     * @post-required
+     * @patch-required
      */
     protected $name;
 
@@ -51,6 +53,8 @@ final class Product extends Endpoint
 
     /**
      * @var string
+     * @post
+     * @patch
      */
     protected $invoiceLabel;
 
@@ -76,6 +80,8 @@ final class Product extends Endpoint
 
     /**
      * @var float
+     * @post-required
+     * @patch-required
      */
     protected $price;
 
@@ -101,6 +107,8 @@ final class Product extends Endpoint
 
     /**
      * @var string
+     * @post
+     * @patch
      */
     protected $unit;
 
@@ -126,6 +134,8 @@ final class Product extends Endpoint
 
     /**
      * @var bool
+     * @post
+     * @patch
      */
     protected $taxable;
 

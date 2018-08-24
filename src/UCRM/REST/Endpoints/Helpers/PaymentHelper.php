@@ -3,13 +3,12 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Helpers;
 
-use MVQN\Annotations\Exceptions\AnnotationReaderException;
-use MVQN\Collections\Exceptions\CollectionException;
-use MVQN\Helpers\Exceptions\ArrayHelperException;
-use MVQN\Helpers\Exceptions\PatternMatchException;
+use MVQN\Annotations\AnnotationReaderException;
+use MVQN\Collections\CollectionException;
+use MVQN\Common\{ArraysException, PatternsException};
 
 use UCRM\REST\Endpoints\Exceptions\EndpointException;
-use UCRM\REST\Exceptions\RestClientException;
+use UCRM\REST\Exceptions\{RestClientException, RestObjectException};
 
 use UCRM\REST\Endpoints\Collections\{InvoiceCollection};
 use UCRM\REST\Endpoints\{Invoice, Payment};
@@ -24,46 +23,18 @@ trait PaymentHelper
     use Common\CurrencyHelpers;
 
     // =================================================================================================================
-    // CREATE METHODS
+    // OBJECT METHODS
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
-     * @return Payment
-     */
-    public static function create(): Payment
-    {
-        $client = new Payment([
-
-        ]);
-
-        return $client;
-    }
-
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
-     * @return Payment
+     * @return null|Invoice
      * @throws AnnotationReaderException
-     * @throws ArrayHelperException
+     * @throws ArraysException
      * @throws EndpointException
-     * @throws PatternMatchException
+     * @throws PatternsException
      * @throws RestClientException
      * @throws \ReflectionException
      */
-    public function insert(): Payment
-    {
-        /** @var Payment $data */
-        $data = $this;
-
-        /** @var Payment $result */
-        $result = Payment::post($data);
-
-        return $result;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
     public function getInvoice(): ?Invoice
     {
         $invoice = null;
@@ -75,6 +46,10 @@ trait PaymentHelper
         return $invoice;
     }
 
+    /**
+     * @param Invoice $invoice
+     * @return Payment
+     */
     public function setInvoice(Invoice $invoice): Payment
     {
         $this->applyToInvoicesAutomatically = false;
@@ -88,10 +63,10 @@ trait PaymentHelper
     /**
      * @return InvoiceCollection
      * @throws AnnotationReaderException
-     * @throws ArrayHelperException
+     * @throws ArraysException
      * @throws CollectionException
      * @throws EndpointException
-     * @throws PatternMatchException
+     * @throws PatternsException
      * @throws RestClientException
      * @throws \ReflectionException
      */
@@ -117,7 +92,6 @@ trait PaymentHelper
      */
     public function setInvoices(InvoiceCollection $invoices): Payment
     {
-
         if($invoices->type() === Invoice::class && $invoices->count() > 0)
         {
             /** @var Invoice $invoice */
@@ -138,19 +112,49 @@ trait PaymentHelper
         return $this;
     }
 
+    // =================================================================================================================
+    // CREATE METHODS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // NO INSERT ENDPOINTS
+
+    // =================================================================================================================
+    // READ METHODS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // STANDARD READ METHODS USED
+
+    // =================================================================================================================
+    // UPDATE METHODS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // NO UPDATE ENDPOINTS
+
+    // =================================================================================================================
+    // DELETE METHODS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // NO DELETE ENDPOINTS
+
+    // =================================================================================================================
+    // EXTRA FUNCTIONS
+    // -----------------------------------------------------------------------------------------------------------------
+
     /**
      * @return Payment
+     *
      * @throws AnnotationReaderException
-     * @throws ArrayHelperException
+     * @throws ArraysException
      * @throws EndpointException
-     * @throws PatternMatchException
+     * @throws PatternsException
      * @throws RestClientException
+     * @throws RestObjectException
      * @throws \ReflectionException
      */
     public function sendReceipt(): Payment
     {
         /** @var Payment $payment */
-        $payment = Payment::patch($this->id, null, "/send-receipt");
+        $payment = Payment::patch(null, [ "id" => $this->getId() ], "/send-receipt");
         return $payment;
     }
 

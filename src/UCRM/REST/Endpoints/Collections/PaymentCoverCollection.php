@@ -3,9 +3,15 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Collections;
 
-use MVQN\Collections\{Collectible, Collection, Exceptions\CollectionException};
+use MVQN\Collections\{Collectible, Collection, CollectionException};
 use UCRM\REST\Endpoints\Lookups\PaymentCover;
 
+/**
+ * Class PaymentCoverCollection
+ *
+ * @package UCRM\REST\Endpoints\Collections
+ * @author Ryan Spaeth <rspaeth@mvqn.net>
+ */
 final class PaymentCoverCollection extends Collection
 {
     /**

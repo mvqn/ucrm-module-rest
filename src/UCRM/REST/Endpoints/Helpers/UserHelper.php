@@ -3,31 +3,49 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Helpers;
 
-use MVQN\Annotations\AnnotationReaderException;
-use MVQN\Collections\Collection;
-use MVQN\Helpers\ArrayHelperPathException;
-use MVQN\Helpers\PatternMatchException;
-use UCRM\REST\Endpoints\Helpers\Common\UserHelpers;
-use UCRM\REST\Endpoints\User;
-use UCRM\REST\Exceptions\RestObjectException;
-
-use UCRM\REST\Endpoints\Endpoint;
-use UCRM\REST\Endpoints\Organization;
-use UCRM\REST\Endpoints\Client;
-use UCRM\REST\Endpoints\Country;
-use UCRM\REST\Endpoints\State;
-use UCRM\REST\Endpoints\ClientContact;
-
-
+/**
+ * Trait UserHelper
+ * @package UCRM\REST\Endpoints\Helpers
+ * @author Ryan Spaeth <rspaeth@mvqn.net>
+ */
 trait UserHelper
 {
-    use UserHelpers;
+    use Common\UserHelpers;
 
     // =================================================================================================================
-    // HELPER METHODS
+    // OBJECT METHODS
     // -----------------------------------------------------------------------------------------------------------------
 
+    // NO OBJECT METHODS REQUIRED
 
+    // =================================================================================================================
+    // CREATE METHODS
+    // -----------------------------------------------------------------------------------------------------------------
 
+    // NO INSERT ENDPOINTS
+
+    // =================================================================================================================
+    // READ METHODS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // STANDARD READ METHODS USED
+
+    // =================================================================================================================
+    // UPDATE METHODS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // NO UPDATE ENDPOINTS
+
+    // =================================================================================================================
+    // DELETE METHODS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // NO DELETE ENDPOINTS
+
+    // =================================================================================================================
+    // EXTRA FUNCTIONS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // NO EXTRA FUNCTIONS AT THIS TIME
 
 }

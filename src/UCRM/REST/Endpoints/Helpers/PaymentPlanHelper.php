@@ -3,10 +3,9 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Helpers;
 
-use MVQN\Annotations\Exceptions\AnnotationReaderException;
-use MVQN\Collections\Exceptions\CollectionException;
-use MVQN\Helpers\Exceptions\ArrayHelperException;
-use MVQN\Helpers\Exceptions\PatternMatchException;
+//use MVQN\Annotations\AnnotationReaderException;
+//use MVQN\Collections\CollectionException;
+//use MVQN\Common\{ArraysException, PatternsException};
 
 use UCRM\REST\Endpoints\Exceptions\EndpointException;
 use UCRM\REST\Exceptions\RestClientException;
@@ -21,7 +20,17 @@ trait PaymentPlanHelper
     use Common\CurrencyHelpers;
 
     // =================================================================================================================
-    // CREATE
+    // OBJECT METHODS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // NO OBJECT METHODS REQUIRED
+
+    // =================================================================================================================
+    // CREATE METHODS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // STANDARD CREATE METHODS USED
+
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
@@ -29,10 +38,7 @@ trait PaymentPlanHelper
      * @param \DateTime $startDate
      * @param float $amount
      * @return PaymentPlan
-     * @throws AnnotationReaderException
-     * @throws CollectionException
      * @throws EndpointException
-     * @throws PatternMatchException
      * @throws RestClientException
      * @throws \ReflectionException
      */
@@ -51,24 +57,31 @@ trait PaymentPlanHelper
         return $paymentPlan;
     }
 
-    /**
-     * @return PaymentPlan
-     * @throws AnnotationReaderException
-     * @throws ArrayHelperException
-     * @throws EndpointException
-     * @throws PatternMatchException
-     * @throws RestClientException
-     * @throws \ReflectionException
-     */
-    public function insert(): PaymentPlan
-    {
-        /** @var PaymentPlan $data */
-        $data = $this;
+    // =================================================================================================================
+    // READ METHODS
+    // -----------------------------------------------------------------------------------------------------------------
 
-        /** @var PaymentPlan $result */
-        $result = PaymentPlan::post($data);
-        return $result;
-    }
+    // STANDARD READ METHODS USED
+
+    // =================================================================================================================
+    // UPDATE METHODS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // NO UPDATE ENDPOINTS
+
+    // =================================================================================================================
+    // DELETE METHODS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // NO DELETE ENDPOINTS
+
+    // =================================================================================================================
+    // EXTRA FUNCTIONS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // NO EXTRA FUNCTIONS AT THIS TIME
+
+
 
 
 

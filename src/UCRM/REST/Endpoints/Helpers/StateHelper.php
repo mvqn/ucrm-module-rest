@@ -3,16 +3,15 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Helpers;
 
-use MVQN\Collections\Collection;
+use MVQN\Annotations\AnnotationReaderException;
+use MVQN\Collections\CollectionException;
+use MVQN\Common\{ArraysException, PatternsException};
 
+use MVQN\Collections\Collection;
 use UCRM\REST\Exceptions\RestClientException;
 
 use UCRM\REST\Endpoints\{Country,State};
 use UCRM\REST\Endpoints\Exceptions\EndpointException;
-
-
-
-
 
 /**
  * Trait StateHelper
@@ -22,39 +21,38 @@ use UCRM\REST\Endpoints\Exceptions\EndpointException;
  */
 trait StateHelper
 {
+    use Common\CountryHelpers;
+
     // =================================================================================================================
-    // HELPER METHODS
+    // OBJECT METHODS
     // -----------------------------------------------------------------------------------------------------------------
 
-     /**
-     * @return Country
-     * @throws EndpointException
-     * @throws \MVQN\Annotations\AnnotationReaderException
-     * @throws \MVQN\Helpers\ArrayHelperPathException
-     * @throws \MVQN\Helpers\PatternMatchException
-     * @throws \ReflectionException
-     */
-    public function getCountry(): Country
-    {
-        if($this->countryId === null)
-            throw new EndpointException("State->getCountry() cannot be called when the Country ID is not set!");
+    // NO OBJECT METHODS REQUIRED
 
-        /** @var Country $country */
-        $country = Country::getById($this->countryId);
-        return $country;
-    }
+    // =================================================================================================================
+    // CREATE METHODS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // STANDARD CREATE METHODS USED
+
+    // =================================================================================================================
+    // READ METHODS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // STANDARD READ METHODS USED
 
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @param Country $country
      * @param string $name
-     * @return State|null
+     * @return null|State
+     * @throws AnnotationReaderException
+     * @throws ArraysException
+     * @throws CollectionException
      * @throws EndpointException
-     * @throws \MVQN\Annotations\AnnotationReaderException
-     * @throws \MVQN\Collections\CollectionException
-     * @throws \MVQN\Helpers\ArrayHelperPathException
-     * @throws \MVQN\Helpers\PatternMatchException
+     * @throws PatternsException
+     * @throws RestClientException
      * @throws \ReflectionException
      */
     public static function getByName(Country $country, string $name): ?State
@@ -74,11 +72,12 @@ trait StateHelper
      * @param Country $country
      * @param string $code
      * @return null|State
+     * @throws AnnotationReaderException
+     * @throws ArraysException
+     * @throws CollectionException
      * @throws EndpointException
-     * @throws \MVQN\Annotations\AnnotationReaderException
-     * @throws \MVQN\Collections\CollectionException
-     * @throws \MVQN\Helpers\ArrayHelperPathException
-     * @throws \MVQN\Helpers\PatternMatchException
+     * @throws PatternsException
+     * @throws RestClientException
      * @throws \ReflectionException
      */
     public static function getByCode(Country $country, string $code): ?State
@@ -93,6 +92,24 @@ trait StateHelper
         $state = $states->where("code", $code)->first();
         return $state;
     }
+
+    // =================================================================================================================
+    // UPDATE METHODS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // NO UPDATE ENDPOINTS
+
+    // =================================================================================================================
+    // DELETE METHODS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // NO DELETE ENDPOINTS
+
+    // =================================================================================================================
+    // EXTRA FUNCTIONS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // NO EXTRA FUNCTIONS AT THIS TIME
 
 
 }

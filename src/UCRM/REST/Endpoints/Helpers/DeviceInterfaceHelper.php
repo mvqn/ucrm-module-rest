@@ -3,10 +3,9 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Helpers;
 
-use MVQN\Annotations\Exceptions\AnnotationReaderException;
-use MVQN\Collections\Exceptions\CollectionException;
-use MVQN\Helpers\Exceptions\ArrayHelperException;
-use MVQN\Helpers\Exceptions\PatternMatchException;
+use MVQN\Annotations\AnnotationReaderException;
+use MVQN\Collections\CollectionException;
+use MVQN\Common\{ArraysException, PatternsException};
 
 use UCRM\REST\Endpoints\Exceptions\EndpointException;
 use UCRM\REST\Exceptions\RestClientException;
@@ -20,18 +19,33 @@ trait DeviceInterfaceHelper
     use Common\DeviceHelpers;
 
     // =================================================================================================================
+    // OBJECT METHODS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // NO OBJECT METHODS REQUIRED
+
+    // =================================================================================================================
     // CREATE METHODS
     // -----------------------------------------------------------------------------------------------------------------
 
+    // NO INSERT ENDPOINTS
+
+    // =================================================================================================================
+    // READ METHODS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // STANDARD READ METHODS USED
+
+    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @param Device $device
      * @return DeviceInterfaceCollection
      * @throws AnnotationReaderException
-     * @throws ArrayHelperException
+     * @throws ArraysException
      * @throws CollectionException
      * @throws EndpointException
-     * @throws PatternMatchException
+     * @throws PatternsException
      * @throws RestClientException
      * @throws \ReflectionException
      */
@@ -42,5 +56,22 @@ trait DeviceInterfaceHelper
         return new DeviceInterfaceCollection($devicesInterfaces->elements());
     }
 
+    // =================================================================================================================
+    // UPDATE METHODS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // NO UPDATE ENDPOINTS
+
+    // =================================================================================================================
+    // DELETE METHODS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // NO DELETE ENDPOINTS
+
+    // =================================================================================================================
+    // EXTRA FUNCTIONS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // NO EXTRA FUNCTIONS AT THIS TIME
 
 }

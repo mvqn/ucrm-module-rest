@@ -3,27 +3,50 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Helpers;
 
+use MVQN\Annotations\AnnotationReaderException;
+use MVQN\Collections\CollectionException;
+use MVQN\Common\{ArraysException, PatternsException};
+
 use UCRM\REST\Endpoints\Collections\TaxCollection;
-use UCRM\REST\Endpoints\Endpoint;
+use UCRM\REST\Endpoints\Exceptions\EndpointException;
+use UCRM\REST\Exceptions\{RestClientException, RestObjectException};
 use UCRM\REST\Endpoints\Tax;
 
 trait TaxHelper
 {
 
+
+
+
+
     // =================================================================================================================
-    // CRUD FUNCTIONS
+    // OBJECT METHODS
     // -----------------------------------------------------------------------------------------------------------------
 
-    public function insert(): Tax
-    {
-        /** @var Endpoint $data */
-        $data = $this;
+    // NO OBJECT METHODS REQUIRED
 
-        /** @var Tax $result */
-        $result = Tax::post($data);
-        return $result;
-    }
+    // =================================================================================================================
+    // CREATE METHODS
+    // -----------------------------------------------------------------------------------------------------------------
 
+    // STANDARD CREATE METHODS USED
+
+    // -----------------------------------------------------------------------------------------------------------------
+
+    /**
+     * @param string $name
+     * @param float $rate
+     * @param string|null $agencyName
+     * @return Tax
+     *
+     * @throws AnnotationReaderException
+     * @throws ArraysException
+     * @throws EndpointException
+     * @throws PatternsException
+     * @throws RestClientException
+     * @throws RestObjectException
+     * @throws \ReflectionException
+     */
     public static function create(string $name, float $rate, string $agencyName = null): Tax
     {
         $data = new Tax([
@@ -37,15 +60,28 @@ trait TaxHelper
         return $result;
     }
 
+    // =================================================================================================================
+    // READ METHODS
+    // -----------------------------------------------------------------------------------------------------------------
 
+    // STANDARD READ METHODS USED
 
+    // =================================================================================================================
+    // UPDATE METHODS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // NO UPDATE ENDPOINTS
+
+    // =================================================================================================================
+    // DELETE METHODS
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // NO DELETE ENDPOINTS
 
     // =================================================================================================================
     // EXTRA FUNCTIONS
     // -----------------------------------------------------------------------------------------------------------------
 
-
-
-
+    // NO EXTRA FUNCTIONS AT THIS TIME
 
 }
