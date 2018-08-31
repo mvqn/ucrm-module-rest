@@ -3,15 +3,23 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Helpers;
 
+// Core
 use MVQN\Annotations\AnnotationReaderException;
 use MVQN\Collections\CollectionException;
 use MVQN\Common\ArraysException;
 use MVQN\Common\PatternsException;
 
+// Exceptions
 use UCRM\REST\Endpoints\EndpointException;
-use UCRM\REST\{RestClientException, RestObjectException};
+use UCRM\REST\RestClientException;
+use UCRM\REST\RestObjectException;
 
-use UCRM\REST\Endpoints\{Collections\ClientCollection, Organization, Client};
+// Collections
+use UCRM\REST\Endpoints\Collections\ClientCollection;
+
+// Endpoints
+use UCRM\REST\Endpoints\Client;
+use UCRM\REST\Endpoints\Organization;
 
 /**
  * Trait ClientHelper
@@ -21,14 +29,14 @@ use UCRM\REST\Endpoints\{Collections\ClientCollection, Organization, Client};
  */
 trait ClientHelper
 {
-    use Common\OrganizationHelpers;
+    use Common\AddressHelpers;
+    use Common\ContactHelpers;
     use Common\CountryHelpers;
-    use Common\StateHelpers;
+    use Common\InvoiceAddressHelpers;
     use Common\InvoiceCountryHelpers;
     use Common\InvoiceStateHelpers;
-    use Common\ContactHelpers;
-    use Common\AddressHelpers;
-    use Common\InvoiceAddressHelpers;
+    use Common\OrganizationHelpers;
+    use Common\StateHelpers;
 
     // =================================================================================================================
     // OBJECT METHODS

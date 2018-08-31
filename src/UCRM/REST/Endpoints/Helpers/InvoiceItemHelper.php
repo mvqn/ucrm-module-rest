@@ -3,54 +3,52 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Helpers;
 
-//use MVQN\Annotations\Exceptions\AnnotationReaderException;
-//use MVQN\Collections\Exceptions\CollectionException;
-//use MVQN\Helpers\Exceptions\ArrayHelperException;
-//use MVQN\Helpers\Exceptions\PatternMatchException;
+// Core
+//use MVQN\Annotations\AnnotationReaderException;
+//use MVQN\Collections\CollectionException;
+//use MVQN\Common\ArraysException;
+//use MVQN\Common\PatternsException;
 
-//use UCRM\REST\Endpoints\Exceptions\EndpointException;
-//use UCRM\REST\Exceptions\RestClientException;
-//use UCRM\REST\Exceptions\RestObjectException;
+// Exceptions
+//use UCRM\REST\Endpoints\EndpointException;
+//use UCRM\REST\RestClientException;
 
-//use UCRM\REST\Endpoints\Collections\InvoiceTemplateCollection;
-//use UCRM\REST\Endpoints\InvoiceTemplate;
+// Collections
+//use UCRM\REST\Endpoints\Collections\InvoiceItemCollection;
 
+// Endpoints
+//use UCRM\REST\Endpoints\InvoiceItem;
+
+/**
+ * Trait InvoiceItemHelper
+ *
+ * @package UCRM\REST\Endpoints\Helpers
+ * @author Ryan Spaeth <rspaeth@mvqn.net>
+ */
 trait InvoiceItemHelper
 {
     // =================================================================================================================
     // OBJECT METHODS
     // -----------------------------------------------------------------------------------------------------------------
 
-    // NO OBJECT METHODS REQUIRED
-
     // =================================================================================================================
     // CREATE METHODS
     // -----------------------------------------------------------------------------------------------------------------
-
-    // NO INSERT ENDPOINTS
 
     // =================================================================================================================
     // READ METHODS
     // -----------------------------------------------------------------------------------------------------------------
 
-    // STANDARD READ METHODS USED
-
     // =================================================================================================================
     // UPDATE METHODS
     // -----------------------------------------------------------------------------------------------------------------
-
-    // NO UPDATE ENDPOINTS
 
     // =================================================================================================================
     // DELETE METHODS
     // -----------------------------------------------------------------------------------------------------------------
 
-    // NO DELETE ENDPOINTS
-
     // =================================================================================================================
     // EXTRA FUNCTIONS
     // -----------------------------------------------------------------------------------------------------------------
-
-    // NO EXTRA FUNCTIONS AT THIS TIME
 
 }

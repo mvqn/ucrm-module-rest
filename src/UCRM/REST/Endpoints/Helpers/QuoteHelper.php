@@ -3,76 +3,56 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Helpers;
 
+// Core
+//use MVQN\Annotations\AnnotationReaderException;
+//use MVQN\Common\ArraysException;
+//use MVQN\Common\PatternsException;
 
-use MVQN\Annotations\AnnotationReaderException;
-use MVQN\Common\ArraysException;
-use MVQN\Common\PatternsException;
-use UCRM\REST\Endpoints\{Quote, EndpointException};
+// Exceptions
+//use UCRM\REST\Endpoints\EndpointException;
+//use UCRM\REST\RestClientException;
+//use UCRM\REST\RestObjectException;
 
-use UCRM\REST\RestClientException;
-use UCRM\REST\RestObjectException;
+// Endpoints
+//use UCRM\REST\Endpoints\Quote;
 
-
+/**
+ * Trait QuoteHelper
+ *
+ * @package UCRM\REST\Endpoints\Helpers
+ * @author Ryan Spaeth <rspaeth@mvqn.net>
+ */
 trait QuoteHelper
 {
     use Common\ClientHelpers;
-    use Common\QuoteTemplateHelpers;
-    use Common\OrganizationCountryHelpers;
-    use Common\OrganizationStateHelpers;
     use Common\ClientCountryHelpers;
     use Common\ClientStateHelpers;
+    use Common\OrganizationCountryHelpers;
+    use Common\OrganizationStateHelpers;
+    use Common\QuoteTemplateHelpers;
 
     // =================================================================================================================
-    // CRUD FUNCTIONS
+    // OBJECT METHODS
     // -----------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return Quote
-     * @throws AnnotationReaderException
-     * @throws ArraysException
-     * @throws EndpointException
-     * @throws PatternsException
-     * @throws RestClientException
-     * @throws RestObjectException
-     * @throws \ReflectionException
-     */
-    public function create(): Quote
-    {
-        /** @var Quote $data */
-        $data = $this;
+    // =================================================================================================================
+    // CREATE METHODS
+    // -----------------------------------------------------------------------------------------------------------------
 
-        /** @var Quote $quote */
-        $quote = Quote::post($data, [ "clientId" => $this->getClientId() ]);
+    // =================================================================================================================
+    // READ METHODS
+    // -----------------------------------------------------------------------------------------------------------------
 
-        return $quote;
-    }
+    // =================================================================================================================
+    // UPDATE METHODS
+    // -----------------------------------------------------------------------------------------------------------------
 
-    /**
-     * @return Quote
-     * @throws AnnotationReaderException
-     * @throws ArraysException
-     * @throws EndpointException
-     * @throws PatternsException
-     * @throws RestClientException
-     * @throws RestObjectException
-     * @throws \ReflectionException
-     */
-    public function update(): Quote
-    {
-        /** @var Quote $data */
-        $data = $this;
-
-        /** @var Quote $quote */
-        $quote = Quote::patch($data, [ "id" => $this->getId() ]);
-
-        return $quote;
-    }
+    // =================================================================================================================
+    // DELETE METHODS
+    // -----------------------------------------------------------------------------------------------------------------
 
     // =================================================================================================================
     // EXTRA FUNCTIONS
     // -----------------------------------------------------------------------------------------------------------------
-
-
-
 
 }

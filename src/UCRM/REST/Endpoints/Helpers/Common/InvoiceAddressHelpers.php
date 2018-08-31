@@ -3,15 +3,19 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Helpers\Common;
 
-use MVQN\Annotations\Exceptions\AnnotationReaderException;
-use MVQN\Collections\Exceptions\CollectionException;
-//use MVQN\Helpers\Exceptions\ArrayHelperException;
-use MVQN\Helpers\Exceptions\PatternMatchException;
+// Core
+use MVQN\Annotations\AnnotationReaderException;
+use MVQN\Collections\CollectionException;
+use MVQN\Common\ArraysException;
+use MVQN\Common\PatternsException;
 
-use UCRM\REST\Endpoints\Exceptions\EndpointException;
-use UCRM\REST\Exceptions\RestClientException;
+// Exceptions
+use UCRM\REST\Endpoints\EndpointException;
+use UCRM\REST\RestClientException;
 
-use UCRM\REST\Endpoints\{Country, State};
+// Endpoints
+use UCRM\REST\Endpoints\Country;
+use UCRM\REST\Endpoints\State;
 
 /**
  * Trait InvoiceAddressHelpers
@@ -26,16 +30,39 @@ trait InvoiceAddressHelpers
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
+     * @param string $eol An optional string to use for line endings, defaults to '\n'.
+     * @return string Returns the address as a formatted string, similar to the Invoice layout.
+     */
+    public function getInvoiceAddress(string $eol = "\n"): string
+    {
+        /** @var Country $country */
+        $country = $this->getInvoiceCountry();
+
+        /** @var State $state */
+        $state = $this->getInvoiceState();
+
+        $address = "";
+        $address .= ($this->getInvoiceStreet1().$eol);
+        $address .= ($this->getInvoiceStreet2() !== "" ? $this->getInvoiceStreet2().$eol : "");
+        $address .= ($this->getInvoiceCity().", ".$state->getCode()." ".$this->getInvoiceZipCode().$eol);
+        $address .= ($country->getName());
+
+        return $address;
+    }
+
+    /**
      * @param string $street
      * @param string $city
      * @param string $stateCode
      * @param string $countryCode
      * @param string $zipCode
-     * @return self Returns the appropriate Endpoint instance, for method chaining purposes.
+     * @return InvoiceAddressHelpers
+     *
      * @throws AnnotationReaderException
+     * @throws ArraysException
      * @throws CollectionException
      * @throws EndpointException
-     * @throws PatternMatchException
+     * @throws PatternsException
      * @throws RestClientException
      * @throws \ReflectionException
      */

@@ -75,11 +75,35 @@ class _12_InvoiceTests extends \PHPUnit\Framework\TestCase
         echo "\n";
     }
 
+    public function testGetByStatuses()
+    {
+        $invoices = Invoice::getByStatuses(Invoice::STATUS_UNPAID);
+        $this->assertNotNull($invoices);
 
+        echo ">>> Invoice::getByStatuses(Invoice::STATUS_UNPAID)\n";
+        echo count($invoices)." > $invoices\n";
+        echo "\n";
+    }
 
+    public function testGetByNumber()
+    {
+        $invoice = Invoice::getByNumber("000003");
+        $this->assertNotNull($invoice);
 
+        echo ">>> Invoice::getByNumber('000003')\n";
+        echo $invoice."\n";
+        echo "\n";
+    }
 
+    public function testGetByOverdue()
+    {
+        $invoices = Invoice::getByOverdue(false);
+        $this->assertNotNull($invoices);
 
+        echo ">>> Invoice::getByOverdue(1)\n";
+        echo count($invoices)." > $invoices\n";
+        echo "\n";
+    }
 
 
     public function testAddInvoiceItem()

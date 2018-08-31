@@ -3,14 +3,20 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Helpers;
 
+// Core
 use MVQN\Annotations\AnnotationReaderException;
 use MVQN\Collections\CollectionException;
-use MVQN\Common\{ArraysException, PatternsException};
+use MVQN\Common\ArraysException;
+use MVQN\Common\PatternsException;
 
+// Exceptions
 use UCRM\REST\Endpoints\EndpointException;
 use UCRM\REST\RestClientException;
 
+// Collections
 use UCRM\REST\Endpoints\Collections\InvoiceTemplateCollection;
+
+// Endpoints
 use UCRM\REST\Endpoints\InvoiceTemplate;
 
 /**
@@ -26,20 +32,12 @@ trait InvoiceTemplateHelper
     // OBJECT METHODS
     // -----------------------------------------------------------------------------------------------------------------
 
-    // NO OBJECT METHODS REQUIRED
-
     // =================================================================================================================
     // CREATE METHODS
     // -----------------------------------------------------------------------------------------------------------------
 
-    // NO INSERT ENDPOINTS
-
     // =================================================================================================================
     // READ METHODS
-    // -----------------------------------------------------------------------------------------------------------------
-
-    // STANDARD READ METHODS USED
-
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
@@ -65,18 +63,12 @@ trait InvoiceTemplateHelper
     // UPDATE METHODS
     // -----------------------------------------------------------------------------------------------------------------
 
-    // NO UPDATE ENDPOINTS
-
     // =================================================================================================================
     // DELETE METHODS
     // -----------------------------------------------------------------------------------------------------------------
 
-    // NO DELETE ENDPOINTS
-
     // =================================================================================================================
     // EXTRA FUNCTIONS
     // -----------------------------------------------------------------------------------------------------------------
-
-    // NO EXTRA FUNCTIONS AT THIS TIME
 
 }

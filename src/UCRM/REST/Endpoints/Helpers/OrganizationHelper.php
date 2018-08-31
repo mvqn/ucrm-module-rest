@@ -3,13 +3,20 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Helpers;
 
+// Core
 use MVQN\Annotations\AnnotationReaderException;
 use MVQN\Collections\CollectionException;
-use MVQN\Common\{ArraysException, PatternsException};
+use MVQN\Common\ArraysException;
+use MVQN\Common\PatternsException;
 
+// Exceptions
 use UCRM\REST\Endpoints\EndpointException;
 use UCRM\REST\RestClientException;
 
+// Collections
+use UCRM\REST\Endpoints\Collections\OrganizationCollection;
+
+// Endpoints
 use UCRM\REST\Endpoints\Organization;
 
 /**
@@ -20,6 +27,7 @@ use UCRM\REST\Endpoints\Organization;
  */
 trait OrganizationHelper
 {
+    use Common\AddressHelpers;
     use Common\CountryHelpers;
     use Common\StateHelpers;
 
@@ -27,25 +35,17 @@ trait OrganizationHelper
     // OBJECT METHODS
     // -----------------------------------------------------------------------------------------------------------------
 
-    // NO OBJECT METHODS REQUIRED
-
     // =================================================================================================================
     // CREATE METHODS
     // -----------------------------------------------------------------------------------------------------------------
-
-    // NO INSERT ENDPOINTS
 
     // =================================================================================================================
     // READ METHODS
     // -----------------------------------------------------------------------------------------------------------------
 
-    // STANDARD READ METHODS USED
-
-    // -----------------------------------------------------------------------------------------------------------------
-
     /**
      * @param string $name
-     * @return Organization|null
+     * @return OrganizationCollection
      *
      * @throws AnnotationReaderException
      * @throws ArraysException
@@ -55,13 +55,13 @@ trait OrganizationHelper
      * @throws RestClientException
      * @throws \ReflectionException
      */
-    public static function getByName(string $name): ?Organization
+    public static function getByName(string $name): OrganizationCollection
     {
         $organizations = Organization::get();
 
-        /** @var Organization $organization */
-        $organization = $organizations->where("name", $name)->first();
-        return $organization;
+        /** @var OrganizationCollection $organizations */
+        $organizations = $organizations->where("name", $name);
+        return new OrganizationCollection($organizations->elements());
     }
 
     /**
@@ -87,18 +87,12 @@ trait OrganizationHelper
     // UPDATE METHODS
     // -----------------------------------------------------------------------------------------------------------------
 
-    // NO UPDATE ENDPOINTS
-
     // =================================================================================================================
     // DELETE METHODS
     // -----------------------------------------------------------------------------------------------------------------
 
-    // NO DELETE ENDPOINTS
-
     // =================================================================================================================
     // EXTRA FUNCTIONS
     // -----------------------------------------------------------------------------------------------------------------
-
-    // NO EXTRA FUNCTIONS AT THIS TIME
 
 }

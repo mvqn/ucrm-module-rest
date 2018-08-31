@@ -3,13 +3,24 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Helpers;
 
+// Core
 use MVQN\Annotations\AnnotationReaderException;
 
+// Exceptions
 use UCRM\REST\RestObjectException;
+
+// Lookups
 use UCRM\REST\Endpoints\Lookups\PaymentCover;
+
+// Endpoints
 use UCRM\REST\Endpoints\Refund;
 
-
+/**
+ * Trait RefundHelper
+ *
+ * @package UCRM\REST\Endpoints\Helpers
+ * @author Ryan Spaeth <rspaeth@mvqn.net>
+ */
 trait RefundHelper
 {
     use Common\ClientHelpers;
@@ -38,33 +49,20 @@ trait RefundHelper
     // CREATE METHODS
     // -----------------------------------------------------------------------------------------------------------------
 
-    // NO INSERT ENDPOINTS
-
     // =================================================================================================================
     // READ METHODS
     // -----------------------------------------------------------------------------------------------------------------
-
-    // STANDARD READ METHODS USED
 
     // =================================================================================================================
     // UPDATE METHODS
     // -----------------------------------------------------------------------------------------------------------------
 
-    // NO UPDATE ENDPOINTS
-
     // =================================================================================================================
     // DELETE METHODS
     // -----------------------------------------------------------------------------------------------------------------
 
-    // NO DELETE ENDPOINTS
-
     // =================================================================================================================
     // EXTRA FUNCTIONS
     // -----------------------------------------------------------------------------------------------------------------
-
-    // NO EXTRA FUNCTIONS AT THIS TIME
-
-
-
 
 }

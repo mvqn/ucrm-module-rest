@@ -14,15 +14,19 @@ use UCRM\REST\RestObjectException;
 use UCRM\REST\Endpoints\{Invoice, Collections\InvoiceCollection};
 use UCRM\REST\Endpoints\Lookups\InvoiceItem;
 
-
+/**
+ * Trait InvoiceHelper
+ * @package UCRM\REST\Endpoints\Helpers
+ * @author Ryan Spaeth <rspaeth@mvqn.net>
+ */
 trait InvoiceHelper
 {
     use Common\ClientHelpers;
+    use Common\ClientCountryHelpers;
+    use Common\ClientStateHelpers;
     use Common\InvoiceTemplateHelpers;
     use Common\OrganizationCountryHelpers;
     use Common\OrganizationStateHelpers;
-    use Common\ClientCountryHelpers;
-    use Common\ClientStateHelpers;
 
     // =================================================================================================================
     // OBJECT METHODS
@@ -31,12 +35,14 @@ trait InvoiceHelper
     /**
      * @param InvoiceItem $item
      * @return Invoice
+     *
+     * @deprecated Not implemented!
      */
     public function addInvoiceItem(InvoiceItem $item): Invoice
     {
-        echo $item;
+        echo "Invoice::addInvoiceItem($item) is not currently implemented!\n";
 
-        // TODO: Implement!
+        // TODO: Implement when available!
 
         /** @var Invoice $this */
         return $this;
@@ -45,12 +51,14 @@ trait InvoiceHelper
     /**
      * @param int $line
      * @return Invoice
+     *
+     * @deprecated Not implemented!
      */
     public function delInvoiceItem(int $line): Invoice
     {
-        echo $line;
+        echo "Invoice::delInvoiceItem($line) is not currently implemented!\n";
 
-        // TODO: Implement!
+        // TODO: Implement when available!
 
         /** @var Invoice $this */
         return $this;
@@ -60,19 +68,13 @@ trait InvoiceHelper
     // CREATE METHODS
     // -----------------------------------------------------------------------------------------------------------------
 
-    // NO INSERT ENDPOINTS
-
     // =================================================================================================================
     // READ METHODS
     // -----------------------------------------------------------------------------------------------------------------
 
-    // STANDARD READ METHODS USED
-
-    // -----------------------------------------------------------------------------------------------------------------
-
     /**
-     * @param int $clientId
-     * @return InvoiceCollection
+     * @param int $clientId The Client ID for which to match Invoices.
+     * @return InvoiceCollection Returns a collection of Invoices that belong to the specified Client ID.
      *
      * @throws AnnotationReaderException
      * @throws ArraysException
@@ -91,8 +93,8 @@ trait InvoiceHelper
     }
 
     /**
-     * @param \DateTime $date
-     * @return InvoiceCollection
+     * @param \DateTime $date The Creation Date for which to match Invoices.
+     * @return InvoiceCollection Returns a collection of Invoices created on the specified date.
      *
      * @throws AnnotationReaderException
      * @throws ArraysException
@@ -112,9 +114,9 @@ trait InvoiceHelper
     }
 
     /**
-     * @param \DateTime $from
-     * @param \DateTime $to
-     * @return InvoiceCollection
+     * @param \DateTime $from The Creation Date from which to start matching Invoices.
+     * @param \DateTime $to The Creation Date from which to stop matching Invoices.
+     * @return InvoiceCollection Returns a collection of Invoices created between the specified dates.
      *
      * @throws AnnotationReaderException
      * @throws ArraysException
@@ -133,7 +135,73 @@ trait InvoiceHelper
         return new InvoiceCollection($invoices->elements());
     }
 
-    // TODO: Add more helpers for the remaining query parameters!
+    /**
+     * @param int ...$statuses A list of possible statuses for which to match Invoices.
+     * @return InvoiceCollection Returns a collection of Invoices that have any of the statuses specified.
+     *
+     * @throws AnnotationReaderException
+     * @throws ArraysException
+     * @throws CollectionException
+     * @throws EndpointException
+     * @throws PatternsException
+     * @throws RestClientException
+     * @throws \ReflectionException
+     */
+    public static function getByStatuses(int ...$statuses): InvoiceCollection
+    {
+        // EXAMPLE: ...?statuses[]=1&statuses[]=3
+
+        $statusesString = implode("&statuses[]=", $statuses);
+
+        /** @var InvoiceCollection $invoices */
+        $invoices = Invoice::get("", [], [ "statuses[]" => $statusesString ]);
+
+        return new InvoiceCollection($invoices->elements());
+    }
+
+    /**
+     * @param string $number The Number for which to match an Invoice.
+     * @return Invoice|null Returns an Invoice that matches the specified number, or NULL if no matches.
+     *
+     * @throws AnnotationReaderException
+     * @throws ArraysException
+     * @throws CollectionException
+     * @throws EndpointException
+     * @throws PatternsException
+     * @throws RestClientException
+     * @throws \ReflectionException
+     */
+    public static function getByNumber(string $number): ?Invoice
+    {
+        // EXAMPLE: ...?number=000003 - MUST MATCH EXACTLY, as it is a string!
+
+        /** @var Invoice $invoice */
+        $invoice = Invoice::get("", [], [ "number" => $number ])->first();
+
+        return $invoice;
+    }
+
+    /**
+     * @param bool $overdue If TRUE, matches all overdue Invoices; FALSE, matches all non-overdue Invoices.
+     * @return InvoiceCollection Returns a collection of Invoices that are flagged with the sopecified overdue status.
+     *
+     * @throws AnnotationReaderException
+     * @throws ArraysException
+     * @throws CollectionException
+     * @throws EndpointException
+     * @throws PatternsException
+     * @throws RestClientException
+     * @throws \ReflectionException
+     */
+    public static function getByOverdue(bool $overdue): InvoiceCollection
+    {
+        // EXAMPLE: ...?overdue=0|1
+
+        /** @var InvoiceCollection $invoices */
+        $invoices = Invoice::get("", [], [ "overdue" => $overdue ? 1 : 0 ]);
+
+        return new InvoiceCollection($invoices->elements());
+    }
 
     // =================================================================================================================
     // UPDATE METHODS
