@@ -4,25 +4,26 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9a29beb54817c4f6525da276ea578656",
+    "content-hash": "2b2e0e30904c61d653debfb2c71ab168",
     "packages": [
         {
-            "name": "mvqn/ucrm-module-core",
-            "version": "1.1.1",
+            "name": "mvqn/annotations",
+            "version": "1.0.5",
             "source": {
                 "type": "git",
-                "url": "https://github.com/mvqn/ucrm-module-core.git",
-                "reference": "2015a0fb0c6ee25d39310cacbbfe04fa05abb1c8"
+                "url": "https://github.com/mvqn/annotations.git",
+                "reference": "53a036212706e58a668cfca6cdbc690f869cdcd5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mvqn/ucrm-module-core/zipball/2015a0fb0c6ee25d39310cacbbfe04fa05abb1c8",
-                "reference": "2015a0fb0c6ee25d39310cacbbfe04fa05abb1c8",
+                "url": "https://api.github.com/repos/mvqn/annotations/zipball/53a036212706e58a668cfca6cdbc690f869cdcd5",
+                "reference": "53a036212706e58a668cfca6cdbc690f869cdcd5",
                 "shasum": ""
             },
             "require": {
+                "ext-curl": "*",
                 "ext-json": "*",
-                "ext-zip": "*",
+                "mvqn/common": "1.0.0",
                 "php": "~7.1"
             },
             "require-dev": {
@@ -31,9 +32,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "MVQN\\": "src/MVQN/",
-                    "UCRM\\": "src/UCRM/",
-                    "Tests\\": "tests/"
+                    "MVQN\\": "src/MVQN/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -46,8 +45,132 @@
                     "email": "rspaeth@mvqn.net"
                 }
             ],
-            "description": "UCRM Plugin module for bundling a plugin.",
-            "time": "2018-08-24T04:46:24+00:00"
+            "description": "A semi-complex PHP-Doc Annotation parsing library, specifically designed for use in MVQN projects, but generic enough for anything!",
+            "time": "2018-09-18T02:47:53+00:00"
+        },
+        {
+            "name": "mvqn/collections",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mvqn/collections.git",
+                "reference": "76857fe6fc0b7edb2b62966e604d092297a9e6e3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mvqn/collections/zipball/76857fe6fc0b7edb2b62966e604d092297a9e6e3",
+                "reference": "76857fe6fc0b7edb2b62966e604d092297a9e6e3",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": "~7.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "7.2.7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MVQN\\": "src/MVQN/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ryan Spaeth",
+                    "email": "rspaeth@mvqn.net"
+                }
+            ],
+            "description": "A library collections, specifically designed for use in MVQN projects, but generic enough for anything!",
+            "time": "2018-09-15T22:43:07+00:00"
+        },
+        {
+            "name": "mvqn/common",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mvqn/common.git",
+                "reference": "f00210cb2accc868559727a1811959aeb556b163"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mvqn/common/zipball/f00210cb2accc868559727a1811959aeb556b163",
+                "reference": "f00210cb2accc868559727a1811959aeb556b163",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": "~7.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "7.2.7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MVQN\\": "src/MVQN/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ryan Spaeth",
+                    "email": "rspaeth@mvqn.net"
+                }
+            ],
+            "description": "A library of common classes and functions, specifically designed for use in MVQN projects, but generic enough for anything!",
+            "time": "2018-09-15T02:31:00+00:00"
+        },
+        {
+            "name": "mvqn/rest",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mvqn/rest.git",
+                "reference": "69a85c01007aa4b299224b8fa1cca8feef14b099"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mvqn/rest/zipball/69a85c01007aa4b299224b8fa1cca8feef14b099",
+                "reference": "69a85c01007aa4b299224b8fa1cca8feef14b099",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "mvqn/annotations": "1.0.5",
+                "mvqn/collections": "1.0.0",
+                "mvqn/common": "1.0.0",
+                "php": "~7.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "7.2.7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MVQN\\": "src/MVQN/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ryan Spaeth",
+                    "email": "rspaeth@mvqn.net"
+                }
+            ],
+            "description": "A REST library, specifically designed for use in MVQN projects, but generic enough for anything!",
+            "time": "2018-09-18T02:53:13+00:00"
         }
     ],
     "packages-dev": [
@@ -535,20 +658,23 @@
         },
         {
             "name": "phpunit/php-file-iterator",
-            "version": "2.0.1",
+            "version": "2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-file-iterator.git",
-                "reference": "cecbc684605bb0cc288828eb5d65d93d5c676d3c"
+                "reference": "050bedf145a257b1ff02746c31894800e5122946"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-file-iterator/zipball/cecbc684605bb0cc288828eb5d65d93d5c676d3c",
-                "reference": "cecbc684605bb0cc288828eb5d65d93d5c676d3c",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-file-iterator/zipball/050bedf145a257b1ff02746c31894800e5122946",
+                "reference": "050bedf145a257b1ff02746c31894800e5122946",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^7.1"
             },
             "type": "library",
             "extra": {
@@ -578,7 +704,7 @@
                 "filesystem",
                 "iterator"
             ],
-            "time": "2018-06-11T11:44:00+00:00"
+            "time": "2018-09-13T20:33:42+00:00"
         },
         {
             "name": "phpunit/php-text-template",

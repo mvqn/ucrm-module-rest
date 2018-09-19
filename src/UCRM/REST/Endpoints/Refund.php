@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
+use MVQN\REST\Endpoints\EndpointObject;
+use MVQN\REST\Annotations\EndpointAnnotation as Endpoint;
+
 use UCRM\REST\Endpoints\Helpers\RefundHelper;
 use UCRM\REST\Endpoints\Lookups\PaymentCover;
 
@@ -13,10 +16,31 @@ use UCRM\REST\Endpoints\Lookups\PaymentCover;
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
  *
- * @endpoints { "get": "/refunds", "getById": "/refunds/:id" }
- * @endpoints { "post": "/refunds" }
+ * @Endpoint { "get": "/refunds", "getById": "/refunds/:id" }
+ * @Endpoint { "post": "/refunds" }
+ *
+ * @method int|null getMethod()
+ * @method Refund setMethod(int $method)
+ *
+ * @method string|null getCreatedDate()
+ *
+ * @method float|null getAmount()
+ * @method Refund setAmount(float $amount)
+ *
+ * @method string|null getNote()
+ * @method Refund setNote(string $note)
+ *
+ * @method int|null getClientId()
+ * @method Refund setClientId(int $id)
+ *
+ * @method int|null getCurrencyCode()
+ * @method Refund setCurrencyCode(int $code)
+ *
+ * @method PaymentCover[]|null getPaymentCovers()
+ * @method Refund setPaymentCovers(array $covers)
+ *
  */
-final class Refund extends Endpoint
+final class Refund extends EndpointObject
 {
     use RefundHelper;
 
@@ -50,182 +74,54 @@ final class Refund extends Endpoint
 
     /**
      * @var int
-     * @post-required
+     * @PostRequired
      */
     protected $method;
 
     /**
-     * @return int|null
-     */
-    public function getMethod(): ?int
-    {
-        return $this->method;
-    }
-
-    /**
-     * @param int $value
-     * @return Refund
-     */
-    public function setMethod(int $value): Refund
-    {
-        $this->method = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
+     * @Post
      */
     protected $createdDate;
 
     /**
-     * @return string|null
-     */
-    public function getCreatedDate(): string
-    {
-        return $this->createdDate;
-    }
-
-    /**
-     * @param \DateTime $value
+     * @param \DateTime $date
      * @return Refund
      */
-    public function setCreatedDate(\DateTime $value): Refund
+    public function setCreatedDate(\DateTime $date): Refund
     {
-        $this->createdDate = $value->format("c");
+        $this->createdDate = $date->format("c");
         return $this;
     }
 
-    // -----------------------------------------------------------------------------------------------------------------
-
     /**
      * @var float
-     * @post-required
+     * @PostRequired
      */
     protected $amount;
 
     /**
-     * @return float|null
-     */
-    public function getAmount(): ?float
-    {
-        return $this->amount;
-    }
-
-    /**
-     * @param float $value
-     * @return Refund
-     */
-    public function setAmount(float $value): Refund
-    {
-        $this->amount = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
+     * @Post
      */
     protected $note;
 
     /**
-     * @return string|null
-     */
-    public function getNote(): ?string
-    {
-        return $this->note;
-    }
-
-    /**
-     * @param string $value
-     * @return Refund
-     */
-    public function setNote(string $value): Refund
-    {
-        $this->note = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
-     * @post
+     * @Post
      */
     protected $clientId;
 
     /**
-     * @return int|null
-     */
-    public function getClientId(): ?int
-    {
-        return $this->clientId;
-    }
-
-    /**
-     * @param int $value
-     * @return Refund
-     */
-    public function setClientId(int $value): Refund
-    {
-        $this->clientId = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
+     * @Post
      */
     protected $currencyCode;
 
     /**
-     * @return string|null
-     */
-    public function getCurrencyCode(): ?string
-    {
-        return $this->currencyCode;
-    }
-
-    /**
-     * @param string $value
-     * @return Refund
-     */
-    public function setCurrencyCode(string $value): Refund
-    {
-        $this->currencyCode = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var PaymentCover[]
-     * @post
+     * @Post
      */
     protected $paymentCovers;
-
-    /**
-     * @return PaymentCover[]|null
-     */
-    public function getPaymentCovers(): ?array
-    {
-        return $this->paymentCovers;
-    }
-
-    /**
-     * @param PaymentCover[] $value
-     * @return Refund
-     */
-    public function setPaymentCovers(array $value): Refund
-    {
-        $this->paymentCovers = $value;
-        return $this;
-    }
 
 }

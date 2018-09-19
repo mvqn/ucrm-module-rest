@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
+use MVQN\REST\Endpoints\EndpointObject;
+use MVQN\REST\Annotations\EndpointAnnotation as Endpoint;
+
 use UCRM\REST\Endpoints\Helpers\ServiceHelper;
 
 /**
@@ -12,11 +15,152 @@ use UCRM\REST\Endpoints\Helpers\ServiceHelper;
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
  *
- * @endpoints { "get": "/clients/services", "getById": "/clients/services/:id" }
- * @endpoints { "post": "/clients/:clientId/services" }
- * @endpoints { "patch": "/clients/services" }
+ * @Endpoint { "get": "/clients/services", "getById": "/clients/services/:id" }
+ * @Endpoint { "post": "/clients/:clientId/services" }
+ * @Endpoint { "patch": "/clients/services" }
+ *
+ * @method int|null getServicePlanId()
+ * @method Service setServicePlanId(int $id)
+ *
+ * @method int|null getServicePlanPeriodId()
+ * @method Service setServicePlanPeriodId(int $id)
+ *
+ * @method string|null getActiveFrom()
+ *
+ * @method string|null getActiveTo()
+ *
+ * @method string|null getName()
+ * @method Service setName(string $name)
+ *
+ * @method float|null getPrice()
+ * @method Service setPrice(float $price)
+ *
+ * @method string|null getNote()
+ * @method Service setNote(string $note)
+ *
+ * @method string|null getInvoicingStart()
+ *
+ * @method int|null getInvoicingPeriodType()
+ * @method Service setInvoicingPeriodType(int $type)
+ *
+ * @method int|null getInvoicingPeriodStartDay()
+ * @method Service setInvoicingPeriodStartDay(int $day)
+ *
+ * @method int|null getInvoicingDayAdjustment()
+ * @method Service setInvoicingDayAdjustment(int $adjustment)
+ *
+ * @method bool|null getInvoicingProratedSeparately()
+ * @method Service setInvoicingProratedSeparately(bool $separate)
+ *
+ * @method bool|null getInvoicingSeparately()
+ * @method Service setInvoicingSeparately(bool $separate)
+ *
+ * @method bool|null getSendEmailsAutomatically()
+ * @method Service setSendEmailsAutomatically(bool $automatic)
+ *
+ * @method bool|null getUseCreditAutomatically()
+ * @method Service setUseCreditAutomatically(bool $automatic)
+ *
+ * @method string|null getInvoiceLabel()
+ * @method Service setInvoiceLabel(string $label)
+ *
+ * @method string|null getStreet1()
+ * @method Service setStreet1(string $street1)
+ *
+ * @method string|null getStreet2()
+ * @method Service setStreet2(string $street2)
+ *
+ * @method string|null getCity()
+ * @method Service setCity(string $city)
+ *
+ * @method int|null getCountryId()
+ * @method Service setCountryId(int $id)
+ *
+ * @method int|null getStateId()
+ * @method Service setStateId(int $id)
+ *
+ * @method string|null getZipCode()
+ * @method Service setZipCode(string $zip)
+ *
+ * @method float|null getAddressGpsLat()
+ * @method Service setAddressGpsLat(float $latitude)
+ *
+ * @method float|null getAddressGpsLon()
+ * @method Service setAddressGpsLon(float $longitude)
+ *
+ * @method int|null getContractId()
+ * @method Service setContractId(int $id)
+ *
+ * @method int|null getContractLengthType()
+ * @method Service setContractLengthType(int $type)
+ *
+ * @method int|null getMinimumContractLengthMonths()
+ * @method Service setMinimumContractLengthMonths(int $months)
+ *
+ * @method string|null getContractEndDate()
+ *
+ * @method int|null getDiscountType()
+ * @method Service setDiscountType(int $type)
+ *
+ * @method float|null getDiscountValue()
+ * @method Service setDiscountValue(float $value)
+ *
+ * @method string|null getDiscountInvoiceLabel()
+ * @method Service setDiscountInvoiceLabel(string $label)
+ *
+ * @method string|null getDiscountFrom()
+ *
+ * @method string|null getDiscountTo()
+ *
+ * @method bool|null getTaxable()
+ * @method Service setTaxable(bool $taxable)
+ *
+ * @method int|null getTax1Id()
+ * @method Service setTax1Id(int $id)
+ *
+ * @method int|null getTax2Id()
+ * @method Service setTax2Id(int $id)
+ *
+ * @method int|null getTax3Id()
+ * @method Service setTax3Id(int $id)
+ *
+ * @method int|null getClientId()
+ * @method Service setClientId(int $id)
+ *
+ * @method int|null getStatus()
+ * @method Service setStatus(int $status)
+ *
+ * @method bool|null getHasIndividualPrice()
+ * @method Service setHasIndividualPrice(bool $individual)
+ *
+ * @method float|null getTotalPrice()
+ *
+ * @method string|null getServicePlanName()
+ * @method Service setServicePlanName(string $name)
+ *
+ * @method float|null getServicePlanPrice()
+ * @method Service setServicePlanPrice(float $name)
+ *
+ * @method int|null getServicePlanPeriod()
+ * @method Service setServicePlanPeriod(int $period)
+ *
+ * @method float|null getDownloadSpeed()
+ * @method Service setDownloadSpeed(float $speed)
+ *
+ * @method float|null getUploadSpeed()
+ * @method Service setUploadSpeed(float $speed)
+ *
+ * @method string[]|null getIpRanges()
+ * @method Service setIpRanges(array $ranges)
+ *
+ * @method string|null getCurrencyCode()
+ * @method Service setCurrencyCode(string $code)
+ *
+ * @method bool|null getHasOutage()
+ * @method Service setHasOutage(bool $outage)
+ *
  */
-final class Service extends Endpoint
+final class Service extends EndpointObject
 {
     use ServiceHelper;
 
@@ -49,884 +193,285 @@ final class Service extends Endpoint
 
     /**
      * @var int
-     * @post-required
-     * @patch
+     * @PostRequired
+     * @Patch
      */
     protected $servicePlanId;
 
     /**
-     * @return int|null
-     */
-    public function getServicePlanId(): ?int
-    {
-        return $this->servicePlanId;
-    }
-
-    /**
-     * @param int $value
-     * @return Service
-     */
-    public function setServicePlanId(int $value): Service
-    {
-        $this->servicePlanId = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
-     * @post-required
-     * @patch
+     * @PostRequired
+     * @Patch
      */
     protected $servicePlanPeriodId;
 
     /**
-     * @return int|null
-     */
-    public function getServicePlanPeriodId(): ?int
-    {
-        return $this->servicePlanPeriodId;
-    }
-
-    /**
-     * @param int $value
-     * @return Service
-     */
-    public function setServicePlanPeriodId(int $value): Service
-    {
-        $this->servicePlanPeriodId = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
+     * @Post
      */
     protected $activeFrom;
 
     /**
-     * @return string|null
-     */
-    public function getActiveFrom(): ?string
-    {
-        return $this->activeFrom;
-    }
-
-    /**
-     * @param \DateTime $value
+     * @param \DateTime $date
      * @return Service
      */
-    public function setActiveFrom(\DateTime $value): Service
+    public function setActiveFrom(\DateTime $date): Service
     {
-        $this->activeFrom = $value->format("c");
+        $this->activeFrom = $date->format("c");
         return $this;
     }
 
-    // -----------------------------------------------------------------------------------------------------------------
-
     /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $activeTo;
 
     /**
-     * @return string|null
-     */
-    public function getActiveTo(): ?string
-    {
-        return $this->activeTo;
-    }
-
-    /**
-     * @param \DateTime $value
+     * @param \DateTime $date
      * @return Service
      */
-    public function setActiveTo(\DateTime $value): Service
+    public function setActiveTo(\DateTime $date): Service
     {
-        $this->activeTo = $value->format("c");
+        $this->activeTo = $date->format("c");
         return $this;
     }
 
-    // -----------------------------------------------------------------------------------------------------------------
-
     /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $name;
 
     /**
-     * @return string|null
-     */
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $value
-     * @return Service
-     */
-    public function setName(string $value): Service
-    {
-        $this->name = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var float
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $price;
 
     /**
-     * @return float|null
-     */
-    public function getPrice(): ?float
-    {
-        return $this->price;
-    }
-
-    /**
-     * @param float $value
-     * @return Service
-     */
-    public function setPrice(float $value): Service
-    {
-        $this->price = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $note;
 
     /**
-     * @return string|null
-     */
-    public function getNote(): ?string
-    {
-        return $this->note;
-    }
-
-    /**
-     * @param string $value
-     * @return Service
-     */
-    public function setNote(string $value): Service
-    {
-        $this->note = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
+     * @Post
      */
     protected $invoicingStart;
 
     /**
-     * @return string|null
-     */
-    public function getInvoicingStart(): ?string
-    {
-        return $this->invoicingStart;
-    }
-
-    /**
-     * @param \DateTime $value
+     * @param \DateTime $date
      * @return Service
      */
-    public function setInvoicingStart(\DateTime $value): Service
+    public function setInvoicingStart(\DateTime $date): Service
     {
-        $this->invoicingStart = $value->format("c");
+        $this->invoicingStart = $date->format("c");
         return $this;
     }
 
-    // -----------------------------------------------------------------------------------------------------------------
-
     /**
      * @var int
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $invoicingPeriodType;
 
     /**
-     * @return int|null
-     */
-    public function getInvoicingPeriodType(): ?int
-    {
-        return $this->invoicingPeriodType;
-    }
-
-    /**
-     * @param int $value
-     * @return Service
-     */
-    public function setInvoicingPeriodType(int $value): Service
-    {
-        $this->invoicingPeriodType = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
-     * @post
+     * @Post
      */
     protected $invoicingPeriodStartDay;
 
     /**
-     * @return int|null
-     */
-    public function getInvoicingPeriodStartDay(): ?int
-    {
-        return $this->invoicingPeriodStartDay;
-    }
-
-    /**
-     * @param int $value
-     * @return Service
-     */
-    public function setInvoicingPeriodStartDay(int $value): Service
-    {
-        $this->invoicingPeriodStartDay = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $nextInvoicingDayAdjustment;
 
     /**
-     * @return int|null
-     */
-    public function getNextInvoicingDayAdjustment(): ?int
-    {
-        return $this->nextInvoicingDayAdjustment;
-    }
-
-    /**
-     * @param int $value
-     * @return Service
-     */
-    public function setNextInvoicingDayAdjustment(int $value): Service
-    {
-        $this->nextInvoicingDayAdjustment = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var bool
-     * @post
+     * @Post
      */
     protected $invoicingProratedSeparately;
 
     /**
-     * @return bool|null
-     */
-    public function getInvoicingProratedSeparately(): ?bool
-    {
-        return $this->invoicingProratedSeparately;
-    }
-
-    /**
-     * @param bool $value
-     * @return Service
-     */
-    public function setInvoicingProratedSeparately(bool $value): Service
-    {
-        $this->invoicingProratedSeparately = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-    /**
      * @var bool
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $invoicingSeparately;
 
     /**
-     * @return bool|null
-     */
-    public function getInvoicingSeparately(): ?bool
-    {
-        return $this->invoicingSeparately;
-    }
-
-    /**
-     * @param bool $value
-     * @return Service
-     */
-    public function setInvoicingSeparately(bool $value): Service
-    {
-        $this->invoicingSeparately = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var bool
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $sendEmailsAutomatically;
 
     /**
-     * @return bool|null
-     */
-    public function getSendEmailsAutomatically(): ?bool
-    {
-        return $this->sendEmailsAutomatically;
-    }
-
-    /**
-     * @param bool $value
-     * @return Service
-     */
-    public function setSendEmailsAutomatically(bool $value): Service
-    {
-        $this->sendEmailsAutomatically = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var bool
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $useCreditAutomatically;
 
     /**
-     * @return bool|null
-     */
-    public function getUseCreditAutomatically(): ?bool
-    {
-        return $this->useCreditAutomatically;
-    }
-
-    /**
-     * @param bool $value
-     * @return Service
-     */
-    public function setUseCreditAutomatically(bool $value): Service
-    {
-        $this->useCreditAutomatically = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $invoiceLabel;
 
     /**
-     * @return string|null
-     */
-    public function getInvoiceLabel(): ?string
-    {
-        return $this->invoiceLabel;
-    }
-
-    /**
-     * @param string $value
-     * @return Service
-     */
-    public function setInvoiceLabel(string $value): Service
-    {
-        $this->invoiceLabel = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $street1;
 
     /**
-     * @return string|null
-     */
-    public function getStreet1(): ?string
-    {
-        return $this->street1;
-    }
-
-    /**
-     * @param string $value
-     * @return Service
-     */
-    public function setStreet1(string $value): Service
-    {
-        $this->street1 = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $street2;
 
     /**
-     * @return string|null
-     */
-    public function getStreet2(): ?string
-    {
-        return $this->street2;
-    }
-
-    /**
-     * @param string $value
-     * @return Service
-     */
-    public function setStreet2(string $value): Service
-    {
-        $this->street2 = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $city;
 
     /**
-     * @return string|null
-     */
-    public function getCity(): ?string
-    {
-        return $this->city;
-    }
-
-    /**
-     * @param string $value
-     * @return Service
-     */
-    public function setCity(string $value): Service
-    {
-        $this->city = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $countryId;
 
     /**
-     * @return int|null
-     */
-    public function getCountryId(): ?int
-    {
-        return $this->countryId;
-    }
-
-    /**
-     * @param int $value
-     * @return Service
-     */
-    public function setCountryId(int $value): Service
-    {
-        $this->countryId = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $stateId;
 
     /**
-     * @return int|null
-     */
-    public function getStateId(): ?int
-    {
-        return $this->stateId;
-    }
-
-    /**
-     * @param int $value
-     * @return Service
-     */
-    public function setStateId(int $value): Service
-    {
-        $this->stateId = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $zipCode;
 
     /**
-     * @return string|null
-     */
-    public function getZipCode(): ?string
-    {
-        return $this->zipCode;
-    }
-
-    /**
-     * @param string $value
-     * @return Service
-     */
-    public function setZipCode(string $value): Service
-    {
-        $this->zipCode = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var float
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $addressGpsLat;
 
     /**
-     * @return float|null
-     */
-    public function getAddressGpsLat(): ?float
-    {
-        return $this->addressGpsLat;
-    }
-
-    /**
-     * @param float $value
-     * @return Service
-     */
-    public function setAddressGpsLat(float $value): Service
-    {
-        $this->addressGpsLat = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var float
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $addressGpsLon;
 
     /**
-     * @return float|null
-     */
-    public function getAddressGpsLon(): ?float
-    {
-        return $this->addressGpsLon;
-    }
-
-    /**
-     * @param float $value
-     * @return Service
-     */
-    public function setAddressGpsLon(float $value): Service
-    {
-        $this->addressGpsLon = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $contractId;
 
     /**
-     * @return string|null
-     */
-    public function getContractId(): ?string
-    {
-        return $this->contractId;
-    }
-
-    /**
-     * @param string $value
-     * @return Service
-     */
-    public function setContractId(string $value): Service
-    {
-        $this->contractId = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $contractLengthType;
 
     /**
-     * @return int|null
-     */
-    public function getContractLengthType(): ?int
-    {
-        return $this->contractLengthType;
-    }
-
-    /**
-     * @param int $value
-     * @return Service
-     */
-    public function setContractLengthType(int $value): Service
-    {
-        $this->contractLengthType = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $minimumContractLengthMonths;
 
     /**
-     * @return int|null
-     */
-    public function getMinimumContractLengthMonths(): ?int
-    {
-        return $this->minimumContractLengthMonths;
-    }
-
-    /**
-     * @param int $value
-     * @return Service
-     */
-    public function setMinimumContractLengthMonths(int $value): Service
-    {
-        $this->minimumContractLengthMonths = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $contractEndDate;
 
     /**
-     * @return string|null
-     */
-    public function getContractEndDate(): ?string
-    {
-        return $this->contractEndDate;
-    }
-
-    /**
-     * @param \DateTime $value
+     * @param \DateTime $date
      * @return Service
      */
-    public function setContractEndDate(\DateTime $value): Service
+    public function setContractEndDate(\DateTime $date): Service
     {
-        $this->contractEndDate = $value->format("c");
+        $this->contractEndDate = $date->format("c");
         return $this;
     }
 
-    // -----------------------------------------------------------------------------------------------------------------
-
     /**
      * @var int
-     * @post
+     * @Post
      */
     protected $discountType;
 
     /**
-     * @return int|null
-     */
-    public function getDiscountType(): ?int
-    {
-        return $this->discountType;
-    }
-
-    /**
-     * @param int $value
-     * @return Service
-     */
-    public function setDiscountType(int $value): Service
-    {
-        $this->discountType = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var float
-     * @post
+     * @Post
      */
     protected $discountValue;
 
     /**
-     * @return float|null
-     */
-    public function getDiscountValue(): ?float
-    {
-        return $this->discountValue;
-    }
-
-    /**
-     * @param float $value
-     * @return Service
-     */
-    public function setDiscountValue(float $value): Service
-    {
-        $this->discountValue = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
+     * @Post
      */
     protected $discountInvoiceLabel;
 
     /**
-     * @return string|null
-     */
-    public function getDiscountInvoiceLabel(): ?string
-    {
-        return $this->discountInvoiceLabel;
-    }
-
-    /**
-     * @param string $value
-     * @return Service
-     */
-    public function setDiscountInvoiceLabel(string $value): Service
-    {
-        $this->discountInvoiceLabel = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
+     * @Post
      */
     protected $discountFrom;
 
     /**
-     * @return string|null
-     */
-    public function getDiscountFrom(): ?string
-    {
-        return $this->discountFrom;
-    }
-
-    /**
-     * @param \DateTime $value
+     * @param \DateTime $date
      * @return Service
      */
-    public function setDiscountFrom(\DateTime $value): Service
+    public function setDiscountFrom(\DateTime $date): Service
     {
-        $this->discountFrom = $value->format("c");
+        $this->discountFrom = $date->format("c");
         return $this;
     }
 
-    // -----------------------------------------------------------------------------------------------------------------
-
     /**
      * @var string
-     * @post
+     * @Post
      */
     protected $discountTo;
 
     /**
-     * @return string|null
-     */
-    public function getDiscountTo(): ?string
-    {
-        return $this->discountTo;
-    }
-
-    /**
-     * @param \DateTime $value
+     * @param \DateTime $date
      * @return Service
      */
-    public function setDiscountTo(\DateTime $value): Service
+    public function setDiscountTo(\DateTime $date): Service
     {
-        $this->discountTo = $value->format("c");
+        $this->discountTo = $date->format("c");
         return $this;
     }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var bool
@@ -934,102 +479,22 @@ final class Service extends Endpoint
     protected $taxable;
 
     /**
-     * @return bool|null
-     */
-    public function getTaxable(): ?bool
-    {
-        return $this->taxable;
-    }
-
-    /**
-     * @param bool $value
-     * @return Service
-     */
-    public function setTaxable(bool $value): Service
-    {
-        $this->taxable = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
-     * @post
+     * @Post
      */
     protected $tax1Id;
 
     /**
-     * @return int|null
-     */
-    public function getTax1Id(): ?int
-    {
-        return $this->tax1Id;
-    }
-
-    /**
-     * @param int $value
-     * @return Service
-     */
-    public function setTax1Id(int $value): Service
-    {
-        $this->tax1Id = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
-     * @post
+     * @Post
      */
     protected $tax2Id;
 
     /**
-     * @return int|null
-     */
-    public function getTax2Id(): ?int
-    {
-        return $this->tax2Id;
-    }
-
-    /**
-     * @param int $value
-     * @return Service
-     */
-    public function setTax2Id(int $value): Service
-    {
-        $this->tax2Id = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
-     * @post
+     * @Post
      */
     protected $tax3Id;
-
-    /**
-     * @return int|null
-     */
-    public function getTax3Id(): ?int
-    {
-        return $this->tax3Id;
-    }
-
-    /**
-     * @param int $value
-     * @return Service
-     */
-    public function setTax3Id(int $value): Service
-    {
-        $this->tax3Id = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var int
@@ -1037,49 +502,9 @@ final class Service extends Endpoint
     protected $clientId;
 
     /**
-     * @return int|null
-     */
-    public function getClientId(): ?int
-    {
-        return $this->clientId;
-    }
-
-    /**
-     * @param int $value
-     * @return Service
-     */
-    public function setClientId(int $value): Service
-    {
-        $this->clientId = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
      */
     protected $status;
-
-    /**
-     * @return int|null
-     */
-    public function getStatus(): ?int
-    {
-        return $this->status;
-    }
-
-    /**
-     * @param int $value
-     * @return Service
-     */
-    public function setStatus(int $value): Service
-    {
-        $this->status = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var bool
@@ -1087,39 +512,9 @@ final class Service extends Endpoint
     protected $hasIndividualPrice;
 
     /**
-     * @return bool|null
-     */
-    public function getHasIndividualPrice(): ?bool
-    {
-        return $this->hasIndividualPrice;
-    }
-
-    /**
-     * @param bool $value
-     * @return Service
-     */
-    public function setHasIndividualPrice(bool $value): Service
-    {
-        $this->hasIndividualPrice = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var float
      */
     protected $totalPrice;
-
-    /**
-     * @return float|null
-     */
-    public function getTotalPrice(): ?float
-    {
-        return $this->totalPrice;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var string
@@ -1127,49 +522,9 @@ final class Service extends Endpoint
     protected $servicePlanName;
 
     /**
-     * @return string|null
-     */
-    public function getServicePlanName(): ?string
-    {
-        return $this->servicePlanName;
-    }
-
-    /**
-     * @param string $value
-     * @return Service
-     */
-    public function setServicePlanName(string $value): Service
-    {
-        $this->servicePlanName = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var float
      */
     protected $servicePlanPrice;
-
-    /**
-     * @return float|null
-     */
-    public function getServicePlanPrice(): ?float
-    {
-        return $this->servicePlanPrice;
-    }
-
-    /**
-     * @param float $value
-     * @return Service
-     */
-    public function setServicePlanPrice(float $value): Service
-    {
-        $this->servicePlanPrice = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var int
@@ -1177,49 +532,9 @@ final class Service extends Endpoint
     protected $servicePlanPeriod;
 
     /**
-     * @return int|null
-     */
-    public function getServicePlanPeriod(): ?int
-    {
-        return $this->servicePlanPeriod;
-    }
-
-    /**
-     * @param int $value
-     * @return Service
-     */
-    public function setServicePlanPeriod(int $value): Service
-    {
-        $this->servicePlanPeriod = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var float
      */
     protected $downloadSpeed;
-
-    /**
-     * @return float|null
-     */
-    public function getDownloadSpeed(): ?float
-    {
-        return $this->downloadSpeed;
-    }
-
-    /**
-     * @param float $value
-     * @return Service
-     */
-    public function setDownloadSpeed(float $value): Service
-    {
-        $this->downloadSpeed = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var float
@@ -1227,49 +542,9 @@ final class Service extends Endpoint
     protected $uploadSpeed;
 
     /**
-     * @return float|null
-     */
-    public function getUploadSpeed(): ?float
-    {
-        return $this->uploadSpeed;
-    }
-
-    /**
-     * @param float $value
-     * @return Service
-     */
-    public function setUploadSpeed(float $value): Service
-    {
-        $this->uploadSpeed = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string[]
      */
     protected $ipRanges;
-
-    /**
-     * @return string[]|null
-     */
-    public function getIpRanges(): ?array
-    {
-        return $this->ipRanges;
-    }
-
-    /**
-     * @param string[] $value
-     * @return Service
-     */
-    public function setIpRanges(array $value): Service
-    {
-        $this->ipRanges = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var string
@@ -1277,46 +552,8 @@ final class Service extends Endpoint
     protected $currencyCode;
 
     /**
-     * @return string|null
-     */
-    public function getCurrencyCode(): ?string
-    {
-        return $this->currencyCode;
-    }
-
-    /**
-     * @param string $value
-     * @return Service
-     */
-    public function setCurrencyCode(string $value): Service
-    {
-        $this->currencyCode = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var bool
      */
     protected $hasOutage;
-
-    /**
-     * @return bool|null
-     */
-    public function getHasOutage(): ?bool
-    {
-        return $this->hasOutage;
-    }
-
-    /**
-     * @param bool $value
-     * @return Service
-     */
-    public function setHasOutage(bool $value): Service
-    {
-        $this->hasOutage = $value;
-        return $this;
-    }
 
 }

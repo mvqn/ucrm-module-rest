@@ -3,9 +3,8 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
-use UCRM\REST\Endpoints\Collections\StateCollection;
-use UCRM\REST\Endpoints\Exceptions\EndpointException;
-use UCRM\REST\RestClient;
+use MVQN\Annotations\AnnotationReader;
+use MVQN\REST\RestClient;
 
 require_once __DIR__."/TestFunctions.php";
 
@@ -30,8 +29,11 @@ class _01_GeneralTests extends \PHPUnit\Framework\TestCase
             $dotenv->load();
         }
 
-        RestClient::baseUrl(getenv("REST_URL"));
-        RestClient::ucrmKey(getenv("REST_KEY"));
+        RestClient::setBaseUrl(getenv("REST_URL"));
+        RestClient::setHeaders([
+            "Content-Type: application/json",
+            "X-Auth-App-Key: ".getenv("REST_KEY")
+        ]);
     }
 
     // =================================================================================================================
@@ -56,13 +58,19 @@ class _01_GeneralTests extends \PHPUnit\Framework\TestCase
 
     public function testCountryGet()
     {
+        //AnnotationReader::cacheDir(__DIR__);
+
         $countries = Country::get();
         $this->assertNotNull($countries);
 
         echo ">>> Country::get()\n";
         echo "[\n";
         foreach($countries as $country)
-            echo "\t".$country.",\n";
+        {
+            /** @var Country $country */
+            $country->getName();
+            echo "\t" . $country . ",\n";
+        }
         echo "]\n";
         echo "\n";
     }
@@ -240,49 +248,7 @@ class _01_GeneralTests extends \PHPUnit\Framework\TestCase
 
 
 
-    // =================================================================================================================
-    // OTHER TESTS
-    // -----------------------------------------------------------------------------------------------------------------
 
-    // ...
-
-
-    public function testDocs()
-    {
-        try
-        {
-            /** @var Organization $organization */
-            $organization = Organization::getByDefault();
-
-            /** @var Client $client */
-            $client = (new Client())
-                ->setOrganization($organization)
-                ->setIsLead(true)
-                ->setClientType(Client::CLIENT_TYPE_COMMERCIAL)
-                //->setFirstName("Ronald")
-                //->setLastName("Reagan")
-                ->setInvoiceAddressSameAsContact(true)
-                ->setRegistrationDate(new \DateTime());
-
-            //$client = new Client();
-
-            if (!$client->validate("post", $missing))
-            {
-                print_r($missing);
-            }
-
-            $this->expectException(EndpointException::class);
-
-            $inserted = $client->insert();
-            echo $inserted;
-        }
-        catch(EndpointException $ee)
-        {
-            echo $ee->getMessage();
-            throw $ee;
-        }
-
-    }
 
 
 }

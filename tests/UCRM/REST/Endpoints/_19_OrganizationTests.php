@@ -5,7 +5,7 @@ namespace UCRM\REST\Endpoints;
 
 use MVQN\Collections\Collection;
 use UCRM\REST\Endpoints\Collections\OrganizationCollection;
-use UCRM\REST\RestClient;
+use MVQN\REST\RestClient;
 
 require_once __DIR__."/TestFunctions.php";
 
@@ -29,8 +29,11 @@ class _19_OrganizationTests extends \PHPUnit\Framework\TestCase
             $dotenv->load();
         }
 
-        RestClient::baseUrl(getenv("REST_URL"));
-        RestClient::ucrmKey(getenv("REST_KEY"));
+        RestClient::setBaseUrl(getenv("REST_URL"));
+        RestClient::setHeaders([
+            "Content-Type: application/json",
+            "X-Auth-App-Key: ".getenv("REST_KEY")
+        ]);
     }
 
     // =================================================================================================================
@@ -90,5 +93,7 @@ class _19_OrganizationTests extends \PHPUnit\Framework\TestCase
         echo $organization."\n";
         echo "\n";
     }
+
+
 
 }

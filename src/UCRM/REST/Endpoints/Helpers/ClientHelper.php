@@ -3,16 +3,7 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Helpers;
 
-// Core
-use MVQN\Annotations\AnnotationReaderException;
-use MVQN\Collections\CollectionException;
-use MVQN\Common\ArraysException;
-use MVQN\Common\PatternsException;
 
-// Exceptions
-use UCRM\REST\Endpoints\EndpointException;
-use UCRM\REST\RestClientException;
-use UCRM\REST\RestObjectException;
 
 // Collections
 use UCRM\REST\Endpoints\Collections\ClientCollection;
@@ -122,13 +113,7 @@ trait ClientHelper
      * @param string $lastName The Client's last name.
      * @return Client Returns a partially generated Client for further use before insertion.
      *
-     * @throws AnnotationReaderException
-     * @throws ArraysException
-     * @throws CollectionException
-     * @throws EndpointException
-     * @throws PatternsException
-     * @throws RestClientException
-     * @throws \ReflectionException
+     * @throws \Exception
      */
     public static function createResidential(string $firstName, string $lastName): Client
     {
@@ -154,13 +139,7 @@ trait ClientHelper
      * @param string $lastName The Client's last name.
      * @return Client Returns a partially generated Client for further use before insertion.
      *
-     * @throws AnnotationReaderException
-     * @throws ArraysException
-     * @throws CollectionException
-     * @throws EndpointException
-     * @throws PatternsException
-     * @throws RestClientException
-     * @throws \ReflectionException
+     * @throws \Exception
      */
     public static function createResidentialLead(string $firstName, string $lastName): Client
     {
@@ -187,13 +166,7 @@ trait ClientHelper
      * @param string $companyName The company name of this Commercial Client.
      * @return Client Returns a partially generated Client for further use before insertion.
      *
-     * @throws AnnotationReaderException
-     * @throws ArraysException
-     * @throws CollectionException
-     * @throws EndpointException
-     * @throws PatternsException
-     * @throws RestClientException
-     * @throws \ReflectionException
+     * @throws \Exception
      */
     public static function createCommercial(string $companyName): Client
     {
@@ -217,13 +190,7 @@ trait ClientHelper
      * @param string $companyName The company name of this Commercial Client.
      * @return Client Returns a partially generated Client for further use before insertion.
      *
-     * @throws AnnotationReaderException
-     * @throws ArraysException
-     * @throws CollectionException
-     * @throws EndpointException
-     * @throws PatternsException
-     * @throws RestClientException
-     * @throws \ReflectionException
+     * @throws \Exception
      */
     public static function createCommercialLead(string $companyName): Client
     {
@@ -251,13 +218,7 @@ trait ClientHelper
      * @param string $userIdent The Custom ID of the Client for which to retrieve.
      * @return Client|null Returns the matching Client or NULL, if none was found.
      *
-     * @throws AnnotationReaderException
-     * @throws ArraysException
-     * @throws CollectionException
-     * @throws EndpointException
-     * @throws PatternsException
-     * @throws RestClientException
-     * @throws \ReflectionException
+     * @throws \Exception
      */
     public static function getByUserIdent(string $userIdent): ?Client
     {
@@ -275,13 +236,7 @@ trait ClientHelper
      * @param string $value The Custom Attribute Value for which to search.
      * @return ClientCollection Returns a collection of Clients matching the given criteria.
      *
-     * @throws AnnotationReaderException
-     * @throws ArraysException
-     * @throws CollectionException
-     * @throws EndpointException
-     * @throws PatternsException
-     * @throws RestClientException
-     * @throws \ReflectionException
+     * @throws \Exception
      */
     public static function getByCustomAttribute(string $key, string $value): ClientCollection
     {
@@ -310,13 +265,7 @@ trait ClientHelper
      *
      * @return Client Returns the Client for which the invitation email was just sent.
      *
-     * @throws AnnotationReaderException
-     * @throws ArraysException
-     * @throws EndpointException
-     * @throws PatternsException
-     * @throws RestClientException
-     * @throws RestObjectException
-     * @throws \ReflectionException
+     * @throws \Exception
      */
     public function sendInvitationEmail(): Client
     {

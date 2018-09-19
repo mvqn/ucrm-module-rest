@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
+use MVQN\REST\Endpoints\EndpointObject;
+use MVQN\REST\Annotations\EndpointAnnotation as Endpoint;
+
 use UCRM\REST\Endpoints\Helpers\CountryHelper;
 
 /**
@@ -12,9 +15,14 @@ use UCRM\REST\Endpoints\Helpers\CountryHelper;
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
  *
- * @endpoints { "get": "/countries", "getById": "/countries/:id" }
+ * @Endpoint { "get": "/countries", "getById": "/countries/:id" }
+ *
+ * @method string|null getName()
+ *
+ * @method string|null getCode()
+ *
  */
-final class Country extends Endpoint
+final class Country extends EndpointObject
 {
     use CountryHelper;
 
@@ -27,27 +35,11 @@ final class Country extends Endpoint
      */
     protected $name;
 
-    /**
-     * @return string|null
-     */
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var string
      */
     protected $code;
-
-    /**
-     * @return string|null
-     */
-    public function getCode(): ?string
-    {
-        return $this->code;
-    }
 
 }

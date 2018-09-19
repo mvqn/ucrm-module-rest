@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
+use MVQN\REST\Endpoints\EndpointObject;
+use MVQN\REST\Annotations\EndpointAnnotation as Endpoint;
+
 use UCRM\REST\Endpoints\Helpers\ServiceDeviceHelper;
 
 /**
@@ -12,12 +15,55 @@ use UCRM\REST\Endpoints\Helpers\ServiceDeviceHelper;
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
  *
- * @endpoints { "get": "/clients/services/:serviceId/service-devices" }
- * @endpoints { "getById": "/clients/services/service-devices/:id" }
- * @endpoints { "post": "/clients/services/:serviceId/service-devices" }
- * @endpoints { "patch": "/clients/services/service-devices/:id" }
+ * @Endpoint { "get": "/clients/services/:serviceId/service-devices" }
+ * @Endpoint { "getById": "/clients/services/service-devices/:id" }
+ * @Endpoint { "post": "/clients/services/:serviceId/service-devices" }
+ * @Endpoint { "patch": "/clients/services/service-devices/:id" }
+ *
+ * @method int|null getServiceId()
+ * @method ServiceDevice setServiceId(int $id)
+ *
+ * @method int|null getInterfaceId()
+ * @method ServiceDevice setInterfaceId(int $id)
+ *
+ * @method int|null getVendorId()
+ * @method ServiceDevice setVendorId(int $id)
+ *
+ * @method string[]|null getIpRange()
+ * @method ServiceDevice setIpRange(array $range)
+ *
+ * @method string|null getMaxAddress()
+ * @method ServiceDevice setMaxAddress(string $address)
+ *
+ * @method string|null getLoginUsername()
+ * @method ServiceDevice setLoginUsername(string $username)
+ *
+ * @method int|null getSshPort()
+ * @method ServiceDevice setSshPort(int $port)
+ *
+ * @method bool|null getSendPingNotifications()
+ * @method ServiceDevice setSendPingNotifications(bool $notifications)
+ *
+ * @method int|null getPingNotificationUserId()
+ * @method ServiceDevice setPingNotificationUserId(int $id)
+ *
+ * @method bool|null getCreatePingStatistics()
+ * @method ServiceDevice setCreatePingStatistics(bool $statistics)
+ *
+ * @method bool|null getCreateSignalStatistics()
+ * @method ServiceDevice setCreateSignalStatistics(bool $statistics)
+ *
+ * @method int|null getQosEnabled()
+ * @method ServiceDevice setQosEnabled(int $enabled)
+ *
+ * @method int[]|null getQosDeviceIds()
+ * @method ServiceDevice setQosDeviceIds(array $ids)
+ *
+ * @method string|null getLoginPassword()
+ * @method ServiceDevice setLoginPassword(string $password)
+ *
  */
-final class ServiceDevice extends Endpoint
+final class ServiceDevice extends EndpointObject
 {
     use ServiceDeviceHelper;
 
@@ -39,359 +85,81 @@ final class ServiceDevice extends Endpoint
     protected $serviceId;
 
     /**
-     * @return int|null
-     */
-    public function getServiceId(): ?int
-    {
-        return $this->serviceId;
-    }
-
-    /**
-     * @param int $value
-     * @return ServiceDevice
-     */
-    public function setServiceId(int $value): ServiceDevice
-    {
-        $this->serviceId = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
-     * @post-required
+     * @PostRequired
      */
     protected $interfaceId;
 
     /**
-     * @return int|null
-     */
-    public function getInterfaceId(): ?int
-    {
-        return $this->interfaceId;
-    }
-
-    /**
-     * @param int $value
-     * @return ServiceDevice
-     */
-    public function setInterfaceId(int $value): ServiceDevice
-    {
-        $this->interfaceId = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
-     * @post-required
+     * @PostRequired
      */
     protected $vendorId;
 
     /**
-     * @return int|null
-     */
-    public function getVendorId(): ?int
-    {
-        return $this->vendorId;
-    }
-
-    /**
-     * @param int $value
-     * @return ServiceDevice
-     */
-    public function setVendorId(int $value): ServiceDevice
-    {
-        $this->vendorId = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string[]
-     * @post-required
+     * @PostRequired
      */
     protected $ipRange;
 
     /**
-     * @return string[]|null
-     */
-    public function getIpRange(): ?array
-    {
-        return $this->ipRange;
-    }
-
-    /**
-     * @param string[] $value
-     * @return ServiceDevice
-     */
-    public function setIpRange(array $value): ServiceDevice
-    {
-        $this->ipRange = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
+     * @Post
      */
     protected $macAddress;
 
     /**
-     * @return string|null
-     */
-    public function getMacAddress(): ?string
-    {
-        return $this->macAddress;
-    }
-
-    /**
-     * @param string $value
-     * @return ServiceDevice
-     */
-    public function setMacAddress(string $value): ServiceDevice
-    {
-        $this->macAddress = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
+     * @Post
      */
     protected $loginUsername;
 
     /**
-     * @return string|null
-     */
-    public function getLoginUsername(): ?string
-    {
-        return $this->loginUsername;
-    }
-
-    /**
-     * @param string $value
-     * @return ServiceDevice
-     */
-    public function setLoginUsername(string $value): ServiceDevice
-    {
-        $this->loginUsername = $value;
-        return $this;
-    }
-
-// -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
-     * @post
+     * @Post
      */
     protected $sshPort;
 
     /**
-     * @return int|null
-     */
-    public function getSshPort(): ?int
-    {
-        return $this->sshPort;
-    }
-
-    /**
-     * @param int $value
-     * @return ServiceDevice
-     */
-    public function setSshPort(int $value): ServiceDevice
-    {
-        $this->sshPort = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var bool
-     * @post
+     * @Post
      */
     protected $sendPingNotifications;
 
     /**
-     * @return bool|null
-     */
-    public function getSendPingNotifications(): ?bool
-    {
-        return $this->sendPingNotifications;
-    }
-
-    /**
-     * @param bool $value
-     * @return ServiceDevice
-     */
-    public function setSendPingNotifications(bool $value): ServiceDevice
-    {
-        $this->sendPingNotifications = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
-     * @post
+     * @Post
      */
     protected $pingNotificationUserId;
 
     /**
-     * @return int|null
-     */
-    public function getPingNotificationUserId(): ?int
-    {
-        return $this->pingNotificationUserId;
-    }
-
-    /**
-     * @param int $value
-     * @return ServiceDevice
-     */
-    public function setPingNotificationUserId(int $value): ServiceDevice
-    {
-        $this->pingNotificationUserId = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var bool
-     * @post
+     * @Post
      */
     protected $createPingStatistics;
 
     /**
-     * @return bool|null
-     */
-    public function getCreatePingStatistics(): ?bool
-    {
-        return $this->createPingStatistics;
-    }
-
-    /**
-     * @param bool $value
-     * @return ServiceDevice
-     */
-    public function setCreatePingStatistics(bool $value): ServiceDevice
-    {
-        $this->createPingStatistics = $value;
-        return $this;
-    }
-
-// -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var bool
-     * @post
+     * @Post
      */
     protected $createSignalStatistics;
 
     /**
-     * @return bool|null
-     */
-    public function getCreateSignalStatistics(): ?bool
-    {
-        return $this->createSignalStatistics;
-    }
-
-    /**
-     * @param bool $value
-     * @return ServiceDevice
-     */
-    public function setCreateSignalStatistics(bool $value): ServiceDevice
-    {
-        $this->createSignalStatistics = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
-     * @post
+     * @Post
      */
     protected $qosEnabled;
 
     /**
-     * @return int|null
-     */
-    public function getQosEnabled(): ?int
-    {
-        return $this->qosEnabled;
-    }
-
-    /**
-     * @param int $value
-     * @return ServiceDevice
-     */
-    public function setQosEnabled(int $value): ServiceDevice
-    {
-        $this->qosEnabled = $value;
-        return $this;
-    }
-
-// -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int[]
-     * @post
+     * @Post
      */
     protected $qosDeviceIds;
 
     /**
-     * @return int[]|null
-     */
-    public function getQosDeviceIds(): ?array
-    {
-        return $this->qosDeviceIds;
-    }
-
-    /**
-     * @param int[] $value
-     * @return ServiceDevice
-     */
-    public function setQosDeviceIds(array $value): ServiceDevice
-    {
-        $this->qosDeviceIds = $value;
-        return $this;
-    }
-
-// -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
+     * @Post
      */
     protected $loginPassword;
-
-    /**
-     * @return string|null
-     */
-    public function getLoginPassword(): ?string
-    {
-        return $this->loginPassword;
-    }
-
-    /**
-     * @param string $value
-     * @return ServiceDevice
-     */
-    public function setLoginPassword(string $value): ServiceDevice
-    {
-        $this->loginPassword = $value;
-        return $this;
-    }
 
 }

@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
+use MVQN\REST\Endpoints\EndpointObject;
+use MVQN\REST\Annotations\EndpointAnnotation as Endpoint;
+
 use UCRM\REST\Endpoints\Helpers\PaymentHelper;
 use UCRM\REST\Endpoints\Lookups\PaymentCover;
 
@@ -13,10 +16,57 @@ use UCRM\REST\Endpoints\Lookups\PaymentCover;
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
  *
- * @endpoints { "get": "/payments", "getById": "/payments/:id" }
- * @endpoints { "post": "/payments" }
+ * @Endpoint { "get": "/payments", "getById": "/payments/:id" }
+ * @Endpoint { "post": "/payments" }
+ *
+ * @method int|null getClientId()
+ * @method Payment setClientId(int $id)
+ *
+ * @method int|null getMethod()
+ * @method Payment setMethod(int $method)
+ *
+ * @method string|null getCheckNumber()
+ * @method Payment setCheckNumber(string $number)
+ *
+ * @method string|null getCreatedDate()
+ * @see    Payment::setCreatedDate()
+ *
+ * @method float|null getAmount()
+ * @method Payment setAmount(float $amount)
+ *
+ * @method string|null getCurrencyCode()
+ * @method Payment setCurrencyCode(string $code)
+ *
+ * @method string|null getNote()
+ * @method Payment setNote(string $note)
+ *
+ * @method string|null getReceiptSentDate()
+ *
+ * @method string|null getProviderName()
+ * @method Payment setProviderName(string $name)
+ *
+ * @method string|null getProviderPaymentId()
+ * @method Payment setProviderPaymentId(string $id)
+ *
+ * @method string|null getProviderPaymentTime()
+ *
+ * @method PaymentCover[]|null getPaymentCovers()
+ * @method Payment setPaymentCovers(array $covers)
+ *
+ * @method float|null getCreditAmount()
+ * @method Payment setCreditAmount(float $amount)
+ *
+ * @method int|null getInvoiceId()
+ * @see    Payment::setInvoiceId()
+ *
+ * @method int[]|null getInvoiceIds()
+ * @see    Payment::setInvoiceIds()
+ *
+ * @method bool|null getApplyToInvoicesAutomatically()
+ * @see    Payment::setApplyToInvoicesAutomatically()
+ *
  */
-final class Payment extends Endpoint
+final class Payment extends EndpointObject
 {
     use PaymentHelper;
 
@@ -50,99 +100,31 @@ final class Payment extends Endpoint
 
     /**
      * @var int
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $clientId;
 
     /**
-     * @return int|null
-     */
-    public function getClientId(): ?int
-    {
-        return $this->clientId;
-    }
-
-    /**
-     * @param int $value
-     * @return Payment
-     */
-    public function setClientId(int $value): Payment
-    {
-        $this->clientId = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
-     * @post-required
-     * @patch
+     * @PostRequired
+     * @Patch
      */
     protected $method;
 
     /**
-     * @return int
-     */
-    public function getMethod(): int
-    {
-        return $this->method;
-    }
-
-    /**
-     * @param int $value
-     * @return Payment
-     */
-    public function setMethod(int $value): Payment
-    {
-        $this->method = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $checkNumber;
 
     /**
-     * @return string|null
-     */
-    public function getCheckNumber(): ?string
-    {
-        return $this->checkNumber;
-    }
-
-    /**
-     * @param string $value
-     * @return Payment
-     */
-    public function setCheckNumber(string $value): Payment
-    {
-        $this->checkNumber = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $createdDate;
-
-    /**
-     * @return string|null
-     */
-    public function getCreatedDate(): ?string
-    {
-        return $this->createdDate;
-    }
 
     /**
      * @param \DateTime $value
@@ -154,101 +136,31 @@ final class Payment extends Endpoint
         return $this;
     }
 
-    // -----------------------------------------------------------------------------------------------------------------
-
     /**
      * @var float
-     * @post-required
-     * @patch
+     * @PostRequired
+     * @Patch
      */
     protected $amount;
 
     /**
-     * @return float|null
-     */
-    public function getAmount(): ?float
-    {
-        return $this->amount;
-    }
-
-    /**
-     * @param float $value
-     * @return Payment
-     */
-    public function setAmount(float $value): Payment
-    {
-        $this->amount = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $currencyCode;
 
     /**
-     * @return string|null
-     */
-    public function getCurrencyCode(): ?string
-    {
-        return $this->currencyCode;
-    }
-
-    /**
-     * @param string $value
-     * @return Payment
-     */
-    public function setCurrencyCode(string $value): Payment
-    {
-        $this->currencyCode = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $note;
-
-    /**
-     * @return string|null
-     */
-    public function getNote(): ?string
-    {
-        return $this->note;
-    }
-
-    /**
-     * @param string $value
-     * @return Payment
-     */
-    public function setNote(string $value): Payment
-    {
-        $this->note = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var string
      */
     protected $receiptSentDate;
-
-    /**
-     * @return string|null
-     */
-    public function getReceiptSentDate(): ?string
-    {
-        return $this->receiptSentDate;
-    }
 
     /**
      * @param \DateTime $value
@@ -260,76 +172,26 @@ final class Payment extends Endpoint
         return $this;
     }
 
-    // -----------------------------------------------------------------------------------------------------------------
-
     /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $providerName;
 
     /**
-     * @return string|null
-     */
-    public function getProviderName(): ?string
-    {
-        return $this->providerName;
-    }
-
-    /**
-     * @param string $value
-     * @return Payment
-     */
-    public function setProviderName(string $value): Payment
-    {
-        $this->providerName = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $providerPaymentId;
 
     /**
-     * @return string|null
-     */
-    public function getProviderPaymentId(): ?string
-    {
-        return $this->providerPaymentId;
-    }
-
-    /**
-     * @param string $value
-     * @return Payment
-     */
-    public function setProviderPaymentId(string $value): Payment
-    {
-        $this->providerPaymentId = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $providerPaymentTime;
-
-    /**
-     * @return string|null
-     */
-    public function getProviderPaymentTime(): ?string
-    {
-        return $this->providerPaymentTime;
-    }
 
     /**
      * @param \DateTime $value
@@ -341,32 +203,10 @@ final class Payment extends Endpoint
         return $this;
     }
 
-    // -----------------------------------------------------------------------------------------------------------------
-
     /**
      * @var PaymentCover[]
      */
     protected $paymentCovers;
-
-    /**
-     * @return PaymentCover[]|null
-     */
-    public function getPaymentCovers(): ?array
-    {
-        return $this->paymentCovers;
-    }
-
-    /**
-     * @param PaymentCover[] $value
-     * @return Payment
-     */
-    public function setPaymentCovers(array $value): Payment
-    {
-        $this->paymentCovers = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var float
@@ -374,46 +214,18 @@ final class Payment extends Endpoint
     protected $creditAmount;
 
     /**
-     * @return float|null
-     */
-    public function getCreditAmount(): ?float
-    {
-        return $this->creditAmount;
-    }
-
-    /**
-     * @param float $value
-     * @return Payment
-     */
-    public function setCreditAmount(float $value): Payment
-    {
-        $this->creditAmount = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      *
      * @deprecated
      */
     protected $invoiceId;
 
     /**
-     * @return int|null
-     * @deprecated
-     */
-    public function getInvoiceId(): ?int
-    {
-        return $this->invoiceId;
-    }
-
-    /**
      * @param int $value
      * @return Payment
+     *
      * @deprecated
      */
     public function setInvoiceId(int $value): Payment
@@ -423,22 +235,12 @@ final class Payment extends Endpoint
         return $this;
     }
 
-    // -----------------------------------------------------------------------------------------------------------------
-
     /**
      * @var int[]
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $invoiceIds;
-
-    /**
-     * @return int[]|null
-     */
-    public function getInvoiceIds(): ?array
-    {
-        return $this->invoiceIds;
-    }
 
     /**
      * @param int[] $value
@@ -451,22 +253,12 @@ final class Payment extends Endpoint
         return $this;
     }
 
-    // -----------------------------------------------------------------------------------------------------------------
-
     /**
      * @var bool
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $applyToInvoicesAutomatically;
-
-    /**
-     * @return bool|null
-     */
-    public function getApplyToInvoicesAutomatically(): ?bool
-    {
-        return $this->applyToInvoicesAutomatically;
-    }
 
     /**
      * @param bool $value

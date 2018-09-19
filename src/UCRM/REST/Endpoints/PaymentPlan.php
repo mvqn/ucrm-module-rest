@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
-
+use MVQN\REST\Endpoints\EndpointObject;
+use MVQN\REST\Annotations\EndpointAnnotation as Endpoint;
 
 use UCRM\REST\Endpoints\Helpers\PaymentPlanHelper;
 
@@ -14,10 +15,49 @@ use UCRM\REST\Endpoints\Helpers\PaymentPlanHelper;
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
  *
- * @endpoints { "get": "/payment-plans", "getById": "/payment-plans/:id" }
- * @endpoints { "post": "/payment-plans" }
+ * @Endpoint { "get": "/payment-plans", "getById": "/payment-plans/:id" }
+ * @Endpoint { "post": "/payment-plans" }
+ *
+ * @method string|null getName()
+ * @method PaymentPlan setName(string $name)
+ *
+ * @method string|null getStatus()
+ * @method PaymentPlan setStatus(string $status)
+ *
+ * @method string|null getCreatedDate()
+ *
+ * @method string|null getCanceledDate()
+ *
+ * @method string|null getNextPaymentDate()
+ *
+ * @method bool|null getActive()
+ * @method PaymentPlan setActive(bool $active)
+ *
+ * @method string|null getProvider()
+ * @method PaymentPlan setProvider(string $provider)
+ *
+ * @method string|null getProviderPlanId()
+ * @method PaymentPlan setProviderPlanId(string $id)
+ *
+ * @method string|null getProviderSubscriptionId()
+ * @method PaymentPlan setProviderSubscriptionId(string $id)
+ *
+ * @method int|null getClientId()
+ * @method PaymentPlan setClientId(int $id)
+ *
+ * @method int|null getCurrencyId()
+ * @method PaymentPlan setCurrencyId(int $id)
+ *
+ * @method float|null getAmount()
+ * @method PaymentPlan setAmount(float $amount)
+ *
+ * @method int|null getPeriod()
+ * @method PaymentPlan setPeriod(int $period)
+ *
+ * @method string|null getStartDate()
+ *
  */
-final class PaymentPlan extends Endpoint
+final class PaymentPlan extends EndpointObject
 {
     use PaymentPlanHelper;
 
@@ -50,61 +90,14 @@ final class PaymentPlan extends Endpoint
     protected $name;
 
     /**
-     * @return string|null
-     */
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $value
-     * @return PaymentPlan
-     */
-    public function setName(string $value): PaymentPlan
-    {
-        $this->name = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
      */
     protected $status;
 
     /**
-     * @return string|null
-     */
-    public function getStatus(): ?string
-    {
-        return $this->status;
-    }
-
-    /**
-     * @param string $value
-     * @return PaymentPlan
-     */
-    public function setStatus(string $value): PaymentPlan
-    {
-        $this->status = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-    /**
      * @var string
      */
     protected $createdDate;
-
-    /**
-     * @return string|null
-     */
-    public function getCreatedDate(): ?string
-    {
-        return $this->createdDate;
-    }
 
     /**
      * @param \DateTime $value
@@ -116,32 +109,20 @@ final class PaymentPlan extends Endpoint
         return $this;
     }
 
-    // -----------------------------------------------------------------------------------------------------------------
-
     /**
      * @var string
      */
     protected $canceledDate;
 
     /**
-     * @return string|null
-     */
-    public function getCanceledDate(): ?string
-    {
-        return $this->canceledDate;
-    }
-
-    /**
-     * @param \DateTime $value
+     * @param \DateTime $date
      * @return PaymentPlan
      */
-    public function setCanceledDate(\DateTime $value): PaymentPlan
+    public function setCanceledDate(\DateTime $date): PaymentPlan
     {
-        $this->canceledDate = $value->format("c");
+        $this->canceledDate = $date->format("c");
         return $this;
     }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var string
@@ -149,24 +130,14 @@ final class PaymentPlan extends Endpoint
     protected $nextPaymentDate;
 
     /**
-     * @return string|null
-     */
-    public function getNextPaymentDate(): ?string
-    {
-        return $this->nextPaymentDate;
-    }
-
-    /**
-     * @param \DateTime $value
+     * @param \DateTime $date
      * @return PaymentPlan
      */
-    public function setNextPaymentDate(\DateTime $value): PaymentPlan
+    public function setNextPaymentDate(\DateTime $date): PaymentPlan
     {
-        $this->nextPaymentDate = $value->format("c");
+        $this->nextPaymentDate = $date->format("c");
         return $this;
     }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var bool
@@ -174,49 +145,10 @@ final class PaymentPlan extends Endpoint
     protected $active;
 
     /**
-     * @return bool|null
-     */
-    public function getActive(): ?bool
-    {
-        return $this->active;
-    }
-
-    /**
-     * @param bool $value
-     * @return PaymentPlan
-     */
-    public function setActive(bool $value): PaymentPlan
-    {
-        $this->active = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-    /**
      * @var string
      * @post-required
      */
     protected $provider;
-
-    /**
-     * @return string|null
-     */
-    public function getProvider(): ?string
-    {
-        return $this->provider;
-    }
-
-    /**
-     * @param string $value
-     * @return PaymentPlan
-     */
-    public function setProvider(string $value): PaymentPlan
-    {
-        $this->provider = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var string
@@ -225,50 +157,10 @@ final class PaymentPlan extends Endpoint
     protected $providerPlanId;
 
     /**
-     * @return string|null
-     */
-    public function getProviderPlanId(): ?string
-    {
-        return $this->providerPlanId;
-    }
-
-    /**
-     * @param string $value
-     * @return PaymentPlan
-     */
-    public function setProviderPlanId(string $value): PaymentPlan
-    {
-        $this->providerPlanId = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
      * @post
      */
     protected $providerSubscriptionId;
-
-    /**
-     * @return string|null
-     */
-    public function getProviderSubscriptionId(): ?string
-    {
-        return $this->providerSubscriptionId;
-    }
-
-    /**
-     * @param string $value
-     * @return PaymentPlan
-     */
-    public function setProviderSubscriptionId(string $value): PaymentPlan
-    {
-        $this->providerSubscriptionId = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var int
@@ -277,75 +169,16 @@ final class PaymentPlan extends Endpoint
     protected $clientId;
 
     /**
-     * @return int|null
-     */
-    public function getClientId(): ?int
-    {
-        return $this->clientId;
-    }
-
-    /**
-     * @param int $value
-     * @return PaymentPlan
-     */
-    public function setClientId(int $value): PaymentPlan
-    {
-        $this->clientId = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
      * @post-required
      */
     protected $currencyId;
 
     /**
-     * @return int|null
-     */
-    public function getCurrencyId(): ?int
-    {
-        return $this->currencyId;
-    }
-
-    /**
-     * @param int $value
-     * @return PaymentPlan
-     */
-    public function setCurrencyId(int $value): PaymentPlan
-    {
-        $this->currencyId = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-    /**
      * @var float
      * @post-required
      */
     protected $amount;
-
-    /**
-     * @return float|null
-     */
-    public function getAmount(): ?float
-    {
-        return $this->amount;
-    }
-
-    /**
-     * @param float $value
-     * @return PaymentPlan
-     */
-    public function setAmount(float $value): PaymentPlan
-    {
-        $this->amount = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var int
@@ -354,38 +187,10 @@ final class PaymentPlan extends Endpoint
     protected $period;
 
     /**
-     * @return int|null
-     */
-    public function getPeriod(): ?int
-    {
-        return $this->period;
-    }
-
-    /**
-     * @param int $value
-     * @return PaymentPlan
-     */
-    public function setPeriod(int $value): PaymentPlan
-    {
-        $this->period = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
      * @post
      */
     protected $startDate;
-
-    /**
-     * @return string|null
-     */
-    public function getStartDate(): ?string
-    {
-        return $this->startDate;
-    }
 
     /**
      * @param \DateTime $value

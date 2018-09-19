@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
+use MVQN\REST\Endpoints\EndpointObject;
+use MVQN\REST\Annotations\EndpointAnnotation as Endpoint;
+
 /**
  * Class Vendor
  *
@@ -10,10 +13,15 @@ namespace UCRM\REST\Endpoints;
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
  *
- * @endpoints { "get": "/vendors", "getById": "/vendors/:id" }
+ * @Endpoint { "get": "/vendors", "getById": "/vendors/:id" }
+ *
+ * @method string|null getName()
+ *
  */
-final class Vendor extends Endpoint
+final class Vendor extends EndpointObject
 {
+    use Helpers\VendorHelper;
+
     // =================================================================================================================
     // PROPERTIES
     // -----------------------------------------------------------------------------------------------------------------
@@ -22,13 +30,5 @@ final class Vendor extends Endpoint
      * @var string
      */
     protected $name;
-
-    /**
-     * @return string|null
-     */
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
 
 }

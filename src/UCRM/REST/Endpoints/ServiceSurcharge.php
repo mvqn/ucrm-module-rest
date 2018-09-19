@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
+use MVQN\REST\Endpoints\EndpointObject;
+use MVQN\REST\Annotations\EndpointAnnotation as Endpoint;
+
 use UCRM\REST\Endpoints\Helpers\ServiceSurchargeHelper;
 
 /**
@@ -12,12 +15,28 @@ use UCRM\REST\Endpoints\Helpers\ServiceSurchargeHelper;
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
  *
- * @endpoints { "get": "/clients/services/:serviceId/service-surcharges" }
- * @endpoints { "getById": "/clients/services/service-surcharges/:id" }
- * @endpoints { "post": "/clients/services/:serviceId/service-surcharges" }
- * @endpoints { "patch": "/clients/services/service-surcharges/:id" }
+ * @Endpoint { "get": "/clients/services/:serviceId/service-surcharges" }
+ * @Endpoint { "getById": "/clients/services/service-surcharges/:id" }
+ * @Endpoint { "post": "/clients/services/:serviceId/service-surcharges" }
+ * @Endpoint { "patch": "/clients/services/service-surcharges/:id" }
+ *
+ * @method int|null getServiceId()
+ * @method ServiceSurcharge setServiceId(int $id)
+ *
+ * @method int|null getSurchargeId()
+ * @method ServiceSurcharge setSurchargeId(int $id)
+ *
+ * @method string|null getInvoiceLabel()
+ * @method ServiceSurcharge setInvoiceLabel(string $label)
+ *
+ * @method float|null getPrice()
+ * @method ServiceSurcharge setPrice(float $price)
+ *
+ * @method bool|null getTaxable()
+ * @method ServiceSurcharge setTaxable(bool $taxable)
+ *
  */
-final class ServiceSurcharge extends Endpoint
+final class ServiceSurcharge extends EndpointObject
 {
     use ServiceSurchargeHelper;
 
@@ -30,125 +49,31 @@ final class ServiceSurcharge extends Endpoint
     protected $serviceId;
 
     /**
-     * @return int|null
-     */
-    public function getServiceId(): ?int
-    {
-        return $this->serviceId;
-    }
-
-    /**
-     * @param int $value
-     * @return ServiceSurcharge
-     */
-    public function setServiceId(int $value): ServiceSurcharge
-    {
-        $this->serviceId = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-    /**
      * @var int
-     * @post-required
-     * @patch
+     * @PostRequired
+     * @Patch
      */
     protected $surchargeId;
 
     /**
-     * @return int|null
-     */
-    public function getSurchargeId(): ?int
-    {
-        return $this->surchargeId;
-    }
-
-    /**
-     * @param int $value
-     * @return ServiceSurcharge
-     */
-    public function setSurchargeId(int $value): ServiceSurcharge
-    {
-        $this->surchargeId = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $invoiceLabel;
 
     /**
-     * @return string|null
-     */
-    public function getInvoiceLabel(): ?string
-    {
-        return $this->invoiceLabel;
-    }
-
-    /**
-     * @param string $value
-     * @return ServiceSurcharge
-     */
-    public function setInvoiceLabel(string $value): ServiceSurcharge
-    {
-        $this->invoiceLabel = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-    /**
      * @var float
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $price;
 
     /**
-     * @return float|null
-     */
-    public function getPrice(): ?float
-    {
-        return $this->price;
-    }
-
-    /**
-     * @param float $value
-     * @return ServiceSurcharge
-     */
-    public function setPrice(float $value): ServiceSurcharge
-    {
-        $this->price = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-    /**
      * @var bool
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $taxable;
-
-    /**
-     * @return bool|null
-     */
-    public function getTaxable(): ?bool
-    {
-        return $this->taxable;
-    }
-
-    /**
-     * @param bool $value
-     * @return ServiceSurcharge
-     */
-    public function setTaxable(bool $value): ServiceSurcharge
-    {
-        $this->taxable = $value;
-        return $this;
-    }
 
 }

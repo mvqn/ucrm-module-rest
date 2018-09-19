@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
+use MVQN\REST\Endpoints\EndpointObject;
+use MVQN\REST\Annotations\EndpointAnnotation as Endpoint;
+
 /**
  * Class ServiceIP
  *
@@ -10,12 +13,19 @@ namespace UCRM\REST\Endpoints;
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
  *
- * @endpoints { "get": "/clients/services/service-devices/:serviceDeviceId/service-ips" }
- * @endpoints { "getById": "/clients/services/service-devices/service-ips/:id" }
- * @endpoints { "post": "/clients/services/service-devices/:serviceDeviceId/service-ips" }
- * @endpoints { "delete": "/clients/services/service-devices/service-ips/:id" }
+ * @Endpoint { "get": "/clients/services/service-devices/:serviceDeviceId/service-ips" }
+ * @Endpoint { "getById": "/clients/services/service-devices/service-ips/:id" }
+ * @Endpoint { "post": "/clients/services/service-devices/:serviceDeviceId/service-ips" }
+ * @Endpoint { "delete": "/clients/services/service-devices/service-ips/:id" }
+ *
+ * @method int|null getServiceDeviceId()
+ * @method ServiceIP setServiceDeviceId(int $id)
+ *
+ * @method string|null getIpRange()
+ * @method ServiceIP setIpRange(string $range)
+ *
  */
-final class ServiceIP extends Endpoint
+final class ServiceIP extends EndpointObject
 {
 
     // =================================================================================================================
@@ -28,47 +38,9 @@ final class ServiceIP extends Endpoint
     protected $serviceDeviceId;
 
     /**
-     * @return int|null
-     */
-    public function getServiceDeviceId(): ?int
-    {
-        return $this->serviceDeviceId;
-    }
-
-    /**
-     * @param int $value
-     * @return $this->serviceDeviceIdIP
-     */
-    public function setServiceDeviceId(int $value): ServiceIP
-    {
-        $this->serviceDeviceId = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post-required
+     * @PostRequired
      */
     protected $ipRange;
-
-    /**
-     * @return string|null
-     */
-    public function getIpRange(): ?string
-    {
-        return $this->ipRange;
-    }
-
-    /**
-     * @param string $value
-     * @return ServiceIP
-     */
-    public function setIpRange(string $value): ServiceIP
-    {
-        $this->ipRange = $value;
-        return $this;
-    }
 
 }

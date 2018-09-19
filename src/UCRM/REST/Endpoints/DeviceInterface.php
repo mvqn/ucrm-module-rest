@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
+use MVQN\REST\Endpoints\EndpointObject;
+use MVQN\REST\Annotations\EndpointAnnotation as Endpoint;
+
 /**
  * Class DeviceInterface
  *
@@ -10,9 +13,38 @@ namespace UCRM\REST\Endpoints;
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
  *
- * @endpoints { "get": "/devices/:deviceId/device-interfaces", "getById": "/devices/device-interfaces/:id" }
+ * @Endpoint { "get": "/devices/:deviceId/device-interfaces", "getById": "/devices/device-interfaces/:id" }
+ *
+ * @method int|null getDeviceId()
+ *
+ * @method string|null getName()
+ *
+ * @method int|null getType()
+ *
+ * @method string|null getMacAddress()
+ *
+ * @method bool|null getAllowClientConnection()
+ *
+ * @method bool|null getEnabled()
+ *
+ * @method string|null getNotes()
+ *
+ * @method string|null getSsid()
+ *
+ * @method int|null getFrequency()
+ *
+ * @method int|null getPolarization()
+ *
+ * @method int|null getEncryptionType()
+ *
+ * @method string|null getEncryptionKeyWpa()
+ *
+ * @method string|null getEncryptionKeyWpa2()
+ *
+ * @method string[]|null getIpRanges()
+ *
  */
-final class DeviceInterface extends Endpoint
+final class DeviceInterface extends EndpointObject
 {
 
     // =================================================================================================================
@@ -72,29 +104,9 @@ final class DeviceInterface extends Endpoint
     protected $deviceId;
 
     /**
-     * @return int|null
-     */
-    public function getDeviceId(): ?int
-    {
-        return $this->deviceId;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
      */
     protected $name;
-
-    /**
-     * @return string|null
-     */
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var int
@@ -102,29 +114,9 @@ final class DeviceInterface extends Endpoint
     protected $type;
 
     /**
-     * @return int|null
-     */
-    public function getType(): ?int
-    {
-        return $this->type;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
      */
     protected $macAddress;
-
-    /**
-     * @return string|null
-     */
-    public function getMacAddress(): ?string
-    {
-        return $this->macAddress;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var bool
@@ -132,29 +124,9 @@ final class DeviceInterface extends Endpoint
     protected $allowClientConnection;
 
     /**
-     * @return bool|null
-     */
-    public function getAllowClientConnection(): ?bool
-    {
-        return $this->allowClientConnection;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var bool
      */
     protected $enabled;
-
-    /**
-     * @return bool|null
-     */
-    public function getEnabled(): ?bool
-    {
-        return $this->enabled;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var string
@@ -162,29 +134,9 @@ final class DeviceInterface extends Endpoint
     protected $notes;
 
     /**
-     * @return string|null
-     */
-    public function getNotes(): ?string
-    {
-        return $this->notes;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
      */
     protected $ssid;
-
-    /**
-     * @return string|null
-     */
-    public function getSsid(): ?string
-    {
-        return $this->ssid;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var int
@@ -192,29 +144,9 @@ final class DeviceInterface extends Endpoint
     protected $frequency;
 
     /**
-     * @return int|null
-     */
-    public function getFrequency(): ?int
-    {
-        return $this->frequency;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
      */
     protected $polarization;
-
-    /**
-     * @return int|null
-     */
-    public function getPolarization(): ?int
-    {
-        return $this->polarization;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var int
@@ -222,29 +154,9 @@ final class DeviceInterface extends Endpoint
     protected $encryptionType;
 
     /**
-     * @return int|null
-     */
-    public function getEncryptionType(): ?int
-    {
-        return $this->encryptionType;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
      */
     protected $encryptionKeyWpa;
-
-    /**
-     * @return string|null
-     */
-    public function getEncryptionKeyWpa(): ?string
-    {
-        return $this->encryptionKeyWpa;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var string
@@ -252,26 +164,8 @@ final class DeviceInterface extends Endpoint
     protected $encryptionKeyWpa2;
 
     /**
-     * @return string|null
-     */
-    public function getEncryptionKeyWpa2(): ?string
-    {
-        return $this->encryptionKeyWpa2;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string[]
      */
     protected $ipRanges;
-
-    /**
-     * @return string[]|null
-     */
-    public function getIpRanges(): ?array
-    {
-        return $this->ipRanges;
-    }
 
 }

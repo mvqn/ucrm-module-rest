@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
+use MVQN\REST\Endpoints\EndpointObject;
+use MVQN\REST\Annotations\EndpointAnnotation as Endpoint;
+
 use UCRM\REST\Endpoints\Helpers\ClientLogHelper;
 
 
@@ -13,10 +16,23 @@ use UCRM\REST\Endpoints\Helpers\ClientLogHelper;
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
  *
- * @endpoints { "get": "/client-logs", "getById": "/client-logs/:id" }
- * @endpoints { "post": "/client-logs" }
+ * @Endpoint { "get": "/client-logs", "getById": "/client-logs/:id" }
+ * @Endpoint { "post": "/client-logs" }
+ *
+ * @method int|null getClientId()
+ * @method ClientLog setClientId(int $id)
+ *
+ * @method string|null getMessage()
+ * @method ClientLog setMessage(string $message)
+ *
+ * @method int|null getUserId()
+ * @method ClientLog setUserId(int $id)
+ *
+ * @method string|null getCreatedDate()
+ * @see ClientLog::setCreatedDate()
+ *
  */
-final class ClientLog extends Endpoint
+final class ClientLog extends EndpointObject
 {
     use ClientLogHelper;
 
@@ -26,100 +42,32 @@ final class ClientLog extends Endpoint
 
     /**
      * @var int
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      *
      */
     protected $clientId;
 
     /**
-     * @return int|null
-     */
-    public function getClientId(): ?int
-    {
-        return $this->clientId;
-    }
-
-    /**
-     * @param int $value
-     * @return ClientLog Returns the ClientLog instance, for method chaining purposes.
-     */
-    public function setClientId(int $value): ClientLog
-    {
-        $this->clientId = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $message;
 
     /**
-     * @return string|null
-     */
-    public function getMessage(): ?string
-    {
-        return $this->message;
-    }
-
-    /**
-     * @param string $value
-     * @return ClientLog Returns the ClientLog instance, for method chaining purposes.
-     */
-    public function setMessage(string $value): ClientLog
-    {
-        $this->message = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $userId;
 
     /**
-     * @return int|null
-     */
-    public function getUserId(): ?int
-    {
-        return $this->userId;
-    }
-
-    /**
-     * @param int $value
-     * @return ClientLog Returns the ClientLog instance, for method chaining purposes.
-     */
-    public function setUserId(int $value): ClientLog
-    {
-        $this->userId = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $createdDate;
-
-    /**
-     * @return string|null
-     */
-    public function getCreatedDate(): ?string
-    {
-        return $this->createdDate;
-    }
 
     /**
      * @param \DateTime $value

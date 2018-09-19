@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
+use MVQN\REST\Endpoints\EndpointObject;
+use MVQN\REST\Annotations\EndpointAnnotation as Endpoint;
+
 use UCRM\REST\Endpoints\Helpers\UserHelper;
 
 /**
@@ -12,9 +15,20 @@ use UCRM\REST\Endpoints\Helpers\UserHelper;
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
  *
- * @endpoints { "get": "/users/admins", "getById": "/users/admins/:id" }
+ * @Endpoint { "get": "/users/admins", "getById": "/users/admins/:id" }
+ *
+ * @method string|null getEmail()
+ *
+ * @method string|null getUsername()
+ *
+ * @method string|null getFirstName()
+ *
+ * @method string|null getLastName()
+ *
+ * @method string|null getAvatarColor()
+ *
  */
-final class User extends Endpoint
+final class User extends EndpointObject
 {
     use UserHelper;
 
@@ -28,29 +42,9 @@ final class User extends Endpoint
     protected $email;
 
     /**
-     * @return string|null
-     */
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
      */
     protected $username;
-
-    /**
-     * @return string|null
-     */
-    public function getUsername(): ?string
-    {
-        return $this->username;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var string
@@ -58,37 +52,13 @@ final class User extends Endpoint
     protected $firstName;
 
     /**
-     * @return string|null
+     * @var string
      */
-    public function getFirstName(): ?string
-    {
-        return $this->firstName;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /** @var string  */
     protected $lastName;
 
     /**
-     * @return string|null
+     * @var string
      */
-    public function getLastName(): ?string
-    {
-        return $this->lastName;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /** @var string  */
     protected $avatarColor;
-
-    /**
-     * @return string|null
-     */
-    public function getAvatarColor(): ?string
-    {
-        return $this->avatarColor;
-    }
 
 }

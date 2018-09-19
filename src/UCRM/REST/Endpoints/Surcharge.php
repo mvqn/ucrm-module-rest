@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
+use MVQN\REST\Endpoints\EndpointObject;
+use MVQN\REST\Annotations\EndpointAnnotation as Endpoint;
+
 use UCRM\REST\Endpoints\Helpers\SurchargeHelper;
 
 /**
@@ -12,12 +15,24 @@ use UCRM\REST\Endpoints\Helpers\SurchargeHelper;
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
  *
- * @endpoints { "get": "/surcharges" }
- * @endpoints { "getById": "/surcharges/:id" }
- * @endpoints { "post": "/surcharges" }
- * @endpoints { "patch": "/surcharges/:id" }
+ * @Endpoint { "get": "/surcharges", "getById": "/surcharges/:id" }
+ * @Endpoint { "post": "/surcharges" }
+ * @Endpoint { "patch": "/surcharges/:id" }
+ *
+ * @method string|null getName()
+ * @method Surcharge setName(string $name)
+ *
+ * @method string|null getInvoiceLabel()
+ * @method Surcharge setInvoiceLabel(string $label)
+ *
+ * @method float|null getPrice()
+ * @method Surcharge setPrice(float $price)
+ *
+ * @method bool|null getTaxable()
+ * @method Surcharge setTaxable(bool $taxable)
+ *
  */
-final class Surcharge extends Endpoint
+final class Surcharge extends EndpointObject
 {
     use SurchargeHelper;
 
@@ -27,108 +42,30 @@ final class Surcharge extends Endpoint
 
     /**
      * @var string
-     * @post-required
-     * @patch-required
+     * @PostRequired
+     * @PatchRequired
      */
     protected $name;
 
     /**
-     * @return string|null
-     */
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $value
-     * @return Surcharge
-     */
-    public function setName(string $value): Surcharge
-    {
-        $this->name = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $invoiceLabel;
 
     /**
-     * @return string|null
-     */
-    public function getInvoiceLabel(): ?string
-    {
-        return $this->invoiceLabel;
-    }
-
-    /**
-     * @param string $value
-     * @return Surcharge
-     */
-    public function setInvoiceLabel(string $value): Surcharge
-    {
-        $this->invoiceLabel = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var float
-     * @post-required
-     * @patch-required
+     * @PostRequired
+     * @PatchRequired
      */
     protected $price;
 
     /**
-     * @return float|null
-     */
-    public function getPrice(): ?float
-    {
-        return $this->price;
-    }
-
-    /**
-     * @param float $value
-     * @return Surcharge
-     */
-    public function setPrice(float $value): Surcharge
-    {
-        $this->price = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var bool
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $taxable;
-
-    /**
-     * @return bool|null
-     */
-    public function getTaxable(): ?bool
-    {
-        return $this->taxable;
-    }
-
-    /**
-     * @param bool $value
-     * @return Surcharge
-     */
-    public function setTaxable(bool $value): Surcharge
-    {
-        $this->taxable = $value;
-        return $this;
-    }
 
 }

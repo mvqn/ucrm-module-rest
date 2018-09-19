@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
+use MVQN\REST\Endpoints\EndpointObject;
+
+
 class TestFunctions extends \PHPUnit\Framework\TestCase
 {
 
@@ -10,7 +13,7 @@ class TestFunctions extends \PHPUnit\Framework\TestCase
     // GLOBAL TESTS
     // -----------------------------------------------------------------------------------------------------------------
 
-    public static function testAllGetters(Endpoint $endpoint): bool
+    public static function testAllGetters(EndpointObject $endpoint): bool
     {
         $class = get_class($endpoint);
 

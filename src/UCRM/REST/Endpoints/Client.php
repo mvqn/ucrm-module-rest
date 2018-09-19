@@ -3,21 +3,19 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
-use MVQN\Collections\CollectionException;
+use MVQN\REST\Endpoints\EndpointObject;
+use MVQN\REST\Annotations\EndpointAnnotation as Endpoint;
 
-use UCRM\REST\Endpoints\Lookups\{
-    ClientBankAccount,
-    ClientContact,
-    ClientContactAttribute,
-    ClientTag
-};
+use UCRM\REST\Endpoints\Lookups\ClientBankAccount;
+use UCRM\REST\Endpoints\Lookups\ClientContact;
+use UCRM\REST\Endpoints\Lookups\ClientContactAttribute;
+use UCRM\REST\Endpoints\Lookups\ClientTag;
 
-use UCRM\REST\Endpoints\Collections\{
-    ClientBankAccountCollection,
-    ClientContactCollection,
-    ClientContactAttributeCollection,
-    ClientTagCollection
-};
+use UCRM\REST\Endpoints\Collections\ClientBankAccountCollection;
+use UCRM\REST\Endpoints\Collections\ClientContactCollection;
+use UCRM\REST\Endpoints\Collections\ClientContactAttributeCollection;
+use UCRM\REST\Endpoints\Collections\ClientTagCollection;
+
 
 /**
  * Class Client
@@ -26,12 +24,145 @@ use UCRM\REST\Endpoints\Collections\{
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
  *
- * @endpoints { "get": "/clients", "getById": "/clients/:id" }
- * @endpoints { "post": "/clients" }
- * @endpoints { "patch": "/clients/:id" }
+ * @Endpoint { "get": "/clients", "getById": "/clients/:id" }
+ * @Endpoint { "post": "/clients" }
+ * @Endpoint { "patch": "/clients/:id" }
+ *
+ * @method string|null getUserIdent()
+ * @method Client setUserIdent(string $ident)
+ *
+ * @method int|null getOrganizationId()
+ * @method Client setOrganizationId(int $id)
+ *
+ * @method bool|null getIsLead()
+ * @method Client setIsLead(bool $lead)
+ *
+ * @method int|null getClientType()
+ * @method Client setClientType(int $type)
+ *
+ * @method string|null getCompanyName()
+ * @method Client setCompanyName(string $name)
+ *
+ * @method string|null getCompanyRegistrationNumber()
+ * @method Client setCompanyRegistrationNumber(string $number)
+ *
+ * @method string|null getCompanyTaxId()
+ * @method Client setCompanyTaxId(string $id)
+ *
+ * @method string|null getCompanyWebsite()
+ * @method Client setCompanyWebsite(string $website)
+ *
+ * @method string|null getCompanyContactFirstName()
+ * @method Client setCompanyContactFirstName(string $first)
+ *
+ * @method string|null getCompanyContactLastName()
+ * @method Client setCompanyContactLastName(string $last)
+ *
+ * @method string|null getFirstName()
+ * @method Client setFirstName(string $first)
+ *
+ * @method string|null getLastName()
+ * @method Client setLastName(string $last)
+ *
+ * @method string|null getStreet1()
+ * @method Client setStreet1(string $street1)
+ *
+ * @method string|null getStreet2()
+ * @method Client setStreet2(string $street2)
+ *
+ * @method string|null getCity()
+ * @method Client setCity(string $city)
+ *
+ * @method int|null getCountryId()
+ * @method Client setCountryId(int $id)
+ *
+ * @method int|null getStateId()
+ * @method Client setStateId(int $id)
+ *
+ * @method string|null getZipCode()
+ * @method Client setZipCode(string $zip)
+ *
+ * @method bool|null getInvoiceAddressSameAsContact()
+ * @method Client setInvoiceAddressSameAsContact(bool $same)
+ *
+ * @method string|null getInvoiceStreet1()
+ * @method Client setInvoiceStreet1(string $street1)
+ *
+ * @method string|null getInvoiceStreet2()
+ * @method Client setInvoiceStreet2(string $street2)
+ *
+ * @method string|null getInvoiceCity()
+ * @method Client setInvoiceCity(string $city)
+ *
+ * @method int|null getInvoiceCountryId()
+ * @method Client setInvoiceCountryId(int $id)
+ *
+ * @method int|null getInvoiceStateId()
+ * @method Client setInvoiceStateId(int $id)
+ *
+ * @method string|null getInvoiceZipCode()
+ * @method Client setInvoiceZipCode(string $zip)
+ *
+ * @method bool|null getSendInvoiceByPost()
+ * @method Client setSendInvoiceByPost(bool $send)
+ *
+ * @method int|null getInvoiceMaturityDays()
+ * @method Client setInvoiceMaturityDays(int $days)
+ *
+ * @method bool|null getStopServiceDue()
+ * @method Client setStopServiceDue(bool $stop)
+ *
+ * @method int|null getStopServiceDueDays()
+ * @method Client setStopServiceDueDays(int $days)
+ *
+ * @method int|null getTax1Id()
+ * @method Client setTax1Id(int $id)
+ *
+ * @method int|null getTax2Id()
+ * @method Client setTax2Id(int $id)
+ *
+ * @method int|null getTax3Id()
+ * @method Client setTax3Id(int $id)
+ *
+ * @method string|null getRegistrationDate()
+ * @see    Client::setRegistrationDate()
+ *
+ * @method string|null getPreviousIsp()
+ * @method Client setPreviousIsp(string $isp)
+ *
+ * @method string|null getNote()
+ * @method Client setNote(string $note)
+ *
+ * @method string|null getUsername()
+ * @method Client setUsername(string $username)
+ *
+ * @method string|null getAvatarColor()
+ * @method Client setAvatarColor(string $color)
+ *
+ * @see    Client::getContacts()
+ * @see    Client::setContacts()
+ *
+ * @see    Client::getAttributes()
+ * @see    Client::setAttributes()
+ *
+ * @method float|null getAccountBalance()
+ *
+ * @method float|null getAccountCredit()
+ *
+ * @method float|null getAccountOutstanding()
+ *
+ * @method string|null getCurrencyCode()
+ *
+ * @method string|null getOrganizationName()
+ *
+ * @see    Client::getBankAccounts()
+ *
+ * @method string|null getInvitationEmailSentDate()
+ *
+ * @see    Client::getTags()
  *
  */
-final class Client extends Endpoint
+final class Client extends EndpointObject
 {
     use Helpers\ClientHelper;
 
@@ -48,883 +179,235 @@ final class Client extends Endpoint
 
     /**
      * @var string
-     * @post
-     * @patch
-     * @unique
+     * @Post
+     * @Patch
+     * @Unique
      */
     protected $userIdent;
 
     /**
-     * @return string|null
-     */
-    public function getUserIdent(): ?string
-    {
-        return $this->userIdent;
-    }
-
-    /**
-     * @param string $value
-     * @return Client Returns the Client instance, for method chaining purposes.
-     */
-    public function setUserIdent(string $value): Client
-    {
-        $this->userIdent = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
-     * @post-required
-     * @patch-required
+     * @PostRequired
+     * @PatchRequired
      */
     protected $organizationId;
 
     /**
-     * @return int|null
-     */
-    public function getOrganizationId(): ?int
-    {
-        return $this->organizationId;
-    }
-
-    /**
-     * @param int $value
-     * @return Client Returns the Client instance, for method chaining purposes.
-     */
-    public function setOrganizationId(int $value): Client
-    {
-        $this->organizationId = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var bool
-     * @post-required
-     * @patch-required
+     * @PostRequired
+     * @PatchRequired
      */
     protected $isLead;
 
     /**
-     * @return bool|null
-     */
-    public function getIsLead(): ?bool
-    {
-        return $this->isLead;
-    }
-
-    /**
-     * @param bool $value
-     * @return Client Returns the Client instance, for method chaining purposes.
-     */
-    public function setIsLead(bool $value): Client
-    {
-        $this->isLead = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
-     * @post-required
-     * @patch-required
+     * @PostRequired
+     * @PatchRequired
      */
     protected $clientType;
 
     /**
-     * @return int|null
-     */
-    public function getClientType(): ?int
-    {
-        return $this->clientType;
-    }
-
-    /**
-     * @param int $value
-     * @return Client Returns the Client instance, for method chaining purposes.
-     */
-    public function setClientType(int $value): Client
-    {
-        $this->clientType = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @PostRequired `$this->clientType === Client::CLIENT_TYPE_COMMERCIAL`
+     * @PatchRequired `$this->clientType === Client::CLIENT_TYPE_COMMERCIAL`
      */
     protected $companyName;
 
     /**
-     * @return string|null
-     */
-    public function getCompanyName(): ?string
-    {
-        return $this->companyName;
-    }
-
-    /**
-     * @param string $value
-     * @return Client Returns the Client instance, for method chaining purposes.
-     */
-    public function setCompanyName(string $value): Client
-    {
-        $this->companyName = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $companyRegistrationNumber;
 
     /**
-     * @return string|null
-     */
-    public function getCompanyRegistrationNumber(): ?string
-    {
-        return $this->companyRegistrationNumber;
-    }
-
-    /**
-     * @param string $value
-     * @return Client Returns the Client instance, for method chaining purposes.
-     */
-    public function setCompanyRegistrationNumber(string $value): Client
-    {
-        $this->companyRegistrationNumber = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $companyTaxId;
 
     /**
-     * @return string|null
-     */
-    public function getCompanyTaxId(): ?string
-    {
-        return $this->companyTaxId;
-    }
-
-    /**
-     * @param string $value
-     * @return Client Returns the Client instance, for method chaining purposes.
-     */
-    public function setCompanyTaxId(string $value): Client
-    {
-        $this->companyTaxId = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $companyWebsite;
 
     /**
-     * @return string|null
-     */
-    public function getCompanyWebsite(): ?string
-    {
-        return $this->companyWebsite;
-    }
-
-    /**
-     * @param string $value
-     * @return Client Returns the Client instance, for method chaining purposes.
-     */
-    public function setCompanyWebsite(string $value): Client
-    {
-        $this->companyWebsite = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $companyContactFirstName;
 
     /**
-     * @return string|null
-     */
-    public function getCompanyContactFirstName(): ?string
-    {
-        return $this->companyContactFirstName;
-    }
-
-    /**
-     * @param string $value
-     * @return Client Returns the Client instance, for method chaining purposes.
-     */
-    public function setCompanyContactFirstName(string $value): Client
-    {
-        $this->companyContactFirstName = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $companyContactLastName;
 
     /**
-     * @return string|null
-     */
-    public function getCompanyContactLastName(): ?string
-    {
-        return $this->companyContactLastName;
-    }
-
-    /**
-     * @param string $value
-     * @return Client Returns the Client instance, for method chaining purposes.
-     */
-    public function setCompanyContactLastName(string $value): Client
-    {
-        $this->companyContactLastName = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch-required
+     * @PostRequired `$this->clientType === Client::CLIENT_TYPE_RESIDENTIAL`
+     * @PatchRequired `$this->clientType === Client::CLIENT_TYPE_RESIDENTIAL`
      */
     protected $firstName;
 
     /**
-     * @return string|null
-     */
-    public function getFirstName(): ?string
-    {
-        return $this->firstName;
-    }
-
-    /**
-     * @param string $value
-     * @return Client Returns the Client instance, for method chaining purposes.
-     */
-    public function setFirstName(string $value): Client
-    {
-        $this->firstName = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @PostRequired `$this->clientType === Client::CLIENT_TYPE_RESIDENTIAL`
+     * @PatchRequired `$this->clientType === Client::CLIENT_TYPE_RESIDENTIAL`
      */
     protected $lastName;
 
     /**
-     * @return string|null
-     */
-    public function getLastName(): ?string
-    {
-        return $this->lastName;
-    }
-
-    /**
-     * @param string $value
-     * @return Client Returns the Client instance, for method chaining purposes.
-     */
-    public function setLastName(string $value): Client
-    {
-        $this->lastName = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $street1;
 
     /**
-     * @return string|null
-     */
-    public function getStreet1(): ?string
-    {
-        return $this->street1;
-    }
-
-    /**
-     * @param string $value
-     * @return Client Returns the Client instance, for method chaining purposes.
-     */
-    public function setStreet1(string $value): Client
-    {
-        $this->street1 = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $street2;
 
     /**
-     * @return string|null
-     */
-    public function getStreet2(): ?string
-    {
-        return $this->street2;
-    }
-
-    /**
-     * @param string $value
-     * @return Client Returns the Client instance, for method chaining purposes.
-     */
-    public function setStreet2(string $value): Client
-    {
-        $this->street2 = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $city;
 
     /**
-     * @return string|null
-     */
-    public function getCity(): ?string
-    {
-        return $this->city;
-    }
-
-    /**
-     * @param string $value
-     * @return Client Returns the Client instance, for method chaining purposes.
-     */
-    public function setCity(string $value): Client
-    {
-        $this->city = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $countryId;
 
     /**
-     * @return int|null
-     */
-    public function getCountryId(): ?int
-    {
-        return $this->countryId;
-    }
-
-    /**
-     * @param int $value
-     * @return Client Returns the Client instance, for method chaining purposes.
-     */
-    public function setCountryId(int $value): Client
-    {
-        $this->countryId = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $stateId;
 
     /**
-     * @return int|null
-     */
-    public function getStateId(): ?int
-    {
-        return $this->stateId;
-    }
-
-    /**
-     * @param int $value
-     * @return Client Returns the Client instance, for method chaining purposes.
-     */
-    public function setStateId(int $value): Client
-    {
-        $this->stateId = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $zipCode;
 
     /**
-     * @return string|null
-     */
-    public function getZipCode(): ?string
-    {
-        return $this->zipCode;
-    }
-
-    /**
-     * @param string $value
-     * @return Client Returns the Client instance, for method chaining purposes.
-     */
-    public function setZipCode(string $value): Client
-    {
-        $this->zipCode = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var bool
-     * @post-required
-     * @patch-required
+     * @PostRequired
+     * @PatchRequired
      */
     protected $invoiceAddressSameAsContact;
 
     /**
-     * @return bool|null
-     */
-    public function getInvoiceAddressSameAsContact(): ?bool
-    {
-        return $this->invoiceAddressSameAsContact;
-    }
-
-    /**
-     * @param bool $value
-     * @return Client Returns the Client instance, for method chaining purposes.
-     */
-    public function setInvoiceAddressSameAsContact(bool $value): Client
-    {
-        $this->invoiceAddressSameAsContact = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @PostRequired `! $this->invoiceAddressSameAsContact`
+     * @PatchRequired `! $this->invoiceAddressSameAsContact`
      */
     protected $invoiceStreet1;
 
     /**
-     * @return string|null
-     */
-    public function getInvoiceStreet1(): ?string
-    {
-        return $this->invoiceStreet1;
-    }
-
-    /**
-     * @param string $value
-     * @return Client Returns the Client instance, for method chaining purposes.
-     */
-    public function setInvoiceStreet1(string $value): Client
-    {
-        $this->invoiceStreet1 = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @PostRequired `! $this->invoiceAddressSameAsContact`
+     * @PatchRequired `! $this->invoiceAddressSameAsContact`
      */
     protected $invoiceStreet2;
 
     /**
-     * @return string|null
-     */
-    public function getInvoiceStreet2(): ?string
-    {
-        return $this->invoiceStreet2;
-    }
-
-    /**
-     * @param string $value
-     * @return Client Returns the Client instance, for method chaining purposes.
-     */
-    public function setInvoiceStreet2(string $value): Client
-    {
-        $this->invoiceStreet2 = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @PostRequired `! $this->invoiceAddressSameAsContact`
+     * @PatchRequired `! $this->invoiceAddressSameAsContact`
      */
     protected $invoiceCity;
 
     /**
-     * @return string|null
-     */
-    public function getInvoiceCity(): ?string
-    {
-        return $this->invoiceCity;
-    }
-
-    /**
-     * @param string $value
-     * @return Client Returns the Client instance, for method chaining purposes.
-     */
-    public function setInvoiceCity(string $value): Client
-    {
-        $this->invoiceCity = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
-     * @post
-     * @patch
+     * @PostRequired `! $this->invoiceAddressSameAsContact`
+     * @PatchRequired `! $this->invoiceAddressSameAsContact`
      */
     protected $invoiceCountryId;
 
     /**
-     * @return int|null
-     */
-    public function getInvoiceCountryId(): ?int
-    {
-        return $this->invoiceCountryId;
-    }
-
-    /**
-     * @param int $value
-     * @return Client Returns the Client instance, for method chaining purposes.
-     */
-    public function setInvoiceCountryId(int $value): Client
-    {
-        $this->invoiceCountryId = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
-     * @post
-     * @patch
+     * @PostRequired `! $this->invoiceAddressSameAsContact`
+     * @PatchRequired `! $this->invoiceAddressSameAsContact`
      */
     protected $invoiceStateId;
 
     /**
-     * @return int|null
-     */
-    public function getInvoiceStateId(): ?int
-    {
-        return $this->invoiceStateId;
-    }
-
-    /**
-     * @param int $value
-     * @return Client Returns the Client instance, for method chaining purposes.
-     */
-    public function setInvoiceStateId(int $value): Client
-    {
-        $this->invoiceStateId = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @PostRequired `! $this->invoiceAddressSameAsContact`
+     * @PatchRequired `! $this->invoiceAddressSameAsContact`
      */
     protected $invoiceZipCode;
 
     /**
-     * @return string|null
-     */
-    public function getInvoiceZipCode(): ?string
-    {
-        return $this->invoiceZipCode;
-    }
-
-    /**
-     * @param string $value
-     * @return Client Returns the Client instance, for method chaining purposes.
-     */
-    public function setInvoiceZipCode(string $value): Client
-    {
-        $this->invoiceZipCode = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var bool
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $sendInvoiceByPost;
 
     /**
-     * @return bool|null
-     */
-    public function getSendInvoiceByPost(): ?bool
-    {
-        return $this->sendInvoiceByPost;
-    }
-
-    /**
-     * @param bool $value
-     * @return Client Returns the Client instance, for method chaining purposes.
-     */
-    public function setSendInvoiceByPost(bool $value): Client
-    {
-        $this->sendInvoiceByPost = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $invoiceMaturityDays;
 
     /**
-     * @return int|null
-     */
-    public function getInvoiceMaturityDays(): ?int
-    {
-        return $this->invoiceMaturityDays;
-    }
-
-    /**
-     * @param int $value
-     * @return Client Returns the Client instance, for method chaining purposes.
-     */
-    public function setInvoiceMaturityDays(int $value): Client
-    {
-        $this->invoiceMaturityDays = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var bool
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $stopServiceDue;
 
     /**
-     * @return bool|null
-     */
-    public function getStopServiceDue(): ?bool
-    {
-        return $this->stopServiceDue;
-    }
-
-    /**
-     * @param bool $value
-     * @return Client Returns the Client instance, for method chaining purposes.
-     */
-    public function setStopServiceDue(bool $value): Client
-    {
-        $this->stopServiceDue = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $stopServiceDueDays;
 
     /**
-     * @return int|null
-     */
-    public function getStopServiceDueDays(): ?int
-    {
-        return $this->stopServiceDueDays;
-    }
-
-    /**
-     * @param int $value
-     * @return Client Returns the Client instance, for method chaining purposes.
-     */
-    public function setStopServiceDueDays(int $value): Client
-    {
-        $this->stopServiceDueDays = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $tax1Id;
 
     /**
-     * @return int|null
-     */
-    public function getTax1Id(): ?int
-    {
-        return $this->tax1Id;
-    }
-
-    /**
-     * @param int $value
-     * @return Client Returns the Client instance, for method chaining purposes.
-     */
-    public function setTax1Id(int $value): Client
-    {
-        $this->tax1Id = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $tax2Id;
 
     /**
-     * @return int|null
-     */
-    public function getTax2Id(): ?int
-    {
-        return $this->tax2Id;
-    }
-
-    /**
-     * @param int $value
-     * @return Client Returns the Client instance, for method chaining purposes.
-     */
-    public function setTax2Id(int $value): Client
-    {
-        $this->tax2Id = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $tax3Id;
 
     /**
-     * @return int|null
-     */
-    public function getTax3Id(): ?int
-    {
-        return $this->tax3Id;
-    }
-
-    /**
-     * @param int $value
-     * @return Client Returns the Client instance, for method chaining purposes.
-     */
-    public function setTax3Id(int $value): Client
-    {
-        $this->tax3Id = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post-required
-     * @patch-required
+     * @PostRequired
+     * @PatchRequired
      */
     protected $registrationDate;
-
-    /**
-     * @return string|null
-     */
-    public function getRegistrationDate(): ?string
-    {
-        return $this->registrationDate;
-    }
 
     /**
      * @param \DateTime $value
@@ -936,126 +419,43 @@ final class Client extends Endpoint
         return $this;
     }
 
-    // -----------------------------------------------------------------------------------------------------------------
-
     /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $previousIsp;
 
     /**
-     * @return string|null
-     */
-    public function getPreviousIsp(): ?string
-    {
-        return $this->previousIsp;
-    }
-
-    /**
-     * @param string $value
-     * @return Client Returns the Client instance, for method chaining purposes.
-     */
-    public function setPreviousIsp(string $value): Client
-    {
-        $this->previousIsp = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $note;
 
     /**
-     * @return string|null
-     */
-    public function getNote(): ?string
-    {
-        return $this->note;
-    }
-
-    /**
-     * @param string $value
-     * @return Client Returns the Client instance, for method chaining purposes.
-     */
-    public function setNote(string $value): Client
-    {
-        $this->note = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $username;
 
     /**
-     * @return string|null
-     */
-    public function getUsername(): ?string
-    {
-        return $this->username;
-    }
-
-    /**
-     * @param string $value
-     * @return Client Returns the Client instance, for method chaining purposes.
-     */
-    public function setUsername(string $value): Client
-    {
-        $this->username = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $avatarColor;
 
     /**
-     * @return string|null
-     */
-    public function getAvatarColor(): ?string
-    {
-        return $this->avatarColor;
-    }
-
-    /**
-     * @param string $value
-     * @return Client Returns the Client instance, for method chaining purposes.
-     */
-    public function setAvatarColor(string $value): Client
-    {
-        $this->avatarColor = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var ClientContact[]
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $contacts;
 
     /**
      * @return ClientContactCollection
-     * @throws CollectionException
      */
     public function getContacts(): ClientContactCollection
     {
@@ -1074,18 +474,15 @@ final class Client extends Endpoint
         return $this;
     }
 
-    // -----------------------------------------------------------------------------------------------------------------
-
     /**
      * @var ClientContactAttribute[]
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $attributes;
 
     /**
      * @return ClientContactAttributeCollection
-     * @throws CollectionException
      */
     public function getAttributes(): ClientContactAttributeCollection
     {
@@ -1104,22 +501,10 @@ final class Client extends Endpoint
         return $this;
     }
 
-    // -----------------------------------------------------------------------------------------------------------------
-
     /**
      * @var float
      */
     protected $accountBalance;
-
-    /**
-     * @return float|null
-     */
-    public function getAccountBalance(): ?float
-    {
-        return $this->accountBalance;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var float
@@ -1127,29 +512,9 @@ final class Client extends Endpoint
     protected $accountCredit;
 
     /**
-     * @return float|null
-     */
-    public function getAccountCredit(): ?float
-    {
-        return $this->accountCredit;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var float
      */
     protected $accountOutstanding;
-
-    /**
-     * @return float|null
-     */
-    public function getAccountOutstanding(): ?float
-    {
-        return $this->accountOutstanding;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var string
@@ -1157,29 +522,9 @@ final class Client extends Endpoint
     protected $currencyCode;
 
     /**
-     * @return string|null
-     */
-    public function getCurrencyCode(): ?string
-    {
-        return $this->currencyCode;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
      */
     protected $organizationName;
-
-    /**
-     * @return string|null
-     */
-    public function getOrganizationName(): ?string
-    {
-        return $this->organizationName;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var ClientBankAccount[]
@@ -1188,7 +533,6 @@ final class Client extends Endpoint
 
     /**
      * @return ClientBankAccountCollection
-     * @throws CollectionException
      */
     public function getBankAccounts(): ClientBankAccountCollection
     {
@@ -1197,22 +541,10 @@ final class Client extends Endpoint
         return $bankAccounts;
     }
 
-    // -----------------------------------------------------------------------------------------------------------------
-
     /**
      * @var string
      */
     protected $invitationEmailSentDate;
-
-    /**
-     * @return string|null
-     */
-    public function getInvitationEmailSentDate(): ?string
-    {
-        return $this->invitationEmailSentDate;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var ClientTag[]
@@ -1221,7 +553,6 @@ final class Client extends Endpoint
 
     /**
      * @return ClientTagCollection
-     * @throws CollectionException
      */
     public function getTags(): ClientTagCollection
     {
@@ -1229,7 +560,6 @@ final class Client extends Endpoint
         $tags = new ClientTagCollection($this->tags);
         return $tags;
     }
-
 
 }
 

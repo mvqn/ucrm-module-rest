@@ -3,8 +3,7 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Lookups;
 
-use MVQN\Collections\CollectionException;
-use UCRM\REST\Endpoints\Collections\ClientContactCollection;
+use UCRM\REST\Endpoints\Collections\ClientContactTypeCollection;
 
 /**
  * Class ClientContact
@@ -12,6 +11,26 @@ use UCRM\REST\Endpoints\Collections\ClientContactCollection;
  * @package UCRM\REST\Endpoints
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
+ *
+ * @method int|null getClientId()
+ *
+ * @method string|null getEmail()
+ * @method ClientContact setEmail(string $email)
+ *
+ * @method string|null getPhone()
+ * @method ClientContact setPhone(string $phone)
+ *
+ * @method string|null getName()
+ * @method ClientContact setName(string $name)
+ *
+ * @method bool|null getIsBilling()
+ * @method ClientContact setIsBilling(bool $billing)
+ *
+ * @method bool|null getIsContact()
+ * @method ClientContact setIsContact(bool $contact)
+ *
+ * @see ClientContact::getTypes()
+ *
  */
 final class ClientContact extends Lookup
 {
@@ -23,59 +42,15 @@ final class ClientContact extends Lookup
     /**
      * @var int
      */
-    protected $id;
-
-    /**
-     * @return int|null
-     */
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-    /**
-     * @var int
-     */
     protected $clientId;
 
     /**
-     * @return int|null
-     */
-    public function getClientId(): ?int
-    {
-        return $this->clientId;
-    }
-
-
-
-    // -----------------------------------------------------------------------------------------------------------------
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $email;
 
-    /**
-     * @return string|null
-     */
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    /**
-     * @param string $value
-     * @return ClientContact Returns the ClientContact instance, for method chaining purposes.
-     */
-    public function setEmail(string $value): ClientContact
-    {
-        $this->email = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
     /**
      * @var string
      * @post
@@ -84,50 +59,12 @@ final class ClientContact extends Lookup
     protected $phone;
 
     /**
-     * @return string|null
-     */
-    public function getPhone(): ?string
-    {
-        return $this->phone;
-    }
-
-    /**
-     * @param string $value
-     * @return ClientContact Returns the ClientContact instance, for method chaining purposes.
-     */
-    public function setPhone(string $value): ClientContact
-    {
-        $this->phone = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-    /**
      * @var string
      * @post
      * @patch
      */
     protected $name;
 
-    /**
-     * @return string|null
-     */
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $value
-     * @return ClientContact Returns the ClientContact instance, for method chaining purposes.
-     */
-    public function setName(string $value): ClientContact
-    {
-        $this->name = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
     /**
      * @var bool
      * @post
@@ -136,50 +73,12 @@ final class ClientContact extends Lookup
     protected $isBilling;
 
     /**
-     * @return bool|null
-     */
-    public function getIsBilling(): ?bool
-    {
-        return $this->isBilling;
-    }
-
-    /**
-     * @return ClientContact Returns the ClientContact instance, for method chaining purposes.
-     */
-    public function setAsBilling(): ClientContact
-    {
-        $this->isBilling = true;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-    /**
      * @var bool
      * @post
      * @patch
      */
     protected $isContact;
 
-    /**
-     * @return bool|null
-     */
-    public function getIsContact(): ?bool
-    {
-        return $this->isContact;
-    }
-
-    /**
-     * @return ClientContact Returns the ClientContact instance, for method chaining purposes.
-     */
-    public function setAsGeneral(): ClientContact
-    {
-        $this->isContact = true;
-        return $this;
-    }
-
-
-
-    // -----------------------------------------------------------------------------------------------------------------
     /**
      * @var ClientContactType[]
      * @post
@@ -188,13 +87,13 @@ final class ClientContact extends Lookup
     protected $types;
 
     /**
-     * @return ClientContactCollection
-     * @throws CollectionException
+     * @return ClientContactTypeCollection
+     * @throws \Exception
      */
-    public function getTypes(): ClientContactCollection
+    public function getTypes(): ClientContactTypeCollection
     {
-        /** @var ClientContactCollection $types */
-        $types = new ClientContactCollection($this->types);
+        /** @var ClientContactTypeCollection $types */
+        $types = new ClientContactTypeCollection($this->types);
         return $types;
     }
 

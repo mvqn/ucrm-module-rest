@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
-use UCRM\REST\RestClient;
+use MVQN\Annotations\AnnotationReader;
+use MVQN\REST\RestClient;
 use UCRM\REST\Endpoints\Lookups\ClientContact;
 
 require_once __DIR__."/TestFunctions.php";
@@ -29,8 +30,11 @@ class _02_ClientTests extends \PHPUnit\Framework\TestCase
             $dotenv->load();
         }
 
-        RestClient::baseUrl(getenv("REST_URL"));
-        RestClient::ucrmKey(getenv("REST_KEY"));
+        RestClient::setBaseUrl(getenv("REST_URL"));
+        RestClient::setHeaders([
+            "Content-Type: application/json",
+            "X-Auth-App-Key: ".getenv("REST_KEY")
+        ]);
     }
 
     // =================================================================================================================
@@ -52,21 +56,33 @@ class _02_ClientTests extends \PHPUnit\Framework\TestCase
 
     public function testCreateResidential()
     {
+        //AnnotationReader::cacheDir(__DIR__."/./");
         //$this->markTestSkipped("Skip test, as to not keep generating Clients!");
+
+        //Organization::getSelected()
+
 
         $lastName = "Doe";
         $firstName = "John".rand(1, 9);
 
         $client = Client::createResidential($firstName, $lastName);
 
-        $client->setAddress("422 Silver Star Court\nc/o Michelle Spaeth", "Yerington", "NV", "US", "89447");
-        $client->setInvoiceAddress("422 Silver Star Court\nc/o Ryan Spaeth", "Yerington", "NV", "US", "89447");
+        $client->setAddress(
+            "422 Silver Star Court\n".
+            "c/o Michelle Spaeth",
+            "Yerington", "NV", "US", "89447"
+        );
+        //$client->setInvoiceAddress("422 Silver Star Court\nc/o Ryan Spaeth", "Yerington", "NV", "US", "89447");
+        $client->setInvoiceAddressSameAsContact(false);
 
-        $client->setSendInvoiceByPost(true);
-        $client->setInvoiceMaturityDays(10);
+        //$client->setSendInvoiceByPost(true);
+        //$client->setInvoiceMaturityDays(10);
 
-        $client->resetAllInvoiceOptions();
+        //$client->resetAllInvoiceOptions();
 
+        $valid = $client->validate("post", $missing);
+
+        /** @var Client $inserted */
         $inserted = $client->insert();
         $this->assertEquals($lastName, $inserted->getLastName());
 
@@ -161,7 +177,7 @@ class _02_ClientTests extends \PHPUnit\Framework\TestCase
                     ->setEmail("potus@usa.gov.notreal")
                     ->setName("Donald Trump")
                     ->setPhone("(202) 555-1234")
-                    ->setAsGeneral()
+                    ->setIsContact(true)
             )
             // UNIQUE: Username
             //->setUsername("potus@usa.gov.notreal")
@@ -171,7 +187,7 @@ class _02_ClientTests extends \PHPUnit\Framework\TestCase
                     ->setEmail("accountsreceivable@usa.gov.notreal")
                     ->setName("Steven Mnuchin")
                     ->setPhone("(202) 555-5678")
-                    ->setAsBilling()
+                    ->setIsBilling(true)
             )
 
             // --- INVOICE OPTIONS -------------------------------------------------------------------------------------

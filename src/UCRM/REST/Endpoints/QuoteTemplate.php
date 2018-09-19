@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
+use MVQN\REST\Endpoints\EndpointObject;
+use MVQN\REST\Annotations\EndpointAnnotation as Endpoint;
+
 use UCRM\REST\Endpoints\Helpers\QuoteTemplateHelper;
 
 /**
@@ -12,9 +15,18 @@ use UCRM\REST\Endpoints\Helpers\QuoteTemplateHelper;
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
  *
- * @endpoints { "get": "/quote-templates", "getById": "/quote-templates/:id" }
+ * @Endpoint { "get": "/quote-templates", "getById": "/quote-templates/:id" }
+ *
+ * @method string|null getName()
+ *
+ * @method string|null getCreatedDate()
+ *
+ * @method bool|null getIsOfficial()
+ *
+ * @method bool|null getIsValid()
+ *
  */
-final class QuoteTemplate extends Endpoint
+final class QuoteTemplate extends EndpointObject
 {
     use QuoteTemplateHelper;
 
@@ -28,29 +40,9 @@ final class QuoteTemplate extends Endpoint
     protected $name;
 
     /**
-     * @return string|null
-     */
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
      */
     protected $createdDate;
-
-    /**
-     * @return string|null
-     */
-    public function getCreatedDate(): ?string
-    {
-        return $this->createdDate;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var bool
@@ -58,26 +50,8 @@ final class QuoteTemplate extends Endpoint
     protected $isOfficial;
 
     /**
-     * @return bool|null
-     */
-    public function getIsOfficial(): ?bool
-    {
-        return $this->isOfficial;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var bool
      */
     protected $isValid;
-
-    /**
-     * @return bool|null
-     */
-    public function getIsValid(): ?bool
-    {
-        return $this->isValid;
-    }
 
 }

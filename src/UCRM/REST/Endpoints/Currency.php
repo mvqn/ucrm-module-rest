@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
+use MVQN\REST\Endpoints\EndpointObject;
+use MVQN\REST\Annotations\EndpointAnnotation as Endpoint;
+
 /**
  * Class Currency
  *
@@ -10,9 +13,17 @@ namespace UCRM\REST\Endpoints;
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
  *
- * @endpoints { "get": "/currencies", "getById": "/currencies/:id" }
+ * @Endpoint { "get": "/currencies", "getById": "/currencies/:id" }
+ *
+ * @method string|null getName()
+ *
+ * @method string|null getCode()
+ *
+ * @method string|null getSymbol()
+ *
+ *
  */
-final class Currency extends Endpoint
+final class Currency extends EndpointObject
 {
     use Helpers\CurrencyHelper;
 
@@ -20,18 +31,10 @@ final class Currency extends Endpoint
     // PROPERTIES
     // -----------------------------------------------------------------------------------------------------------------
 
-    /** @var string  */
-    protected $name;
-
     /**
-     * @return string|null
+     * @var string
      */
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
+    protected $name;
 
     /**
      * @var string
@@ -39,26 +42,8 @@ final class Currency extends Endpoint
     protected $code;
 
     /**
-     * @return string|null
-     */
-    public function getCode(): ?string
-    {
-        return $this->code;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
      */
     protected $symbol;
-
-    /**
-     * @return string|null
-     */
-    public function getSymbol(): ?string
-    {
-        return $this->symbol;
-    }
 
 }

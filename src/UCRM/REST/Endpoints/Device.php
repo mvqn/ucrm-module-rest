@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
+use MVQN\REST\Endpoints\EndpointObject;
+use MVQN\REST\Annotations\EndpointAnnotation as Endpoint;
+
 use UCRM\REST\Endpoints\Helpers\DeviceHelper;
 
 /**
@@ -12,9 +15,40 @@ use UCRM\REST\Endpoints\Helpers\DeviceHelper;
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
  *
- * @endpoints { "get": "/devices", "getById": "/devices/:id" }
+ * @Endpoint { "get": "/devices", "getById": "/devices/:id" }
+ *
+ * @method string|null getName()
+ *
+ * @method int|null getSiteId()
+ *
+ * @method int|null getVendorId()
+ *
+ * @method string|null getModelName()
+ *
+ * @method int[]|null getParentIds()
+ *
+ * @method string|null getNotes()
+ *
+ * @method string|null getLoginUsername()
+ *
+ * @method int|null getSshPort()
+ *
+ * @method string|null getSnmpCommunity()
+ *
+ * @method string|null getOsVersion()
+ *
+ * @method bool|null getIsGateway()
+ *
+ * @method bool|null getIsSuspendEnabled()
+ *
+ * @method bool|null getSendPingNotifications()
+ *
+ * @method int|null getPingNotificationUserId()
+ *
+ * @method bool|null getCreateSignalStatistics()
+ *
  */
-final class Device extends Endpoint
+final class Device extends EndpointObject
 {
     use DeviceHelper;
 
@@ -28,29 +62,9 @@ final class Device extends Endpoint
     protected $name;
 
     /**
-     * @return string|null
-     */
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
      */
     protected $siteId;
-
-    /**
-     * @return int|null
-     */
-    public function getSiteId(): ?int
-    {
-        return $this->siteId;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var int
@@ -58,29 +72,9 @@ final class Device extends Endpoint
     protected $vendorId;
 
     /**
-     * @return int|null
-     */
-    public function getVendorId(): ?int
-    {
-        return $this->vendorId;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
      */
     protected $modelName;
-
-    /**
-     * @return string|null
-     */
-    public function getModelName(): ?string
-    {
-        return $this->modelName;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var int[]
@@ -88,29 +82,9 @@ final class Device extends Endpoint
     protected $parentIds;
 
     /**
-     * @return int[]|null
-     */
-    public function getParentIds(): ?array
-    {
-        return $this->parentIds;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
      */
     protected $notes;
-
-    /**
-     * @return string|null
-     */
-    public function getNotes(): ?string
-    {
-        return $this->notes;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var string
@@ -118,29 +92,9 @@ final class Device extends Endpoint
     protected $loginUsername;
 
     /**
-     * @return string|null
-     */
-    public function getLoginUsername(): ?string
-    {
-        return $this->loginUsername;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
      */
     protected $sshPort;
-
-    /**
-     * @return int|null
-     */
-    public function getSshPort(): ?int
-    {
-        return $this->sshPort;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var string
@@ -148,29 +102,9 @@ final class Device extends Endpoint
     protected $snmpCommunity;
 
     /**
-     * @return string|null
-     */
-    public function getSnmpCommunity(): ?string
-    {
-        return $this->snmpCommunity;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
      */
     protected $osVersion;
-
-    /**
-     * @return string|null
-     */
-    public function getOsVersion(): ?string
-    {
-        return $this->osVersion;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var bool
@@ -178,29 +112,9 @@ final class Device extends Endpoint
     protected $isGateway;
 
     /**
-     * @return bool|null
-     */
-    public function getIsGateway(): ?bool
-    {
-        return $this->isGateway;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var bool
      */
     protected $isSuspendEnabled;
-
-    /**
-     * @return bool|null
-     */
-    public function getIsSuspendEnabled(): ?bool
-    {
-        return $this->isSuspendEnabled;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var bool
@@ -208,41 +122,13 @@ final class Device extends Endpoint
     protected $sendPingNotifications;
 
     /**
-     * @return bool|null
-     */
-    public function getSendPingNotifications(): ?bool
-    {
-        return $this->sendPingNotifications;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
      */
     protected $pingNotificationUserId;
 
     /**
-     * @return int|null
-     */
-    public function getPingNotificationUserId(): ?int
-    {
-        return $this->pingNotificationUserId;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var bool
      */
     protected $createSignalStatistics;
-
-    /**
-     * @return bool|null
-     */
-    public function getCreateSignalStatistics(): ?bool
-    {
-        return $this->createSignalStatistics;
-    }
 
 }

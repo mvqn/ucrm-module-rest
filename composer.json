@@ -14,7 +14,10 @@
         "php": "~7.1",
         "ext-json": "*",
         "ext-curl": "*",
-        "mvqn/ucrm-module-core": "~1.1.0"
+        "mvqn/common": "1.0.0",
+        "mvqn/annotations": "1.0.5",
+        "mvqn/collections": "1.0.0",
+        "mvqn/rest": "1.0.3"
     },
     "require-dev": {
         "phpunit/phpunit": "7.2.7",
@@ -23,6 +26,11 @@
     "autoload": {
         "psr-4": {
             "UCRM\\": "src/UCRM/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/UCRM/"
         }
     }
 }

@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
-use MVQN\Collections\CollectionException;
+use MVQN\REST\Endpoints\EndpointObject;
+use MVQN\REST\Annotations\EndpointAnnotation as Endpoint;
+
 use UCRM\REST\Endpoints\Collections\InvoiceItemCollection;
 use UCRM\REST\Endpoints\Collections\InvoiceTaxCollection;
 use UCRM\REST\Endpoints\Collections\PaymentCoverCollection;
@@ -19,12 +21,142 @@ use UCRM\REST\Endpoints\Lookups\PaymentCover;
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
  *
- * @endpoints { "get": "/invoices" }
- * @endpoints { "getById": "/invoices/:id" }
- * @endpoints { "post": "/clients/:clientId/invoices" }
- * @endpoints { "patch": "/invoices/:id" }
+ * @Endpoint { "get": "/invoices" }
+ * @Endpoint { "getById": "/invoices/:id" }
+ * @Endpoint { "post": "/clients/:clientId/invoices" }
+ * @Endpoint { "patch": "/invoices/:id" }
+ *
+ * @method int|null getClientId()
+ * @method Invoice setClientId(int $id)
+ *
+ * @method string|null getNumber()
+ * @method Invoice setNumber(string $number)
+ *
+ * @method string|null getCreatedDate()
+ * @see Invoice::setCreatedDate()
+ *
+ * @method string|null getEmailSentDate()
+ * @see Invoice::setEmailSentDate()
+ *
+ * @method int|null getMaturityDays()
+ * @method Invoice setMaturityDays(int $day)
+ *
+ * @method string|null getNotes()
+ * @method Invoice setNotes(string $notes)
+ *
+ * @method string|null getAdminNotes()
+ * @method Invoice setAdminNotes(string $notes)
+ *
+ * @method int|null getInvoiceTemplateId()
+ * @method Invoice setInvoiceTemplateId(int $id)
+ *
+ * @method string|null getOrganizationName()
+ * @method Invoice setOrganizationName(string $name)
+ *
+ * @method string|null getOrganizationRegistrationNumber()
+ * @method Invoice setOrganizationRegistrationNumber(string $number)
+ *
+ * @method string|null getOrganizationTaxId()
+ * @method Invoice setOrganizationTaxId(string $id)
+ *
+ * @method string|null getOrganizationStreet1()
+ * @method Invoice setOrganizationStreet1(string $street1)
+ *
+ * @method string|null getOrganizationStreet2()
+ * @method Invoice setOrganizationStreet2(string $street2)
+ *
+ * @method string|null getOrganizationCity()
+ * @method Invoice setOrganizationCity(string $city)
+ *
+ * @method int|null getOrganizationCountryId()
+ * @method Invoice setOrganizationCountryId(int $id)
+ *
+ * @method int|null getOrganizationStateId()
+ * @method Invoice setOrganizationStateId(int $id)
+ *
+ * @method string|null getOrganizationZipCode()
+ * @method Invoice setOrganizationZipCode(string $zip)
+ *
+ * @method string|null getOrganizationBankAccountName()
+ * @method Invoice setOrganizationBankAccountName(string $name)
+ *
+ * @method string|null getOrganizationBankAccountField1()
+ * @method Invoice setOrganizationBankAccountField1(string $field1)
+ *
+ * @method string|null getOrganizationBankAccountField2()
+ * @method Invoice setOrganizationBankAccountField2(string $field2)
+ *
+ * @method string|null getClientFirstName()
+ * @method Invoice setClientFirstName(string $name)
+ *
+ * @method string|null getClientLastName()
+ * @method Invoice setClientLastName(string $name)
+ *
+ * @method string|null getClientCompanyName()
+ * @method Invoice setClientCompanyName(string $name)
+ *
+ * @method string|null getClientCompanyRegistrationNumber()
+ * @method Invoice setClientCompanyRegistrationNumber(string $name)
+ *
+ * @method string|null getClientCompanyTaxId()
+ * @method Invoice setClientCompanyTaxId(string $id)
+ *
+ * @method string|null getClientStreet1()
+ * @method Invoice setClientStreet1(string $street1)
+ *
+ * @method string|null getClientStreet2()
+ * @method Invoice setClientStreet2(string $street2)
+ *
+ * @method string|null getClientCity()
+ * @method Invoice setClientCity(string $city)
+ *
+ * @method int|null getClientCountryId()
+ * @method Invoice setClientCountryId(int $id)
+ *
+ * @method int|null getClientStateId()
+ * @method Invoice setClientStateId(int $id)
+ *
+ * @method string|null getClientZipCode()
+ * @method Invoice setClientZipCode(string $zip)
+ *
+ * @method string|null getDueDate()
+ * @see Invoice::setDueDate()
+ *
+ * @see Invoice::getItems()
+ * @see Invoice::setItems()
+ *
+ * @method float|null getSubtotal()
+ * @method Invoice setSubtotal(float $subtotal)
+ *
+ * @method float|null getDiscount()
+ * @method Invoice setDiscount(float $discount)
+ *
+ * @method string|null getDiscountLabel()
+ * @method Invoice setDiscountLabel(string $label)
+ *
+ * @see Invoice::getTaxes()
+ * @see Invoice::setTaxes()
+ *
+ * @method float|null getTotal()
+ * @method Invoice setTotal(float $total)
+ *
+ * @method float|null getAmountPaid()
+ * @method Invoice setAmountPaid(float $amount)
+ *
+ * @method string|null getCurrencyCode()
+ * @method Invoice setCurrencyCode(string $code)
+ *
+ * @method int|null getStatus()
+ * @method Invoice setStatus(int $status)
+ *
+ * @see Invoice::setPaymentCovers()
+ * @see Invoice::setPaymentCovers()
+ *
+ * @method bool|null getUncollectible()
+ * @method Invoice setUncollectible(bool $uncollectible)
+ *
  */
-final class Invoice extends Endpoint
+final class Invoice extends EndpointObject
 {
     use InvoiceHelper;
 
@@ -48,66 +180,18 @@ final class Invoice extends Endpoint
     protected $clientId;
 
     /**
-     * @return int|null
-     */
-    public function getClientId(): ?int
-    {
-        return $this->clientId;
-    }
-
-    /**
-     * @param int $value
-     * @return Invoice
-     */
-    public function setClientId(int $value): Invoice
-    {
-        $this->clientId = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $number;
 
     /**
-     * @return string|null
-     */
-    public function getNumber(): ?string
-    {
-        return $this->number;
-    }
-
-    /**
-     * @param string $value
-     * @return Invoice
-     */
-    public function setNumber(string $value): Invoice
-    {
-        $this->number = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $createdDate;
-
-    /**
-     * @return string|null
-     */
-    public function getCreatedDate(): ?string
-    {
-        return $this->createdDate;
-    }
 
     /**
      * @param \DateTime $value
@@ -119,22 +203,12 @@ final class Invoice extends Endpoint
         return $this;
     }
 
-    // -----------------------------------------------------------------------------------------------------------------
-
     /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $emailSentDate;
-
-    /**
-     * @return string|null
-     */
-    public function getEmailSentDate(): ?string
-    {
-        return $this->emailSentDate;
-    }
 
     /**
      * @param \DateTime $value
@@ -146,749 +220,199 @@ final class Invoice extends Endpoint
         return $this;
     }
 
-    // -----------------------------------------------------------------------------------------------------------------
-
     /**
      * @var int
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $maturityDays;
 
     /**
-     * @return int|null
-     */
-    public function getMaturityDays(): ?int
-    {
-        return $this->maturityDays;
-    }
-
-    /**
-     * @param int $value
-     * @return Invoice
-     */
-    public function setMaturityDays(int $value): Invoice
-    {
-        $this->maturityDays = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $notes;
 
     /**
-     * @return string|null
-     */
-    public function getNotes(): ?string
-    {
-        return $this->notes;
-    }
-
-    /**
-     * @param string $value
-     * @return Invoice
-     */
-    public function setNotes(string $value): Invoice
-    {
-        $this->notes = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $adminNotes;
 
     /**
-     * @return string|null
-     */
-    public function getAdminNotes(): ?string
-    {
-        return $this->adminNotes;
-    }
-
-    /**
-     * @param string $value
-     * @return Invoice
-     */
-    public function setAdminNotes(string $value): Invoice
-    {
-        $this->adminNotes = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $invoiceTemplateId;
 
     /**
-     * @return int|null
-     */
-    public function getInvoiceTemplateId(): ?int
-    {
-        return $this->invoiceTemplateId;
-    }
-
-    /**
-     * @param int $value
-     * @return Invoice
-     */
-    public function setInvoiceTemplateId(int $value): Invoice
-    {
-        $this->invoiceTemplateId = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $organizationName;
 
     /**
-     * @return string|null
-     */
-    public function getOrganizationName(): ?string
-    {
-        return $this->organizationName;
-    }
-
-    /**
-     * @param string $value
-     * @return Invoice
-     */
-    public function setOrganizationName(string $value): Invoice
-    {
-        $this->organizationName = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $organizationRegistrationNumber;
 
     /**
-     * @return string|null
-     */
-    public function getOrganizationRegistrationNumber(): ?string
-    {
-        return $this->organizationRegistrationNumber;
-    }
-
-    /**
-     * @param string $value
-     * @return Invoice
-     */
-    public function setOrganizationRegistrationNumber(string $value): Invoice
-    {
-        $this->organizationRegistrationNumber = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $organizationTaxId;
 
     /**
-     * @return string|null
-     */
-    public function getOrganizationTaxId(): ?string
-    {
-        return $this->organizationTaxId;
-    }
-
-    /**
-     * @param string $value
-     * @return Invoice
-     */
-    public function setOrganizationTaxId(string $value): Invoice
-    {
-        $this->organizationTaxId = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $organizationStreet1;
 
     /**
-     * @return string|null
-     */
-    public function getOrganizationStreet1(): ?string
-    {
-        return $this->organizationStreet1;
-    }
-
-    /**
-     * @param string $value
-     * @return Invoice
-     */
-    public function setOrganizationStreet1(string $value): Invoice
-    {
-        $this->organizationStreet1 = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $organizationStreet2;
 
     /**
-     * @return string|null
-     */
-    public function getOrganizationStreet2(): ?string
-    {
-        return $this->organizationStreet2;
-    }
-
-    /**
-     * @param string $value
-     * @return Invoice
-     */
-    public function setOrganizationStreet2(string $value): Invoice
-    {
-        $this->organizationStreet2 = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $organizationCity;
 
     /**
-     * @return string|null
-     */
-    public function getOrganizationCity(): ?string
-    {
-        return $this->organizationCity;
-    }
-
-    /**
-     * @param string $value
-     * @return Invoice
-     */
-    public function setOrganizationCity(string $value): Invoice
-    {
-        $this->organizationCity = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $organizationCountryId;
 
     /**
-     * @return int|null
-     */
-    public function getOrganizationCountryId(): ?int
-    {
-        return $this->organizationCountryId;
-    }
-
-    /**
-     * @param int $value
-     * @return Invoice
-     */
-    public function setOrganizationCountryId(int $value): Invoice
-    {
-        $this->organizationCountryId = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $organizationStateId;
 
     /**
-     * @return int|null
-     */
-    public function getOrganizationStateId(): ?int
-    {
-        return $this->organizationStateId;
-    }
-
-    /**
-     * @param int $value
-     * @return Invoice
-     */
-    public function setOrganizationStateId(int $value): Invoice
-    {
-        $this->organizationStateId = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $organizationZipCode;
 
     /**
-     * @return string|null
-     */
-    public function getOrganizationZipCode(): ?string
-    {
-        return $this->organizationZipCode;
-    }
-
-    /**
-     * @param string $value
-     * @return Invoice
-     */
-    public function setOrganizationZipCode(string $value): Invoice
-    {
-        $this->organizationZipCode = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $organizationBankAccountName;
 
     /**
-     * @return string|null
-     */
-    public function getOrganizationBankAccountName(): ?string
-    {
-        return $this->organizationBankAccountName;
-    }
-
-    /**
-     * @param string $value
-     * @return Invoice
-     */
-    public function setOrganizationBankAccountName(string $value): Invoice
-    {
-        $this->organizationBankAccountName = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $organizationBankAccountField1;
 
     /**
-     * @return string|null
-     */
-    public function getOrganizationBankAccountField1(): ?string
-    {
-        return $this->organizationBankAccountField1;
-    }
-
-    /**
-     * @param string $value
-     * @return Invoice
-     */
-    public function setOrganizationBankAccountField1(string $value): Invoice
-    {
-        $this->organizationBankAccountField1 = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $organizationBankAccountField2;
 
     /**
-     * @return string|null
-     */
-    public function getOrganizationBankAccountField2(): ?string
-    {
-        return $this->organizationBankAccountField2;
-    }
-
-    /**
-     * @param string $value
-     * @return Invoice
-     */
-    public function setOrganizationBankAccountField2(string $value): Invoice
-    {
-        $this->organizationBankAccountField2 = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $clientFirstName;
 
     /**
-     * @return string|null
-     */
-    public function getClientFirstName(): ?string
-    {
-        return $this->clientFirstName;
-    }
-
-    /**
-     * @param string $value
-     * @return Invoice
-     */
-    public function setClientFirstName(string $value): Invoice
-    {
-        $this->clientFirstName = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $clientLastName;
 
     /**
-     * @return string|null
-     */
-    public function getClientLastName(): ?string
-    {
-        return $this->clientLastName;
-    }
-
-    /**
-     * @param string $value
-     * @return Invoice
-     */
-    public function setClientLastName(string $value): Invoice
-    {
-        $this->clientLastName = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $clientCompanyName;
 
     /**
-     * @return string|null
-     */
-    public function getClientCompanyName(): ?string
-    {
-        return $this->clientCompanyName;
-    }
-
-    /**
-     * @param string $value
-     * @return Invoice
-     */
-    public function setClientCompanyName(string $value): Invoice
-    {
-        $this->clientCompanyName = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $clientCompanyRegistrationNumber;
 
     /**
-     * @return string|null
-     */
-    public function getClientCompanyRegistrationNumber(): ?string
-    {
-        return $this->clientCompanyRegistrationNumber;
-    }
-
-    /**
-     * @param string $value
-     * @return Invoice
-     */
-    public function setClientCompanyRegistrationNumber(string $value): Invoice
-    {
-        $this->clientCompanyRegistrationNumber = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $clientCompanyTaxId;
 
     /**
-     * @return string|null
-     */
-    public function getClientCompanyTaxId(): ?string
-    {
-        return $this->clientCompanyTaxId;
-    }
-
-    /**
-     * @param string $value
-     * @return Invoice
-     */
-    public function setClientCompanyTaxId(string $value): Invoice
-    {
-        $this->clientCompanyTaxId = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $clientStreet1;
 
     /**
-     * @return string|null
-     */
-    public function getClientStreet1(): ?string
-    {
-        return $this->clientStreet1;
-    }
-
-    /**
-     * @param string $value
-     * @return Invoice
-     */
-    public function setClientStreet1(string $value): Invoice
-    {
-        $this->clientStreet1 = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $clientStreet2;
 
     /**
-     * @return string|null
-     */
-    public function getClientStreet2(): ?string
-    {
-        return $this->clientStreet2;
-    }
-
-    /**
-     * @param string $value
-     * @return Invoice
-     */
-    public function setClientStreet2(string $value): Invoice
-    {
-        $this->clientStreet2 = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $clientCity;
 
     /**
-     * @return string|null
-     */
-    public function getClientCity(): ?string
-    {
-        return $this->clientCity;
-    }
-
-    /**
-     * @param string $value
-     * @return Invoice
-     */
-    public function setClientCity(string $value): Invoice
-    {
-        $this->clientCity = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $clientCountryId;
 
     /**
-     * @return int|null
-     */
-    public function getClientCountryId(): ?int
-    {
-        return $this->clientCountryId;
-    }
-
-    /**
-     * @param int $value
-     * @return Invoice
-     */
-    public function setClientCountryId(int $value): Invoice
-    {
-        $this->clientCountryId = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $clientStateId;
 
     /**
-     * @return int|null
-     */
-    public function getClientStateId(): ?int
-    {
-        return $this->clientStateId;
-    }
-
-    /**
-     * @param int $value
-     * @return Invoice
-     */
-    public function setClientStateId(int $value): Invoice
-    {
-        $this->clientStateId = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $clientZipCode;
-
-    /**
-     * @return string|null
-     */
-    public function getClientZipCode(): ?string
-    {
-        return $this->clientZipCode;
-    }
-
-    /**
-     * @param string $value
-     * @return Invoice
-     */
-    public function setClientZipCode(string $value): Invoice
-    {
-        $this->clientZipCode = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var string
      */
     protected $dueDate;
-
-    /**
-     * @return string|null
-     */
-    public function getDueDate(): ?string
-    {
-        return $this->dueDate;
-    }
 
     /**
      * @param \DateTime $value
@@ -900,20 +424,17 @@ final class Invoice extends Endpoint
         return $this;
     }
 
-    // -----------------------------------------------------------------------------------------------------------------
-
     /**
      * @var InvoiceItem[]
-     * @post-required
-     * @patch
+     * @PostRequired
+     * @Patch
      *
-     * @keepNullElements
+     * @KeepNullElements
      */
     protected $items;
 
     /**
      * @return InvoiceItemCollection
-     * @throws CollectionException
      */
     public function getItems(): InvoiceItemCollection
     {
@@ -930,32 +451,10 @@ final class Invoice extends Endpoint
         return $this;
     }
 
-    // -----------------------------------------------------------------------------------------------------------------
-
     /**
      * @var float
      */
     protected $subtotal;
-
-    /**
-     * @return float|null
-     */
-    public function getSubtotal(): ?float
-    {
-        return $this->subtotal;
-    }
-
-    /**
-     * @param float $value
-     * @return Invoice
-     */
-    public function setSubtotal(float $value): Invoice
-    {
-        $this->subtotal = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var float
@@ -963,59 +462,18 @@ final class Invoice extends Endpoint
     protected $discount;
 
     /**
-     * @return float|null
-     */
-    public function getDiscount(): ?float
-    {
-        return $this->discount;
-    }
-
-    /**
-     * @param float $value
-     * @return Invoice
-     */
-    public function setDiscount(float $value): Invoice
-    {
-        $this->discount = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
      */
     protected $discountLabel;
 
     /**
-     * @return string|null
-     */
-    public function getDiscountLabel(): ?string
-    {
-        return $this->discountLabel;
-    }
-
-    /**
-     * @param string $value
-     * @return Invoice
-     */
-    public function setDiscountLabel(string $value): Invoice
-    {
-        $this->discountLabel = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var InvoiceTax[]
-     * @patch
+     * @Patch
      */
     protected $taxes;
 
     /**
      * @return InvoiceTaxCollection
-     * @throws CollectionException
      */
     public function getTaxes(): InvoiceTaxCollection
     {
@@ -1032,32 +490,10 @@ final class Invoice extends Endpoint
         return $this;
     }
 
-    // -----------------------------------------------------------------------------------------------------------------
-
     /**
      * @var float
      */
     protected $total;
-
-    /**
-     * @return float|null
-     */
-    public function getTotal(): ?float
-    {
-        return $this->total;
-    }
-
-    /**
-     * @param float $value
-     * @return Invoice
-     */
-    public function setTotal(float $value): Invoice
-    {
-        $this->total = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var float
@@ -1065,49 +501,9 @@ final class Invoice extends Endpoint
     protected $amountPaid;
 
     /**
-     * @return float|null
-     */
-    public function getAmountPaid(): ?float
-    {
-        return $this->amountPaid;
-    }
-
-    /**
-     * @param float $value
-     * @return Invoice
-     */
-    public function setAmountPaid(float $value): Invoice
-    {
-        $this->amountPaid = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
      */
     protected $currencyCode;
-
-    /**
-     * @return string|null
-     */
-    public function getCurrencyCode(): ?string
-    {
-        return $this->currencyCode;
-    }
-
-    /**
-     * @param string $value
-     * @return Invoice
-     */
-    public function setCurrencyCode(string $value): Invoice
-    {
-        $this->currencyCode = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var int
@@ -1115,34 +511,13 @@ final class Invoice extends Endpoint
     protected $status;
 
     /**
-     * @return int|null
-     */
-    public function getStatus(): ?int
-    {
-        return $this->status;
-    }
-
-    /**
-     * @param int $value
-     * @return Invoice
-     */
-    public function setStatus(int $value): Invoice
-    {
-        $this->status = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var PaymentCover[]
-     * @patch
+     * @Patch
      */
     protected $paymentCovers;
 
     /**
      * @return PaymentCoverCollection
-     * @throws CollectionException
      */
     public function getPaymentCovers(): PaymentCoverCollection
     {
@@ -1159,30 +534,10 @@ final class Invoice extends Endpoint
         return $this;
     }
 
-    // -----------------------------------------------------------------------------------------------------------------
-
     /**
      * @var bool
-     * @patch
+     * @Patch
      */
     protected $uncollectible;
-
-    /**
-     * @return bool|null
-     */
-    public function getUncollectible(): ?bool
-    {
-        return $this->uncollectible;
-    }
-
-    /**
-     * @param bool $value
-     * @return Invoice
-     */
-    public function setUncollectible(bool $value): Invoice
-    {
-        $this->uncollectible = $value;
-        return $this;
-    }
 
 }

@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
-use MVQN\Collections\CollectionException;
+use MVQN\REST\Endpoints\EndpointObject;
+use MVQN\REST\Annotations\EndpointAnnotation as Endpoint;
+
 use UCRM\REST\Endpoints\Collections\QuoteItemCollection;
 use UCRM\REST\Endpoints\Collections\QuoteTaxCollection;
 use UCRM\REST\Endpoints\Helpers\QuoteHelper;
@@ -17,12 +19,12 @@ use UCRM\REST\Endpoints\Lookups\QuoteTax;
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
  *
- * @endpoints { "get": "/quotes" }
- * @endpoints { "getById": "/quotes/:id" }
- * @endpoints { "post": "/clients/:clientId/quotes" }
- * @endpoints { "patch": "/quotes/:id" }
+ * @Endpoint { "get": "/quotes" }
+ * @Endpoint { "getById": "/quotes/:id" }
+ * @Endpoint { "post": "/clients/:clientId/quotes" }
+ * @Endpoint { "patch": "/quotes/:id" }
  */
-final class Quote extends Endpoint
+final class Quote extends EndpointObject
 {
     use QuoteHelper;
 
@@ -830,7 +832,6 @@ final class Quote extends Endpoint
 
     /**
      * @return QuoteItemCollection
-     * @throws CollectionException
      */
     public function getItems(): QuoteItemCollection
     {
@@ -932,7 +933,6 @@ final class Quote extends Endpoint
 
     /**
      * @return QuoteTaxCollection
-     * @throws CollectionException
      */
     public function getTaxes(): QuoteTaxCollection
     {

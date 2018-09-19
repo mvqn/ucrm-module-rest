@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
+use MVQN\REST\Endpoints\EndpointObject;
+use MVQN\REST\Annotations\EndpointAnnotation as Endpoint;
+
 use UCRM\REST\Endpoints\Helpers\OrganizationHelper;
 
 /**
@@ -12,9 +15,36 @@ use UCRM\REST\Endpoints\Helpers\OrganizationHelper;
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
  *
- * @endpoints { "get": "/organizations", "getById": "/organizations/:id" }
+ * @Endpoint { "get": "/organizations", "getById": "/organizations/:id" }
+ *
+ * @method string|null getName()
+ *
+ * @method string|null getRegistrationNumber()
+ *
+ * @method string|null getTaxId()
+ *
+ * @method string|null getPhone()
+ *
+ * @method string|null getEmail()
+ *
+ * @method string|null getWebsite()
+ *
+ * @method string|null getStreet1()
+ *
+ * @method string|null getStreet2()
+ *
+ * @method string|null getCity()
+ *
+ * @method int|null getCountryId()
+ *
+ * @method int|null getStateId()
+ *
+ * @method string|null getZipCode()
+ *
+ * @method bool|null getSelected()
+ *
  */
-final class Organization extends Endpoint
+final class Organization extends EndpointObject
 {
     use OrganizationHelper;
 
@@ -28,29 +58,9 @@ final class Organization extends Endpoint
     protected $name;
 
     /**
-     * @return string|null
-     */
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
      */
     protected $registrationNumber;
-
-    /**
-     * @return string|null
-     */
-    public function getRegistrationNumber(): ?string
-    {
-        return $this->registrationNumber;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var string
@@ -58,29 +68,9 @@ final class Organization extends Endpoint
     protected $taxId;
 
     /**
-     * @return string|null
-     */
-    public function getTaxId(): ?string
-    {
-        return $this->taxId;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
      */
     protected $phone;
-
-    /**
-     * @return string|null
-     */
-    public function getPhone(): ?string
-    {
-        return $this->phone;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var string
@@ -88,29 +78,9 @@ final class Organization extends Endpoint
     protected $email;
 
     /**
-     * @return string|null
-     */
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
      */
     protected $website;
-
-    /**
-     * @return string|null
-     */
-    public function getWebsite(): ?string
-    {
-        return $this->website;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var string
@@ -118,29 +88,9 @@ final class Organization extends Endpoint
     protected $street1;
 
     /**
-     * @return string|null
-     */
-    public function getStreet1(): ?string
-    {
-        return $this->street1;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
      */
     protected $street2;
-
-    /**
-     * @return string|null
-     */
-    public function getStreet2(): ?string
-    {
-        return $this->street2;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var string
@@ -148,29 +98,9 @@ final class Organization extends Endpoint
     protected $city;
 
     /**
-     * @return string|null
-     */
-    public function getCity(): ?string
-    {
-        return $this->city;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
      */
     protected $countryId;
-
-    /**
-     * @return int|null
-     */
-    public function getCountryId(): ?int
-    {
-        return $this->countryId;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var int
@@ -178,41 +108,13 @@ final class Organization extends Endpoint
     protected $stateId;
 
     /**
-     * @return int|null
-     */
-    public function getStateId(): ?int
-    {
-        return $this->stateId;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
      */
     protected $zipCode;
 
     /**
-     * @return string|null
-     */
-    public function getZipCode(): ?string
-    {
-        return $this->zipCode;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var bool
      */
     protected $selected;
-
-    /**
-     * @return bool|null
-     */
-    public function getSelected(): ?bool
-    {
-        return $this->selected;
-    }
 
 }

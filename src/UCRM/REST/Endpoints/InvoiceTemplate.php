@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
+use MVQN\REST\Endpoints\EndpointObject;
+use MVQN\REST\Annotations\EndpointAnnotation as Endpoint;
+
 use UCRM\REST\Endpoints\Helpers\InvoiceTemplateHelper;
 
 /**
@@ -12,9 +15,18 @@ use UCRM\REST\Endpoints\Helpers\InvoiceTemplateHelper;
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
  *
- * @endpoints { "get": "/invoice-templates", "getById": "/invoice-templates/:id" }
+ * @Endpoint { "get": "/invoice-templates", "getById": "/invoice-templates/:id" }
+ *
+ * @method string|null getName()
+ *
+ * @method string|null getCreatedDate()
+ *
+ * @method bool|null getIsOfficial()
+ *
+ * @method bool|null getIsValid()
+ *
  */
-final class InvoiceTemplate extends Endpoint
+final class InvoiceTemplate extends EndpointObject
 {
     use InvoiceTemplateHelper;
 
@@ -28,29 +40,9 @@ final class InvoiceTemplate extends Endpoint
     protected $name;
 
     /**
-     * @return string|null
-     */
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
      */
     protected $createdDate;
-
-    /**
-     * @return string|null
-     */
-    public function getCreatedDate(): ?string
-    {
-        return $this->createdDate;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var bool
@@ -58,26 +50,8 @@ final class InvoiceTemplate extends Endpoint
     protected $isOfficial;
 
     /**
-     * @return bool|null
-     */
-    public function getIsOfficial(): ?bool
-    {
-        return $this->isOfficial;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var bool
      */
     protected $isValid;
-
-    /**
-     * @return bool|null
-     */
-    public function getIsValid(): ?bool
-    {
-        return $this->isValid;
-    }
 
 }

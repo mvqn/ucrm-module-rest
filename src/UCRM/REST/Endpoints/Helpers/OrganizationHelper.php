@@ -3,16 +3,6 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Helpers;
 
-// Core
-use MVQN\Annotations\AnnotationReaderException;
-use MVQN\Collections\CollectionException;
-use MVQN\Common\ArraysException;
-use MVQN\Common\PatternsException;
-
-// Exceptions
-use UCRM\REST\Endpoints\EndpointException;
-use UCRM\REST\RestClientException;
-
 // Collections
 use UCRM\REST\Endpoints\Collections\OrganizationCollection;
 
@@ -46,14 +36,7 @@ trait OrganizationHelper
     /**
      * @param string $name
      * @return OrganizationCollection
-     *
-     * @throws AnnotationReaderException
-     * @throws ArraysException
-     * @throws CollectionException
-     * @throws EndpointException
-     * @throws PatternsException
-     * @throws RestClientException
-     * @throws \ReflectionException
+     * @throws \Exception
      */
     public static function getByName(string $name): OrganizationCollection
     {
@@ -65,14 +48,8 @@ trait OrganizationHelper
     }
 
     /**
-     * @return Organization|null
-     * @throws AnnotationReaderException
-     * @throws ArraysException
-     * @throws CollectionException
-     * @throws EndpointException
-     * @throws PatternsException
-     * @throws RestClientException
-     * @throws \ReflectionException
+     * @return null|Organization
+     * @throws \Exception
      */
     public static function getByDefault(): ?Organization
     {

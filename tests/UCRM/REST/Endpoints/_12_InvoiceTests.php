@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace UCRM\REST\Endpoints;
 
 use UCRM\REST\Endpoints\Lookups\InvoiceItem;
-use UCRM\REST\RestClient;
+use MVQN\REST\RestClient;
 
 require_once __DIR__."/TestFunctions.php";
 
@@ -28,8 +28,11 @@ class _12_InvoiceTests extends \PHPUnit\Framework\TestCase
             $dotenv->load();
         }
 
-        RestClient::baseUrl(getenv("REST_URL"));
-        RestClient::ucrmKey(getenv("REST_KEY"));
+        RestClient::setBaseUrl(getenv("REST_URL"));
+        RestClient::setHeaders([
+            "Content-Type: application/json",
+            "X-Auth-App-Key: ".getenv("REST_KEY")
+        ]);
     }
 
     // =================================================================================================================

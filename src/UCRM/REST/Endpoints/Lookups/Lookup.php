@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Lookups;
 
-use UCRM\REST\RestObject;
+use MVQN\REST\RestObject;
 
 /**
  * Class Lookup
@@ -13,9 +13,5 @@ use UCRM\REST\RestObject;
  */
 abstract class Lookup extends RestObject
 {
-
-    // =================================================================================================================
-    // PROPERTIES
-    // -----------------------------------------------------------------------------------------------------------------
 
 }

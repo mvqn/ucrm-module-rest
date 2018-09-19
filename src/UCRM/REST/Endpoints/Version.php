@@ -3,6 +3,10 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
+use MVQN\REST\Endpoints\EndpointObject;
+use MVQN\REST\Annotations\EndpointAnnotation as Endpoint;
+use MVQN\REST\Annotations\ExcludeIdAnnotation as ExcludeId;
+
 /**
  * Class Version
  *
@@ -10,13 +14,14 @@ namespace UCRM\REST\Endpoints;
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
  *
- * @endpoints { "get": "/version" }
- * @excludeId
- * @singular
+ * @Endpoint { "get": "/version" }
+ * @ExcludeId
+ *
+ * @method string|null getVersion()
+ *
  */
-final class Version extends Endpoint
+final class Version extends EndpointObject
 {
-
     // =================================================================================================================
     // PROPERTIES
     // -----------------------------------------------------------------------------------------------------------------
@@ -25,13 +30,5 @@ final class Version extends Endpoint
      * @var string
      */
     protected $version;
-
-    /**
-     * @return string|null
-     */
-    public function getVersion(): ?string
-    {
-        return $this->version;
-    }
 
 }

@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints;
 
+use MVQN\REST\Endpoints\EndpointObject;
+use MVQN\REST\Annotations\EndpointAnnotation as Endpoint;
+
 use UCRM\REST\Endpoints\Helpers\TaxHelper;
 
 /**
@@ -12,11 +15,22 @@ use UCRM\REST\Endpoints\Helpers\TaxHelper;
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
  *
- * @endpoints { "get": "/taxes" }
- * @endpoints { "getById": "/taxes/:id" }
- * @endpoints { "post": "/taxes" }
+ * @Endpoint { "get": "/taxes", "getById": "/taxes/:id" }
+ * @Endpoint { "post": "/taxes" }
+ *
+ * @method string|null getName()
+ * @method Tax setName(string $name)
+ *
+ * @method string|null getAgencyName()
+ * @method Tax setAgencyName(string $name)
+ *
+ * @method float|null getRate()
+ * @method Tax setRate(float $name)
+ *
+ * @method bool|null getSelected()
+ *
  */
-final class Tax extends Endpoint
+final class Tax extends EndpointObject
 {
     use TaxHelper;
 
@@ -26,111 +40,30 @@ final class Tax extends Endpoint
 
     /**
      * @var string
-     * @post-required
+     * @PostRequired
      */
     protected $name;
 
     /**
-     * @return string|null
-     */
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $value
-     * @return Tax
-     */
-    public function setName(string $value): Tax
-    {
-        $this->name = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
+     * @Post
      */
     protected $agencyName;
 
     /**
-     * @return string|null
-     */
-    public function getAgencyName(): ?string
-    {
-        return $this->agencyName;
-    }
-
-    /**
-     * @param string $value
-     * @return Tax
-     */
-    public function setAgencyName(string $value): Tax
-    {
-        $this->agencyName = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * Tax rate in percentage.
      *
-     * @var float|null
-     * @post-required
+     * @var float
+     * @PostRequired
      */
     protected $rate;
 
     /**
-     * @return float|null
-     */
-    public function getRate(): ?float
-    {
-        return $this->rate;
-    }
-
-    /**
-     * @param float $value
-     * @return Tax
-     */
-    public function setRate(float $value): Tax
-    {
-        $this->rate = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * Is selected to be assigned to every new client as default.
      *
-     * @var bool|null
+     * @var bool
      *
      */
     protected $selected;
-
-    /**
-     * @return bool|null
-     */
-    public function getSelected(): ?bool
-    {
-        return $this->selected;
-    }
-
-    /**
-     * @param bool $value
-     * @return Tax
-     *
-     * @deprecated Not currently supported!
-     */
-    public function setSelected(bool $value): Tax
-    {
-        echo "Tax->setSelected($value) is not currently supported!\n";
-        //$this->selected = $value;
-        return $this;
-    }
 
 }
