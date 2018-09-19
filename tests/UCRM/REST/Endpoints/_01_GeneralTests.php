@@ -18,8 +18,6 @@ class _01_GeneralTests extends \PHPUnit\Framework\TestCase
     /** @var string Location of the .env file for development. */
     protected const DOTENV_PATH = __DIR__."/../../../../";
 
-    // -----------------------------------------------------------------------------------------------------------------
-
     protected function setUp()
     {
         // Load ENV variables from a file during development.
@@ -28,6 +26,9 @@ class _01_GeneralTests extends \PHPUnit\Framework\TestCase
             $dotenv = new \Dotenv\Dotenv(self::DOTENV_PATH);
             $dotenv->load();
         }
+
+        //AnnotationReader::cacheDir(__DIR__);
+        RestClient::cacheDir(__DIR__);
 
         RestClient::setBaseUrl(getenv("REST_URL"));
         RestClient::setHeaders([
@@ -50,18 +51,18 @@ class _01_GeneralTests extends \PHPUnit\Framework\TestCase
         echo "\n";
     }
 
-
-
     // =================================================================================================================
     // COUNTRY TESTS
     // -----------------------------------------------------------------------------------------------------------------
 
     public function testCountryGet()
     {
-        //AnnotationReader::cacheDir(__DIR__);
+
 
         $countries = Country::get();
         $this->assertNotNull($countries);
+
+        echo $countries."\n";
 
         echo ">>> Country::get()\n";
         echo "[\n";

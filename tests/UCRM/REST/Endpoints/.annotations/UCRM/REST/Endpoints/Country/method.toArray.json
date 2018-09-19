@@ -1,0 +1,33 @@
+{
+    "param": [
+        {
+            "types": [
+                "string"
+            ],
+            "name": "method",
+            "description": " The HTTP method/verb for which to examine each property for exclusion."
+        },
+        {
+            "types": [
+                "bool"
+            ],
+            "name": "filter",
+            "description": " A flag to request the resulting JSON be stripped of fields containing null values."
+        }
+    ],
+    "return": {
+        "types": [
+            "array"
+        ],
+        "description": "Returns an associative array prepared for provision to any HTTP REST request body."
+    },
+    "throws": [
+        {
+            "types": [
+                "\\Exception"
+            ],
+            "description": ""
+        }
+    ],
+    "_cached": "2018-09-18T21:37:35-07:00"
+}

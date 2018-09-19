@@ -1,0 +1,11 @@
+{
+    "link": "http://php.net/manual/en/jsonserializable.jsonserialize.php",
+    "return": {
+        "types": [
+            "mixed"
+        ],
+        "description": "Data which can be serialized by <b>json_encode</b>, as a value of any type other than a resource."
+    },
+    "since": "5.4.0",
+    "_cached": "2018-09-18T21:37:35-07:00"
+}

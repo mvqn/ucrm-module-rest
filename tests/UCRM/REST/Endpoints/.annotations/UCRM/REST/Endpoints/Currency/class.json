@@ -1,0 +1,42 @@
+{
+    "package": "UCRM\\REST\\Endpoints",
+    "author": {
+        "name": "Ryan Spaeth",
+        "email": "rspaeth@mvqn.net"
+    },
+    "final": "",
+    "endpoints": {
+        "get": "/currencies",
+        "getById": "/currencies/:id"
+    },
+    "method": {
+        "getName": {
+            "types": [
+                "string",
+                "null"
+            ],
+            "name": "getName",
+            "args": "",
+            "description": ""
+        },
+        "getCode": {
+            "types": [
+                "string",
+                "null"
+            ],
+            "name": "getCode",
+            "args": "",
+            "description": ""
+        },
+        "getSymbol": {
+            "types": [
+                "string",
+                "null"
+            ],
+            "name": "getSymbol",
+            "args": "",
+            "description": ""
+        }
+    },
+    "_cached": "2018-09-18T21:37:35-07:00"
+}

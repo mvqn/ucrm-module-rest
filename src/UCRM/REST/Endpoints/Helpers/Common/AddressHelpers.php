@@ -55,12 +55,6 @@ trait AddressHelpers
      * @param string $zip
      * @return AddressHelpers
      *
-     * @throws AnnotationReaderException
-     * @throws ArraysException
-     * @throws CollectionException
-     * @throws EndpointException
-     * @throws PatternsException
-     * @throws RestClientException
      * @throws \ReflectionException
      */
     public function setAddress(string $street, string $city, string $stateCode, string $countryCode, string $zip): self

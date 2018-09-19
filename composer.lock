@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2b2e0e30904c61d653debfb2c71ab168",
+    "content-hash": "abcff7c0d6020e88439dd52f7143b808",
     "packages": [
         {
             "name": "mvqn/annotations",
-            "version": "1.0.5",
+            "version": "1.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mvqn/annotations.git",
-                "reference": "53a036212706e58a668cfca6cdbc690f869cdcd5"
+                "reference": "5e09a4c132efd2e56a535197073126e018b76ce3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mvqn/annotations/zipball/53a036212706e58a668cfca6cdbc690f869cdcd5",
-                "reference": "53a036212706e58a668cfca6cdbc690f869cdcd5",
+                "url": "https://api.github.com/repos/mvqn/annotations/zipball/5e09a4c132efd2e56a535197073126e018b76ce3",
+                "reference": "5e09a4c132efd2e56a535197073126e018b76ce3",
                 "shasum": ""
             },
             "require": {
@@ -46,7 +46,7 @@
                 }
             ],
             "description": "A semi-complex PHP-Doc Annotation parsing library, specifically designed for use in MVQN projects, but generic enough for anything!",
-            "time": "2018-09-18T02:47:53+00:00"
+            "time": "2018-09-19T04:36:55+00:00"
         },
         {
             "name": "mvqn/collections",
@@ -130,22 +130,22 @@
         },
         {
             "name": "mvqn/rest",
-            "version": "1.0.3",
+            "version": "1.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mvqn/rest.git",
-                "reference": "69a85c01007aa4b299224b8fa1cca8feef14b099"
+                "reference": "ac951fb6e739127d6b2eb2ca902a7a63efb1358a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mvqn/rest/zipball/69a85c01007aa4b299224b8fa1cca8feef14b099",
-                "reference": "69a85c01007aa4b299224b8fa1cca8feef14b099",
+                "url": "https://api.github.com/repos/mvqn/rest/zipball/ac951fb6e739127d6b2eb2ca902a7a63efb1358a",
+                "reference": "ac951fb6e739127d6b2eb2ca902a7a63efb1358a",
                 "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
                 "ext-json": "*",
-                "mvqn/annotations": "1.0.5",
+                "mvqn/annotations": "1.0.7",
                 "mvqn/collections": "1.0.0",
                 "mvqn/common": "1.0.0",
                 "php": "~7.1"
@@ -170,7 +170,7 @@
                 }
             ],
             "description": "A REST library, specifically designed for use in MVQN projects, but generic enough for anything!",
-            "time": "2018-09-18T02:53:13+00:00"
+            "time": "2018-09-19T04:41:36+00:00"
         }
     ],
     "packages-dev": [

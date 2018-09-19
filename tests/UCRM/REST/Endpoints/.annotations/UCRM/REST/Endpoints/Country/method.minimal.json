@@ -1,0 +1,43 @@
+{
+    "param": [
+        {
+            "types": [
+                "string"
+            ],
+            "name": "method",
+            "description": " The HTTP method/verb for which to examine each property for exclusion."
+        },
+        {
+            "types": [
+                "array",
+                "null"
+            ],
+            "name": "excluded",
+            "description": " A reference array used to store the excluded properties for later use."
+        },
+        {
+            "types": [
+                "array"
+            ],
+            "name": "exceptions",
+            "description": " An optional array of exceptions to be included even without the proper annotations."
+        }
+    ],
+    "return": {
+        "types": [
+            "RestObject"
+        ],
+        "description": "Returns the newly minimalized RestObject, which has any non-required fields set to null."
+    },
+    "throws": [
+        {
+            "types": [
+                "\\Exception"
+            ],
+            "description": ""
+        }
+    ],
+    "deprecated": "",
+    "todo": "Determine if this method is really necessary and complete it as needed!",
+    "_cached": "2018-09-18T21:37:35-07:00"
+}

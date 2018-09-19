@@ -1,0 +1,24 @@
+{
+    "package": "UCRM\\REST\\Endpoints",
+    "author": {
+        "name": "Ryan Spaeth",
+        "email": "rspaeth@mvqn.net"
+    },
+    "final": "",
+    "endpoints": {
+        "get": "/version"
+    },
+    "excludeId": true,
+    "method": {
+        "getVersion": {
+            "types": [
+                "string",
+                "null"
+            ],
+            "name": "getVersion",
+            "args": "",
+            "description": ""
+        }
+    },
+    "_cached": "2018-09-18T21:37:34-07:00"
+}

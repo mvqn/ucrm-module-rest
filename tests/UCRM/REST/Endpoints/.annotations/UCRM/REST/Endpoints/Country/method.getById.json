@@ -1,0 +1,27 @@
+{
+    "param": [
+        {
+            "types": [
+                "int"
+            ],
+            "name": "id",
+            "description": " The ID of the EndpointObject for which to retrieve."
+        }
+    ],
+    "return": {
+        "types": [
+            "EndpointObject",
+            "null"
+        ],
+        "description": "Returns the EndpointObject, or NULL if the object can not be found with this ID."
+    },
+    "throws": [
+        {
+            "types": [
+                "\\Exception"
+            ],
+            "description": ""
+        }
+    ],
+    "_cached": "2018-09-18T21:37:35-07:00"
+}

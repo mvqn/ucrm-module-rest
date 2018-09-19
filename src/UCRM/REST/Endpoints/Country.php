@@ -4,7 +4,9 @@ declare(strict_types=1);
 namespace UCRM\REST\Endpoints;
 
 use MVQN\REST\Endpoints\EndpointObject;
+use MVQN\REST\Annotations\CachedAnnotation as Cached;
 use MVQN\REST\Annotations\EndpointAnnotation as Endpoint;
+
 
 use UCRM\REST\Endpoints\Helpers\CountryHelper;
 
@@ -14,6 +16,8 @@ use UCRM\REST\Endpoints\Helpers\CountryHelper;
  * @package UCRM\REST\Endpoints
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
+ *
+ * @Cached
  *
  * @Endpoint { "get": "/countries", "getById": "/countries/:id" }
  *
