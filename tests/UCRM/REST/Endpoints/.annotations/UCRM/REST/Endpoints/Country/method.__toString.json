@@ -1,9 +1,0 @@
-{
-    "return": {
-        "types": [
-            "string"
-        ],
-        "description": "Returns a JSON representation of this Model."
-    },
-    "_cached": "2018-09-18T21:37:35-07:00"
-}

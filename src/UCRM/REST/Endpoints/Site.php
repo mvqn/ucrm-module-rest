@@ -16,15 +16,10 @@ use MVQN\REST\Annotations\EndpointAnnotation as Endpoint;
  * @Endpoint { "get": "/sites", "getById": "/sites/:id" }
  *
  * @method string|null getName()
- *
  * @method string|null getAddress()
- *
  * @method string|null getGpsLat()
- *
  * @method string|null getGpsLon()
- *
  * @method string|null getContactInfo()
- *
  * @method string|null getNotes()
  *
  */

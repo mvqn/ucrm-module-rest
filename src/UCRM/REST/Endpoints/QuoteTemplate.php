@@ -18,11 +18,8 @@ use UCRM\REST\Endpoints\Helpers\QuoteTemplateHelper;
  * @Endpoint { "get": "/quote-templates", "getById": "/quote-templates/:id" }
  *
  * @method string|null getName()
- *
  * @method string|null getCreatedDate()
- *
  * @method bool|null getIsOfficial()
- *
  * @method bool|null getIsValid()
  *
  */

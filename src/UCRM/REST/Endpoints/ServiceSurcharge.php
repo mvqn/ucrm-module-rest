@@ -5,6 +5,10 @@ namespace UCRM\REST\Endpoints;
 
 use MVQN\REST\Endpoints\EndpointObject;
 use MVQN\REST\Annotations\EndpointAnnotation as Endpoint;
+use MVQN\REST\Annotations\PostAnnotation as Post;
+use MVQN\REST\Annotations\PostRequiredAnnotation as PostRequired;
+use MVQN\REST\Annotations\PatchAnnotation as Patch;
+use MVQN\REST\Annotations\PatchRequiredAnnotation as PatchRequired;
 
 use UCRM\REST\Endpoints\Helpers\ServiceSurchargeHelper;
 
@@ -22,16 +26,12 @@ use UCRM\REST\Endpoints\Helpers\ServiceSurchargeHelper;
  *
  * @method int|null getServiceId()
  * @method ServiceSurcharge setServiceId(int $id)
- *
  * @method int|null getSurchargeId()
  * @method ServiceSurcharge setSurchargeId(int $id)
- *
  * @method string|null getInvoiceLabel()
  * @method ServiceSurcharge setInvoiceLabel(string $label)
- *
  * @method float|null getPrice()
  * @method ServiceSurcharge setPrice(float $price)
- *
  * @method bool|null getTaxable()
  * @method ServiceSurcharge setTaxable(bool $taxable)
  *
@@ -51,7 +51,7 @@ final class ServiceSurcharge extends EndpointObject
     /**
      * @var int
      * @PostRequired
-     * @Patch
+     * @PatchRequired
      */
     protected $surchargeId;
 

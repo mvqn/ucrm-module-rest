@@ -15,12 +15,10 @@ use UCRM\REST\Endpoints\Helpers\StateHelper;
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
  *
- * @Endpoint { "get": "", "getById": "/countries/states/:id" }
+ * @Endpoint { "getById": "/countries/states/:id" }
  *
  * @method int|null getCountryId()
- *
  * @method string|null getName()
- *
  * @method string|null getCode()
  *
  */

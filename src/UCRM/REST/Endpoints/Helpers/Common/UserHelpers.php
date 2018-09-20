@@ -3,14 +3,6 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Helpers\Common;
 
-use MVQN\Annotations\Exceptions\AnnotationReaderException;
-use MVQN\Collections\Exceptions\CollectionException;
-use MVQN\Helpers\Exceptions\ArrayHelperException;
-use MVQN\Helpers\Exceptions\PatternMatchException;
-
-use UCRM\REST\Exceptions\RestClientException;
-use UCRM\REST\Endpoints\Exceptions\EndpointException;
-
 use UCRM\REST\Endpoints\User;
 
 /**
@@ -27,12 +19,7 @@ trait UserHelpers
 
     /**
      * @return User|null
-     * @throws AnnotationReaderException
-     * @throws ArrayHelperException
-     * @throws EndpointException
-     * @throws PatternMatchException
-     * @throws RestClientException
-     * @throws \ReflectionException
+     * @throws \Exception
      */
     public function getUser(): ?User
     {
@@ -46,13 +33,7 @@ trait UserHelpers
     /**
      * @param string $email
      * @return User|null
-     * @throws AnnotationReaderException
-     * @throws ArrayHelperException
-     * @throws CollectionException
-     * @throws EndpointException
-     * @throws PatternMatchException
-     * @throws RestClientException
-     * @throws \ReflectionException
+     * @throws \Exception
      */
     public static function getByEmail(string $email): ?User
     {
@@ -67,13 +48,7 @@ trait UserHelpers
      * @param string $first
      * @param string $last
      * @return User|null
-     * @throws AnnotationReaderException
-     * @throws ArrayHelperException
-     * @throws CollectionException
-     * @throws EndpointException
-     * @throws PatternMatchException
-     * @throws RestClientException
-     * @throws \ReflectionException
+     * @throws \Exception
      */
     public static function getByName(string $first, string $last): ?User
     {
@@ -87,13 +62,7 @@ trait UserHelpers
     /**
      * @param string $username
      * @return User|null
-     * @throws AnnotationReaderException
-     * @throws ArrayHelperException
-     * @throws CollectionException
-     * @throws EndpointException
-     * @throws PatternMatchException
-     * @throws RestClientException
-     * @throws \ReflectionException
+     * @throws \Exception
      */
     public static function getByUsername(string $username): ?User
     {
@@ -120,13 +89,7 @@ trait UserHelpers
     /**
      * @param string $email
      * @return self Returns the appropriate Endpoint instance, for method chaining purposes.
-     * @throws AnnotationReaderException
-     * @throws ArrayHelperException
-     * @throws CollectionException
-     * @throws EndpointException
-     * @throws PatternMatchException
-     * @throws RestClientException
-     * @throws \ReflectionException
+     * @throws \Exception
      */
     public function setUserByEmail(string $email): self
     {
@@ -142,13 +105,7 @@ trait UserHelpers
     /**
      * @param string $username
      * @return self Returns the appropriate Endpoint instance, for method chaining purposes.
-     * @throws AnnotationReaderException
-     * @throws ArrayHelperException
-     * @throws CollectionException
-     * @throws EndpointException
-     * @throws PatternMatchException
-     * @throws RestClientException
-     * @throws \ReflectionException
+     * @throws \Exception
      */
     public function setUserByUsername(string $username): self
     {

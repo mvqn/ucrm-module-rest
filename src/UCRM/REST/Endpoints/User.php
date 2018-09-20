@@ -6,6 +6,7 @@ namespace UCRM\REST\Endpoints;
 use MVQN\REST\Endpoints\EndpointObject;
 use MVQN\REST\Annotations\EndpointAnnotation as Endpoint;
 
+
 use UCRM\REST\Endpoints\Helpers\UserHelper;
 
 /**
@@ -18,13 +19,9 @@ use UCRM\REST\Endpoints\Helpers\UserHelper;
  * @Endpoint { "get": "/users/admins", "getById": "/users/admins/:id" }
  *
  * @method string|null getEmail()
- *
  * @method string|null getUsername()
- *
  * @method string|null getFirstName()
- *
  * @method string|null getLastName()
- *
  * @method string|null getAvatarColor()
  *
  */

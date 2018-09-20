@@ -3,14 +3,6 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Helpers\Common;
 
-use MVQN\Annotations\Exceptions\AnnotationReaderException;
-use MVQN\Collections\Exceptions\CollectionException;
-use MVQN\Helpers\Exceptions\ArrayHelperException;
-use MVQN\Helpers\Exceptions\PatternMatchException;
-
-use UCRM\REST\Endpoints\Exceptions\EndpointException;
-use UCRM\REST\Exceptions\RestClientException;
-
 use UCRM\REST\Endpoints\{Country, State};
 
 /**
@@ -27,12 +19,7 @@ trait InvoiceStateHelpers
 
     /**
      * @return State|null
-     * @throws AnnotationReaderException
-     * @throws ArrayHelperException
-     * @throws EndpointException
-     * @throws PatternMatchException
-     * @throws ReflectionException
-     * @throws RestClientException
+     * @throws \Exception
      */
     public function getInvoiceState(): ?State
     {
@@ -58,18 +45,12 @@ trait InvoiceStateHelpers
     /**
      * @param string $name
      * @return self Returns the appropriate Endpoint instance, for method chaining purposes.
-     * @throws AnnotationReaderException
-     * @throws ArrayHelperException
-     * @throws CollectionException
-     * @throws EndpointException
-     * @throws PatternMatchException
-     * @throws ReflectionException
-     * @throws RestClientException
+     * @throws \Exception
      */
     public function setInvoiceStateByName(string $name): self
     {
         if(!property_exists($this, "invoiceCountryId") || $this->{"invoiceCountryId"} === null)
-            throw new EndpointException("Country ID must be set before the use of Client->setStateByName()!");
+            throw new \Exception("Country ID must be set before the use of Client->setStateByName()!");
 
         /** @var Country $country */
         $country = Country::getById($this->{"invoiceCountryId"});
@@ -85,18 +66,12 @@ trait InvoiceStateHelpers
     /**
      * @param string $code
      * @return self Returns the appropriate Endpoint instance, for method chaining purposes.
-     * @throws AnnotationReaderException
-     * @throws ArrayHelperException
-     * @throws CollectionException
-     * @throws EndpointException
-     * @throws PatternMatchException
-     * @throws ReflectionException
-     * @throws RestClientException
+     * @throws \Exception
      */
     public function setInvoiceStateByCode(string $code): self
     {
         if(!property_exists($this, "invoiceCountryId") || $this->{"invoiceCountryId"} === null)
-            throw new EndpointException("Country ID must be set before the use of Client->setStateByName()!");
+            throw new \Exception("Country ID must be set before the use of Client->setStateByName()!");
 
         /** @var Country $country */
         $country = Country::getById($this->{"invoiceCountryId"});

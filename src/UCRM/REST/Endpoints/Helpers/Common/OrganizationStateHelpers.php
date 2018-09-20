@@ -3,14 +3,6 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Helpers\Common;
 
-use MVQN\Annotations\Exceptions\AnnotationReaderException;
-use MVQN\Collections\Exceptions\CollectionException;
-use MVQN\Helpers\Exceptions\ArrayHelperException;
-use MVQN\Helpers\Exceptions\PatternMatchException;
-
-use UCRM\REST\Exceptions\RestClientException;
-use UCRM\REST\Endpoints\Exceptions\EndpointException;
-
 use UCRM\REST\Endpoints\{Country, State};
 
 /**
@@ -27,12 +19,7 @@ trait OrganizationStateHelpers
 
     /**
      * @return State|null
-     * @throws AnnotationReaderException
-     * @throws ArrayHelperException
-     * @throws EndpointException
-     * @throws PatternMatchException
-     * @throws RestClientException
-     * @throws \ReflectionException
+     * @throws \Exception
      */
     public function getOrganizationState(): ?State
     {
@@ -58,18 +45,12 @@ trait OrganizationStateHelpers
     /**
      * @param string $name
      * @return self Returns the appropriate Endpoint instance, for method chaining purposes.
-     * @throws AnnotationReaderException
-     * @throws ArrayHelperException
-     * @throws CollectionException
-     * @throws EndpointException
-     * @throws PatternMatchException
-     * @throws RestClientException
-     * @throws \ReflectionException
+     * @throws \Exception
      */
     public function setOrganizationStateByName(string $name): self
     {
         if(!property_exists($this, "organizationCountryId") || $this->{"organizationCountryId"} === null)
-            throw new EndpointException("Organization Country ID must be set before the use of any Endpoint->".
+            throw new \Exception("Organization Country ID must be set before the use of any Endpoint->".
                 "setOrganizationStateByName()!");
 
         /** @var Country $country */
@@ -86,18 +67,12 @@ trait OrganizationStateHelpers
     /**
      * @param string $code
      * @return self Returns the appropriate Endpoint instance, for method chaining purposes.
-     * @throws AnnotationReaderException
-     * @throws ArrayHelperException
-     * @throws CollectionException
-     * @throws EndpointException
-     * @throws PatternMatchException
-     * @throws RestClientException
-     * @throws \ReflectionException
+     * @throws \Exception
      */
     public function setOrganizationStateByCode(string $code): self
     {
         if(!property_exists($this, "organizationCountryId") || $this->{"organizationCountryId"} === null)
-            throw new EndpointException("Organization Country ID must be set before the use of any Endpoint->".
+            throw new \Exception("Organization Country ID must be set before the use of any Endpoint->".
                 "setOrganizationStateByCode()!");
 
         /** @var Country $country */

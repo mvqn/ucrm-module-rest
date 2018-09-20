@@ -5,6 +5,7 @@ namespace UCRM\REST\Endpoints;
 
 use MVQN\REST\Endpoints\EndpointObject;
 use MVQN\REST\Annotations\EndpointAnnotation as Endpoint;
+use MVQN\REST\Annotations\PostRequiredAnnotation as PostRequired;
 
 /**
  * Class ServiceIP
@@ -20,7 +21,6 @@ use MVQN\REST\Annotations\EndpointAnnotation as Endpoint;
  *
  * @method int|null getServiceDeviceId()
  * @method ServiceIP setServiceDeviceId(int $id)
- *
  * @method string|null getIpRange()
  * @method ServiceIP setIpRange(string $range)
  *

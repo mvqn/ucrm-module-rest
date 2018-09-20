@@ -76,7 +76,18 @@ class _22_TaxTests extends \PHPUnit\Framework\TestCase
             ->setName($name)
             ->setRate(20)
             ->setAgencyName("Big Brother")
-            ->setSelected(true);
+            ->setSelected(true); // Not supported by Endpoint.
+
+        if($tax->validate("post", $missing, $ignored))
+        {
+            echo "MISSING: ";
+            print_r($missing);
+            echo "\n";
+
+            echo "IGNORED: ";
+            print_r($ignored);
+            echo "\n";
+        }
 
         /** @var Tax $inserted */
         $inserted = $tax->insert();

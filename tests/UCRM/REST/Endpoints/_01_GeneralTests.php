@@ -41,6 +41,10 @@ class _01_GeneralTests extends \PHPUnit\Framework\TestCase
     // VERSION TESTS
     // -----------------------------------------------------------------------------------------------------------------
 
+    /**
+     * @covers Version::get()
+     * @throws \Exception
+     */
     public function testVersionGet()
     {
         $version = Version::get()->first();
@@ -57,8 +61,6 @@ class _01_GeneralTests extends \PHPUnit\Framework\TestCase
 
     public function testCountryGet()
     {
-
-
         $countries = Country::get();
         $this->assertNotNull($countries);
 

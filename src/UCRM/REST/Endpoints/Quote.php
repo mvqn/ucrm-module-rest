@@ -5,6 +5,11 @@ namespace UCRM\REST\Endpoints;
 
 use MVQN\REST\Endpoints\EndpointObject;
 use MVQN\REST\Annotations\EndpointAnnotation as Endpoint;
+use MVQN\REST\Annotations\PostAnnotation as Post;
+use MVQN\REST\Annotations\PostRequiredAnnotation as PostRequired;
+use MVQN\REST\Annotations\PatchAnnotation as Patch;
+use MVQN\REST\Annotations\PatchRequiredAnnotation as PatchRequired;
+use MVQN\REST\Annotations\KeepNullElementsAnnotation as KeepNullElements;
 
 use UCRM\REST\Endpoints\Collections\QuoteItemCollection;
 use UCRM\REST\Endpoints\Collections\QuoteTaxCollection;
@@ -23,6 +28,81 @@ use UCRM\REST\Endpoints\Lookups\QuoteTax;
  * @Endpoint { "getById": "/quotes/:id" }
  * @Endpoint { "post": "/clients/:clientId/quotes" }
  * @Endpoint { "patch": "/quotes/:id" }
+ *
+ * @method int|null getClientId()
+ * @method Quote setClientId(int $id)
+ * @method string|null getNumber()
+ * @method Quote setNumber(string $number)
+ * @method string|null getCreatedDate()
+ * @see    Quote::setCreatedDate()
+ * @method string|null getEmailSentDate()
+ * @see    Quote::setEmailSentDate()
+ * @method int|null getMaturityDays()
+ * @method Quote setMaturityDays(int $day)
+ * @method string|null getNotes()
+ * @method Quote setNotes(string $notes)
+ * @method string|null getAdminNotes()
+ * @method Quote setAdminNotes(string $notes)
+ * @method int|null getQuoteTemplateId()
+ * @method Quote setQuoteTemplateId(int $id)
+ * @method string|null getOrganizationName()
+ * @method Quote setOrganizationName(string $name)
+ * @method string|null getOrganizationRegistrationNumber()
+ * @method Quote setOrganizationRegistrationNumber(string $number)
+ * @method string|null getOrganizationTaxId()
+ * @method Quote setOrganizationTaxId(string $id)
+ * @method string|null getOrganizationStreet1()
+ * @method Quote setOrganizationStreet1(string $street1)
+ * @method string|null getOrganizationStreet2()
+ * @method Quote setOrganizationStreet2(string $street2)
+ * @method string|null getOrganizationCity()
+ * @method Quote setOrganizationCity(string $city)
+ * @method int|null getOrganizationCountryId()
+ * @method Quote setOrganizationCountryId(int $id)
+ * @method int|null getOrganizationStateId()
+ * @method Quote setOrganizationStateId(int $id)
+ * @method string|null getOrganizationZipCode()
+ * @method Quote setOrganizationZipCode(string $zip)
+ * @method string|null getOrganizationBankAccountName()
+ * @method Quote setOrganizationBankAccountName(string $name)
+ * @method string|null getOrganizationBankAccountField1()
+ * @method Quote setOrganizationBankAccountField1(string $field1)
+ * @method string|null getOrganizationBankAccountField2()
+ * @method Quote setOrganizationBankAccountField2(string $field2)
+ * @method string|null getClientFirstName()
+ * @method Quote setClientFirstName(string $name)
+ * @method string|null getClientLastName()
+ * @method Quote setClientLastName(string $name)
+ * @method string|null getClientCompanyName()
+ * @method Quote setClientCompanyName(string $name)
+ * @method string|null getClientCompanyRegistrationNumber()
+ * @method Quote setClientCompanyRegistrationNumber(string $name)
+ * @method string|null getClientCompanyTaxId()
+ * @method Quote setClientCompanyTaxId(string $id)
+ * @method string|null getClientStreet1()
+ * @method Quote setClientStreet1(string $street1)
+ * @method string|null getClientStreet2()
+ * @method Quote setClientStreet2(string $street2)
+ * @method string|null getClientCity()
+ * @method Quote setClientCity(string $city)
+ * @method int|null getClientCountryId()
+ * @method Quote setClientCountryId(int $id)
+ * @method int|null getClientStateId()
+ * @method Quote setClientStateId(int $id)
+ * @method string|null getClientZipCode()
+ * @method Quote setClientZipCode(string $zip)
+ * @method string|null getDueDate()
+ * @see    Quote::setDueDate()
+ * @see    Quote::getItems()
+ * @see    Quote::setItems()
+ * @method float|null getSubtotal()
+ * @method float|null getDiscount()
+ * @method string|null getDiscountLabel()
+ * @see    Quote::getTaxes()
+ * @method float|null getTotal()
+ * @method float|null getAmountPaid()
+ * @method string|null getCurrencyCode()
+ * @method int|null getStatus()
  */
 final class Quote extends EndpointObject
 {
@@ -46,66 +126,18 @@ final class Quote extends EndpointObject
     protected $clientId;
 
     /**
-     * @return int|null
-     */
-    public function getClientId(): ?int
-    {
-        return $this->clientId;
-    }
-
-    /**
-     * @param int $value
-     * @return Quote
-     */
-    public function setClientId(int $value): Quote
-    {
-        $this->clientId = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $number;
 
     /**
-     * @return string|null
-     */
-    public function getNumber(): ?string
-    {
-        return $this->number;
-    }
-
-    /**
-     * @param string $value
-     * @return Quote
-     */
-    public function setNumber(string $value): Quote
-    {
-        $this->number = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $createdDate;
-
-    /**
-     * @return string|null
-     */
-    public function getCreatedDate(): ?string
-    {
-        return $this->createdDate;
-    }
 
     /**
      * @param \DateTime $value
@@ -117,721 +149,200 @@ final class Quote extends EndpointObject
         return $this;
     }
 
-    // -----------------------------------------------------------------------------------------------------------------
-
     /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $notes;
 
     /**
-     * @return string|null
-     */
-    public function getNotes(): ?string
-    {
-        return $this->notes;
-    }
-
-    /**
-     * @param string $value
-     * @return Quote
-     */
-    public function setNotes(string $value): Quote
-    {
-        $this->notes = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $adminNotes;
 
     /**
-     * @return string|null
-     */
-    public function getAdminNotes(): ?string
-    {
-        return $this->adminNotes;
-    }
-
-    /**
-     * @param string $value
-     * @return Quote
-     */
-    public function setAdminNotes(string $value): Quote
-    {
-        $this->adminNotes = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $quoteTemplateId;
 
     /**
-     * @return int|null
-     */
-    public function getQuoteTemplateId(): ?int
-    {
-        return $this->quoteTemplateId;
-    }
-
-    /**
-     * @param int $value
-     * @return Quote
-     */
-    public function setQuoteTemplateId(int $value): Quote
-    {
-        $this->quoteTemplateId = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $organizationName;
 
     /**
-     * @return string|null
-     */
-    public function getOrganizationName(): ?string
-    {
-        return $this->organizationName;
-    }
-
-    /**
-     * @param string $value
-     * @return Quote
-     */
-    public function setOrganizationName(string $value): Quote
-    {
-        $this->organizationName = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $organizationRegistrationNumber;
 
     /**
-     * @return string|null
-     */
-    public function getOrganizationRegistrationNumber(): ?string
-    {
-        return $this->organizationRegistrationNumber;
-    }
-
-    /**
-     * @param string $value
-     * @return Quote
-     */
-    public function setOrganizationRegistrationNumber(string $value): Quote
-    {
-        $this->organizationRegistrationNumber = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $organizationTaxId;
 
     /**
-     * @return string|null
-     */
-    public function getOrganizationTaxId(): ?string
-    {
-        return $this->organizationTaxId;
-    }
-
-    /**
-     * @param string $value
-     * @return Quote
-     */
-    public function setOrganizationTaxId(string $value): Quote
-    {
-        $this->organizationTaxId = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $organizationStreet1;
 
     /**
-     * @return string|null
-     */
-    public function getOrganizationStreet1(): ?string
-    {
-        return $this->organizationStreet1;
-    }
-
-    /**
-     * @param string $value
-     * @return Quote
-     */
-    public function setOrganizationStreet1(string $value): Quote
-    {
-        $this->organizationStreet1 = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $organizationStreet2;
 
     /**
-     * @return string|null
-     */
-    public function getOrganizationStreet2(): ?string
-    {
-        return $this->organizationStreet2;
-    }
-
-    /**
-     * @param string $value
-     * @return Quote
-     */
-    public function setOrganizationStreet2(string $value): Quote
-    {
-        $this->organizationStreet2 = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $organizationCity;
 
     /**
-     * @return string|null
-     */
-    public function getOrganizationCity(): ?string
-    {
-        return $this->organizationCity;
-    }
-
-    /**
-     * @param string $value
-     * @return Quote
-     */
-    public function setOrganizationCity(string $value): Quote
-    {
-        $this->organizationCity = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $organizationCountryId;
 
     /**
-     * @return int|null
-     */
-    public function getOrganizationCountryId(): ?int
-    {
-        return $this->organizationCountryId;
-    }
-
-    /**
-     * @param int $value
-     * @return Quote
-     */
-    public function setOrganizationCountryId(int $value): Quote
-    {
-        $this->organizationCountryId = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $organizationStateId;
 
     /**
-     * @return int|null
-     */
-    public function getOrganizationStateId(): ?int
-    {
-        return $this->organizationStateId;
-    }
-
-    /**
-     * @param int $value
-     * @return Quote
-     */
-    public function setOrganizationStateId(int $value): Quote
-    {
-        $this->organizationStateId = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $organizationZipCode;
 
     /**
-     * @return string|null
-     */
-    public function getOrganizationZipCode(): ?string
-    {
-        return $this->organizationZipCode;
-    }
-
-    /**
-     * @param string $value
-     * @return Quote
-     */
-    public function setOrganizationZipCode(string $value): Quote
-    {
-        $this->organizationZipCode = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $organizationBankAccountName;
 
     /**
-     * @return string|null
-     */
-    public function getOrganizationBankAccountName(): ?string
-    {
-        return $this->organizationBankAccountName;
-    }
-
-    /**
-     * @param string $value
-     * @return Quote
-     */
-    public function setOrganizationBankAccountName(string $value): Quote
-    {
-        $this->organizationBankAccountName = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $organizationBankAccountField1;
 
     /**
-     * @return string|null
-     */
-    public function getOrganizationBankAccountField1(): ?string
-    {
-        return $this->organizationBankAccountField1;
-    }
-
-    /**
-     * @param string $value
-     * @return Quote
-     */
-    public function setOrganizationBankAccountField1(string $value): Quote
-    {
-        $this->organizationBankAccountField1 = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $organizationBankAccountField2;
 
     /**
-     * @return string|null
-     */
-    public function getOrganizationBankAccountField2(): ?string
-    {
-        return $this->organizationBankAccountField2;
-    }
-
-    /**
-     * @param string $value
-     * @return Quote
-     */
-    public function setOrganizationBankAccountField2(string $value): Quote
-    {
-        $this->organizationBankAccountField2 = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $clientFirstName;
 
     /**
-     * @return string|null
-     */
-    public function getClientFirstName(): ?string
-    {
-        return $this->clientFirstName;
-    }
-
-    /**
-     * @param string $value
-     * @return Quote
-     */
-    public function setClientFirstName(string $value): Quote
-    {
-        $this->clientFirstName = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $clientLastName;
 
     /**
-     * @return string|null
-     */
-    public function getClientLastName(): ?string
-    {
-        return $this->clientLastName;
-    }
-
-    /**
-     * @param string $value
-     * @return Quote
-     */
-    public function setClientLastName(string $value): Quote
-    {
-        $this->clientLastName = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $clientCompanyName;
 
     /**
-     * @return string|null
-     */
-    public function getClientCompanyName(): ?string
-    {
-        return $this->clientCompanyName;
-    }
-
-    /**
-     * @param string $value
-     * @return Quote
-     */
-    public function setClientCompanyName(string $value): Quote
-    {
-        $this->clientCompanyName = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $clientCompanyRegistrationNumber;
 
     /**
-     * @return string|null
-     */
-    public function getClientCompanyRegistrationNumber(): ?string
-    {
-        return $this->clientCompanyRegistrationNumber;
-    }
-
-    /**
-     * @param string $value
-     * @return Quote
-     */
-    public function setClientCompanyRegistrationNumber(string $value): Quote
-    {
-        $this->clientCompanyRegistrationNumber = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $clientCompanyTaxId;
 
     /**
-     * @return string|null
-     */
-    public function getClientCompanyTaxId(): ?string
-    {
-        return $this->clientCompanyTaxId;
-    }
-
-    /**
-     * @param string $value
-     * @return Quote
-     */
-    public function setClientCompanyTaxId(string $value): Quote
-    {
-        $this->clientCompanyTaxId = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $clientStreet1;
 
     /**
-     * @return string|null
-     */
-    public function getClientStreet1(): ?string
-    {
-        return $this->clientStreet1;
-    }
-
-    /**
-     * @param string $value
-     * @return Quote
-     */
-    public function setClientStreet1(string $value): Quote
-    {
-        $this->clientStreet1 = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $clientStreet2;
 
     /**
-     * @return string|null
-     */
-    public function getClientStreet2(): ?string
-    {
-        return $this->clientStreet2;
-    }
-
-    /**
-     * @param string $value
-     * @return Quote
-     */
-    public function setClientStreet2(string $value): Quote
-    {
-        $this->clientStreet2 = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $clientCity;
 
     /**
-     * @return string|null
-     */
-    public function getClientCity(): ?string
-    {
-        return $this->clientCity;
-    }
-
-    /**
-     * @param string $value
-     * @return Quote
-     */
-    public function setClientCity(string $value): Quote
-    {
-        $this->clientCity = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $clientCountryId;
 
     /**
-     * @return int|null
-     */
-    public function getClientCountryId(): ?int
-    {
-        return $this->clientCountryId;
-    }
-
-    /**
-     * @param int $value
-     * @return Quote
-     */
-    public function setClientCountryId(int $value): Quote
-    {
-        $this->clientCountryId = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $clientStateId;
 
     /**
-     * @return int|null
-     */
-    public function getClientStateId(): ?int
-    {
-        return $this->clientStateId;
-    }
-
-    /**
-     * @param int $value
-     * @return Quote
-     */
-    public function setClientStateId(int $value): Quote
-    {
-        $this->clientStateId = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
-     * @post
-     * @patch
+     * @Post
+     * @Patch
      */
     protected $clientZipCode;
 
     /**
-     * @return string|null
-     */
-    public function getClientZipCode(): ?string
-    {
-        return $this->clientZipCode;
-    }
-
-    /**
-     * @param string $value
-     * @return Quote
-     */
-    public function setClientZipCode(string $value): Quote
-    {
-        $this->clientZipCode = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var QuoteItem[]
-     * @post-required
-     * @patch
+     * @PostRequired
+     * @PatchRequired
      *
-     * @keepNullElements
+     * @KeepNullElements
      */
     protected $items;
 
     /**
      * @return QuoteItemCollection
+     * @throws \Exception
      */
     public function getItems(): QuoteItemCollection
     {
@@ -848,32 +359,10 @@ final class Quote extends EndpointObject
         return $this;
     }
 
-    // -----------------------------------------------------------------------------------------------------------------
-
     /**
      * @var float
      */
     protected $subtotal;
-
-    /**
-     * @return float|null
-     */
-    public function getSubtotal(): ?float
-    {
-        return $this->subtotal;
-    }
-
-    /**
-     * @param float $value
-     * @return Quote
-     */
-    public function setSubtotal(float $value): Quote
-    {
-        $this->subtotal = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var float
@@ -881,49 +370,9 @@ final class Quote extends EndpointObject
     protected $discount;
 
     /**
-     * @return float|null
-     */
-    public function getDiscount(): ?float
-    {
-        return $this->discount;
-    }
-
-    /**
-     * @param float $value
-     * @return Quote
-     */
-    public function setDiscount(float $value): Quote
-    {
-        $this->discount = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var string
      */
     protected $discountLabel;
-
-    /**
-     * @return string|null
-     */
-    public function getDiscountLabel(): ?string
-    {
-        return $this->discountLabel;
-    }
-
-    /**
-     * @param string $value
-     * @return Quote
-     */
-    public function setDiscountLabel(string $value): Quote
-    {
-        $this->discountLabel = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var QuoteTax[]
@@ -933,6 +382,7 @@ final class Quote extends EndpointObject
 
     /**
      * @return QuoteTaxCollection
+     * @throws \Exception
      */
     public function getTaxes(): QuoteTaxCollection
     {
@@ -940,41 +390,9 @@ final class Quote extends EndpointObject
     }
 
     /**
-     * @param QuoteTaxCollection $value
-     * @return Quote
-     */
-    public function setTaxes(QuoteTaxCollection $value): Quote
-    {
-        $this->taxes = $value->elements();
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var float
      */
     protected $total;
-
-    /**
-     * @return float|null
-     */
-    public function getTotal(): ?float
-    {
-        return $this->total;
-    }
-
-    /**
-     * @param float $value
-     * @return Quote
-     */
-    public function setTotal(float $value): Quote
-    {
-        $this->total = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * @var string
@@ -982,46 +400,8 @@ final class Quote extends EndpointObject
     protected $currencyCode;
 
     /**
-     * @return string|null
-     */
-    public function getCurrencyCode(): ?string
-    {
-        return $this->currencyCode;
-    }
-
-    /**
-     * @param string $value
-     * @return Quote
-     */
-    public function setCurrencyCode(string $value): Quote
-    {
-        $this->currencyCode = $value;
-        return $this;
-    }
-
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
      * @var int
      */
     protected $status;
-
-    /**
-     * @return int|null
-     */
-    public function getStatus(): ?int
-    {
-        return $this->status;
-    }
-
-    /**
-     * @param int $value
-     * @return Quote
-     */
-    public function setStatus(int $value): Quote
-    {
-        $this->status = $value;
-        return $this;
-    }
 
 }

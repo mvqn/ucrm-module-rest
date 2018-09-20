@@ -3,17 +3,6 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Helpers\Common;
 
-// Core
-use MVQN\Annotations\AnnotationReaderException;
-use MVQN\Collections\CollectionException;
-use MVQN\Common\ArraysException;
-use MVQN\Common\PatternsException;
-
-// Exceptions
-use UCRM\REST\Endpoints\EndpointException;
-use UCRM\REST\RestClientException;
-
-// Endpoints
 use UCRM\REST\Endpoints\Country;
 use UCRM\REST\Endpoints\State;
 
@@ -57,14 +46,7 @@ trait InvoiceAddressHelpers
      * @param string $countryCode
      * @param string $zipCode
      * @return InvoiceAddressHelpers
-     *
-     * @throws AnnotationReaderException
-     * @throws ArraysException
-     * @throws CollectionException
-     * @throws EndpointException
-     * @throws PatternsException
-     * @throws RestClientException
-     * @throws \ReflectionException
+     * @throws \Exception
      */
     public function setInvoiceAddress(string $street, string $city, string $stateCode, string $countryCode,
         string $zipCode): self

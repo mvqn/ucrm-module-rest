@@ -18,29 +18,17 @@ use UCRM\REST\Endpoints\Helpers\OrganizationHelper;
  * @Endpoint { "get": "/organizations", "getById": "/organizations/:id" }
  *
  * @method string|null getName()
- *
  * @method string|null getRegistrationNumber()
- *
  * @method string|null getTaxId()
- *
  * @method string|null getPhone()
- *
  * @method string|null getEmail()
- *
  * @method string|null getWebsite()
- *
  * @method string|null getStreet1()
- *
  * @method string|null getStreet2()
- *
  * @method string|null getCity()
- *
  * @method int|null getCountryId()
- *
  * @method int|null getStateId()
- *
  * @method string|null getZipCode()
- *
  * @method bool|null getSelected()
  *
  */

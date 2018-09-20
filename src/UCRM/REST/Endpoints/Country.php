@@ -22,7 +22,6 @@ use UCRM\REST\Endpoints\Helpers\CountryHelper;
  * @Endpoint { "get": "/countries", "getById": "/countries/:id" }
  *
  * @method string|null getName()
- *
  * @method string|null getCode()
  *
  */

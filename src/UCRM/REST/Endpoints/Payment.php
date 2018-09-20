@@ -5,6 +5,8 @@ namespace UCRM\REST\Endpoints;
 
 use MVQN\REST\Endpoints\EndpointObject;
 use MVQN\REST\Annotations\EndpointAnnotation as Endpoint;
+use MVQN\REST\Annotations\PostAnnotation as Post;
+use MVQN\REST\Annotations\PostRequiredAnnotation as PostRequired;
 
 use UCRM\REST\Endpoints\Helpers\PaymentHelper;
 use UCRM\REST\Endpoints\Lookups\PaymentCover;
@@ -21,47 +23,32 @@ use UCRM\REST\Endpoints\Lookups\PaymentCover;
  *
  * @method int|null getClientId()
  * @method Payment setClientId(int $id)
- *
  * @method int|null getMethod()
  * @method Payment setMethod(int $method)
- *
  * @method string|null getCheckNumber()
  * @method Payment setCheckNumber(string $number)
- *
  * @method string|null getCreatedDate()
  * @see    Payment::setCreatedDate()
- *
  * @method float|null getAmount()
  * @method Payment setAmount(float $amount)
- *
  * @method string|null getCurrencyCode()
  * @method Payment setCurrencyCode(string $code)
- *
  * @method string|null getNote()
  * @method Payment setNote(string $note)
- *
  * @method string|null getReceiptSentDate()
- *
  * @method string|null getProviderName()
  * @method Payment setProviderName(string $name)
- *
  * @method string|null getProviderPaymentId()
  * @method Payment setProviderPaymentId(string $id)
- *
  * @method string|null getProviderPaymentTime()
- *
  * @method PaymentCover[]|null getPaymentCovers()
  * @method Payment setPaymentCovers(array $covers)
- *
  * @method float|null getCreditAmount()
  * @method Payment setCreditAmount(float $amount)
- *
  * @method int|null getInvoiceId()
  * @see    Payment::setInvoiceId()
- *
  * @method int[]|null getInvoiceIds()
  * @see    Payment::setInvoiceIds()
- *
  * @method bool|null getApplyToInvoicesAutomatically()
  * @see    Payment::setApplyToInvoicesAutomatically()
  *
@@ -101,28 +88,24 @@ final class Payment extends EndpointObject
     /**
      * @var int
      * @Post
-     * @Patch
      */
     protected $clientId;
 
     /**
      * @var int
      * @PostRequired
-     * @Patch
      */
     protected $method;
 
     /**
      * @var string
      * @Post
-     * @Patch
      */
     protected $checkNumber;
 
     /**
      * @var string
      * @Post
-     * @Patch
      */
     protected $createdDate;
 
@@ -139,21 +122,18 @@ final class Payment extends EndpointObject
     /**
      * @var float
      * @PostRequired
-     * @Patch
      */
     protected $amount;
 
     /**
      * @var string
      * @Post
-     * @Patch
      */
     protected $currencyCode;
 
     /**
      * @var string
      * @Post
-     * @Patch
      */
     protected $note;
 
@@ -175,21 +155,18 @@ final class Payment extends EndpointObject
     /**
      * @var string
      * @Post
-     * @Patch
      */
     protected $providerName;
 
     /**
      * @var string
      * @Post
-     * @Patch
      */
     protected $providerPaymentId;
 
     /**
      * @var string
      * @Post
-     * @Patch
      */
     protected $providerPaymentTime;
 
@@ -216,7 +193,6 @@ final class Payment extends EndpointObject
     /**
      * @var int
      * @Post
-     * @Patch
      *
      * @deprecated
      */
@@ -238,7 +214,6 @@ final class Payment extends EndpointObject
     /**
      * @var int[]
      * @Post
-     * @Patch
      */
     protected $invoiceIds;
 
@@ -256,7 +231,6 @@ final class Payment extends EndpointObject
     /**
      * @var bool
      * @Post
-     * @Patch
      */
     protected $applyToInvoicesAutomatically;
 

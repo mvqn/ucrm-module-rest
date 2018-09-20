@@ -5,6 +5,10 @@ namespace UCRM\REST\Endpoints;
 
 use MVQN\REST\Endpoints\EndpointObject;
 use MVQN\REST\Annotations\EndpointAnnotation as Endpoint;
+use MVQN\REST\Annotations\PostAnnotation as Post;
+use MVQN\REST\Annotations\PostRequiredAnnotation as PostRequired;
+use MVQN\REST\Annotations\PatchAnnotation as Patch;
+use MVQN\REST\Annotations\PatchRequiredAnnotation as PatchRequired;
 
 use UCRM\REST\Endpoints\Lookups\ClientBankAccount;
 use UCRM\REST\Endpoints\Lookups\ClientContact;
@@ -30,135 +34,89 @@ use UCRM\REST\Endpoints\Collections\ClientTagCollection;
  *
  * @method string|null getUserIdent()
  * @method Client setUserIdent(string $ident)
- *
  * @method int|null getOrganizationId()
  * @method Client setOrganizationId(int $id)
- *
  * @method bool|null getIsLead()
  * @method Client setIsLead(bool $lead)
- *
  * @method int|null getClientType()
  * @method Client setClientType(int $type)
- *
  * @method string|null getCompanyName()
  * @method Client setCompanyName(string $name)
- *
  * @method string|null getCompanyRegistrationNumber()
  * @method Client setCompanyRegistrationNumber(string $number)
- *
  * @method string|null getCompanyTaxId()
  * @method Client setCompanyTaxId(string $id)
- *
  * @method string|null getCompanyWebsite()
  * @method Client setCompanyWebsite(string $website)
- *
  * @method string|null getCompanyContactFirstName()
  * @method Client setCompanyContactFirstName(string $first)
- *
  * @method string|null getCompanyContactLastName()
  * @method Client setCompanyContactLastName(string $last)
- *
  * @method string|null getFirstName()
  * @method Client setFirstName(string $first)
- *
  * @method string|null getLastName()
  * @method Client setLastName(string $last)
- *
  * @method string|null getStreet1()
  * @method Client setStreet1(string $street1)
- *
  * @method string|null getStreet2()
  * @method Client setStreet2(string $street2)
- *
  * @method string|null getCity()
  * @method Client setCity(string $city)
- *
  * @method int|null getCountryId()
  * @method Client setCountryId(int $id)
- *
  * @method int|null getStateId()
  * @method Client setStateId(int $id)
- *
  * @method string|null getZipCode()
  * @method Client setZipCode(string $zip)
- *
  * @method bool|null getInvoiceAddressSameAsContact()
  * @method Client setInvoiceAddressSameAsContact(bool $same)
- *
  * @method string|null getInvoiceStreet1()
  * @method Client setInvoiceStreet1(string $street1)
- *
  * @method string|null getInvoiceStreet2()
  * @method Client setInvoiceStreet2(string $street2)
- *
  * @method string|null getInvoiceCity()
  * @method Client setInvoiceCity(string $city)
- *
  * @method int|null getInvoiceCountryId()
  * @method Client setInvoiceCountryId(int $id)
- *
  * @method int|null getInvoiceStateId()
  * @method Client setInvoiceStateId(int $id)
- *
  * @method string|null getInvoiceZipCode()
  * @method Client setInvoiceZipCode(string $zip)
- *
  * @method bool|null getSendInvoiceByPost()
  * @method Client setSendInvoiceByPost(bool $send)
- *
  * @method int|null getInvoiceMaturityDays()
  * @method Client setInvoiceMaturityDays(int $days)
- *
  * @method bool|null getStopServiceDue()
  * @method Client setStopServiceDue(bool $stop)
- *
  * @method int|null getStopServiceDueDays()
  * @method Client setStopServiceDueDays(int $days)
- *
  * @method int|null getTax1Id()
  * @method Client setTax1Id(int $id)
- *
  * @method int|null getTax2Id()
  * @method Client setTax2Id(int $id)
- *
  * @method int|null getTax3Id()
  * @method Client setTax3Id(int $id)
- *
  * @method string|null getRegistrationDate()
  * @see    Client::setRegistrationDate()
- *
  * @method string|null getPreviousIsp()
  * @method Client setPreviousIsp(string $isp)
- *
  * @method string|null getNote()
  * @method Client setNote(string $note)
- *
  * @method string|null getUsername()
  * @method Client setUsername(string $username)
- *
  * @method string|null getAvatarColor()
  * @method Client setAvatarColor(string $color)
- *
  * @see    Client::getContacts()
  * @see    Client::setContacts()
- *
  * @see    Client::getAttributes()
  * @see    Client::setAttributes()
- *
  * @method float|null getAccountBalance()
- *
  * @method float|null getAccountCredit()
- *
  * @method float|null getAccountOutstanding()
- *
  * @method string|null getCurrencyCode()
- *
  * @method string|null getOrganizationName()
- *
  * @see    Client::getBankAccounts()
- *
  * @method string|null getInvitationEmailSentDate()
- *
  * @see    Client::getTags()
  *
  */
@@ -456,6 +414,7 @@ final class Client extends EndpointObject
 
     /**
      * @return ClientContactCollection
+     * @throws \Exception
      */
     public function getContacts(): ClientContactCollection
     {
@@ -483,6 +442,7 @@ final class Client extends EndpointObject
 
     /**
      * @return ClientContactAttributeCollection
+     * @throws \Exception
      */
     public function getAttributes(): ClientContactAttributeCollection
     {
@@ -533,6 +493,7 @@ final class Client extends EndpointObject
 
     /**
      * @return ClientBankAccountCollection
+     * @throws \Exception
      */
     public function getBankAccounts(): ClientBankAccountCollection
     {
@@ -553,6 +514,7 @@ final class Client extends EndpointObject
 
     /**
      * @return ClientTagCollection
+     * @throws \Exception
      */
     public function getTags(): ClientTagCollection
     {

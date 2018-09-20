@@ -5,6 +5,10 @@ namespace UCRM\REST\Endpoints;
 
 use MVQN\REST\Endpoints\EndpointObject;
 use MVQN\REST\Annotations\EndpointAnnotation as Endpoint;
+use MVQN\REST\Annotations\PostAnnotation as Post;
+use MVQN\REST\Annotations\PostRequiredAnnotation as PostRequired;
+use MVQN\REST\Annotations\PatchAnnotation as Patch;
+use MVQN\REST\Annotations\PatchRequiredAnnotation as PatchRequired;
 
 use UCRM\REST\Endpoints\Helpers\ClientLogHelper;
 
@@ -21,13 +25,10 @@ use UCRM\REST\Endpoints\Helpers\ClientLogHelper;
  *
  * @method int|null getClientId()
  * @method ClientLog setClientId(int $id)
- *
  * @method string|null getMessage()
  * @method ClientLog setMessage(string $message)
- *
  * @method int|null getUserId()
  * @method ClientLog setUserId(int $id)
- *
  * @method string|null getCreatedDate()
  * @see ClientLog::setCreatedDate()
  *
@@ -42,16 +43,16 @@ final class ClientLog extends EndpointObject
 
     /**
      * @var int
-     * @Post
-     * @Patch
+     * @PostRequired
+     * @PatchRequired
      *
      */
     protected $clientId;
 
     /**
      * @var string
-     * @Post
-     * @Patch
+     * @PostRequired
+     * @PatchRequired
      */
     protected $message;
 

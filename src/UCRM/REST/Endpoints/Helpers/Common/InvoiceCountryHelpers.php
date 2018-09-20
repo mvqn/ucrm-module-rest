@@ -3,14 +3,7 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Helpers\Common;
 
-use MVQN\Annotations\Exceptions\AnnotationReaderException;
-use MVQN\Collections\Exceptions\CollectionException;
-use MVQN\Helpers\Exceptions\ArrayHelperException;
-use MVQN\Helpers\Exceptions\PatternMatchException;
-
-use UCRM\REST\Endpoints\Exceptions\EndpointException;
-use UCRM\REST\Exceptions\RestClientException;
-
+use UCRM\REST\Endpoints\Collections\CountryCollection;
 use UCRM\REST\Endpoints\Country;
 
 /**
@@ -27,12 +20,7 @@ trait InvoiceCountryHelpers
 
     /**
      * @return Country|null
-     * @throws AnnotationReaderException
-     * @throws ArrayHelperException
-     * @throws EndpointException
-     * @throws PatternMatchException
-     * @throws RestClientException
-     * @throws \ReflectionException
+     * @throws \Exception
      */
     public function getInvoiceCountry(): ?Country
     {
@@ -58,17 +46,15 @@ trait InvoiceCountryHelpers
     /**
      * @param string $name
      * @return self Returns the appropriate Endpoint instance, for method chaining purposes.
-     * @throws AnnotationReaderException
-     * @throws CollectionException
-     * @throws EndpointException
-     * @throws PatternMatchException
-     * @throws RestClientException
-     * @throws \ReflectionException
+     * @throws \Exception
      */
     public function setInvoiceCountryByName(string $name): self
     {
+        /** @var CountryCollection $countries */
+        $countries = Country::getByName($name);
+
         /** @var Country $country */
-        $country = Country::getByName($name)->first();
+        $country = $countries->first();
         $this->{"invoiceCountryId"} = $country->getId();
 
         /** @var self $this */
@@ -78,12 +64,7 @@ trait InvoiceCountryHelpers
     /**
      * @param string $code
      * @return self Returns the appropriate Endpoint instance, for method chaining purposes.
-     * @throws AnnotationReaderException
-     * @throws CollectionException
-     * @throws EndpointException
-     * @throws PatternMatchException
-     * @throws RestClientException
-     * @throws \ReflectionException
+     * @throws \Exception
      */
     public function setInvoiceCountryByCode(string $code): self
     {

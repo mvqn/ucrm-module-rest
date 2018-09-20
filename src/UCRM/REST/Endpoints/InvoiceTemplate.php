@@ -18,11 +18,8 @@ use UCRM\REST\Endpoints\Helpers\InvoiceTemplateHelper;
  * @Endpoint { "get": "/invoice-templates", "getById": "/invoice-templates/:id" }
  *
  * @method string|null getName()
- *
  * @method string|null getCreatedDate()
- *
  * @method bool|null getIsOfficial()
- *
  * @method bool|null getIsValid()
  *
  */

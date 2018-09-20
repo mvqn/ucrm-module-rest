@@ -5,6 +5,9 @@ namespace UCRM\REST\Endpoints;
 
 use MVQN\REST\Endpoints\EndpointObject;
 use MVQN\REST\Annotations\EndpointAnnotation as Endpoint;
+use MVQN\REST\Annotations\PostAnnotation as Post;
+use MVQN\REST\Annotations\PostRequiredAnnotation as PostRequired;
+use MVQN\REST\Annotations\PatchAnnotation as Patch;
 
 use UCRM\REST\Endpoints\Helpers\ServiceHelper;
 
@@ -21,143 +24,90 @@ use UCRM\REST\Endpoints\Helpers\ServiceHelper;
  *
  * @method int|null getServicePlanId()
  * @method Service setServicePlanId(int $id)
- *
  * @method int|null getServicePlanPeriodId()
  * @method Service setServicePlanPeriodId(int $id)
- *
  * @method string|null getActiveFrom()
- *
+ * @see    Service::setActiveFrom()
  * @method string|null getActiveTo()
- *
+ * @see    Service::setActiveTo()
  * @method string|null getName()
  * @method Service setName(string $name)
- *
  * @method float|null getPrice()
  * @method Service setPrice(float $price)
- *
  * @method string|null getNote()
  * @method Service setNote(string $note)
- *
  * @method string|null getInvoicingStart()
- *
+ * @see Service::setInvoicingStart()
  * @method int|null getInvoicingPeriodType()
  * @method Service setInvoicingPeriodType(int $type)
- *
  * @method int|null getInvoicingPeriodStartDay()
  * @method Service setInvoicingPeriodStartDay(int $day)
- *
  * @method int|null getInvoicingDayAdjustment()
  * @method Service setInvoicingDayAdjustment(int $adjustment)
- *
  * @method bool|null getInvoicingProratedSeparately()
  * @method Service setInvoicingProratedSeparately(bool $separate)
- *
  * @method bool|null getInvoicingSeparately()
  * @method Service setInvoicingSeparately(bool $separate)
- *
  * @method bool|null getSendEmailsAutomatically()
  * @method Service setSendEmailsAutomatically(bool $automatic)
- *
  * @method bool|null getUseCreditAutomatically()
  * @method Service setUseCreditAutomatically(bool $automatic)
- *
  * @method string|null getInvoiceLabel()
  * @method Service setInvoiceLabel(string $label)
- *
  * @method string|null getStreet1()
  * @method Service setStreet1(string $street1)
- *
  * @method string|null getStreet2()
  * @method Service setStreet2(string $street2)
- *
  * @method string|null getCity()
  * @method Service setCity(string $city)
- *
  * @method int|null getCountryId()
  * @method Service setCountryId(int $id)
- *
  * @method int|null getStateId()
  * @method Service setStateId(int $id)
- *
  * @method string|null getZipCode()
  * @method Service setZipCode(string $zip)
- *
  * @method float|null getAddressGpsLat()
  * @method Service setAddressGpsLat(float $latitude)
- *
  * @method float|null getAddressGpsLon()
  * @method Service setAddressGpsLon(float $longitude)
- *
  * @method int|null getContractId()
  * @method Service setContractId(int $id)
- *
  * @method int|null getContractLengthType()
  * @method Service setContractLengthType(int $type)
- *
  * @method int|null getMinimumContractLengthMonths()
  * @method Service setMinimumContractLengthMonths(int $months)
- *
  * @method string|null getContractEndDate()
- *
+ * @see    Service::setContractEndDate()
  * @method int|null getDiscountType()
  * @method Service setDiscountType(int $type)
- *
  * @method float|null getDiscountValue()
  * @method Service setDiscountValue(float $value)
- *
  * @method string|null getDiscountInvoiceLabel()
  * @method Service setDiscountInvoiceLabel(string $label)
- *
  * @method string|null getDiscountFrom()
- *
+ * @see    Service::setDiscountFrom()
  * @method string|null getDiscountTo()
- *
+ * @see    Service::setDiscountTo()
  * @method bool|null getTaxable()
  * @method Service setTaxable(bool $taxable)
- *
  * @method int|null getTax1Id()
  * @method Service setTax1Id(int $id)
- *
  * @method int|null getTax2Id()
  * @method Service setTax2Id(int $id)
- *
  * @method int|null getTax3Id()
  * @method Service setTax3Id(int $id)
- *
  * @method int|null getClientId()
- * @method Service setClientId(int $id)
- *
  * @method int|null getStatus()
- * @method Service setStatus(int $status)
- *
  * @method bool|null getHasIndividualPrice()
- * @method Service setHasIndividualPrice(bool $individual)
- *
  * @method float|null getTotalPrice()
- *
  * @method string|null getServicePlanName()
- * @method Service setServicePlanName(string $name)
- *
  * @method float|null getServicePlanPrice()
- * @method Service setServicePlanPrice(float $name)
- *
  * @method int|null getServicePlanPeriod()
- * @method Service setServicePlanPeriod(int $period)
- *
  * @method float|null getDownloadSpeed()
- * @method Service setDownloadSpeed(float $speed)
- *
  * @method float|null getUploadSpeed()
- * @method Service setUploadSpeed(float $speed)
- *
  * @method string[]|null getIpRanges()
- * @method Service setIpRanges(array $ranges)
- *
  * @method string|null getCurrencyCode()
- * @method Service setCurrencyCode(string $code)
- *
  * @method bool|null getHasOutage()
- * @method Service setHasOutage(bool $outage)
  *
  */
 final class Service extends EndpointObject

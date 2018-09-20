@@ -13,14 +13,13 @@ use MVQN\REST\Annotations\EndpointAnnotation as Endpoint;
  * @author Ryan Spaeth <rspaeth@mvqn.net>
  * @final
  *
+ * @Cached
+ *
  * @Endpoint { "get": "/currencies", "getById": "/currencies/:id" }
  *
  * @method string|null getName()
- *
  * @method string|null getCode()
- *
  * @method string|null getSymbol()
- *
  *
  */
 final class Currency extends EndpointObject

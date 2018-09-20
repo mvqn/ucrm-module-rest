@@ -5,6 +5,10 @@ namespace UCRM\REST\Endpoints;
 
 use MVQN\REST\Endpoints\EndpointObject;
 use MVQN\REST\Annotations\EndpointAnnotation as Endpoint;
+use MVQN\REST\Annotations\PostAnnotation as Post;
+use MVQN\REST\Annotations\PostRequiredAnnotation as PostRequired;
+use MVQN\REST\Annotations\PatchAnnotation as Patch;
+use MVQN\REST\Annotations\PatchRequiredAnnotation as PatchRequired;
 
 use UCRM\REST\Endpoints\Collections\ServicePlanPeriodCollection;
 use UCRM\REST\Endpoints\Helpers\ServicePlanHelper;
@@ -23,33 +27,24 @@ use UCRM\REST\Endpoints\Lookups\ServicePlanPeriod;
  *
  * @method string|null getName()
  * @method ServicePlan setName(string $name)
- *
  * @method int|null getOrganizationId()
  * @method ServicePlan setOrganizationId(int $id)
- *
  * @method string|null getInvoiceLabel()
  * @method ServicePlan setInvoiceLabel(string $label)
- *
  * @method float|null getDownloadBurst()
  * @method ServicePlan setDownloadBurst(float $burst)
- *
  * @method float|null getUploadBurst()
  * @method ServicePlan setUploadBurst(float $burst)
- *
  * @method float|null getDownloadSpeed()
  * @method ServicePlan setDownloadSpeed(float $speed)
- *
  * @method float|null getUploadSpeed()
  * @method ServicePlan setUploadSpeed(float $speed)
- *
  * @method int|null getDataUsageLimit()
  * @method ServicePlan setDataUsageLimit(int $limit)
- *
  * @method bool|null getTaxable()
  * @method ServicePlan setTaxable(bool $taxable)
- *
- * @method ServicePlanPeriod[]|null getPeriods()
- * @method ServicePlan setPeriods(ServicePlanPeriodCollection $taxable)
+ * @see ServicePlan::getPeriods()
+ * @see ServicePlan::setPeriods()
  *
  */
 final class ServicePlan extends EndpointObject
@@ -129,5 +124,24 @@ final class ServicePlan extends EndpointObject
      * @Patch
      */
     protected $periods;
+
+    /**
+     * @return ServicePlanPeriodCollection
+     * @throws \Exception
+     */
+    public function getPeriods(): ServicePlanPeriodCollection
+    {
+        return new ServicePlanPeriodCollection($this->periods);
+    }
+
+    /**
+     * @param ServicePlanPeriodCollection $periods
+     * @return ServicePlan
+     */
+    public function setPeriods(ServicePlanPeriodCollection $periods): ServicePlan
+    {
+        $this->periods = $periods->elements();
+        return $this;
+    }
 
 }

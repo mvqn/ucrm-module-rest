@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace UCRM\REST\Endpoints\Collections;
 
-use MVQN\Collections\{Collectible, Collection, CollectionException};
+use MVQN\Collections\Collectible;
+use MVQN\Collections\Collection;
+
 use UCRM\REST\Endpoints\Lookups\ClientContactAttribute;
 
 /**
@@ -15,9 +17,8 @@ use UCRM\REST\Endpoints\Lookups\ClientContactAttribute;
 final class ClientContactAttributeCollection extends Collection
 {
     /**
-     * ClientContactAttributeCollection constructor.
      * @param Collectible[]|null $elements
-     * @throws CollectionException
+     * @throws \Exception
      */
     public function __construct(?array $elements = [])
     {

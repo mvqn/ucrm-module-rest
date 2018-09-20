@@ -5,6 +5,11 @@ namespace UCRM\REST\Endpoints;
 
 use MVQN\REST\Endpoints\EndpointObject;
 use MVQN\REST\Annotations\EndpointAnnotation as Endpoint;
+use MVQN\REST\Annotations\PostAnnotation as Post;
+use MVQN\REST\Annotations\PostRequiredAnnotation as PostRequired;
+use MVQN\REST\Annotations\PatchAnnotation as Patch;
+use MVQN\REST\Annotations\PatchRequiredAnnotation as PatchRequired;
+use MVQN\REST\Annotations\KeepNullElementsAnnotation as KeepNullElements;
 
 use UCRM\REST\Endpoints\Collections\InvoiceItemCollection;
 use UCRM\REST\Endpoints\Collections\InvoiceTaxCollection;
@@ -28,132 +33,80 @@ use UCRM\REST\Endpoints\Lookups\PaymentCover;
  *
  * @method int|null getClientId()
  * @method Invoice setClientId(int $id)
- *
  * @method string|null getNumber()
  * @method Invoice setNumber(string $number)
- *
  * @method string|null getCreatedDate()
- * @see Invoice::setCreatedDate()
- *
+ * @see    Invoice::setCreatedDate()
  * @method string|null getEmailSentDate()
- * @see Invoice::setEmailSentDate()
- *
+ * @see    Invoice::setEmailSentDate()
  * @method int|null getMaturityDays()
  * @method Invoice setMaturityDays(int $day)
- *
  * @method string|null getNotes()
  * @method Invoice setNotes(string $notes)
- *
  * @method string|null getAdminNotes()
  * @method Invoice setAdminNotes(string $notes)
- *
  * @method int|null getInvoiceTemplateId()
  * @method Invoice setInvoiceTemplateId(int $id)
- *
  * @method string|null getOrganizationName()
  * @method Invoice setOrganizationName(string $name)
- *
  * @method string|null getOrganizationRegistrationNumber()
  * @method Invoice setOrganizationRegistrationNumber(string $number)
- *
  * @method string|null getOrganizationTaxId()
  * @method Invoice setOrganizationTaxId(string $id)
- *
  * @method string|null getOrganizationStreet1()
  * @method Invoice setOrganizationStreet1(string $street1)
- *
  * @method string|null getOrganizationStreet2()
  * @method Invoice setOrganizationStreet2(string $street2)
- *
  * @method string|null getOrganizationCity()
  * @method Invoice setOrganizationCity(string $city)
- *
  * @method int|null getOrganizationCountryId()
  * @method Invoice setOrganizationCountryId(int $id)
- *
  * @method int|null getOrganizationStateId()
  * @method Invoice setOrganizationStateId(int $id)
- *
  * @method string|null getOrganizationZipCode()
  * @method Invoice setOrganizationZipCode(string $zip)
- *
  * @method string|null getOrganizationBankAccountName()
  * @method Invoice setOrganizationBankAccountName(string $name)
- *
  * @method string|null getOrganizationBankAccountField1()
  * @method Invoice setOrganizationBankAccountField1(string $field1)
- *
  * @method string|null getOrganizationBankAccountField2()
  * @method Invoice setOrganizationBankAccountField2(string $field2)
- *
  * @method string|null getClientFirstName()
  * @method Invoice setClientFirstName(string $name)
- *
  * @method string|null getClientLastName()
  * @method Invoice setClientLastName(string $name)
- *
  * @method string|null getClientCompanyName()
  * @method Invoice setClientCompanyName(string $name)
- *
  * @method string|null getClientCompanyRegistrationNumber()
  * @method Invoice setClientCompanyRegistrationNumber(string $name)
- *
  * @method string|null getClientCompanyTaxId()
  * @method Invoice setClientCompanyTaxId(string $id)
- *
  * @method string|null getClientStreet1()
  * @method Invoice setClientStreet1(string $street1)
- *
  * @method string|null getClientStreet2()
  * @method Invoice setClientStreet2(string $street2)
- *
  * @method string|null getClientCity()
  * @method Invoice setClientCity(string $city)
- *
  * @method int|null getClientCountryId()
  * @method Invoice setClientCountryId(int $id)
- *
  * @method int|null getClientStateId()
  * @method Invoice setClientStateId(int $id)
- *
  * @method string|null getClientZipCode()
  * @method Invoice setClientZipCode(string $zip)
- *
  * @method string|null getDueDate()
- * @see Invoice::setDueDate()
- *
- * @see Invoice::getItems()
- * @see Invoice::setItems()
- *
+ * @see    Invoice::setDueDate()
+ * @see    Invoice::getItems()
+ * @see    Invoice::setItems()
  * @method float|null getSubtotal()
- * @method Invoice setSubtotal(float $subtotal)
- *
  * @method float|null getDiscount()
- * @method Invoice setDiscount(float $discount)
- *
  * @method string|null getDiscountLabel()
- * @method Invoice setDiscountLabel(string $label)
- *
- * @see Invoice::getTaxes()
- * @see Invoice::setTaxes()
- *
+ * @see    Invoice::getTaxes()
  * @method float|null getTotal()
- * @method Invoice setTotal(float $total)
- *
  * @method float|null getAmountPaid()
- * @method Invoice setAmountPaid(float $amount)
- *
  * @method string|null getCurrencyCode()
- * @method Invoice setCurrencyCode(string $code)
- *
  * @method int|null getStatus()
- * @method Invoice setStatus(int $status)
- *
- * @see Invoice::setPaymentCovers()
- * @see Invoice::setPaymentCovers()
- *
+ * @see    Invoice::getPaymentCovers()
  * @method bool|null getUncollectible()
- * @method Invoice setUncollectible(bool $uncollectible)
  *
  */
 final class Invoice extends EndpointObject
@@ -427,7 +380,7 @@ final class Invoice extends EndpointObject
     /**
      * @var InvoiceItem[]
      * @PostRequired
-     * @Patch
+     * @PatchRequired
      *
      * @KeepNullElements
      */
@@ -435,6 +388,7 @@ final class Invoice extends EndpointObject
 
     /**
      * @return InvoiceItemCollection
+     * @throws \Exception
      */
     public function getItems(): InvoiceItemCollection
     {
@@ -468,26 +422,16 @@ final class Invoice extends EndpointObject
 
     /**
      * @var InvoiceTax[]
-     * @Patch
      */
     protected $taxes;
 
     /**
      * @return InvoiceTaxCollection
+     * @throws \Exception
      */
     public function getTaxes(): InvoiceTaxCollection
     {
         return new InvoiceTaxCollection($this->taxes);
-    }
-
-    /**
-     * @param InvoiceTaxCollection $value
-     * @return Invoice
-     */
-    public function setTaxes(InvoiceTaxCollection $value): Invoice
-    {
-        $this->taxes = $value->elements();
-        return $this;
     }
 
     /**
@@ -512,12 +456,12 @@ final class Invoice extends EndpointObject
 
     /**
      * @var PaymentCover[]
-     * @Patch
      */
     protected $paymentCovers;
 
     /**
      * @return PaymentCoverCollection
+     * @throws \Exception
      */
     public function getPaymentCovers(): PaymentCoverCollection
     {
@@ -525,18 +469,7 @@ final class Invoice extends EndpointObject
     }
 
     /**
-     * @param PaymentCoverCollection $value
-     * @return Invoice
-     */
-    public function setPaymentCovers(PaymentCoverCollection $value): Invoice
-    {
-        $this->paymentCovers = $value->elements();
-        return $this;
-    }
-
-    /**
      * @var bool
-     * @Patch
      */
     protected $uncollectible;
 

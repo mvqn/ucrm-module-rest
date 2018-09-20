@@ -5,6 +5,10 @@ namespace UCRM\REST\Endpoints;
 
 use MVQN\REST\Endpoints\EndpointObject;
 use MVQN\REST\Annotations\EndpointAnnotation as Endpoint;
+use MVQN\REST\Annotations\PostAnnotation as Post;
+use MVQN\REST\Annotations\PostRequiredAnnotation as PostRequired;
+use MVQN\REST\Annotations\PatchAnnotation as Patch;
+use MVQN\REST\Annotations\PatchRequiredAnnotation as PatchRequired;
 
 use UCRM\REST\Endpoints\Helpers\SurchargeHelper;
 
@@ -21,13 +25,10 @@ use UCRM\REST\Endpoints\Helpers\SurchargeHelper;
  *
  * @method string|null getName()
  * @method Surcharge setName(string $name)
- *
  * @method string|null getInvoiceLabel()
  * @method Surcharge setInvoiceLabel(string $label)
- *
  * @method float|null getPrice()
  * @method Surcharge setPrice(float $price)
- *
  * @method bool|null getTaxable()
  * @method Surcharge setTaxable(bool $taxable)
  *

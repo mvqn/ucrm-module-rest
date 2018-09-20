@@ -18,33 +18,19 @@ use UCRM\REST\Endpoints\Helpers\DeviceHelper;
  * @Endpoint { "get": "/devices", "getById": "/devices/:id" }
  *
  * @method string|null getName()
- *
  * @method int|null getSiteId()
- *
  * @method int|null getVendorId()
- *
  * @method string|null getModelName()
- *
  * @method int[]|null getParentIds()
- *
  * @method string|null getNotes()
- *
  * @method string|null getLoginUsername()
- *
  * @method int|null getSshPort()
- *
  * @method string|null getSnmpCommunity()
- *
  * @method string|null getOsVersion()
- *
  * @method bool|null getIsGateway()
- *
  * @method bool|null getIsSuspendEnabled()
- *
  * @method bool|null getSendPingNotifications()
- *
  * @method int|null getPingNotificationUserId()
- *
  * @method bool|null getCreateSignalStatistics()
  *
  */

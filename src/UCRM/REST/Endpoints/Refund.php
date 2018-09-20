@@ -5,6 +5,8 @@ namespace UCRM\REST\Endpoints;
 
 use MVQN\REST\Endpoints\EndpointObject;
 use MVQN\REST\Annotations\EndpointAnnotation as Endpoint;
+use MVQN\REST\Annotations\PostAnnotation as Post;
+use MVQN\REST\Annotations\PostRequiredAnnotation as PostRequired;
 
 use UCRM\REST\Endpoints\Helpers\RefundHelper;
 use UCRM\REST\Endpoints\Lookups\PaymentCover;
@@ -21,21 +23,16 @@ use UCRM\REST\Endpoints\Lookups\PaymentCover;
  *
  * @method int|null getMethod()
  * @method Refund setMethod(int $method)
- *
  * @method string|null getCreatedDate()
- *
+ * @see Refund::setCreatedDate()
  * @method float|null getAmount()
  * @method Refund setAmount(float $amount)
- *
  * @method string|null getNote()
  * @method Refund setNote(string $note)
- *
  * @method int|null getClientId()
  * @method Refund setClientId(int $id)
- *
  * @method int|null getCurrencyCode()
  * @method Refund setCurrencyCode(int $code)
- *
  * @method PaymentCover[]|null getPaymentCovers()
  * @method Refund setPaymentCovers(array $covers)
  *

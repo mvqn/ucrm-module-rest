@@ -16,31 +16,18 @@ use MVQN\REST\Annotations\EndpointAnnotation as Endpoint;
  * @Endpoint { "get": "/devices/:deviceId/device-interfaces", "getById": "/devices/device-interfaces/:id" }
  *
  * @method int|null getDeviceId()
- *
  * @method string|null getName()
- *
  * @method int|null getType()
- *
  * @method string|null getMacAddress()
- *
  * @method bool|null getAllowClientConnection()
- *
  * @method bool|null getEnabled()
- *
  * @method string|null getNotes()
- *
  * @method string|null getSsid()
- *
  * @method int|null getFrequency()
- *
  * @method int|null getPolarization()
- *
  * @method int|null getEncryptionType()
- *
  * @method string|null getEncryptionKeyWpa()
- *
  * @method string|null getEncryptionKeyWpa2()
- *
  * @method string[]|null getIpRanges()
  *
  */

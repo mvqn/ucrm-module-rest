@@ -5,6 +5,8 @@ namespace UCRM\REST\Endpoints;
 
 use MVQN\REST\Endpoints\EndpointObject;
 use MVQN\REST\Annotations\EndpointAnnotation as Endpoint;
+use MVQN\REST\Annotations\PostAnnotation as Post;
+use MVQN\REST\Annotations\PostRequiredAnnotation as PostRequired;
 
 use UCRM\REST\Endpoints\Helpers\TaxHelper;
 
@@ -20,14 +22,12 @@ use UCRM\REST\Endpoints\Helpers\TaxHelper;
  *
  * @method string|null getName()
  * @method Tax setName(string $name)
- *
  * @method string|null getAgencyName()
  * @method Tax setAgencyName(string $name)
- *
  * @method float|null getRate()
  * @method Tax setRate(float $name)
- *
  * @method bool|null getSelected()
+ * @method Tax setSelected(bool $selected)
  *
  */
 final class Tax extends EndpointObject
