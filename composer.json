@@ -11,7 +11,7 @@
         }
     ],
     "require": {
-        "php": "~7.1",
+        "php": ">=7.1",
         "ext-json": "*",
         "ext-curl": "*",
         "mvqn/common": "1.0.0",
